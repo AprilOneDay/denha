@@ -1,0 +1,87 @@
+{include '/public/header'}
+    <div class="n-right left">
+            <div class="n-right-top">
+                <div class="title left">查询结果</div>
+                <div class="location right">
+                    您现在的位置：<a href="/">医院首页</a><a href="<?=url('list_doctor',array('name'=>$orders['name'],'code'=>$orders['code'],'mobile'=>$orders['mobile'],'catid'=>$catid))?>"> >返回订单列表 </a>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+            <div class="n-right-about">
+                <div class="yy">
+                
+                    <div class="from">
+                    <span>预约确认与输入个人信息</span>
+                    <table border="1" width="98%"  class="order-info">
+                        <tr>
+                            <th>订单编号</th>
+                            <td>{$orders['order_sn']}</td>
+                        </tr>
+                        <tr>
+                            <th>挂号科室</th>
+                            <td>{$orders['doctor']['keshi']}</td>
+                        </tr>
+                        <tr>
+                            <th>医生</th>
+                            <td>{$orders['doctor']['doctor']}</td>
+                        </tr>
+                        <tr>
+                            <th>就诊时间</th>
+                            <td>{$orders['doctor']['time_copy']}</td>
+                        </tr>
+                        <tr>
+                            <th>费用</th>
+                            <td>￥{$orders['amount']}</td>
+                        </tr>
+                    </table>
+                    <form method="post">
+                        <table border="1" width="98%" class="order-index">
+                            <input type="hidden" name="catid" value="{$catid}">
+                            <input type="hidden" name="time_copy"  value="{$data['time']}">
+                            <input type="hidden" name="ys_time_id" value="{$data['id']}">
+                            <input type="hidden" name="guahao_time" value="{$data['unix']}">
+                            <tr>
+                                <th>患者姓名</th>
+                                <td>
+                                    <p>{$orders['name']}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>身份证号</th>
+                                <td>
+                                    <p>{$orders['code']}</p>
+                                </td>
+                            </tr>
+                            {if $orders['doctor']['address']}
+                            <tr>
+                                <th>家庭住址</th>
+                                <td>
+                                <p>{$orders['doctor']['address']}</p>
+                                </td>
+                            </tr>
+                            {/if}
+                            <tr>
+                                <th>手机号</th>
+                                <td>
+                                   <p>{$orders['mobile']}</p>
+                                </td>
+                            </tr>
+                        </table>
+                            {if $orders['logistics_status'] == 1}
+                            <div class="complay">
+                                <input type="button" value="申请退号" order_sn="{$orders['order_sn']}" class="btn-backDoctor"></input>
+                            </div>
+                            {/if}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!--end-->
+{include '/public/footer'}
+</body>
+</html>

@@ -1,0 +1,52 @@
+{include '/public/header'}
+    <div class="n-right left">
+            <div class="n-right-top">
+                <div class="title left">查询结果</div>
+                <div class="location right">
+                    您现在的位置：<a href="/">医院首页</a><span> > </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+            <div class="n-right-about">
+                <div class="yy">
+                    {loop $list $key $value}
+                    <table class="guahao-list" border="1">
+                        <tr>
+                            <th colspan="2">订单详情</th>
+                            <th width="120">操作</th>
+                        </tr>                
+                        <tr>
+                            <td width="115">
+                                <span>挂号科室</span>
+                                <span>医生</span>
+                                <span>就诊时间</span>
+                                <span>患者姓名</span>
+                                <span>状态</span>
+                            </td>
+                            <td>
+                                <span>{$value['doctor']['keshi']}</span>
+                                <span>{$value['doctor']['doctor']}</span>
+                                <span>{$value['doctor']['time_copy']}</span>
+                                <span>{$value['name']}</span>
+                                <span>{$value['logistics_status']}</span>
+                            </td>
+                            <td>
+                                <a href="<?=url('detail_doctor',array('catid'=>$catid,'order_sn'=>$value['order_sn'],'catid'=>$catid))?>" class="btn-guahao-detail">
+                                    详情
+                                </a>
+                                <a href="">退号</a>
+                            </td>
+                        </tr>
+                    </table>
+                    {/loop}
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!--end-->
+{include '/public/footer'}
+</body>
+</html>

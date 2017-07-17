@@ -1,0 +1,93 @@
+{include '/public/header'}
+    <div class="n-right left">
+            <div class="n-right-top">
+                <div class="title left">医生介绍</div>
+                <div class="location right">
+                    您现在的位置：<a href="/">医院首页</a><span> > </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+            <div class="n-right-about" style="padding-left: 0px;">
+                <div class="guahao-detail">
+                    <div class="guahao-doctor left">
+                        {if $doctor['thumb']}
+                        <img src="{$doctor['thumb']}" />
+                        {/if}
+                        <h2>{$doctor['title']}</h2>
+                        
+                        {if $doctor['zc']}
+                            <p>职称: {$doctor['zc']}</p>
+                        {/if}
+
+                        {if $doctor['data']['keshi']}
+                            <p>科室：{$doctor['data']['keshi']}</p>
+                        {/if}
+
+                        {if $doctor['data']['like']}
+                            <p>擅长：{$doctor['data']['like']}</p>
+                        {/if}
+                        <p>简介：{$doctor['data']['content']}</p>
+                        <div class="clear"></div>  
+                    </div>
+
+                    <div class="guahao-chart right">
+                        <h2>最新预约</h2>
+                        <ul>
+                            {loop $ordersTop $key $value}
+                                <li>{$value['name']}<label>{$value['time_copy']}</label></li>
+                            {/loop}
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="guahao-time">
+                        <div class="table-title">选择就诊时间</div>
+                        <table border="1">
+                            <tr>
+                                <td>时段</td>
+                                {loop $week $key $value}
+                                <td>{$value['zh']}<br/>{$value['data']}</td>
+                                {/loop}
+                            </tr>
+                            <tr>
+                                <td>上午</td>
+                                {loop $week $key $value}
+                                <td>
+                                    {if isset($doctor['time'][$value['time'][0]])}
+                                        <a href="<?=url('order_index',array('time'=>$value['unix'],'catid'=>$catid,'id'=>$doctor['time'][$value['time'][0]]['id']))?>" class="btn-guahao-detail">预约</a>
+                                    {/if}
+                                </td>
+                                {/loop}
+                            </tr>
+                            <tr>
+                                <td>下午</td>
+                                {loop $week $key $value}
+                                <td>
+                                    {if isset($doctor['time'][$value['time'][1]])}
+                                        <a href="<?=url('order_index',array('time'=>$value['unix'],'catid'=>$catid,'id'=>$doctor['time'][$value['time'][0]]['id']))?>" class="btn-guahao-detail">预约</a>                                    
+                                    {/if}
+                                </td>
+                                {/loop}
+                            </tr>
+                            <tr>
+                                <td>晚上</td>
+                                {loop $week $key $value}
+                                <td>
+                                    {if isset($doctor['time'][$value['time'][2]])}
+                                        <a href="<?=url('order_index',array('time'=>$value['unix'],'catid'=>$catid,'id'=>$doctor['time'][$value['time'][0]]['id']))?>" class="btn-guahao-detail">预约</a>                                    
+                                    {/if}
+                                </td>
+                                {/loop}
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!--end-->
+{include '/public/footer'}
+</body>
+</html>

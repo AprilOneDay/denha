@@ -1,0 +1,89 @@
+{include '/public/header'}
+	<div class="n-right left">
+            <div class="n-right-top">
+                <div class="title left">预约病房</div>
+                <div class="location right">
+                    您现在的位置：<a href="/">医院首页</a><span> > </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+         	<div class="n-right-about">
+         		<div class="yy">
+         			<div class="yuyue-title">
+      						<img src="/images/2017050601.jpg">
+         			</div>
+         			<div class="search">
+         				<input type="text" class="search-3" id="date-range0" name="time" placeholder="入住退房时间">
+         				<input type="submit" value="搜索" class="btn-search">
+         			</div>
+         			<div class="yy-list">
+						<table border="1" width="98%">
+							<tr style="text-align: center;background-color: #fcfcfc;line-height: 60px;">
+								<td width="270">房型</td>
+								<td width="110">面积</td>
+								<td width="100">床型</td>
+								<td>最多入住人数</td>
+								<td width="100">宽带</td>
+								<td>房价(含服务费)</td>
+								<td width="100">操作</td>
+							</tr>
+							{loop $list $key $value}
+							<tr style="text-align: center;height: 110px;">
+								<td class="title-pic"> 
+									<img src="{$value['thumb']}" width="110" height="80" class="left">
+									<p class="title left">{$value['title']}<span><a href="javascript:;" class="btn-yy-more"> 查看详情 ▽</a></span></p>
+								</td>
+								<td>{$value['area']}m<sup>2</sup></td>
+								<td><?=substr($value['bed'],0,9)?></td>
+								<td>{$value['num']}人</td>
+								<td><span style="color:green">{$wifiCopy[$value['wifi']]}</span></td>
+								<td style="color: #ff9100;">¥{$value['price']}</td>
+								<td><a href="javascript:;" data-href="<?=url('order_index',array('catid'=>$catid,'id'=>$value['id']))?>" class="btn-yuding">预定</a></td>
+							</tr>
+							<tr class="yy-info">
+								<td colspan="7">
+									{if $value['album']}
+									<div class="img">
+										<label class="btn-img-left"></label>
+										<div class="yy-container">
+											<ul>
+											{loop $value['album'] $k $v}
+												<li><img src="{$v['url']}" width="160" height="100"></li>
+											{/loop}
+											<div class="clear"></div>
+											</ul>
+										</div>
+										<label class="btn-img-right"></label>
+									</div>
+									<div class="clear"></div>
+									{/if}
+									<div class="yy-des">
+										<ul>
+											<li><span>建筑面积：</span>{$value['area']}平方米</li>
+											<li><span>楼层：</span>{$value['floor']}楼</li>
+											<li><span>床型：</span>{$value['bed']}</li>
+											<li><span>无烟房：</span>可安排无烟楼层</li>
+										</ul>
+										<div class="clear"></div>
+										<p><span>便利设施：</span>{$value['description']}</p>
+									</div>
+								</td>
+							</tr>
+							{/loop}
+						</table>
+         			</div>
+         		</div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!--end-->
+{include '/public/footer'}
+</body>
+<link rel="stylesheet" href="/css/dsyy/daterangepicker.min.css">
+<script type="text/javascript" src="/js/dsyy/moment.min.js"></script>
+<script type="text/javascript" src="/js/dsyy/jquery.daterangepicker.min.js"></script>
+<script src="/js/dsyy/demo.js"></script>
+</html>

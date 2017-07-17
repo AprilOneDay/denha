@@ -1,0 +1,68 @@
+{include '/public/header'}
+    <div class="n-right left">
+            <div class="n-right-top">
+                <div class="title left">预约病房</div>
+                <div class="location right">
+                    您现在的位置：<a href="/">医院首页</a><span> > </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+         	<div class="n-right-about">
+         		<div class="yy">
+         			<div class="yuyue-title">
+      						<img src="/images/2017051301.jpg">
+         			</div>
+
+         			<div class="pay">
+                        <div class="pay-info">
+         			    <span class="money">{$orders['amount']} 元</span>
+         			    <p>您本次预约支付金额</p>
+                        <small>请在15分钟内完成支付</small>
+                        </div>
+                        <!--payment-->
+                    <div class="payment">
+                        <div class="payment-item plam-payment clearfix">
+                            <ul class="payment-tit">
+                                <li class="current">平台支付</li>
+                            </ul>
+                            <ul class="bank">
+                                <li>
+                                    <a href="<?=url('cashier',array('order_sn'=>$orderSn,'type'=>'alipay'))?>" class="J_payment" data-payment="alipay">
+                                        <img src="http://static.chayu.com/images/mall/online_payment/pt_bank1.png" alt="">
+                                    </a>
+                                </li>
+                                <!-- <li>
+                                    <a href="javascript:;" class="J_payment" data-payment="weixin">
+                                        <img src="http://static.chayu.com/images/mall/online_payment/pt_bank2.png" alt="">
+                                    </a>
+                                </li> -->
+                            </ul>
+                        </div>
+                        
+                        <!-- <div class="payment-item bank-payment mt30 clearfix">
+                            <ul class="payment-tit">
+                                <li class="current">银行卡支付</li>
+                            </ul>
+                            <ul class="bank">                           
+                                <li>
+                                    <a href="http://cashier.chayu.com/quick_card/add?redirect=http%3A%2F%2Fcashier.chayu.com%2Fpay%2F%3ForderSn%3D171325849592226978%26orderType%3D3" class="btn-add-card">
+                                        +使用新银行卡
+                                    </a>
+                                </li>
+                            </ul>
+                        </div> -->
+                    </div>
+                    <!--/payment-->
+
+                    </div>
+         		</div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!--end-->
+{include '/public/footer'}
+</body>
+</html>

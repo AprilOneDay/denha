@@ -1,0 +1,91 @@
+{include '/public/header'}
+    <div class="n-right left">
+            <div class="n-right-top">
+                <div class="title left">预约挂号</div>
+                <div class="location right">
+                    您现在的位置：<a href="/">医院首页</a><span> > </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+         	<div class="n-right-about">
+         		<div class="yy">
+         			<div class="yuyue-title">
+      						<img src="/images/2017050604.jpg">
+         			</div>
+
+         			<div class="from">
+         			<span>预约确认与输入个人信息</span>
+         			<table border="1" width="98%"  class="order-info">
+         				<tr>
+         					<th>挂号科室</th>
+         					<td>{$data['doctor']['keshi']}</td>
+         				</tr>
+         				<tr>
+         					<th>医生</th>
+         					<td>{$data['doctor']['title']}</td>
+         				</tr>
+         				<tr>
+         					<th>就诊时间</th>
+         					<td>{$data['time']}</td>
+         				</tr>
+         				<tr>
+         					<th>费用</th>
+         					<td>￥{$data['doctor']['price']}</td>
+         				</tr>
+         			</table>
+                    <form method="post">
+             			<table border="1" width="98%" class="order-index">
+                            <input type="hidden" name="catid" value="{$catid}">
+                            <input type="hidden" name="time_copy"  value="{$data['time']}">
+                            <input type="hidden" name="ys_time_id" value="{$data['id']}">
+                            <input type="hidden" name="guahao_time" value="{$data['unix']}">
+    						<tr>
+             					<th>患者姓名</th>
+             					<td>
+                                    <input type="text" name="name" placeholder="请输入患者真实姓名">
+                                    <p><i>*</i> 医院需要您提供就诊者的真实姓名</p>
+                                </td>
+             				</tr>
+             				<tr>
+             					<th>身份证号</th>
+             					<td>
+                                    <input type="text" name="code" placeholder="请输入患者真实身份证号"> 
+                                    <p><i>*</i> 身份证是您的取号凭证，身份证号码输入错误将无法取号！</p>
+                                </td>
+             				</tr>
+             				<tr>
+             					<th>家庭住址</th>
+             					<td><input type="text" name="address" placeholder="请输入家庭地址"> </td>
+             				</tr>
+             				<tr>
+             					<th>手机号</th>
+             					<td>
+                                    <input type="text" name="mobile" placeholder="请输入手机号">
+                                    <p><i>*</i> 此手机号将接收预约挂号成功与否的反馈信息，没有费用的产生。</p>
+                                </td>
+             				</tr>
+             				<tr>
+             					<th>验证码</th>
+             					<td>
+                                    <input type="text" name="verification" placeholder="请输入验证码">
+                                    <input type="button" value="获取验证码" class="send-verification"></input>
+                                </td>
+             				</tr>
+             			</table>
+                            <div class="complay">
+                                <input type="button" value="返回上一页" style="background: #b2b2b2;"></input>
+                                <input type="button" value="预约确认" class="saveGuahaoOrder"></input>
+                            </div>
+             			</div>
+                    </form>
+         		</div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!--end-->
+{include '/public/footer'}
+</body>
+</html>
