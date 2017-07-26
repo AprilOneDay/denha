@@ -57,7 +57,7 @@ class Route
         define('LAST', $last);
 
         self::$path  = APP ? APP . DS : '';
-        self::$class = 'app' . DS . APP . DS . 'Controller\\' . parsename(MODULE, true) . '\\' . parsename(CONTROLLER, true);
+        self::$class = 'app\\' . APP . '\\' . 'controller\\' . parsename(MODULE) . '\\' . parsename(CONTROLLER, true);
     }
 
     public static function ca()
@@ -98,7 +98,7 @@ class Route
         define('PENULT', $penult);
         define('LAST', $last);
         self::$path  = APP . DS;
-        self::$class = 'app' . DS . APP . DS . 'Controller\\' . parsename(CONTROLLER, true);
+        self::$class = 'app\\' . APP . '\\' . 'controller\\' . parsename(CONTROLLER, true);
     }
 
     //获取直接参数

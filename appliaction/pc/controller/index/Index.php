@@ -3,7 +3,7 @@ namespace app\pc\controller\index;
 
 use denha;
 
-class Index extends denha\controller
+class Index extends denha\Controller
 {
     public function index()
     {

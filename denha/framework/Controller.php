@@ -67,7 +67,7 @@ class Controller
             include $cachePath;
         } else {
             //处理视图模板
-            $template = new template($path);
+            $template = new Template($path);
             $template->getContent();
             include $template->loadPath;
         }

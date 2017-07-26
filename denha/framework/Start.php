@@ -59,13 +59,14 @@ class Start
         }
 
         if (!$object) {
-            die(CONTROLLER . ' 控制器不存在');
+            var_dump($class);
+            die('NOT FIND CONTROLLER :' . CONTROLLER);
         }
 
         $action = lcfirst(parsename(ACTION, 1));
 
         if (!method_exists($object, $action)) {
-            die(CONTROLLER . '控制器中' . ACTION . '方法不存在');
+            die(CONTROLLER . 'CONTROLLER NOT FIND[' . ACTION . ']ACTION');
         }
 
         $action = $object->$action();

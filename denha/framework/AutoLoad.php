@@ -21,9 +21,10 @@ class AutoLoad
     //查找文件
     private static function findFile($class)
     {
+
         $map       = strstr(trim($class), '\\');
         $namespace = substr($class, 0, strpos($class, '\\'));
-        $class     = ltrim($class, $namespace);
+        $class     = str_replace('\\', DS, ltrim($class, $namespace));
         if (isset(self::$namespaceAlias[$namespace])) {
             if (is_file(self::$namespaceAlias[$namespace] . $class . EXT)) {
                 return self::$namespaceAlias[$namespace] . $class . EXT;
