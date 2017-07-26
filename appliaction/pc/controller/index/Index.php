@@ -7,6 +7,7 @@ class Index extends denha\Controller
 {
     public function index()
     {
+        print_r($a);
         $this->show();
     }
 }

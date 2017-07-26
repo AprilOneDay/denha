@@ -48,8 +48,7 @@ class Start
         }
 
         $action = $object->$action();
-
-        $GLOBALS['_endTime'] = microtime(true); //程序结束
+        Trace::run();
     }
 
     /**
