@@ -28,8 +28,6 @@ class AutoLoad
         if (isset(self::$namespaceAlias[$namespace])) {
             if (is_file(self::$namespaceAlias[$namespace] . $class . EXT)) {
                 return self::$namespaceAlias[$namespace] . $class . EXT;
-            } else {
-                var_dump('NOT FIND FIELD:' . self::$namespaceAlias[$namespace] . $class . EXT);
             }
         }
     }
