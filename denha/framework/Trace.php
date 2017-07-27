@@ -7,47 +7,15 @@ namespace denha;
 class Trace
 {
     private static $tracePageTabs  = ['BASE' => '基本', 'FILE' => '文件', 'ERR|NOTIC' => '错误', 'SQL' => 'SQL', 'DEBUG' => '调试'];
-    private static $traceErrorType = [0 => '', 1 => 'ERROR', 2 => 'WARNING', 4 => 'PARSE', 8 => 'NOTICE'];
+    private static $traceErrorType = [0 => '', 1 => 'ERROR', 2 => 'WARNING', 4 => 'PARSE', 8 => 'NOTICE', 100 => 'SQL'];
 
-    public static $errorInfo = [];
+    public static $errorInfo = []; //错误信息
+    public static $sqlInfo   = []; //sql执行信息
 
     //执行
     public static function run()
     {
         echo self::showTrace();
-    }
-
-    //捕获Notice错误信息
-    public static function catchNotice($level, $message, $file, $line)
-    {
-        if ($level) {
-            $info = self::$traceErrorType[$level] . ' : ' . $message . ' from ' . $file . ' in ' . $line;
-            if (!self::$errorInfo) {
-                self::$errorInfo[] = $info;
-            } else {
-                self::$errorInfo = array_merge(self::$errorInfo, (array) $info);
-            }
-        }
-    }
-
-    //捕获Error错误信息 并显示
-    public static function catchError()
-    {
-        $e = error_get_last();
-        if ($e) {
-            return include FARM_PATH . DS . 'trace' . DS . 'error.html';
-        }
-    }
-
-    //捕获Error错误信息
-    public static function catchApp($error)
-    {
-        $e['type']    = 0;
-        $e['message'] = $error->getMessage();
-        $e['file']    = $error->getFile();
-        $e['line']    = $error->getLine();
-        return include FARM_PATH . DS . 'trace' . DS . 'error.html';
-
     }
 
     //展示调试信息
@@ -66,77 +34,73 @@ class Trace
                 case 'ERR|NOTIC':
                     $trace[$title] = self::$errorInfo;
                     break;
+                case 'SQL':
+                    $trace[$title] = self::$sqlInfo;
+                    break;
                 default:
                     $trace[$title] = $name;
                     break;
             }
         }
 
-        /*$debug = trace();
-        $tabs  = self::$tracePageTabs;
-
-        foreach ($tabs as $name => $title) {
-        switch (strtoupper($name)) {
-        case 'BASE':
-        $trace[$title] = $base;
-        break;
-
-        case 'FILE':
-        $trace[$title] = $info;
-        break;
-
-        default:
-        $name = strtoupper($name);
-
-        if (strpos($name, '|')) {
-        $array  = explode('|', $name);
-        $result = array();
-
-        foreach ($array as $name) {
-        $result += (isset($debug[$name]) ? $debug[$name] : array());
-        }
-
-        $trace[$title] = $result;
-        } else {
-        $trace[$title] = (isset($debug[$name]) ? $debug[$name] : '');
-        }
-        }
-        }
-
-        if ($save = C('PAGE_TRACE_SAVE')) {
-        if (is_array($save)) {
-        $tabs  = $this->tracePageTabs;
-        $array = array();
-
-        foreach ($save as $tab) {
-        $array[] = $tabs[$tab];
-        }
-        }
-
-        $content = date('[ c ]') . ' ' . getip() . ' ' . $_SERVER['REQUEST_URI'] . PHP_EOL;
-
-        foreach ($trace as $key => $val) {
-        if (!isset($array) || in_array($key, $array)) {
-        $content .= '[ ' . $key . ' ]' . PHP_EOL;
-
-        if (is_array($val)) {
-        foreach ($val as $k => $v) {
-        $content .= (!is_numeric($k) ? $k . ':' : ')' . print_r($v, true) . PHP_EOL);
-        }
-        } else {
-        $content .= print_r($val, true) . PHP_EOL;
-        }
-
-        $content .= PHP_EOL;
-        }
-        }
-
-        error_log(str_replace('<br/>', PHP_EOL, $content), 3, DATA_PATH . 'logs' . DS . date('y_m_d') . '_trace.log');
-        }*/
-
         ob_start();
         include FARM_PATH . DS . 'trace' . DS . 'debug.html';
         return ob_get_clean();
+    }
+
+    //捕获Notice错误信息
+    public static function catchNotice($level, $message, $file, $line)
+    {
+        if ($level) {
+            $info = self::$traceErrorType[$level] . ' : ' . $message . ' from ' . $file . ' in ' . $line;
+            self::addErrorInfo($info);
+        }
+    }
+
+    //捕获Error错误信息 并显示
+    public static function catchError()
+    {
+        $e = error_get_last();
+        if ($e) {
+            return include FARM_PATH . DS . 'trace' . DS . 'error.html';
+        }
+    }
+
+    //捕获未处理的自定义错误信息
+    public static function catchApp($error)
+    {
+        $e['type']    = 0;
+        $e['message'] = $error->getMessage();
+        $e['file']    = $error->getFile();
+        $e['line']    = $error->getLine();
+        return include FARM_PATH . DS . 'trace' . DS . 'error.html';
+    }
+
+    //增加非致命错误信息记录
+    public static function addErrorInfo($data)
+    {
+
+        if (!self::$errorInfo) {
+            self::$errorInfo[] = $data;
+        } else {
+            self::$errorInfo = array_merge(self::$errorInfo, (array) $data);
+        }
+    }
+
+    //增加sql执行信息记录
+    public static function addSqlInfo($data)
+    {
+        if (is_array($data)) {
+            $info = 'SQL :' . $data['sql'] . ' [' . $data['time'] . 's]';
+        } else {
+            $info = $data;
+        }
+
+        if (!self::$sqlInfo) {
+            self::$sqlInfo[] = $info;
+        } else {
+            self::$sqlInfo = array_merge(self::$sqlInfo, (array) $info);
+        }
     }
 
     //获取基本信息

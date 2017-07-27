@@ -8,6 +8,7 @@ class Mysqli
 
     public $dbConfig; //数据库连接信息
     public $tablepre; //表前缀
+    public $sqlInfo; //执行sql记录
 
     public $link;
     public $result;
@@ -31,13 +32,13 @@ class Mysqli
         if ($dbConfig) {
             $this->dbConfig = $dbConfig;
         } else {
-            $this->dbConfig = vars('db');
+            $this->dbConfig = getConfig('db');
         }
 
         $this->tablepre = $this->dbConfig['db_prefix'];
 
         if ($this->dbConfig['db_host'] == '' || $this->dbConfig['db_user'] == '' || $this->dbConfig['db_name'] == '') {
-            die('接数据库信息有误');
+            throw new Exception('接数据库信息有误！请查看是否配置正确');
         }
 
         $this->link = $this->openMysql();
@@ -45,8 +46,7 @@ class Mysqli
         mysqli_query($this->link, 'set names utf8');
 
         if (!$this->link) {
-            print_r($this->dbConfig);
-            die('连接数据库失败，可能数据库密码不对或数据库服务器出错！');
+            throw new Exception('连接数据库失败，可能数据库密码不对或数据库服务器出错！');
         }
     }
 
@@ -496,11 +496,19 @@ class Mysqli
     public function query($sql)
     {
         $this->_sql = $sql;
+        $_beginTime = microtime(true);
         $result     = mysqli_query($this->link, $sql);
+        $_endTime   = microtime(true);
+
+        $this->sqlInfo['time'] = ($_endTime - $_beginTime) / 1000; //获取执行时间
+        $this->sqlInfo['sql']  = $this->_sql;
+
+        Trace::addSqlInfo($this->sqlInfo);
+
         if ($result) {
             return $result;
         } else {
-            die('错误SQL:' . $sql);
+            throw new Exception('SQL ERROR :' . $this->_sql);
         }
 
     }

@@ -174,7 +174,7 @@ function existsUrl($url)
 
 function table($name, $isTablepre = true)
 {
-    $do = Denha\Mysqli::getInstance(); //单例实例化
+    $do = denha\Mysqli::getInstance(); //单例实例化
     if ($name) {
         return $do->table($name, $isTablepre);
     }
@@ -207,7 +207,7 @@ function comprise($path)
 }
 
 //获取config下配置文档
-function vars($path = 'config', $name = '')
+function getConfig($path = 'config', $name = '')
 {
     $data = include CONFIG_PATH . $path . '.php';
     if ($name === '') {
