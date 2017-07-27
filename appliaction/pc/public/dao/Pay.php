@@ -1,5 +1,5 @@
 <?php
-namespace pc\public\dao;
+namespace app\pc\public\dao;
 
 class Pay
 {

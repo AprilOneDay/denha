@@ -1,15 +1,56 @@
 <?php
+//------------------------
+// 调试信息函数
+//-------------------------
 namespace denha;
 
 class Trace
 {
-    protected static $tracePageTabs = array('BASE' => '基本', 'FILE' => '文件', 'ERR|NOTIC' => '错误', 'SQL' => 'SQL', 'DEBUG' => '调试');
+    private static $tracePageTabs  = ['BASE' => '基本', 'FILE' => '文件', 'ERR|NOTIC' => '错误', 'SQL' => 'SQL', 'DEBUG' => '调试'];
+    private static $traceErrorType = [0 => '', 1 => 'ERROR', 2 => 'WARNING', 4 => 'PARSE', 8 => 'NOTICE'];
 
+    public static $errorInfo = [];
+
+    //执行
     public static function run()
     {
         echo self::showTrace();
     }
 
+    //捕获Notice错误信息
+    public static function catchNotice($level, $message, $file, $line)
+    {
+        if ($level) {
+            $info = self::$traceErrorType[$level] . ' : ' . $message . ' from ' . $file . ' in ' . $line;
+            if (!self::$errorInfo) {
+                self::$errorInfo[] = $info;
+            } else {
+                self::$errorInfo = array_merge(self::$errorInfo, (array) $info);
+            }
+        }
+    }
+
+    //捕获Error错误信息 并显示
+    public static function catchError()
+    {
+        $e = error_get_last();
+        if ($e) {
+            return include FARM_PATH . DS . 'trace' . DS . 'error.html';
+        }
+    }
+
+    //捕获Error错误信息
+    public static function catchApp($error)
+    {
+        $e['type']    = 0;
+        $e['message'] = $error->getMessage();
+        $e['file']    = $error->getFile();
+        $e['line']    = $error->getLine();
+        return include FARM_PATH . DS . 'trace' . DS . 'error.html';
+
+    }
+
+    //展示调试信息
     private static function showTrace()
     {
         $trace = array();
@@ -21,6 +62,9 @@ class Trace
                     break;
                 case 'FILE':
                     $trace[$title] = self::fileInfo();
+                    break;
+                case 'ERR|NOTIC':
+                    $trace[$title] = self::$errorInfo;
                     break;
                 default:
                     $trace[$title] = $name;
@@ -90,14 +134,12 @@ class Trace
         error_log(str_replace('<br/>', PHP_EOL, $content), 3, DATA_PATH . 'logs' . DS . date('y_m_d') . '_trace.log');
         }*/
 
-        unset($files);
-        unset($info);
-        unset($base);
         ob_start();
-        include FARM_PATH . DS . 'trace' . DS . 'templete.html';
+        include FARM_PATH . DS . 'trace' . DS . 'debug.html';
         return ob_get_clean();
     }
 
+    //获取基本信息
     private static function baseInfo()
     {
         $base = array(
@@ -115,6 +157,7 @@ class Trace
         return $base;
     }
 
+    //获取加载文件
     private static function fileInfo()
     {
         $files = get_included_files();
@@ -126,6 +169,7 @@ class Trace
         return $info;
     }
 
+    //获取执行时间
     private static function showTime()
     {
         /* useup('beginTime', $GLOBALS['_beginTime']);

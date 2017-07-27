@@ -23,6 +23,11 @@ class Start
             self::$config['config'] = array_merge(include (CONFIG_PATH . 'config.php'), include (CONFIG_PATH . $client . '.config.php'));
         }
 
+        error_reporting(0);
+        register_shutdown_function('denha\Trace::catchError');
+        set_error_handler('denha\Trace::catchNotice');
+        set_exception_handler('denha\Trace::catchApp');
+
         Start::filter(); //过滤
         Route::$route(); //解析路由
 
