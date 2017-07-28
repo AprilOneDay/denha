@@ -325,32 +325,28 @@ class Mysqli
      */
     public function find($value = '', $isArray = false)
     {
-        if ($this->table == '') {die('请选择数据表');}
-        if ($this->field == '') {$this->field = '*';}
-        if ($this->limit == '' && $value != 'array' && !$isArray) {$this->limit(1);}
+
+        if (!$this->table) {
+            throw new Exception('请选择数据表');
+        }
+
+        $this->field != '' ?: $this->field = '*';
+
+        if (!$this->limit && $value != 'array' && !$isArray) {
+            $this->limit(1);
+        }
 
         if ($value == 'array' || ($value == 'one' && $isArray)) {
             if ($this->limit == '') {$this->limit(1000);}
         }
 
         $sql = 'SELECT ' . $this->field . ' FROM ' . $this->table;
-        if ($this->join) {
-            $sql .= $this->join;
-        }
 
-        if ($this->where != '') {
-            $sql .= $this->where;
-        }
-        if ($this->group != '') {
-            $sql .= $this->group;
-        }
-        if ($this->order) {
-            $sql .= $this->order;
-        }
-
-        if ($this->limit) {
-            $sql .= $this->limit;
-        }
+        $this->join != '' ?: $sql .= $this->join;
+        $this->where = '' ?: $sql .= $this->where;
+        $this->group = '' ?: $sql .= $this->group;
+        $this->order = '' ?: $sql .= $this->order;
+        $this->limit = '' ?: $sql .= $this->limit;
 
         $result = $this->query($sql);
 
@@ -366,7 +362,7 @@ class Mysqli
             }
 
             if (count($row) > 1) {
-                die('sql模块中one只能查询单个字段内容请设置field函数');
+                throw new Exception('sql模块中one只能查询单个字段内容请设置field函数');
             }
 
             return $row[0];
@@ -375,7 +371,7 @@ class Mysqli
         elseif ($value == 'one' && $isArray) {
             while ($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
                 if (count($row) > 1) {
-                    die('sql模块中one只能查询单个字段内容请设置field函数');
+                    throw new Exception('sql模块中one只能查询单个字段内容请设置field函数');
                 }
                 $data[] = $row[$this->field];
             }
@@ -387,9 +383,11 @@ class Mysqli
         }
         //三维数组模式
         elseif ($this->total > 1 || $value == 'array') {
+
             while ($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
                 $data[] = $row;
             }
+
             for ($i = 0, $n = count($data); $i < $n; $i++) {
                 if (is_array($data[$i])) {
                     foreach ($data[$i] as $key => $value) {
@@ -397,6 +395,7 @@ class Mysqli
                     }
                 }
             }
+
             return $datas;
         }
         //二维数组模式
@@ -500,7 +499,7 @@ class Mysqli
         $result     = mysqli_query($this->link, $sql);
         $_endTime   = microtime(true);
 
-        $this->sqlInfo['time'] = ($_endTime - $_beginTime) / 1000; //获取执行时间
+        $this->sqlInfo['time'] = $_endTime - $_beginTime; //获取执行时间
         $this->sqlInfo['sql']  = $this->_sql;
 
         Trace::addSqlInfo($this->sqlInfo);

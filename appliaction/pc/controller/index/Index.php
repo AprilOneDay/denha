@@ -7,7 +7,7 @@ class Index extends denha\Controller
 {
     public function index()
     {
-        $list = table('db', false)->field('Host,Db,User')->find('array');
+        $list = table('db', false)->field('Host,Db,User')->find();
 
         $this->show();
     }
