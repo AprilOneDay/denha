@@ -12,5 +12,7 @@
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
+
+    RewriteCond %(/ststic) !-f
     RewriteRule ^ index.php [L]
 </IfModule>
