@@ -1,5 +1,5 @@
 <?php
-return array(
+return [
     //Cookie配置
     'cookieDomain' => '', //Cookie 作用域
     'cookiePath'   => '', //Cookie 作用路径
@@ -16,4 +16,4 @@ return array(
     /* 基础设置 */
     'debug'        => true, // 是否开启调试
     'trace'        => true, // 是否显示页面Trace信息
-);
+];

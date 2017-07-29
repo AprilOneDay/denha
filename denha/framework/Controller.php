@@ -44,11 +44,11 @@ class Controller
 
         if (!$peg) {
             if (!$viewPath) {
-                $path = APP_PATH . APP . DS . 'view' . DS . APP . DS . CONTROLLER . DS . 'index.html';
+                $path = APP_PATH . APP . DS . 'view' . DS . CONTROLLER . DS . 'index.html';
             }
             //绝对路径
             elseif (stripos($viewPath, '/') === 0) {
-                $path = VIEW_PATH . substr($viewPath, 1) . '.html';
+                $path = APP_PATH . APP . DS . 'view' . DS . CONTROLLER . DS . substr($viewPath, 1) . '.html';
             }
             //相对路径
             else {

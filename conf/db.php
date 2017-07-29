@@ -1,5 +1,5 @@
 <?php
-return array(
+return [
     /* 数据库信息 */
     'db_type'        => 'mysqli', // 数据库类型
     'db_host'        => '127.0.0.1', // 服务器地址
@@ -18,4 +18,4 @@ return array(
     'db_masterNum'   => 1, // 读写分离后 主服务器数量
     'db_slaveNo'     => '', // 指定从服务器序号
     'db_sqlLog'      => true, // 记录SQL信息
-);
+];

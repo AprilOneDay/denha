@@ -342,11 +342,11 @@ class Mysqli
 
         $sql = 'SELECT ' . $this->field . ' FROM ' . $this->table;
 
-        $this->join != '' ?: $sql .= $this->join;
-        $this->where = '' ?: $sql .= $this->where;
-        $this->group = '' ?: $sql .= $this->group;
-        $this->order = '' ?: $sql .= $this->order;
-        $this->limit = '' ?: $sql .= $this->limit;
+        empty($this->join) ?: $sql .= $this->join;
+        empty($this->where) ?: $sql .= $this->where;
+        empty($this->group) ?: $sql .= $this->group;
+        empty($this->order) ?: $sql .= $this->order;
+        empty($this->limit) ?: $sql .= $this->limit;
 
         $result = $this->query($sql);
 

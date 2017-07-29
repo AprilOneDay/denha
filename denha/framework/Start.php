@@ -16,6 +16,9 @@ class Start
      */
     public static function up($client = '', $route = 'mca')
     {
+        //执行创建文件
+        get('build') == false ?: self::bulid();
+
         self::$client = $client;
         //获取配置文档信息
         self::$config['config'] = include CONFIG_PATH . 'config.php';
@@ -83,4 +86,29 @@ class Start
         }
     }
 
+    //自动创建文件夹
+    private static function bulid()
+    {
+        $dir = [
+            'controller' => ['index'],
+            'public'     => ['dao', 'vendor'],
+            'view'       => ['index'],
+        ];
+
+        $path = APP_PATH . APP . DS;
+        foreach ($dir as $key => $value) {
+            if (!is_dir($path . $key)) {
+                mkdir($path . $key, 0077, true);
+                if (is_array($value)) {
+                    foreach ($dir[$key] as $k => $v) {
+                        if (!is_dir($path . $key . DS . $v)) {
+                            mkdir($path . $key . DS . $v, 0077, true);
+                        }
+                    }
+                }
+            }
+        }
+
+        die('创建成功');
+    }
 }
