@@ -7,20 +7,26 @@
 	<title>后台管理</title>
 	<link rel="stylesheet" href="{{getConfig('config','vendor')}}/bootstrap/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="{{getConfig('config','ststic')}}/console/css/common.css" />
-	<link rel="stylesheet" href="{{getConfig('config','vendor')}}/pace/themes/black/pace-theme-minimal.css" />
+	<link rel="stylesheet" href="{{getConfig('config','vendor')}}/pace/themes/blue/pace-theme-minimal.css" />
+	<link rel="stylesheet" href="{{getConfig('config','ststic')}}/console/css/css.css" />
 </head>
 <body>
 	<div class="border-top">
-		<div class="border-top-left">
+		<div class="border-top-left fl">
 			<ul>
 				<li><a class="logo">Denha</a></li>
 			</ul>
 		</div>
-		<div class="border-top-right">
+		<div class="border-top-right fr">
+			<ul>
+				<li><a href="javascript:;">cheng6251@163.com</a></li>
+				<li><a href="javascript:;">退出</a></li>
+			</ul>
 		</div>
 	</div>
 	<div class="wrapper">
 		<div class="navbar">
+			<div class="sidebar-fold icon-unfold" ng-class="{'icon-unfold': !isSidebarFold,'icon-fold':isSidebarFold}" ng-click="toggleSidebarStatus()" aliyun-console-spm="100" data-spm-click="gostr=/aliyun;locaid=d100;;" data-spm-anchor-id="5176.2020520101.1002.d100"></div>
 		</div>
 
 		<div class="content-main" id="content-main">

@@ -1,0 +1,7 @@
+.border-top{ height: 50px; background: #2a2f32;  }
+.border-top .logo{ color: #fff; display: block; line-height: 50px; font-size: 17px; width: 80px; text-align: center;  }
+.border-top .border-top-left a:hover{ background: black; cursor: pointer; }
+.border-top .border-top-right li{ float: left;  border-right: 1px solid #373d41;  }
+.border-top .border-top-right li a{ color: #fff; line-height: 50px; display: block; padding-left: 20px;  padding-right: 20px; }
+.border-top .border-top-right li a:hover{  background: black; cursor: pointer;  }
+.border-top .border-top-right li:last-child{ border-right: none; }

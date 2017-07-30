@@ -8,6 +8,10 @@ body{font-family: "Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sa
 .pr10{padding-right: 10px !important;}
 .pl10{padding-left: 10px !important;}
 .lh32{line-height: 32px;}
+a:hover{ text-decoration: none; }
+
+.fl{ float: left; }
+.fr{ float: right; }
 
 ul{ margin: 0px; padding: 0px; }
 li{ list-style: none; }
