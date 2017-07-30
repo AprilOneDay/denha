@@ -5,13 +5,13 @@
 
     RewriteEngine On
 
-    # Redirect Trailing Slashes If Not A Folder...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)/$ /$1 [L,R=301]
-
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
 
-    RewriteRule ^ pc.console.php [L]
+    RewriteCond %{HTTP_HOST} ^denha.loc [NC]
+    RewriteRule ^ pc.host.php
+
+    RewriteCond %{HTTP_HOST} ^denha.console.loc [NC]
+    RewriteRule ^ console.host.php
 </IfModule>
