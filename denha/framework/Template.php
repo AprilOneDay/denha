@@ -3,11 +3,11 @@ namespace denha;
 
 class Template
 {
-    public $stampLeft  = '{';
-    public $stampRight = '}';
+    public $left  = '{{';
+    public $right = '}}';
     public $viewPath;
-    public $content;
     public $loadPath;
+    public $content;
 
     public function __construct($viewPath)
     {
@@ -19,10 +19,18 @@ class Template
         $file          = fopen($this->viewPath, 'r');
         $this->content = fread($file, filesize($this->viewPath));
         $this->stampInclude();
+
         $this->stampIf();
         $this->stampForeach();
-        $this->stampVar();
+
+        //{$xxx}
+        $this->content = preg_replace('/' . $this->left . '\$(.*?)' . $this->right . '/is', '<?php echo $\1; ?>', $this->content);
+        //??$xx
+        $this->content = preg_replace('/' . $this->left . '\?\?(.*?)' . $this->right . '/is', '<?php echo !isset(\1) ?: \1; ?>', $this->content);
+        $this->content = preg_replace('/' . $this->left . '(.*?)' . $this->right . '/', '<?php echo \1; ?>', $this->content);
+
         $this->saveFile();
+
     }
 
     public function saveFile()
@@ -38,7 +46,7 @@ class Template
 
     public function stampInclude()
     {
-        $regular = '#' . $this->stampLeft . 'include\s[\'"](.*?)[\'"](.*?)' . $this->stampRight . '#is';
+        $regular = '#' . $this->left . 'include\s[\'"](.*?)[\'"](.*?)' . $this->right . '#is';
         preg_match_all($regular, $this->content, $matches);
         if ($matches) {
             foreach ($matches[1] as $key => $value) {
@@ -66,17 +74,17 @@ class Template
 
     public function stampIf()
     {
-        $regular = '#' . $this->stampLeft . 'if\s(.*?)' . $this->stampRight . '#is';
+        $regular = '#' . $this->left . 'if\s(.*?)' . $this->right . '#is';
         preg_match_all($regular, $this->content, $matches);
         if ($matches) {
             foreach ($matches[0] as $key => $value) {
                 //替换模板变量
                 $this->content = str_replace($matches[0][$key], '<?php if(' . $matches[1][$key] . '){ ?>', $this->content);
             }
-            $this->content = str_replace($this->stampLeft . '/if' . $this->stampRight, '<?php } ?>', $this->content);
+            $this->content = str_replace($this->left . '/if' . $this->right, '<?php } ?>', $this->content);
         }
         //替换elseif
-        $regular2 = '#' . $this->stampLeft . 'elseif\s(.*?)' . $this->stampRight . '#is';
+        $regular2 = '#' . $this->left . 'elseif\s(.*?)' . $this->right . '#is';
         preg_match_all($regular2, $this->content, $matches2);
         if ($matches2) {
             foreach ($matches2[0] as $key => $value) {
@@ -85,7 +93,7 @@ class Template
             }
         }
         //替换else
-        $regular3 = '/' . $this->stampLeft . 'else' . $this->stampRight . '/is';
+        $regular3 = '/' . $this->left . 'else' . $this->right . '/is';
         preg_match_all($regular3, $this->content, $matches3);
         if ($matches3) {
             foreach ($matches3[0] as $key => $value) {
@@ -95,33 +103,9 @@ class Template
         }
     }
 
-    public function stampVar()
-    {
-        //{$xxx}
-        $regular = '/' . $this->stampLeft . '\$(.*?)' . $this->stampRight . '/is';
-        preg_match_all($regular, $this->content, $matches);
-        if ($matches) {
-            foreach ($matches[0] as $key => $value) {
-                //替换模板变量
-                $this->content = str_replace($matches[0][$key], '<?php echo $' . $matches[1][$key] . '; ?>', $this->content);
-            }
-        }
-
-        //{??$xx}
-        $regular2 = '#' . $this->stampLeft . '\?\?(.*?)' . $this->stampRight . '#is';
-        preg_match_all($regular2, $this->content, $matches2);
-        if ($matches2) {
-            foreach ($matches2[0] as $key => $value) {
-                //替换模板变量
-                $this->content = str_replace($matches2[0][$key], '<?php echo isset(' . $matches2[1][$key] . ') ? ' . $matches2[1][$key] . ' : \'\'; ?>', $this->content);
-            }
-        }
-
-    }
-
     public function stampForeach()
     {
-        $regular = '#' . $this->stampLeft . 'loop\s(.*?)\s(.*?)' . $this->stampRight . '#is';
+        $regular = '#' . $this->left . 'loop\s(.*?)\s(.*?)' . $this->right . '#is';
         preg_match_all($regular, $this->content, $matches);
         if ($matches) {
             foreach ($matches[0] as $key => $value) {
@@ -132,7 +116,8 @@ class Template
                     $this->content = str_replace($matches[0][$key], '<?php if(' . $matches[1][$key] . '){ foreach(' . $matches[1][$key] . ' as ' . $matches[2][$key] . '){ ?>', $this->content);
                 }
             }
-            $this->content = str_replace($this->stampLeft . '/loop' . $this->stampRight, '<?php }} ?>', $this->content);
+
+            $this->content = str_replace($this->left . '/loop' . $this->right, '<?php }} ?>', $this->content);
         }
     }
 }

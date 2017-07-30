@@ -1,5 +1,8 @@
 <?php
 return [
+    'ststic'       => URL . '/ststic',
+    'vendor'       => URL . '/vendor',
+
     //Cookie配置
     'cookieDomain' => '', //Cookie 作用域
     'cookiePath'   => '', //Cookie 作用路径

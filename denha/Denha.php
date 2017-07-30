@@ -12,6 +12,7 @@ define('CONFIG_PATH', ROOT_PATH . 'conf' . DS); //配置文档地址
 define('DATA_PATH', ROOT_PATH . 'data' . DS); //缓存地址
 define('EXT', '.php'); //文件后缀
 
+define('URL', 'http://' . $_SERVER['HTTP_HOST']); //系统时间
 define('TIME', $_SERVER['REQUEST_TIME']); //系统时间
 define('IS_CGI', (0 === strpos(PHP_SAPI, 'cgi')) || (false !== strpos(PHP_SAPI, 'fcgi')) ? true : false);
 define('IS_WIN', strstr(PHP_OS, 'WIN') ? true : false);
