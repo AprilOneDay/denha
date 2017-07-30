@@ -1,4 +1,6 @@
 $(function(){
+    $('.')
+
     $('select').each(function(){
         var data = $(this).attr('data-selected');
         if(data){
