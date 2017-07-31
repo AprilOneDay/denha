@@ -9,6 +9,7 @@ body{font-family: "Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sa
 .pl10{padding-left: 10px !important;}
 .lh32{line-height: 32px;}
 a:hover{ text-decoration: none; }
+a:link{ text-decoration: none; }
 
 .fl{ float: left; }
 .fr{ float: right; }

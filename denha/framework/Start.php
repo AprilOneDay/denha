@@ -21,9 +21,9 @@ class Start
 
         self::$client = $client;
         //获取配置文档信息
-        self::$config['config'] = include CONFIG_PATH . 'config.php';
+        self::$config = include CONFIG_PATH . 'config.php';
         if (is_file(CONFIG_PATH . $client . '.config.php')) {
-            self::$config['config'] = array_merge(include (CONFIG_PATH . 'config.php'), include (CONFIG_PATH . $client . '.config.php'));
+            self::$config = array_merge(include (CONFIG_PATH . 'config.php'), include (CONFIG_PATH . $client . '.config.php'));
         }
 
         //error_reporting(0);
@@ -56,7 +56,11 @@ class Start
         }
 
         $action = $object->$action();
-        Trace::run();
+
+        if (self::$config['trace']) {
+            Trace::run();
+        }
+
     }
 
     /**

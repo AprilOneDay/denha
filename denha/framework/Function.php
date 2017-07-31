@@ -209,13 +209,23 @@ function comprise($path)
 //获取config下配置文档
 function getConfig($path = 'config', $name = '')
 {
-    $data = include CONFIG_PATH . $path . '.php';
-    if ($name === '') {
-        return $data;
+    static $_configData = [];
+
+    if (!isset($_configData[$path])) {
+        if (is_file(CONFIG_PATH . $path . '.php')) {
+            $_configData[$path] = include CONFIG_PATH . $path . '.php';
+        }
+
     }
 
-    if (isset($data[$name])) {
-        return $data[$name];
+    if (isset($_configData[$path])) {
+        if ($name === '') {
+            return $_configData[$path];
+        }
+
+        if (isset($_configData[$path][$name])) {
+            return $_configData[$path][$name];
+        }
     }
 
     return null;
