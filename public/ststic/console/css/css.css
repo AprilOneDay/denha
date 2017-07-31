@@ -16,3 +16,10 @@
 	
 .wrapper .sidebar-inner ul li dl { display: none;  margin:0px; }
 .wrapper .sidebar-inner ul li dl dd a:hover{  background: #4a5064; color: red; }
+
+.wrapper .product-nav-scene{ width: 180px; background: #EAEDF1; }
+.wrapper .product-nav-scene .title{ width: 100%; display: block; height: 70px; background: #e1e1e1; line-height: 70px; padding-left: 40px; color: #000; font-weight: bolder; }
+.wrapper .product-nav-scene ul li{ float: left;}
+.wrapper .product-nav-scene ul li a{ width: 180px; line-height: 40px; height: 40px; padding-left: 15px;  display: block; cursor: pointer; color: #333; overflow: hidden; }
+.wrapper .product-nav-scene ul li a span{ padding-right: 5px; }
+.wrapper .product-nav-scene ul li:hover{ background: #fff; }
