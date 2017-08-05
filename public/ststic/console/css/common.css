@@ -40,8 +40,8 @@ input[type="radio"], input[type="checkbox"] { margin-top: 2px;}
 .pagination li:last-child > a, .pagination li:last-child > span {border-radius: 0;}
 .modal-title {font-size: 14px;}
 .modal-header .close {font-size: 28px; font-weight: normal; margin-top: -8px;}
-.modal-content {border: 1px solid rgba(0, 0, 0, 0.3); border-radius: 0; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);}
-.modal-body {padding: 20px; position: relative;}
+.modal-content{ border: none; border-radius:0px; box-shadow:0 0 0 ;}
+.modal-body { position: relative;border-radius:0px; border: none;}
 .modal-body .form-group.row > div{padding: 0 12px 0 0;}
 .modal-body .form-group.row .datetime span{float: left;line-height: 30px;}
 .modal-body .form-group.row .datetime .form-control{width: 180px;}

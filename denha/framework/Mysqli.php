@@ -125,7 +125,7 @@ class Mysqli
             $newWhere = '';
             foreach ($where as $k => $v) {
                 if (is_array($v)) {
-                    if ($v[0] == '>' || $v[0] == '<' || $v[0] == '>=' || $v[0] == '<=' || $v[0] == 'like') {
+                    if ($v[0] == '>' || $v[0] == '<' || $v[0] == '>=' || $v[0] == '<=' || $v[0] == '!=' || $v[0] == 'like') {
                         $newWhere .= $k . '  ' . $v[0] . ' \'' . $v[1] . '\' AND ';
                     } elseif ($v[0] == 'in' || $v['0'] == 'not in') {
                         $newWhere .= $k . '  ' . $v[0] . ' (' . $v[1] . ') AND ';

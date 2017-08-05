@@ -44,22 +44,22 @@ class Controller
 
         if (!$peg) {
             if (!$viewPath) {
-                $path = APP_PATH . APP . DS . 'view' . DS . CONTROLLER . DS . 'index.html';
+                $path = APP_PATH . APP . DS . 'view' . DS . MODULE . DS . 'index.html';
             }
             //绝对路径
             elseif (stripos($viewPath, '/') === 0) {
-                $path = APP_PATH . APP . DS . 'view' . DS . CONTROLLER . DS . substr($viewPath, 1) . '.html';
+                $path = APP_PATH . APP . DS . 'view' . DS . MODULE . DS . substr($viewPath, 1) . '.html';
             }
             //相对路径
             else {
-                $path = VIEW_PATH . CONTROLLER . DS . $viewPath . '.html';
+                $path = APP_PATH . APP . DS . 'view' . DS . MODULE . DS . $viewPath . '.html';
             }
         } else {
             $path = $viewPath;
         }
 
         if (!is_file($path)) {
-            die('视图地址' . $path . '不存在');
+            throw new Exception('视图地址' . $path . '不存在');
         }
 
         $cachePath = DATA_PATH . md5($path) . '.php';

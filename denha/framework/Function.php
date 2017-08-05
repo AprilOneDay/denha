@@ -236,7 +236,7 @@ function url($location = '', $params = array())
 {
     $locationUrl = $location;
     if (stripos($location, '/') === false && $location != '') {
-        $locationUrl = '/frame/index.php?m=' . MODEL . '&c=' . CONTROLLER . '&a=' . $location;
+        $locationUrl = URL . '/' . MODULE . '/' . CONTROLLER . '/' . $location;
     }
     $param = '';
     if (!empty($params)) {
