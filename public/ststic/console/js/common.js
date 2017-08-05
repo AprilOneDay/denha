@@ -92,7 +92,7 @@ $(function() {
     });
 
     //打开弹出
-    $('.btn-console-open').click(function() {
+    $('#btn-open').click(function() {
 
         var href = $(this).attr('data-href');
         var title = $(this).attr('data-title');

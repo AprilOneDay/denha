@@ -4,9 +4,8 @@ import Hello from '@/components/Hello'
 import Home from '@/components/Home'
 import Index from '@/console/index/Index' //后台首页框架
 
-import Setting from '@/console/setting/menus/Index' //后台设置
-import SettingAdd from '@/console/setting/menus/Edit' //后台编辑菜单
-import Firstcomponent from '@/components/Firstcomponent'
+const Setting = resolve => require(['../console/setting/menus/Index'], resolve);
+const SettingAdd = resolve => require(['../console/setting/menus/Edit'], resolve);
 
 Vue.use(Router)
 
@@ -15,7 +14,7 @@ const routes = [
 	    path: '/',
 	    component: Index,
 	    meta: {
-	      title:'Home'
+	      title:'Index'
 	    },
 	    //二级 对应denha/appliaction下的文件夹
 	    children:[

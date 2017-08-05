@@ -1,6 +1,6 @@
 <template>
 	<div id="console-index-index">
-	    
+		<app-top></app-top>
 		<div class="wrapper">
 			<nav class="sidebar-inner fl">
 				<div class="sidebar-fold" ><span class="glyphicon glyphicon-transfer"></span></div>
@@ -74,12 +74,14 @@
 	</div>
 </template>
 <script>
+import AppTop from './Top.vue'
 export default {
   name: 'home',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'home'
     }
-  }
+  },
+  components:{AppTop}
 }
 </script>

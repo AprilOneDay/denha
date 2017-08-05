@@ -11,12 +11,12 @@
 										<span class="text-danger">*</span>
 										<span>上级菜单</span>
 									</label>
-									<div class="col-sm-8">
+									<!-- <div class="col-sm-8">
 										<select v-model="g.parentid" class="form-control w160">
 											<option value="0">作为一级菜单</option>
 											<option v-repeat="vo in menulist" value="" v-selected="vo.id == g.parentid" v-bind-html="vo.htmlname|trustAsHtml"></option>
 										</select>
-									</div>
+									</div> -->
 								</div>
 								<div class="form-group">
 									<label class="control-label col-sm-3">
@@ -85,12 +85,12 @@
 									<label class="control-label col-sm-3">是否显示：</label>
 									<div class="radio-inline">
 										<label>
-											<input type="radio" v-model="g.is_show" v-check="g.is_show" v-value="1"> 是
+											<input type="radio" v-model="g.is_show" value="1"> 是
 										</label>
 									</div>
 									<div class="radio-inline">
 										<label >
-											<input type="radio" v-model="g.is_show" v-check="!g.is_show" v-value="0"> 否
+											<input type="radio" v-model="g.is_show" value="0"> 否
 										</label>
 									</div>
 								</div>
@@ -98,12 +98,12 @@
 									<label class="control-label col-sm-3">是否白名单：</label>
 									<div class="radio-inline">
 										<label>
-											<input type="radio" v-model="g.is_white" v-check="g.is_white" v-value="1"> 是
+											<input type="radio" v-model="g.is_white"  value="1"> 是
 										</label>
 									</div>
 									<div class="radio-inline">
 										<label >
-											<input type="radio" v-model="g.is_white" v-check="!g.is_white" v-value="0"> 否
+											<input type="radio" v-model="g.is_white"  value="0"> 否
 										</label>
 									</div>
 								</div>
@@ -111,12 +111,12 @@
 									<label class="control-label col-sm-3">是否有效：</label>
 									<div class="radio-inline">
 										<label>
-											<input type="radio" v-model="g.status" v-check="g.status" v-value="1"> 是
+											<input type="radio" v-model="g.status"  value="1"> 是
 										</label>
 									</div>
 									<div class="radio-inline">
 										<label >
-											<input type="radio" v-model="g.status" v-check="!g.status" v-value="0"> 否
+											<input type="radio" v-model="g.status"  value="0"> 否
 										</label>
 									</div>
 								</div>
@@ -137,7 +137,7 @@ export default {
   name: 'console-settiv-menus-edit',
   data(){
     return {
-      g:{},
+      g:{is_show:1,status:1,is_white:0},
       msessage:'hello world',
       counter:0
     }
