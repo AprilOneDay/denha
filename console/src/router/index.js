@@ -4,7 +4,8 @@ import Hello from '@/components/Hello'
 import Home from '@/components/Home'
 import Index from '@/console/index/Index' //后台首页框架
 
-const Setting = resolve => require(['../console/setting/menus/Index'], resolve);
+import Setting from '@/console/setting/menus/Index' //后台首页框架
+//const Setting = resolve => require(['../console/setting/menus/Index'], resolve);
 const SettingAdd = resolve => require(['../console/setting/menus/Edit'], resolve);
 
 Vue.use(Router)

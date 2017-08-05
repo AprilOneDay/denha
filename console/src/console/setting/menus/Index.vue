@@ -60,3 +60,15 @@
 		</div>
 	</div>
 </template>
+<script>
+import Config from '@/commonJs/Config.js'
+export default {
+  name: 'console-settiv-menus-edit',
+  data(){
+    return {}
+  },
+  beforeCreate:function() {
+  	$.getScript(Config.data.ststic+'/console/js/popup.js');
+  }
+}
+</script>
