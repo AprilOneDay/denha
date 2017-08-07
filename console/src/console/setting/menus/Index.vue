@@ -45,7 +45,7 @@
 											<td align='center'>
 												<a ng-click="open(0,list.id)">添加子菜单</a>
 												<span class="text-explode">|</span>
-												<a ng-click="open(list.id,0)">编辑</a>
+												<a href="javascript:;" id="btn-open" data-href="/#/console/setting/menus/add"  data-height="75%">编辑</a>
 												<span class="text-explode">|</span>
 												<a ng-click="delete(list.id)">删除</a>
 											</td>
@@ -68,16 +68,18 @@ export default {
     	data:{},
     }
   },
-  methods:{},
+  methods:{
+  	open:function(){
+  		
+  	}
+  },
   beforeCreate:function() {
   	layer.load();
   	$.getScript(Config.data.ststic+'/console/js/popup.js');
   	this.$http.get(Config.data.console+'/setting/menus/index',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
   		layer.closeAll('loading');
 		this.data = reslut.body.data.data;
-		console.log(this.data);
-  	})
-  	
+  	})	
   }
 }
 </script>

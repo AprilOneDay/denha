@@ -13,14 +13,14 @@ class Menus extends denha\Controller
      */
     public function index()
     {
-        $result = table('ConsoleMenus')->order("sort asc,id asc")->find('array');
+        $result = table('ConsoleMenus')->order('sort asc,id asc')->find('array');
         if ($result) {
             $tree = new \app\console\tools\util\MenuTree();
             $tree->setConfig('id', 'parentid', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
             $list = $tree->getLevelTreeArray($result);
             foreach ($list as $key => $value) {
-                $list[$key]['status']  = $value['status'] ? "√" : "×";
-                $list[$key]['is_show'] = $value['is_show'] ? "√" : "×";
+                $list[$key]['status']  = $value['status'] ? '√' : '×';
+                $list[$key]['is_show'] = $value['is_show'] ? '√' : '×';
             }
             $data = [
                 'data' => [
@@ -64,7 +64,7 @@ class Menus extends denha\Controller
             $this->ajaxReturn(['status' => 0, 'msg' => '修改失败']);
         } else {
             $id       = G('id', 'intval');
-            $rs       = table("ConsoleMenu")->find($id);
+            $rs       = table('ConsoleMenu')->find($id);
             $menulist = table('ConsoleMenu')->getMenuList();
             $this->ajaxReturn(['menu' => $rs, 'menulist' => $menulist]);
         }
@@ -113,9 +113,19 @@ class Menus extends denha\Controller
                 $this->ajaxReturn(['status' => false, 'msg' => '添加失败']);
             }
         } else {
-            $callback = get('callback');
-            //$menulist = table('ConsoleMenu')->getMenuList();
-            $this->ajaxReturn(['menulist' => $menulist, 'status' => 1]);
+            //格式化菜单
+            $result = table('ConsoleMenus')->field('id,parentid,name,icon,module,controller,action')->find('array');
+            if ($result) {
+                $tree = new \app\console\tools\util\MenuTree();
+                $tree->setConfig('id', 'parentid');
+                $list = $tree->getLevelTreeArray($result);
+                if (isset($list) && $list) {
+                    foreach ($list as $key => $value) {
+                        $list[$key]['htmlname'] = $value['delimiter'] . $value['name'];
+                    }
+                }
+            }
+            $this->ajaxReturn(['menulist' => $list, 'status' => true]);
         }
     }
     /**
@@ -127,7 +137,7 @@ class Menus extends denha\Controller
     public function children()
     {
         $id   = G('id', 'intval', 0);
-        $menu = table('ConsoleMenu')->order("sort asc,id asc")->select();
+        $menu = table('ConsoleMenu')->order('sort asc,id asc')->select();
         if ($menu) {
             $tree = new \Util\MenuTree();
             $tree->setConfig('id', 'parentid');

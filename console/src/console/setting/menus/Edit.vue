@@ -11,12 +11,12 @@
 										<span class="text-danger">*</span>
 										<span>上级菜单</span>
 									</label>
-									<!-- <div class="col-sm-8">
+									 <div class="col-sm-8">
 										<select v-model="data.parentid" class="form-control w160">
 											<option value="0">作为一级菜单</option>
-											<option v-repeat="vo in menulist" value="" v-selected="vo.id == data.parentid" v-bind-html="vo.htmlname|trustAsHtml"></option>
+											<option v-for="vo in menulist" v-bind:value="vo.id" v-html="vo.htmlname"></option>
 										</select>
-									</div> -->
+									</div>
 								</div>
 								<div class="form-group">
 									<label class="control-label col-sm-3">
@@ -137,8 +137,15 @@ export default {
   name: 'console-settiv-menus-edit',
   data(){
     return {
-      data:{is_show:1,status:1,is_white:0},
+      data:{parentid:0,is_show:1,status:1,is_white:0},
+      menulist:{},
     }
+  },
+  beforeCreate:function(){
+  	this.$http.get(Config.data.console+'/setting/menus/add',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
+  		this.menulist = reslut.body.menulist;
+  		console.log(this.menulist);
+  	})
   },
   methods: {
     comply: function () {
@@ -152,6 +159,6 @@ export default {
    			}
    		})
     }
-  }
+  },
 }
 </script>
