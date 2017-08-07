@@ -8,7 +8,7 @@
 							<h5>菜单列表</h5>
 						</div>
 						<div class="pull-right">
-							<a class="btn btn-primary" id="btn-open" data-href="/#/add" data-height="80%">添加菜单</a>
+							<a class="btn btn-primary" id="btn-open" data-href="/#/console/setting/menus/add" data-height="80%">添加菜单</a>
 						</div>
 					</div>
 					<div class="console-form">
@@ -61,7 +61,6 @@
 	</div>
 </template>
 <script>
-import Config from '@/commonJs/Config.js'
 export default {
   name: 'console-settiv-menus-edit',
   data(){

@@ -52,7 +52,7 @@
 			<div class="product-nav-scene fl">
 				<div class="title">设置</div>
 				<ul>
-					<li><router-link to="/setting/menus"><span></span>配置菜单</router-link></li>
+					<li><router-link to="/console/menus/setting"><span></span>配置菜单</router-link></li>
 					<li><a href="javascript:;"><span class="glyphicon glyphicon-triangle-right"></span>存储</a>
 						<dl>
 							<dd><a href="javascript:;">云盘</a></dd>

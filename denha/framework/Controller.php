@@ -84,4 +84,22 @@ class Controller
     {
         die(json_encode($value));
     }
+
+    /**
+     * jsonpReturn返回
+     * @date   2017-08-07T10:41:59+0800
+     * @author ChenMingjiang
+     * @param  array                    $value    [description]
+     * @param  string                   $callback [description]
+     * @return [type]                             [description]
+     */
+    protected function jsonpReturn(array $value, $callback = '')
+    {
+        if ($callback) {
+            die($callback . '(' . json_encode($value) . ')');
+        } else {
+            $this->ajaxReturn($value);
+        }
+
+    }
 }

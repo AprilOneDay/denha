@@ -96,6 +96,8 @@ function post($name, $type = '', $default = '')
             case 'json':
                 $data = $data === '' ? $default : json_decode($data, true);
                 break;
+                # code...
+                break;
             default:
                 # code...
                 break;
@@ -139,6 +141,8 @@ function get($name, $type = '', $default = '')
             case 'json':
                 $data = $data === '' ? $default : json_decode($data, true);
                 break;
+            case 'jsonp':
+                $data = $data === '' ? $default : get('callback') . '(' . json_encode($data, true) . ')';
             default:
                 # code...
                 break;
