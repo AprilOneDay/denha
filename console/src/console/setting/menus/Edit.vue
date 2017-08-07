@@ -142,10 +142,14 @@ export default {
   },
   methods: {
     comply: function () {
-   		var data  = this.data;
-   		this.$http.jsonp('http://console.denha.loc'+'/setting/menus/add').then(function(reslut){
-   			layer.msg('11111');
-   			console.log(reslut);
+    	layer.load();
+   		this.$http.post(Config.data.console+'/setting/menus/add',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
+   			layer.closeAll('loading');
+   			var data = reslut.body;
+   			layer.msg(data.msg);
+   			if(data.status){
+        		setTimeout(function(){parent.layer.close(parent.layer.getFrameIndex(window.name));},2000);
+   			}
    		})
     }
   }

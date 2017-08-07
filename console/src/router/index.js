@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
-import Home from '@/components/Home'
+
+
 import Index from '@/console/index/Index' //后台首页框架
 
 import Setting from '@/console/setting/menus/Index' //后台首页框架
@@ -15,7 +15,7 @@ Vue.use(Router)
 const routes = [
 	{
     	path:'/',
-    	component:Home
+    	component:Index
     },
 	{
 	    path: '/console',

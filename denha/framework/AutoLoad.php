@@ -28,6 +28,8 @@ class AutoLoad
         if (isset(self::$namespaceAlias[$namespace])) {
             if (is_file(self::$namespaceAlias[$namespace] . $class . EXT)) {
                 return self::$namespaceAlias[$namespace] . $class . EXT;
+            } else {
+                print_r($class);
             }
         }
     }

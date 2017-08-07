@@ -86,7 +86,7 @@ class Mysqli
      */
     public function table($table, $isTablepre = true)
     {
-        $this->table = $table;
+        $this->table = parseName($table);
         if ($isTablepre) {
             $this->tablepre != '' ? $this->table = $this->tablepre . $this->table : '';
         }

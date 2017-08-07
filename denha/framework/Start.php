@@ -95,7 +95,7 @@ class Start
     {
         $dir = [
             'controller' => ['index'],
-            'public'     => ['dao', 'vendor'],
+            'tools'      => ['dao', 'vendor', 'util'],
             'view'       => ['index'],
         ];
 

@@ -1,5 +1,5 @@
 <?php
-namespace app\pc\public\dao;
+namespace app\pc\tools\dao;
 
 class Sms
 {

@@ -3,10 +3,10 @@ return [
     /* 数据库信息 */
     'db_type'        => 'mysqli', // 数据库类型
     'db_host'        => '127.0.0.1', // 服务器地址
-    'db_name'        => 'mysql', // 数据库名
+    'db_name'        => 'denha', // 数据库名
     'db_user'        => 'root', // 用户名
     'db_pwd'         => 'root', // 密
-    'db_prefix'      => 'yy_', // 数据库表前缀
+    'db_prefix'      => 'dh_', // 数据库表前缀
     'db_port'        => '3306', // 端口
     'db_dsn'         => '',
     'db_params'      => '',

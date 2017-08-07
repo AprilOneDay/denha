@@ -8,7 +8,7 @@
 							<h5>菜单列表</h5>
 						</div>
 						<div class="pull-right">
-							<a class="btn btn-primary" id="btn-open" data-href="/#/console/setting/menus/add" data-height="80%">添加菜单</a>
+							<a class="btn btn-primary" id="btn-open" data-href="/#/console/setting/menus/add" data-height="75%">添加菜单</a>
 						</div>
 					</div>
 					<div class="console-form">
@@ -31,25 +31,25 @@
 										</tr>
 									</thead>
 									<tbody>
-										<!-- <tr ng-repeat="uo in list" id="{{uo.id}}">
-											<td>{{uo.id}}</td>
-											<td><span ng-bind-html="uo.delimiter|trustAsHtml"></span>{{uo.name}}</td>
-											<td>{{uo.icon}}</td>
-											<td>{{uo.module}}</td>
-											<td>{{uo.controller}}</td>
-											<td>{{uo.action}}</td>
-											<td>{{uo.parameter}}</td>
-											<td align='center'>{{uo.sort}}</td>
-											<td align='center'>{{uo.status}}</td>
-											<td align='center'>{{uo.is_show}}</td>
+									 	<tr v-for="list in data.list">
+											<td>{{list.id}}</td>
+											<td><span v-html="list.delimiter"></span>{{list.name}}</td>
+											<td>{{list.icon}}</td>
+											<td>{{list.module}}</td>
+											<td>{{list.controller}}</td>
+											<td>{{list.action}}</td>
+											<td>{{list.parameter}}</td>
+											<td align='center'>{{list.sort}}</td>
+											<td align='center'>{{list.status}}</td>
+											<td align='center'>{{list.is_show}}</td>
 											<td align='center'>
-												<a ng-click="open(0,uo.id)">添加子菜单</a>
+												<a ng-click="open(0,list.id)">添加子菜单</a>
 												<span class="text-explode">|</span>
-												<a ng-click="open(uo.id,0)">编辑</a>
+												<a ng-click="open(list.id,0)">编辑</a>
 												<span class="text-explode">|</span>
-												<a ng-click="delete(uo.id)">删除</a>
+												<a ng-click="delete(list.id)">删除</a>
 											</td>
-										</tr> -->
+										</tr>
 									</tbody>
 								</table>
 							</form>
@@ -64,10 +64,20 @@
 export default {
   name: 'console-settiv-menus-edit',
   data(){
-    return {}
+    return {
+    	data:{},
+    }
   },
+  methods:{},
   beforeCreate:function() {
+  	layer.load();
   	$.getScript(Config.data.ststic+'/console/js/popup.js');
+  	this.$http.get(Config.data.console+'/setting/menus/index',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
+  		layer.closeAll('loading');
+		this.data = reslut.body.data.data;
+		console.log(this.data);
+  	})
+  	
   }
 }
 </script>
