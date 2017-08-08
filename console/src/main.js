@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 import App from './App'
+
+import store from './vuex/store'
 import router from './router/index'
-import Config from './assets/js/Config.js'
+import config from './assets/js/Config.js'
 
 import './assets/css/common.css'
 import './assets/css/css.css'
@@ -11,7 +13,12 @@ import './assets/js/common.js'
 
 Vue.use(VueResource)
 
-window.Config = Config;
+/*router.beforeEach((to, from, next) => {
+  //const hideLeft = to.meta.hideLeft
+})*/
+
+window.config = config;
+window.store  = store;
 
 new Vue({
   el: '#app',

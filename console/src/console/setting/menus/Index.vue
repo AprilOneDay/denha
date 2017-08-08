@@ -102,10 +102,15 @@ export default {
   },
   beforeCreate:function() {
   	layer.load();
-  	this.$http.get(Config.data.console+'/setting/menus/index',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
+  	this.$http.get(config.data.console+'/setting/menus/index',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
   		layer.closeAll('loading');
 		this.data = reslut.body.data.data;
   	})	
-  }
+  },
+  /*watch:function(){
+  	store.state.menusEdit:{
+  		console.log('值改变了！！！');
+  	}
+  }*/
 }
 </script>

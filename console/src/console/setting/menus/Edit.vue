@@ -142,20 +142,23 @@ export default {
     }
   },
   beforeCreate:function(){
-  	this.$http.get(Config.data.console+'/setting/menus/add',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
+  	this.$http.get(config.data.console+'/setting/menus/add',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
   		this.menulist = reslut.body.menulist;
   	})
   	//获取菜单熟悉
   	if(this.$route.query.id){
-		this.$http.get(Config.data.console+'/setting/menus/edit?id='+this.$route.query.id,{},{emulateJSON:true}).then(function(reslut){
+		this.$http.get(config.data.console+'/setting/menus/edit?id='+this.$route.query.id,{},{emulateJSON:true}).then(function(reslut){
   			this.data = reslut.body.data.data;
   		})
   	}
   },
+  created:function(){
+  	console.log(store.state.menusEdit);
+  },
   methods: {
     comply: function () {
     	layer.load();
-   		this.$http.post(Config.data.console+'/setting/menus/edit',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
+   		this.$http.post(config.data.console+'/setting/menus/edit',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
    			layer.closeAll('loading');
    			var data = reslut.body;
    			layer.msg(data.msg);
