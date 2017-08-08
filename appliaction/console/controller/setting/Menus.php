@@ -40,43 +40,6 @@ class Menus extends denha\Controller
     public function edit()
     {
         if (IS_POST) {
-            $id                 = post('id', 'intval');
-            $data['parentid']   = post('parentid', 'intval', 0);
-            $data['name']       = post('name', 'trim', null);
-            $data['module']     = post('module', 'trim', null);
-            $data['controller'] = post('controller', 'trim', null);
-            $data['action']     = post('action', 'trim', null);
-            $data['parameter']  = post('parameter', 'trim', null);
-            $data['url']        = post('url', 'trim', null);
-            $data['icon']       = post('icon', 'trim', null);
-            $data['status']     = post('status') ? 1 : 0;
-            $data['is_show']    = post('is_show', 'intval', 0);
-            $data['is_white']   = post('is_white', 'intval', 0);
-            $data['sort']       = post('sort', 'intval', 0);
-            $data['modified']   = TIME;
-            $data['module']     = strtolower($data['module']);
-            $data['controller'] = strtolower($data['controller']);
-            $data['action']     = strtolower($data['action']);
-            $result             = table('ConsoleMenu')->saveData($data, $id);
-            if ($result) {
-                $this->ajaxReturn(['status' => 1, 'msg' => '修改成功']);
-            }
-            $this->ajaxReturn(['status' => 0, 'msg' => '修改失败']);
-        } else {
-            $id       = G('id', 'intval');
-            $rs       = table('ConsoleMenu')->find($id);
-            $menulist = table('ConsoleMenu')->getMenuList();
-            $this->ajaxReturn(['menu' => $rs, 'menulist' => $menulist]);
-        }
-    }
-    /**
-     * [add 添加菜单]
-     * @date   2016-09-05T10:21:46+0800
-     * @author Sunpeiliang
-     */
-    public function add()
-    {
-        if (IS_POST) {
             $param = post('data', 'json');
             if (!is_array($param)) {
                 $this->ajaxReturn(['status' => false, 'msg' => '参数错误']);
@@ -106,27 +69,53 @@ class Menus extends denha\Controller
                 $this->ajaxReturn(['status' => false, 'msg' => '请填写模块/控制器/方法名称']);
             }
 
-            $result = table('ConsoleMenus')->add($data);
-            if ($result) {
-                $this->ajaxReturn(['status' => true, 'msg' => '添加成功', 'id' => $result]);
+            if ($param['id']) {
+                $result = table('ConsoleMenus')->where(array('id' => $param['id']))->save($data);
+                if ($result) {
+                    $this->ajaxReturn(['status' => true, 'msg' => '修改成功', 'id' => $result]);
+                } else {
+                    $this->ajaxReturn(['status' => false, 'msg' => '修改失败']);
+                }
             } else {
-                $this->ajaxReturn(['status' => false, 'msg' => '添加失败']);
-            }
-        } else {
-            //格式化菜单
-            $result = table('ConsoleMenus')->field('id,parentid,name,icon,module,controller,action')->find('array');
-            if ($result) {
-                $tree = new \app\console\tools\util\MenuTree();
-                $tree->setConfig('id', 'parentid');
-                $list = $tree->getLevelTreeArray($result);
-                if (isset($list) && $list) {
-                    foreach ($list as $key => $value) {
-                        $list[$key]['htmlname'] = $value['delimiter'] . $value['name'];
-                    }
+                $result = table('ConsoleMenus')->add($data);
+                if ($result) {
+                    $this->ajaxReturn(['status' => true, 'msg' => '添加成功', 'id' => $result]);
+                } else {
+                    $this->ajaxReturn(['status' => false, 'msg' => '添加失败']);
                 }
             }
-            $this->ajaxReturn(['menulist' => $list, 'status' => true]);
+
+        } else {
+            $id = get('id', 'intval');
+            $rs = table('ConsoleMenus')->where(array('id' => $id))->find();
+
+            $data = [
+                'data' => $rs,
+            ];
+            $this->ajaxReturn(['status' => true, 'data' => $data]);
         }
+    }
+    /**
+     * [add 添加菜单]
+     * @date   2016-09-05T10:21:46+0800
+     * @author Sunpeiliang
+     */
+    public function add()
+    {
+        //格式化菜单
+        $result = table('ConsoleMenus')->field('id,parentid,name,icon,module,controller,action')->find('array');
+        if ($result) {
+            $tree = new \app\console\tools\util\MenuTree();
+            $tree->setConfig('id', 'parentid');
+            $list = $tree->getLevelTreeArray($result);
+            if (isset($list) && $list) {
+                foreach ($list as $key => $value) {
+                    $list[$key]['htmlname'] = $value['delimiter'] . $value['name'];
+                }
+            }
+        }
+        $this->ajaxReturn(['menulist' => $list, 'status' => true]);
+
     }
     /**
      * [children 获取菜单子集]

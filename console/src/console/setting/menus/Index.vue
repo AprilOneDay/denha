@@ -8,7 +8,7 @@
 							<h5>菜单列表</h5>
 						</div>
 						<div class="pull-right">
-							<a class="btn btn-primary" id="btn-open" data-href="/#/console/setting/menus/add" data-height="75%">添加菜单</a>
+							<a class="btn btn-primary" v-on:click="open($event)" data-href="/#/console/setting/menus/add" data-height="75%">添加菜单</a>
 						</div>
 					</div>
 					<div class="console-form">
@@ -45,7 +45,7 @@
 											<td align='center'>
 												<a ng-click="open(0,list.id)">添加子菜单</a>
 												<span class="text-explode">|</span>
-												<a href="javascript:;" id="btn-open" data-href="/#/console/setting/menus/add"  data-height="75%">编辑</a>
+												<a v-on:click="open($event)" data-title="编辑菜单" v-bind:data-href="'/#/console/setting/menus/add?id='+list.id"  data-height="75%">编辑</a>
 												<span class="text-explode">|</span>
 												<a ng-click="delete(list.id)">删除</a>
 											</td>
@@ -69,13 +69,39 @@ export default {
     }
   },
   methods:{
-  	open:function(){
-  		
+  	open:function(event){
+  		event.preventDefault();
+        event.stopPropagation();
+        let target = event.target
+
+  		var href   =  target.getAttribute("data-href");
+        var title  =  target.getAttribute('data-title');
+        var width  =  target.getAttribute('data-width');
+        var height =  target.getAttribute('data-height');
+
+        if (!href) {
+            layer.msg('请设置data-href的值');
+            return false;
+        }
+
+        title  = title  ? title : target.innerHTML; 
+        width  = width  ? width : '890px'; 
+        height = height ? height : '80%'; 
+
+        //iframe层
+        layer.open({
+            type: 2,
+            title: title,
+            shadeClose: true,
+            shade: 0.8,
+            fixed:true,
+            area: [width, height],
+            content: [href] //iframe的url
+        });
   	}
   },
   beforeCreate:function() {
   	layer.load();
-  	$.getScript(Config.data.ststic+'/console/js/popup.js');
   	this.$http.get(Config.data.console+'/setting/menus/index',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
   		layer.closeAll('loading');
 		this.data = reslut.body.data.data;
