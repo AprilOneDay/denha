@@ -5,47 +5,15 @@
 			<nav class="sidebar-inner fl">
 				<div class="sidebar-fold" ><span class="glyphicon glyphicon-transfer"></span></div>
 				<ul>
-					<li><a href="javascript:;" data-toggle="tooltip" data-placement="right" title="Tooltip on right"><span class="glyphicon glyphicon-triangle-right"></span>云计算机基础服务</a>
-						<dl>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-tasks"></span>云服务器ECS</a></dd>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-sort"></span>CDN</a></dd>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-usd"></span>访问控制</a></dd>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-phone"></span>云服务器ECS</a></dd>
+					<li v-for="list in data">
+						<a href="javascript:;" data-toggle="tooltip" data-placement="right" title="Tooltip on right">
+							<span v-bind:class="list.icon"></span>{{list.name}}</a>
+						<dl v-if="list.child">
+							<dd v-for="vo in list.child">
+								<a href="javascript:;"><span v-bind:class="list.icon"></span>{{list.name}}</a>
+							</dd>
 						</dl>
 					</li>
-					<li><a href="javascript:;"><span class="glyphicon glyphicon-triangle-right"></span>云计算机基础服务</a>
-						<dl>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-tasks"></span>云服务器ECS</a></dd>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-sort"></span>CDN</a></dd>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-usd"></span>访问控制</a></dd>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-phone"></span>云服务器ECS</a></dd>
-						</dl>
-					</li>
-					<li><a href="javascript:;"><span class="glyphicon glyphicon-triangle-right"></span>云计算机基础服务</a>
-						<dl>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-tasks"></span>云服务器ECS</a></dd>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-sort"></span>CDN</a></dd>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-usd"></span>访问控制</a></dd>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-phone"></span>云服务器ECS</a></dd>
-						</dl>
-					</li>
-					<li><a href="javascript:;"><span class="glyphicon glyphicon-triangle-right"></span>云计算机基础服务</a>
-						<dl>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-tasks"></span>云服务器ECS</a></dd>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-sort"></span>CDN</a></dd>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-usd"></span>访问控制</a></dd>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-phone"></span>云服务器ECS</a></dd>
-						</dl>
-					</li>
-					<li><a href="javascript:;"><span class="glyphicon glyphicon-triangle-right"></span>云计算机基础服务</a>
-						<dl>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-tasks"></span>云服务器ECS</a></dd>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-sort"></span>CDN</a></dd>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-usd"></span>访问控制</a></dd>
-							<dd><a href="javascript:;"><span class="glyphicon glyphicon-phone"></span>云服务器ECS</a></dd>
-						</dl>
-					</li>
-					<li><a href="javascript:;"><span class="glyphicon glyphicon-tasks"></span>访问控制</a></li>
 				</ul>
 			</nav>
 			
@@ -76,12 +44,25 @@
 <script>
 import AppTop from './Top.vue'
 export default {
-  name: 'home',
-  data () {
-    return {
-      msg: 'home'
-    }
-  },
-  components:{AppTop}
+	name: 'home',
+	data () {
+		return {
+		  data: {},
+		}
+	},
+	components:{AppTop},
+	methods:{
+		getList:function(){
+			layer.load();
+		  	this.$http.get(config.data.console+'/index/index/menus',{},{emulateJSON:true}).then(function(reslut){
+		  		layer.closeAll('loading');
+				this.data = reslut.body.list;
+				console.log(this.data);
+		  	})	
+	  	},
+	},
+	created:function(){
+		this.getList();
+	},
 }
 </script>

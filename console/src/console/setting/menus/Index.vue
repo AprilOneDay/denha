@@ -19,7 +19,6 @@
 										<tr>
 											<th style="width:75px;">ID</th>
 											<th>菜单名称</th>
-											<th style="width:120px;">图标</th>
 											<th style="width:120px;">模块</th>
 											<th style="width:120px;">控制器</th>
 											<th style="width:120px;">方法</th>
@@ -34,7 +33,6 @@
 									 	<tr v-for="list in data.list">
 											<td>{{list.id}}</td>
 											<td><span v-html="list.delimiter"></span>{{list.name}}</td>
-											<td>{{list.icon}}</td>
 											<td>{{list.module}}</td>
 											<td>{{list.controller}}</td>
 											<td>{{list.action}}</td>
@@ -74,7 +72,7 @@ export default {
 	methods:{
 	  	getList:function(){
 			layer.load();
-		  	this.$http.get(config.data.console+'/setting/menus/index',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
+		  	this.$http.get(config.data.console+'/setting/menus/index',{},{emulateJSON:true}).then(function(reslut){
 		  		layer.closeAll('loading');
 				this.data = reslut.body.data.data;
 		  	})	
@@ -93,7 +91,8 @@ export default {
 		    var id 		 =  event.target.getAttribute('data-id');
 		    var title 	 =  event.target.getAttribute('data-title');
 		    var parentId =  event.target.getAttribute('data-parentId');
-		    console.log(parentId);
+
+
 		    id 		 ?  store.dispatch('settingMenusEditId',id) : '';
 		    parentId ?  store.dispatch('settingMenusEditparentId',parentId) : '';
 		    title 	 = title ? title : event.target.innerHTML; 

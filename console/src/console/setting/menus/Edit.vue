@@ -166,6 +166,7 @@ export default {
 	  	layer.closeAll('loading');
   	},
   	btnClose:function(){
+  		this.clear();
     	this.$layer.closeAll();
     },
     comply: function () {
@@ -175,11 +176,14 @@ export default {
    			var data = reslut.body;
    			layer.msg(data.msg);
    			if(data.status){
-   				store.dispatch('settingMenusList',true);
-   				this.$router.push({path:this.$route.path});
    				this.btnClose();
    			}
    		})
+    },
+    clear:function(){
+    	store.dispatch('settingMenusList',true);
+    	store.dispatch('settingMenusEditId','');
+    	store.dispatch('settingMenusEditparentId','')
     },
     
   },
