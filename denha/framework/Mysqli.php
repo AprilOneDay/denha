@@ -129,6 +129,8 @@ class Mysqli
                         $newWhere .= $k . '  ' . $v[0] . ' \'' . $v[1] . '\' AND ';
                     } elseif ($v[0] == 'in' || $v['0'] == 'not in') {
                         $newWhere .= $k . '  ' . $v[0] . ' (' . $v[1] . ') AND ';
+                    } elseif ($v[0] == 'between') {
+                        $newWhere .= $k . '  ' . $v[0] . ' \'' . $v[1] . '\' AND \'' . $v[2] . '\'';
                     }
                 } elseif ($k == '_string') {
                     $newWhere .= $v;

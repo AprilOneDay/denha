@@ -126,8 +126,8 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" class="btn btn-primary" name="aaaaa" v-on:click="comply">确定</button>
-				<button type="button" class="btn btn-default" id="btn-close">取消</button>
+				<button type="submit" class="btn btn-primary" v-on:click="comply">确定</button>
+				<button type="button" class="btn btn-default" id="btn-close" v-on:click="btnClose">取消</button>
 			</div>
 		</div>
 	</div>
@@ -141,21 +141,27 @@ export default {
       menulist:{},
     }
   },
-  beforeCreate:function(){
-  	this.$http.get(config.data.console+'/setting/menus/add',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
-  		this.menulist = reslut.body.menulist;
-  	})
-  	//获取菜单熟悉
-  	if(this.$route.query.id){
-		this.$http.get(config.data.console+'/setting/menus/edit?id='+this.$route.query.id,{},{emulateJSON:true}).then(function(reslut){
-  			this.data = reslut.body.data.data;
-  		})
-  	}
-  },
+  props:['msg'],
   created:function(){
-  	console.log(store.state.menusEdit);
+ 	this.getDetail();
   },
   methods: {
+  	getDetail:function(){
+  		layer.load();
+  		this.$http.get(config.data.console+'/setting/menus/add',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
+  			this.menulist = reslut.body.menulist;
+	  	})
+	  	//获取菜单熟悉
+	  	if(store.state.settingMenusEdit){
+			this.$http.get(config.data.console+'/setting/menus/edit?id='+store.state.settingMenusEdit,{},{emulateJSON:true}).then(function(reslut){
+	  			this.data = reslut.body.data.data;
+	  		})
+	  	}
+	  	layer.closeAll('loading');
+  	},
+  	btnClose:function(){
+    	this.$layer.closeAll();
+    },
     comply: function () {
     	layer.load();
    		this.$http.post(config.data.console+'/setting/menus/edit',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
@@ -163,10 +169,13 @@ export default {
    			var data = reslut.body;
    			layer.msg(data.msg);
    			if(data.status){
-        		setTimeout(function(){parent.layer.close(parent.layer.getFrameIndex(window.name));},2000);
+   				store.dispatch('settingMenusList',true);
+   				this.$router.push({path:this.$route.path});
+   				this.btnClose();
    			}
    		})
     },
+    
   },
 }
 </script>

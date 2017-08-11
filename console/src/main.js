@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 import App from './App'
+import layer from 'vue-layer'
+
 
 import store from './vuex/store'
 import router from './router/index'
@@ -12,7 +14,7 @@ import './assets/css/css.css'
 import './assets/js/common.js'
 
 Vue.use(VueResource)
-
+Vue.prototype.$layer = layer(Vue);
 /*router.beforeEach((to, from, next) => {
   //const hideLeft = to.meta.hideLeft
 })*/

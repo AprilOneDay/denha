@@ -45,7 +45,7 @@
 											<td align='center'>
 												<a ng-click="open(0,list.id)">添加子菜单</a>
 												<span class="text-explode">|</span>
-												<a v-on:click="open($event)" data-title="编辑菜单" v-bind:data-href="'/#/console/setting/menus/add?id='+list.id"  data-height="75%">编辑</a>
+												<a v-on:click="open($event)" data-title="编辑菜单" v-bind:data-id="list.id"  data-height="800">编辑</a>
 												<span class="text-explode">|</span>
 												<a ng-click="delete(list.id)">删除</a>
 											</td>
@@ -61,56 +61,66 @@
 	</div>
 </template>
 <script>
+import edit from './Edit.vue'
 export default {
-  name: 'console-settiv-menus-edit',
-  data(){
-    return {
-    	data:{},
-    }
-  },
-  methods:{
-  	open:function(event){
-  		event.preventDefault();
-        event.stopPropagation();
-        let target = event.target
+	name: 'console-settiv-menus-edit',
+	data(){
+	return {
+		data:{},
+		editStatus:false,
+	}
+	},
+	components:{edit},
+	methods:{
+	  	getList:function(){
+			layer.load();
+		  	this.$http.get(config.data.console+'/setting/menus/index',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
+		  		layer.closeAll('loading');
+				this.data = reslut.body.data.data;
+		  	})	
+	  	},
+	  	open:function(event){
+			event.preventDefault();
+		    event.stopPropagation();
+		    let target = event.target
 
-  		var href   =  target.getAttribute("data-href");
-        var title  =  target.getAttribute('data-title');
-        var width  =  target.getAttribute('data-width');
-        var height =  target.getAttribute('data-height');
+			var href    =  target.getAttribute("data-href");
+		    var title   =  target.getAttribute('data-title');
+		    var width   =  target.getAttribute('data-width');
+		    var height  =  target.getAttribute('data-height');
+		    var id 		=  target.getAttribute('data-id');
 
-        if (!href) {
-            layer.msg('请设置data-href的值');
-            return false;
-        }
+		    store.dispatch('settingMenusEdit',id);
 
-        title  = title  ? title : target.innerHTML; 
-        width  = width  ? width : '890px'; 
-        height = height ? height : '80%'; 
+		    title  = title  ? title : target.innerHTML; 
+		    width  = width  ? width+'px' : '890px'; 
+		    height = height ? height+'px' : '800px'; 
 
-        //iframe层
-        layer.open({
-            type: 2,
-            title: title,
-            shadeClose: true,
-            shade: 0.8,
-            fixed:true,
-            area: [width, height],
-            content: [href] //iframe的url
-        });
-  	}
-  },
-  beforeCreate:function() {
-  	layer.load();
-  	this.$http.get(config.data.console+'/setting/menus/index',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
-  		layer.closeAll('loading');
-		this.data = reslut.body.data.data;
-  	})	
-  },
-  /*watch:function(){
-  	store.state.menusEdit:{
-  		console.log('值改变了！！！');
-  	}
-  }*/
+	  		this.$layer.iframe({
+				content: {
+				  content: edit, //传递的组件对象
+				  parent: this,//当前的vue对象
+				  data:['msg']//props
+				},
+				closeBtn: 1,
+				area:[width, height],
+				title:title
+			  });
+		},
+	},
+	created:function(){
+		this.getList();
+	},
+	computed: {
+		settingMenusList() {
+			return store.state.settingMenusList;
+		}	
+	},
+	watch: {
+		settingMenusList(val) {
+			this.getList();
+			store.dispatch('settingMenusList',false);
+		}
+	}
 }
 </script>
