@@ -10,7 +10,8 @@ import getters from './getters'
 
 const state = {
   settingMenusList:false,
-  settingMenusEdit:'',
+  settingMenusEditId:'',
+  settingMenusEditparentId:'',
 }
 
 export default new Vuex.Store({

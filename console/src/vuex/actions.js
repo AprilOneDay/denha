@@ -19,15 +19,12 @@ const actions = {
   settingMenusList({ commit }, data){
     commit('settingMenusList', data)
   },
-  settingMenusEdit({ commit }, data){
-    commit('settingMenusEdit', data)
+  settingMenusEditId({ commit }, data){
+    commit('settingMenusEditId', data)
   },
-  setUserGroups({ commit }, userGroups) {
-    commit('setUserGroups', userGroups)
+  settingMenusEditparentId({ commit }, data){
+    commit('settingMenusEditparentId', data)
   },
-  setOrganizes({ commit }, organizes) {
-    commit('setOrganizes', organizes)
-  }
 }
 
 export default actions

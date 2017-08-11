@@ -148,15 +148,21 @@ export default {
   methods: {
   	getDetail:function(){
   		layer.load();
-  		this.$http.get(config.data.console+'/setting/menus/add',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
+  		this.$http.get(config.data.console+'/setting/menus/tree_list',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
   			this.menulist = reslut.body.menulist;
 	  	})
-	  	//获取菜单熟悉
-	  	if(store.state.settingMenusEdit){
-			this.$http.get(config.data.console+'/setting/menus/edit?id='+store.state.settingMenusEdit,{},{emulateJSON:true}).then(function(reslut){
+	  	//获取菜单ID内容
+	  	if(store.state.settingMenusEditId){
+			this.$http.get(config.data.console+'/setting/menus/edit?id='+store.state.settingMenusEditId,{},{emulateJSON:true}).then(function(reslut){
 	  			this.data = reslut.body.data.data;
 	  		})
 	  	}
+
+	  	//定位父级菜单
+	  	if(store.state.settingMenusEditparentId){
+	  		this.data.parentid = store.state.settingMenusEditparentId;
+	  	}
+
 	  	layer.closeAll('loading');
   	},
   	btnClose:function(){

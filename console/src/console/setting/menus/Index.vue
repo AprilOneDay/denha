@@ -8,7 +8,7 @@
 							<h5>菜单列表</h5>
 						</div>
 						<div class="pull-right">
-							<a class="btn btn-primary" v-on:click="open($event)" data-href="/#/console/setting/menus/add" data-height="75%">添加菜单</a>
+							<a class="btn btn-primary" v-on:click="open($event)" data-id="" data-height="750">添加菜单</a>
 						</div>
 					</div>
 					<div class="console-form">
@@ -43,7 +43,7 @@
 											<td align='center'>{{list.status}}</td>
 											<td align='center'>{{list.is_show}}</td>
 											<td align='center'>
-												<a ng-click="open(0,list.id)">添加子菜单</a>
+												<a v-on:click="open($event)" data-title="编辑菜单" data-height="800" v-bind:data-parentId="list.id">添加子菜单</a>
 												<span class="text-explode">|</span>
 												<a v-on:click="open($event)" data-title="编辑菜单" v-bind:data-id="list.id"  data-height="800">编辑</a>
 												<span class="text-explode">|</span>
@@ -80,7 +80,7 @@ export default {
 		  	})	
 	  	},
 	  	open:function(event){
-			event.preventDefault();
+			/*event.preventDefault();
 		    event.stopPropagation();
 		    let target = event.target
 
@@ -88,13 +88,15 @@ export default {
 		    var title   =  target.getAttribute('data-title');
 		    var width   =  target.getAttribute('data-width');
 		    var height  =  target.getAttribute('data-height');
-		    var id 		=  target.getAttribute('data-id');
+		    var id 		=  target.getAttribute('data-id');*/
 
-		    store.dispatch('settingMenusEdit',id);
-
-		    title  = title  ? title : target.innerHTML; 
-		    width  = width  ? width+'px' : '890px'; 
-		    height = height ? height+'px' : '800px'; 
+		    var id 		 =  event.target.getAttribute('data-id');
+		    var title 	 =  event.target.getAttribute('data-title');
+		    var parentId =  event.target.getAttribute('data-parentId');
+		    console.log(parentId);
+		    id 		 ?  store.dispatch('settingMenusEditId',id) : '';
+		    parentId ?  store.dispatch('settingMenusEditparentId',parentId) : '';
+		    title 	 = title ? title : event.target.innerHTML; 
 
 	  		this.$layer.iframe({
 				content: {
@@ -103,7 +105,7 @@ export default {
 				  data:['msg']//props
 				},
 				closeBtn: 1,
-				area:[width, height],
+				area:['890px', '750px'],
 				title:title
 			  });
 		},

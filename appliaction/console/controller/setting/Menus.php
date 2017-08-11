@@ -96,11 +96,11 @@ class Menus extends denha\Controller
         }
     }
     /**
-     * [add 添加菜单]
+     * [获取树状菜单列表]
      * @date   2016-09-05T10:21:46+0800
      * @author Sunpeiliang
      */
-    public function add()
+    public function treeList()
     {
         //格式化菜单
         $result = table('ConsoleMenus')->field('id,parentid,name,icon,module,controller,action')->find('array');
@@ -128,7 +128,7 @@ class Menus extends denha\Controller
         $id   = G('id', 'intval', 0);
         $menu = table('ConsoleMenu')->order('sort asc,id asc')->select();
         if ($menu) {
-            $tree = new \Util\MenuTree();
+            $tree = new \app\console\tools\util\MenuTree();
             $tree->setConfig('id', 'parentid');
             $ids = $tree->getChildsId($menu, $id);
             if ($ids) {
