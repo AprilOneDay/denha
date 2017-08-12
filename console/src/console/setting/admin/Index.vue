@@ -84,7 +84,7 @@ export default {
 			}, function(){
 	 			self.$http.post(config.data.console+'/setting/admin/delete',{id:id},{emulateJSON:true}).then(function(reslut){
 	 				this.$layer.closeAll();
-			  		this.$layerlayer.alert(reslut.body.msg);
+			  		this.$layer.alert(reslut.body.msg);
 			  		if(reslut.body.status){
 			  			this.getList();
 			  		}

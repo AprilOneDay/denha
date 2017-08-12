@@ -109,11 +109,11 @@ export default {
     	this.$layer.closeAll();
     },
     comply: function () {
-    	layer.load();
+    	this.$layer.loading();
    		this.$http.post(config.data.console+'/setting/admin/edit',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
-   			layer.closeAll('loading');
+   			this.$layer.closeAll('loading');
    			var data = reslut.body;
-   			this.$layerlayer.alert(data.msg);
+   			this.$layer.alert(data.msg);
    			if(data.status){
    				this.btnClose();
    			}

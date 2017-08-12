@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 
 import Index from '@/console/index/Index' //后台首页框架
+import Login from '@/console/index/Login' //后台首页框架
 
 //import Setting from '@/console/setting/menus/Index' //后台首页框架
 //import SettingAdd from '@/console/setting/menus/Edit' //后台首页框架
@@ -15,7 +16,7 @@ Vue.use(Router)
 const routes = [
 	{
     	path:'/',
-    	component:Index
+    	component:Login
     },
 	{
 	    path: '/console',component: Index,

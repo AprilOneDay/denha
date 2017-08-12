@@ -53,7 +53,7 @@
 <script>
 import AppTop from './Top.vue'
 export default {
-	name: 'home',
+	name: 'console-index-index',
 	data () {
 		return {
 		  list: {},

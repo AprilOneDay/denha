@@ -30,8 +30,8 @@ class Admin extends denha\Controller
             $data['nickname'] = (string) $param['nickname'];
             $data['username'] = (string) $param['username'];
             $data['password'] = (string) $param['password'];
-            $data['group']    = (int) max($param['password'], 1);
-            $data['mobile']   = (int) $param['mobile'];
+            $data['group']    = (int) max($param['group'], 1);
+            $data['mobile']   = (string) $param['mobile'];
 
             if ((!$data['username'] || !$data['password']) && !$param['id']) {
                 $this->ajaxReturn(['status' => false, 'msg' => '请填写用户名/密码']);
