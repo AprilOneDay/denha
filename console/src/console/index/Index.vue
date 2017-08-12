@@ -6,7 +6,7 @@
 				<div class="sidebar-fold" ><span class="glyphicon glyphicon-transfer"></span></div>
 				<ul>
 					<li v-for="(value,key) in list" >
-						<a href="javascript:;" v-on:click="open(key)">
+						<a href="javascript:;" @click="open(key)">
 							<span v-bind:class="value.icon"></span>{{value.name}}</a>
 						<dl v-if="value.child" v-show="value.childShow">
 							<dd v-for="v in value.child">
@@ -23,8 +23,13 @@
 				<div class="title">设置</div>
 				<ul>
 					<li v-for="(value,key) in secList" >
-						<router-link v-bind:to="value.url+'?id='+value.id" active-class="cur">
-							<span v-bind:class="value.icon"></span>{{value.name}}
+						<a v-if="value.child" @click="open(key,2)">
+							<span class="glyphicon glyphicon-triangle-right"></span>
+							{{value.name}}
+						</a>
+						<router-link v-bind:to="value.url+'?id='+value.id" active-class="cur" v-else>
+							<span></span>
+							{{value.name}}
 						</router-link>
 						<dl v-if="value.child" v-show="value.childShow">
 							<dd v-for="v in value.child">
@@ -57,12 +62,12 @@ export default {
 	},
 	components:{AppTop},
 	methods:{
-		getList:function(){
+		getListOne:function(){
 		  	this.$http.get(config.data.console+'/index/index/menus',{},{emulateJSON:true}).then(function(reslut){
 				this.list = reslut.body.list;
 		  	})
 	  	},
-	  	getSecList:function(){
+	  	getSecListSec:function(){
 	  		if(this.$route.query.id){
 	  			let dataId  = this.$route.query.id;
 	  			this.$http.get(config.data.console+'/index/index/menus?id='+dataId,{},{emulateJSON:true}).then(function(reslut){
@@ -71,14 +76,21 @@ export default {
 	  		}
 	  	},
 	  	//显示下拉菜单
-	  	open:function(index){
-	  		if(this.list[index].child){
-	  			if(this.list[index].childShow  == false){
-		  			this.list[index].childShow = true;
-		  			this.list[index].icon = 'glyphicon glyphicon-triangle-bottom';
+	  	open:function(index,type = 1){
+	  		let listData = {};
+	  		if(type == 1){
+	  			listData = this.list[index];
+	  		}else if(type == 2){
+	  			listData = this.secList[index];
+	  		}
+
+  			if(listData.child){
+	  			if(listData.childShow  == false){
+		  			listData.childShow = true;
+		  			listData.icon = 'glyphicon glyphicon-triangle-bottom';
 		  		}else{
-		  			this.list[index].childShow = false;
-		  			this.list[index].icon = 'glyphicon glyphicon-triangle-right';
+		  			listData.childShow = false;
+		  			listData.icon = 'glyphicon glyphicon-triangle-right';
 		  		}
 	  		}	
 	  	}
@@ -95,7 +107,7 @@ export default {
 	        $('.content-main').height($(document).height() - $('.border-top').height());
 	    });
 
-		     //收缩一级导航
+		 //收缩一级导航
 	    $('.sidebar-fold').click(function() {
 	        var width = $(this).width();
 	        if (width > 38) {
@@ -105,44 +117,16 @@ export default {
 	        }
 
 	    });
-
-	    //导航展开下级菜单
-	    $('.sidebar-inner ul li').click(function() {
-	        //初始化
-	        $('.sidebar-inner ul li dl').css('display', 'none');
-	        $('.sidebar-inner ul li').each(function() {
-	            if ($(this).children().children().eq(0).attr('class') == 'glyphicon glyphicon-triangle-bottom') {
-	                $(this).children().children().eq(0).attr('class', 'glyphicon glyphicon-triangle-right');
-	            }
-	        });
-
-	    })
-
-	    //导航展开下级菜单
-	    $('.product-nav-scene ul li').click(function() {
-	        //初始化
-	        $('.product-nav-scene ul li dl').css('display', 'none');
-	        $('.product-nav-scene ul li').each(function() {
-	            if ($(this).children().children().eq(0).attr('class') == 'glyphicon glyphicon-triangle-bottom') {
-	                $(this).children().children().eq(0).attr('class', 'glyphicon glyphicon-triangle-right');
-	            }
-	        });
-
-	        //展开/收缩
-	        var ico = $(this).children().children(':first').attr('class');
-	        if (ico == 'glyphicon glyphicon-triangle-right') {
-	            $(this).children().children(':first').attr('class', 'glyphicon glyphicon-triangle-bottom');
-	            $(this).find('dl').css('display', 'block');
-	        } else if (ico == 'glyphicon glyphicon-triangle-bottom') {
-	            $(this).children().children(':first').attr('class', 'glyphicon glyphicon-triangle-right');
-	            $(this).find('dl').css('display', 'none');
-	        }
-
-	    })
 	},
 	created:function(){
-		this.getList();
-		this.getSecList();
+		this.getListOne();
+		this.getSecListSec();
 	},
+	watch: {
+		'$route' (to, from) {
+			this.getSecListSec();
+		}
+	}
+
 }
 </script>
