@@ -1,4 +1,10 @@
 const mutations = {
+  UPDATE_LIST(state, data) {
+    state.UPDATE_LIST = data
+  },
+  UPDATE_EDIT_ID(state, data) {
+    state.UPDATE_EDIT_ID = data
+  },
   settingMenusList(state,data){
     state.settingMenusList = data;
   },
@@ -8,11 +14,9 @@ const mutations = {
   settingMenusEditparentId(state,data){
     state.settingMenusEditparentId = data;
   },
-  setUserGroups(state, userGroups) {
-    state.userGroups = userGroups
+  settingAdminList(state, data) {
+    state.settingAdminList = data
   },
-  setOrganizes(state, organizes) {
-    state.organizes = organizes
-  }
+
 }
 export default mutations

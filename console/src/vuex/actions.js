@@ -1,9 +1,9 @@
 const actions = {
-  showLeftMenu ({ commit }, status) {
-    commit('showLeftMenu', status)
+  UPDATE_LIST ({ commit }, data) {
+    commit('UPDATE_LIST', data)
   },
-  showLoading ({ commit }, status) {
-    commit('showLoading', status)
+  UPDATE_EDIT_ID ({ commit }, data) {
+    commit('UPDATE_EDIT_ID', data)
   },
   setMenus({ commit }, menus) {
     commit('setMenus', menus)
@@ -11,10 +11,8 @@ const actions = {
   setRules({ commit }, rules) {
     commit('setRules', rules)
   },
-  setUsers({ commit }, users) {
-    //console.log(users);return ;
-    commit('setUsers', users)
-    //console.log(users);
+  settingAdminList({ commit }, data) {
+    commit('settingAdminList', data)
   },
   settingMenusList({ commit }, data){
     commit('settingMenusList', data)

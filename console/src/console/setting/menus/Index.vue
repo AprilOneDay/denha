@@ -61,7 +61,7 @@
 <script>
 import edit from './Edit.vue'
 export default {
-	name: 'console-settiv-menus-edit',
+	name: 'console-settiv-menus-index',
 	data(){
 	return {
 		data:{},
@@ -71,9 +71,9 @@ export default {
 	components:{edit},
 	methods:{
 	  	getList:function(){
-			layer.load();
+			this.$layer.loading();
 		  	this.$http.get(config.data.console+'/setting/menus/index',{},{emulateJSON:true}).then(function(reslut){
-		  		layer.closeAll('loading');
+		  		this.$layer.closeAll('loading');
 				this.data = reslut.body.data.data;
 		  	})	
 	  	},

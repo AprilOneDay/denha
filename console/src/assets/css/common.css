@@ -11,6 +11,7 @@ body{font-family: "Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sa
 a{cursor: pointer;}
 a:hover{ text-decoration: none; }
 a:link{ text-decoration: none; }
+.h1, .h2, .h3, h1, h2, h3{padding: 0px; margin:0px;}
 
 .fl{ float: left; }
 .fr{ float: right; }

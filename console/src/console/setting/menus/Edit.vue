@@ -147,7 +147,7 @@ export default {
   },
   methods: {
   	getDetail:function(){
-  		layer.load();
+  		this.$layer.loading();
   		this.$http.get(config.data.console+'/setting/menus/tree_list',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
   			this.menulist = reslut.body.menulist;
 	  	})
@@ -163,18 +163,18 @@ export default {
 	  		this.data.parentid = store.state.settingMenusEditparentId;
 	  	}
 
-	  	layer.closeAll('loading');
+	  	this.$layer.closeAll('loading');
   	},
   	btnClose:function(){
   		this.clear();
     	this.$layer.closeAll();
     },
     comply: function () {
-    	layer.load();
+    	this.$layer.loading();
    		this.$http.post(config.data.console+'/setting/menus/edit',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
-   			layer.closeAll('loading');
+   			this.$layer.closeAll('loading');
    			var data = reslut.body;
-   			layer.msg(data.msg);
+   			this.$layerlayer.alert(data.msg);
    			if(data.status){
    				this.btnClose();
    			}

@@ -9,6 +9,9 @@ import getters from './getters'
 
 
 const state = {
+  UPDATE_LIST:false,
+  UPDATE_EDIT_ID:'',
+  settingAdminList:false,
   settingMenusList:false,
   settingMenusEditId:'',
   settingMenusEditparentId:'',
