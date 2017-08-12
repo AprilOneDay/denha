@@ -10,16 +10,16 @@
 							<span v-bind:class="value.icon"></span>{{value.name}}</a>
 						<dl v-if="value.child" v-show="value.childShow">
 							<dd v-for="v in value.child">
-								<router-link v-bind:to="v.url+'?id='+v.id" active-class="cur">
+								<a @click="secListShow(v)">
 									<span v-bind:class="v.icon"></span>{{v.name}}
-								</router-link>
+								</a>
 							</dd>
 						</dl>
 					</li>
 				</ul>
 			</nav>
 			
-			<div class="product-nav-scene fl col-md-1" v-show="this.$route.query.id">
+			<div class="product-nav-scene fl col-md-1" v-show="secList.length">
 				<div class="title">设置</div>
 				<ul>
 					<li v-for="(value,key) in secList" >
@@ -27,13 +27,13 @@
 							<span class="glyphicon glyphicon-triangle-right"></span>
 							{{value.name}}
 						</a>
-						<router-link v-bind:to="value.url+'?id='+value.id" active-class="cur" v-else>
+						<router-link v-bind:to="value.url" active-class="cur" v-else>
 							<span></span>
 							{{value.name}}
 						</router-link>
 						<dl v-if="value.child" v-show="value.childShow">
 							<dd v-for="v in value.child">
-								<router-link v-bind:to="v.url+'?id='+v.id" active-class="cur">
+								<router-link v-bind:to="v.url" active-class="cur">
 									<span v-bind:class="v.icon"></span>{{v.name}}
 								</router-link>
 							</dd>
@@ -41,7 +41,7 @@
 					</li>
 				</ul>
 			</div>
-			<div class="content-main fl col-md-10" v-if="this.$route.query.id">
+			<div class="content-main fl col-md-10" v-if="secList.length">
 				<router-view></router-view>
 			</div>
 			<div class="content-main fl col-md-11" v-else>
@@ -67,10 +67,9 @@ export default {
 				this.list = reslut.body.list;
 		  	})
 	  	},
-	  	getSecListSec:function(){
-	  		if(this.$route.query.id){
-	  			let dataId  = this.$route.query.id;
-	  			this.$http.get(config.data.console+'/index/index/menus?id='+dataId,{},{emulateJSON:true}).then(function(reslut){
+	  	getSecListSec:function(id){
+	  		if(id){
+	  			this.$http.get(config.data.console+'/index/index/menus?id='+id,{},{emulateJSON:true}).then(function(reslut){
 					this.secList = reslut.body.list;
 			  	})
 	  		}
@@ -93,7 +92,10 @@ export default {
 		  			listData.icon = 'glyphicon glyphicon-triangle-right';
 		  		}
 	  		}	
-	  	}
+	  	},
+	  	secListShow:function(obj){
+	  		this.getSecListSec(obj.id);
+	  	},
 	},
 	mounted:function(){
 		//主页容器固定高宽
@@ -120,12 +122,11 @@ export default {
 	},
 	created:function(){
 		this.getListOne();
-		this.getSecListSec();
 	},
 	watch: {
-		'$route' (to, from) {
+		/*'$route' (to, from) {
 			this.getSecListSec();
-		}
+		}*/
 	}
 
 }
