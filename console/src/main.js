@@ -11,8 +11,6 @@ import config from './assets/js/Config.js'
 import './assets/css/common.css'
 import './assets/css/css.css'
 
-import './assets/js/common.js'
-
 Vue.use(VueResource)
 Vue.prototype.$layer = layer(Vue);
 /*router.beforeEach((to, from, next) => {

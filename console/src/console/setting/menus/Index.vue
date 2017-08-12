@@ -78,15 +78,6 @@ export default {
 		  	})	
 	  	},
 	  	open:function(event){
-			/*event.preventDefault();
-		    event.stopPropagation();
-		    let target = event.target
-
-			var href    =  target.getAttribute("data-href");
-		    var title   =  target.getAttribute('data-title');
-		    var width   =  target.getAttribute('data-width');
-		    var height  =  target.getAttribute('data-height');
-		    var id 		=  target.getAttribute('data-id');*/
 
 		    var id 		 =  event.target.getAttribute('data-id');
 		    var title 	 =  event.target.getAttribute('data-title');

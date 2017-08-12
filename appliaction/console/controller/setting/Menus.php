@@ -5,6 +5,8 @@ use denha;
 
 class Menus extends denha\Controller
 {
+    const TYPE = ['1' => 'console'];
+
     /**
      * [index 菜单管理首页]
      * @date   2016-09-05T10:22:28+0800
@@ -50,6 +52,7 @@ class Menus extends denha\Controller
             $data['url']       = (string) $param['url'];
             $data['icon']      = (string) $param['icon'];
 
+            $data['type']     = max((int) $param['type'], 1);
             $data['parentid'] = (int) max($param['parentid'], 0);
             $data['status']   = (int) $param['status'];
             $data['is_show']  = (int) $param['is_show'];
@@ -60,6 +63,8 @@ class Menus extends denha\Controller
             $data['controller'] = strtolower($param['controller']);
             $data['action']     = strtolower($param['action']);
             $data['created']    = TIME;
+
+            $data['url'] = '/' . self::TYPE[$data['type']] . '/' . $data['module'] . '/' . $data['controller'] . '/' . $data['action'] . $data['parameter'];
 
             if (!$data['name']) {
                 $this->ajaxReturn(['status' => false, 'msg' => '请填写菜单名称']);

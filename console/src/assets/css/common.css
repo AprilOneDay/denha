@@ -18,6 +18,9 @@ a:link{ text-decoration: none; }
 ul{ margin: 0px; padding: 0px; }
 li{ list-style: none; }
 
+.container-fluid{ padding: 0px; }
+
+
 .form-control{border-radius: 0; font-size: 12px; height: 32px; padding: 6px; transition: none 0s ease 0s ;}
 .form-control:focus {box-shadow: none;}
 .btn{border-radius: 0; font-size: 12px;height: 32px;line-height: 14px; padding: 8px 16px;}
@@ -159,7 +162,7 @@ input[type="radio"], input[type="checkbox"] { margin-top: 2px;}
     display: inline-block;
 }
 
-/*ä¼¸ç¼©*/
+
 .view-content-navbar-collapse{height: 50px; left: 100px; position: absolute; top: 50%; transition: all 0.2s ease 0s; width: 20px; z-index: 3;}
 .view-content.open .view-content-navbar-collapse{left: 0px;}
 .view-content-navbar-collapse .navbar-collapse-inner{overflow: hidden; position: relative; top: -50%; cursor: pointer;}
@@ -180,8 +183,7 @@ input[type="radio"], input[type="checkbox"] { margin-top: 2px;}
 
 .view-content-navbar-collapse .navbar-collapse span{font-size: 15px; line-height: 50px; vertical-align: text-top;}
 
-/*ä¸»å†…å®¹åŒº*/
-.view-content-container{padding: 0 15px;}
+
 .view-content-container .console-title{min-height: 70px; padding: 16px 0;}
 .view-content-container .console-title-border{border-bottom: 1px solid #ddd;}
 .console-title h1, .console-title h2, .console-title h3, .console-title h4, .console-title h5, .console-title h6 {border-left: 2px solid #88b7e0; display: inline-block; margin:8px 8px 8px 0; text-indent: 8px; font-size: 14px; line-height: 1.1; font-weight: 500;}
