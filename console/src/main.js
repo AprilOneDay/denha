@@ -15,8 +15,17 @@ import './assets/css/css.css'
 
 Vue.use(VueResource)
 Vue.prototype.$layer = layer(Vue);
-	
-console.log(filter);
+
+Vue.http.options.xhr = { withCredentials: true }
+Vue.http.options.emulateJSON = true;
+Vue.http.options.emulateHTTP = true;
+
+Vue.http.interceptors.push(function(request, next) {//拦截器
+// 跨域携带cookie
+ 	//Vue.http.options.headers = {'Access-Control-Allow-Origin':'http://localhost:8080'},
+	next()
+})
+
 
 window.config = config;
 window.store  = store;

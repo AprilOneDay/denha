@@ -16,7 +16,7 @@ class Login extends denha\Controller
         $username = (string) $param['username'];
         $password = (string) $param['password'];
 
-        $admin = table('ConsoleAdmin')->where(['username' => $username])->field('id,consoleid,password,salt,status')->find();
+        $admin = table('ConsoleAdmin')->where(['username' => $username])->field('id,consoleid,password,salt,status,nickname')->find();
         //判断帐号
         if (!$admin || !$username) {
             $this->ajaxReturn(['status' => false, 'msg' => '用户名错误']);
@@ -37,17 +37,21 @@ class Login extends denha\Controller
 
         session('consoleid', $admin['id']);
 
-        $this->ajaxReturn(['status' => true, 'msg' => '登录成功']);
+        $sessionStorage['nickname'] = $admin['nickname'];
+        $sessionStorage['id']       = $admin['id'];
+
+        $this->ajaxReturn(['status' => true, 'msg' => '登录成功', 'data' => json_encode($sessionStorage)]);
     }
 
     //检测是否登录
     public function oauth()
     {
+        $callback = get('callback');
         var_dump($_SESSION);die();
         if (issetSession('consoleid')) {
-            $this->ajaxReturn(['status' => true, 'msg' => '已登录']);
+            $this->jsonpReturn(['status' => true, 'msg' => '已登录'], $callback);
         } else {
-            $this->ajaxReturn(['status' => false, 'msg' => '未登录']);
+            $this->jsonpReturn(['status' => false, 'msg' => '未登录'], $callback);
         }
     }
 }

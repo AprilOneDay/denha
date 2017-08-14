@@ -72,7 +72,7 @@ export default {
 	methods:{
 	  	getList:function(){
 			this.$layer.loading();
-		  	this.$http.get(config.data.console+'/setting/menus/index',{},{emulateJSON:true}).then(function(reslut){
+		  	this.$http.get(config.data.console+'/setting/menus/index').then(function(reslut){
 		  		this.$layer.closeAll('loading');
 				this.data = reslut.body.data.data;
 		  	})	

@@ -148,12 +148,12 @@ export default {
   methods: {
   	getDetail:function(){
   		this.$layer.loading();
-  		this.$http.get(config.data.console+'/setting/menus/tree_list',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
+  		this.$http.get(config.data.console+'/setting/menus/tree_list',{data:JSON.stringify(this.data)}).then(function(reslut){
   			this.menulist = reslut.body.menulist;
 	  	})
 	  	//获取菜单ID内容
 	  	if(store.state.settingMenusEditId){
-			this.$http.get(config.data.console+'/setting/menus/edit?id='+store.state.settingMenusEditId,{},{emulateJSON:true}).then(function(reslut){
+			this.$http.get(config.data.console+'/setting/menus/edit?id='+store.state.settingMenusEditId).then(function(reslut){
 	  			this.data = reslut.body.data.data;
 	  		})
 	  	}
@@ -171,7 +171,7 @@ export default {
     },
     comply: function () {
     	this.$layer.loading();
-   		this.$http.post(config.data.console+'/setting/menus/edit',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
+   		this.$http.post(config.data.console+'/setting/menus/edit',{data:JSON.stringify(this.data)}).then(function(reslut){
    			this.$layer.closeAll('loading');
    			var data = reslut.body;
    			this.$layer.msg(data.msg);

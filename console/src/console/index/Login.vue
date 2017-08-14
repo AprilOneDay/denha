@@ -60,11 +60,12 @@ export default {
 		},
 		submit:function(){
 			this.$layer.loading();
-			this.$http.post(config.data.console+'/index/login/account',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
+			this.$http.post(config.data.console+'/index/login/account',{data:JSON.stringify(this.data)}).then(function(reslut){
 	   			this.$layer.closeAll('loading');
 	   			var data = reslut.body;
 	   			this.$layer.msg(data.msg);
 	   			if(data.status){
+	   				sessionStorage.admin = data.data;
 	   				this.$router.push({path:'/console'})
 	   			}
 	   		})

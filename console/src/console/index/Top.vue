@@ -8,10 +8,30 @@
 			</div>
 			<div class="border-top-right fr">
 				<ul>
-					<li><a href="javascript:;">cheng6251@163.com</a></li>
-					<li><a href="javascript:;">退出</a></li>
+					<li><a href="javascript:;">{{data.nickname}}</a></li>
+					<li><a href="javascript:;" @click="outLogin()">退出</a></li>
 				</ul>
 			</div>
 		</div>
 	</div>
 </template>
+<script>
+export default {
+	name: 'console-index-top',
+	data () {
+		return {
+			data:{},
+		}
+	},
+	//更换验证码
+	methods: {
+		outLogin:function(){
+			sessionStorage.consoleid = '';
+			this.$router.push({path:'/'})
+		},
+	},
+	created:function(){
+		this.data = JSON.parse(sessionStorage.admin);
+	}
+}
+</script>

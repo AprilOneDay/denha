@@ -97,7 +97,7 @@ export default {
   		this.$layer.loading();
 	  	//获取菜单ID内容
 	  	if(store.state.UPDATE_EDIT_ID){
-			this.$http.get(config.data.console+'/setting/admin/edit?id='+store.state.UPDATE_EDIT_ID,{},{emulateJSON:true}).then(function(reslut){
+			this.$http.get(config.data.console+'/setting/admin/edit?id='+store.state.UPDATE_EDIT_ID).then(function(reslut){
 	  			this.data = reslut.body.data.data;
 	  		})
 	  	}
@@ -110,7 +110,7 @@ export default {
     },
     comply: function () {
     	this.$layer.loading();
-   		this.$http.post(config.data.console+'/setting/admin/edit',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
+   		this.$http.post(config.data.console+'/setting/admin/edit',{data:JSON.stringify(this.data)}).then(function(reslut){
    			this.$layer.closeAll('loading');
    			var data = reslut.body;
    			this.$layer.msg(data.msg);

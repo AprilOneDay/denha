@@ -71,7 +71,7 @@ export default {
 	methods:{
 	  	getList:function(){
 			this.$layer.loading();
-		  	this.$http.get(config.data.console+'/setting/admin',{},{emulateJSON:true}).then(function(reslut){
+		  	this.$http.get(config.data.console+'/setting/admin').then(function(reslut){
 		  		this.$layer.closeAll('loading');
 				this.data  = reslut.body.data.data;
 				this.other = reslut.body.data.other;
@@ -82,7 +82,7 @@ export default {
 			this.$layer.confirm('确定删除该用户', {
 			  btn: ['确定','取消'] //按钮
 			}, function(){
-	 			self.$http.post(config.data.console+'/setting/admin/delete',{id:id},{emulateJSON:true}).then(function(reslut){
+	 			self.$http.post(config.data.console+'/setting/admin/delete',{id:id}).then(function(reslut){
 	 				this.$layer.closeAll();
 			  		this.$layer.msg(reslut.body.msg);
 			  		if(reslut.body.status){
