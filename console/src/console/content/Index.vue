@@ -1,0 +1,114 @@
+<template>
+	<div id="console-content-index-index">
+		<div class="view-content-container" >
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="console-title console-title-border clearfix">
+						<div class="pull-left">
+							<h5>菜单列表</h5>
+						</div>
+						<div class="pull-right">
+							<a class="btn btn-primary" v-on:click="open($event)" data-id="" data-height="750">添加文章</a>
+						</div>
+					</div>
+					<div class="console-form">
+						<div class="mt8">
+							<form>
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th style="width:75px;">ID</th>
+											<th>标题</th>
+											<th style="width:120px;">类型</th>
+											<th style="width:120px;">发布时间</th>
+											<th style="width:120px;">状态</th>
+											<th style="width:160px; text-align:center;">编辑/操作</th>
+										</tr>
+									</thead>
+									<tbody>
+									 	<tr v-for="list in data.list">
+											<td>{{list.id}}</td>
+											<td><span v-html="list.delimiter"></span>{{list.name}}</td>
+											<td>{{list.module}}</td>
+											<td>{{list.controller}}</td>
+											<td>{{list.action}}</td>
+											<td>{{list.parameter}}</td>
+											<td align='center'>{{list.sort}}</td>
+											<td align='center'>{{list.status}}</td>
+											<td align='center'>{{list.is_show}}</td>
+											<td align='center'>
+												<a v-on:click="open($event)" data-title="编辑菜单" data-height="800" v-bind:data-parentId="list.id">添加子菜单</a>
+												<span class="text-explode">|</span>
+												<a v-on:click="open($event)" data-title="编辑菜单" v-bind:data-id="list.id"  data-height="800">编辑</a>
+												<span class="text-explode">|</span>
+												<a ng-click="delete(list.id)">删除</a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+<script>
+import edit from './Edit.vue'
+export default {
+	name: 'console-content-index-index',
+	data(){
+	return {
+		data:{},
+		editStatus:false,
+	}
+	},
+	components:{edit},
+	methods:{
+	  	getList:function(){
+			this.$layer.loading();
+		  	this.$http.get(config.data.console+'/setting/menus/index').then(function(reslut){
+		  		this.$layer.closeAll('loading');
+				this.data = reslut.body.data.data;
+		  	})	
+	  	},
+	  	open:function(event){
+
+		    var id 		 =  event.target.getAttribute('data-id');
+		    var title 	 =  event.target.getAttribute('data-title');
+		    var parentId =  event.target.getAttribute('data-parentId');
+
+
+		    id 		 ?  store.dispatch('settingMenusEditId',id) : '';
+		    parentId ?  store.dispatch('settingMenusEditparentId',parentId) : '';
+		    title 	 = title ? title : event.target.innerHTML; 
+
+	  		this.$layer.iframe({
+				content: {
+				  content: edit, //传递的组件对象
+				  parent: this,//当前的vue对象
+				  data:['msg']//props
+				},
+				closeBtn: 1,
+				area:['890px', '770px'],
+				title:title
+			  });
+		},
+	},
+	created:function(){
+		this.getList();
+	},
+	computed: {
+		settingMenusList() {
+			return store.state.settingMenusList;
+		}	
+	},
+	watch: {
+		settingMenusList(val) {
+			this.getList();
+			store.dispatch('settingMenusList',false);
+		}
+	}
+}
+</script>

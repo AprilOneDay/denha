@@ -1,5 +1,5 @@
 <template>
-	<div id="console-menus-index">
+	<div id="console-setting-menus-index">
 		<div class="view-content-container" >
 			<div class="row">
 				<div class="col-sm-12">
@@ -61,7 +61,7 @@
 <script>
 import edit from './Edit.vue'
 export default {
-	name: 'console-settiv-menus-index',
+	name: 'console-setting-menus-index',
 	data(){
 	return {
 		data:{},
@@ -95,7 +95,7 @@ export default {
 				  data:['msg']//props
 				},
 				closeBtn: 1,
-				area:['890px', '750px'],
+				area:['890px', '770px'],
 				title:title
 			  });
 		},

@@ -24,7 +24,6 @@ li{ list-style: none; }
 
 .form-control{border-radius: 0; font-size: 12px; height: 32px; padding: 6px; transition: none 0s ease 0s ;}
 .form-control:focus {box-shadow: none;}
-.btn{border-radius: 0; font-size: 12px;height: 32px;line-height: 14px; padding: 8px 16px;}
 .btn-default {background-color: #f7f7f7; border: 1px solid #ddd; color: #333;}
 .btn-default:hover {background-color: #ffffff; border: 1px solid #ddd; color: #333;}
 .btn-primary {color: #fff; border: 1px solid #09c; background-color: #09c;}
@@ -50,7 +49,7 @@ input[type="radio"], input[type="checkbox"] { margin-top: 2px;}
 .modal-body .form-group.row > div{padding: 0 12px 0 0;}
 .modal-body .form-group.row .datetime span{float: left;line-height: 30px;}
 .modal-body .form-group.row .datetime .form-control{width: 180px;}
-.modal-footer {border-top: 1px solid #e5e5e5; margin-top: 0px; padding: 19px 20px 20px; text-align: right;}
+.modal-footer {border-top: 1px solid #e5e5e5; margin-top: 0px; text-align: right;}
 .alert-success{color:#090;background-color:#F2FFEA;border-color:#C7DDB9}
 .alert-success .alert-link{color:#063;font-weight:normal}
 .alert-info{color:#555;background-color:#F9F9F9;border-color:#DDD}

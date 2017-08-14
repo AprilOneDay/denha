@@ -23,6 +23,7 @@ const routes = [
 	    children:[
 	    	{path: 'setting/menus/index', component: resolve => require(['../console/setting/menus/Index'], resolve)},
 	    	{path: 'setting/admin/index', component: resolve => require(['../console/setting/admin/Index'], resolve)},
+	    	{path: 'content/list/index', component: resolve => require(['../console/content/Index'], resolve)},
 	    ]
     },
 ]

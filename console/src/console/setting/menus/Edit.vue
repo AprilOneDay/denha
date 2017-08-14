@@ -134,7 +134,7 @@
 </template>
 <script>
 export default {
-  name: 'console-settiv-menus-edit',
+  name: 'console-setting-menus-edit',
   data(){
     return {
       data:{parentid:0,is_show:1,status:1,is_white:0},

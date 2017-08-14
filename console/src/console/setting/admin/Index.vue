@@ -105,7 +105,7 @@ export default {
 				  data:['msg']//props
 				},
 				closeBtn: 1,
-				area:['490px', '490px'],
+				area:['490px', '510px'],
 				title:title
 			  });
 		},

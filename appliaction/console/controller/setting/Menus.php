@@ -64,7 +64,7 @@ class Menus extends denha\Controller
             $data['action']     = strtolower($param['action']);
             $data['created']    = TIME;
 
-            $data['url'] = '/' . self::TYPE[$data['type']] . '/' . $data['module'] . '/' . $data['controller'] . '/' . $data['action'] . $data['parameter'];
+            $data['url'] = (string) $param['url'] ?: '/' . self::TYPE[$data['type']] . '/' . $data['module'] . '/' . $data['controller'] . '/' . $data['action'] . $data['parameter'];
 
             if (!$data['name']) {
                 $this->ajaxReturn(['status' => false, 'msg' => '请填写菜单名称']);
