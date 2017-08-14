@@ -11,6 +11,7 @@ import getters from './getters'
 const state = {
   UPDATE_LIST:false,
   UPDATE_EDIT_ID:'',
+  LOGIN_STATE:false, //登录状态
   settingAdminList:false,
   settingMenusList:false,
   settingMenusEditId:'',

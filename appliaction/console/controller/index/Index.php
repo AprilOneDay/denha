@@ -28,4 +28,10 @@ class Index extends denha\Controller
 
         $this->ajaxReturn(['status' => true, 'list' => $list]);
     }
+
+    //获取验证码
+    public function validateCode()
+    {
+        $code = new denha\ValidateCode();
+    }
 }

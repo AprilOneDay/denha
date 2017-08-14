@@ -5,8 +5,8 @@ const actions = {
   UPDATE_EDIT_ID ({ commit }, data) {
     commit('UPDATE_EDIT_ID', data)
   },
-  setMenus({ commit }, menus) {
-    commit('setMenus', menus)
+  LOGIN_STATE({ commit }, data) {
+    commit('LOGIN_STATE', data)
   },
   setRules({ commit }, rules) {
     commit('setRules', rules)

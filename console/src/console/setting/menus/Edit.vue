@@ -174,7 +174,7 @@ export default {
    		this.$http.post(config.data.console+'/setting/menus/edit',{data:JSON.stringify(this.data)},{emulateJSON:true}).then(function(reslut){
    			this.$layer.closeAll('loading');
    			var data = reslut.body;
-   			this.$layer.alert(data.msg);
+   			this.$layer.msg(data.msg);
    			if(data.status){
    				this.btnClose();
    			}

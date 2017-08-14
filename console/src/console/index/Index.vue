@@ -62,6 +62,14 @@ export default {
 	},
 	components:{AppTop},
 	methods:{
+		oauth:function(){
+			this.$http.get(config.data.console+'/index/login/oauth',{},{emulateJSON:true}).then(function(reslut){
+				var data = reslut.body;
+	   			if(!data.status){
+	   				this.$router.push({path:'/'})
+	   			}
+		  	})
+		},
 		getListOne:function(){
 		  	this.$http.get(config.data.console+'/index/index/menus',{},{emulateJSON:true}).then(function(reslut){
 				this.list = reslut.body.list;
@@ -121,6 +129,7 @@ export default {
 	    });
 	},
 	created:function(){
+		this.oauth();
 		this.getListOne();
 	},
 	watch: {

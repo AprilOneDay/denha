@@ -309,6 +309,17 @@ function session($name = '', $value = '')
 
 }
 
+//判断是否存在session
+function issetSession($name)
+{
+    !isset($_SESSION) ? session_start() : '';
+    if (isset($_SESSION[$name])) {
+        return true;
+    }
+
+    return false;
+}
+
 //读取Session
 function getSession($name)
 {
@@ -318,6 +329,17 @@ function getSession($name)
         $data = (array) $data;
     }
     return $data;
+}
+
+//删除session
+function delSession($name)
+{
+    !isset($_SESSION) ? session_start() : '';
+    if (isset($_SESSION[$name])) {
+        unset($_SESSION[$name]);
+    }
+
+    return true;
 }
 
 /**
