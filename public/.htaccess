@@ -11,10 +11,12 @@
 
 
     RewriteCond %{HTTP_HOST} ^denha.loc [NC]
-    RewriteCond %{REQUEST_URI} !^.*(\.css|\.js|\.eot|\.svg|\.ttf|\.woff|\.wpff2|\.gif|\.png|\.jpg|\.jpeg|\.bmp)$ [NC]
+    RewriteCond %{REQUEST_URI} !^(\/vendor|\/ststic)(.*)$ [NC]
     RewriteRule ^ pc.host.php
 
+
+
     RewriteCond %{HTTP_HOST} ^console.denha.loc [NC]
-    RewriteCond %{REQUEST_URI} !^.*(\.css|\.js|\.eot|\.svg|\.ttf|\.woff|\.wpff2|\.gif|\.png|\.jpg|\.jpeg|\.bmp|\.map)$ [NC]
-    RewriteRule ^ console.host.php
+    RewriteCond %{REQUEST_URI} !^(\/vendor|\/ststic)(.*)$ [NC]
+    RewriteRule ^ console.host.php [L]
 </IfModule>

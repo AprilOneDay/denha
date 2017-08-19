@@ -51,7 +51,7 @@
 										<span>内容</span>
 									</label>
 									<div class="col-sm-8">
-										<div id="editor" type="text/plain" style="width:1024px;height:500px;"></div> 
+										<vue-html5-editor :content="content" :height="500"></vue-html5-editor>
 									</div>
 								</div>
 								<div class="form-group">
@@ -80,27 +80,26 @@
 	</div>
 </template>
 <script>
-import '../../assets/ueditor/ueditor.config' 
-import '../../assets/ueditor/ueditor.all'; 
-import '../../assets/ueditor/lang/zh-cn/zh-cn'; 
 export default {
   name: 'console-setting-menus-edit',
+  components:{UE},
   data(){
     return {
-      data:{is_show:1},
-      menulist:{},
+ 	 	data:{is_show:1},
+      	menulist:{},
+ 		content: '这里是UE测试',
+        config: {
+          initialFrameWidth: null,
+          initialFrameHeight: 350
+        },
+        ue: 'ue', // 不同编辑器必须不同的id
     }
   },
   props:['msg'],
   created:function(){
  	this.getDetail();
   },
-  mounted:function() { 
-	this.ue = UE.getEditor('editor',{ 
-		BaseUrl: '', 
-		UEDITOR_HOME_URL: 'assets/ueditor/', 
-		// toolbars:[] 
-	}); 
+  mounted:function() {
   }, 
   methods: {
   	getDetail:function(){

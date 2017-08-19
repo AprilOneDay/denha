@@ -1,6 +1,7 @@
 <template>
 	<div id="console-content-index-index">
 		<div class="view-content-container" >
+
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="console-title console-title-border clearfix">
@@ -58,13 +59,18 @@
 import edit from './Edit.vue'
 export default {
 	name: 'console-content-index-index',
-	data(){
-	return {
-		data:{},
-		editStatus:false,
-	}
-	},
-	components:{edit},
+	components: {edit},
+    data() {
+      return {
+      	data:{},
+      	ue2:'ue2',
+      	config:{
+      		initialFrameWidth: null,
+        	initialFrameHeight: 350
+        },
+        content:'AAAA',
+      }
+    },
 	methods:{
 	  	getList:function(){
 			this.$layer.loading();
