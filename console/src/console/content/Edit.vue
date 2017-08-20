@@ -82,7 +82,7 @@
 <script>
 export default {
   name: 'console-setting-menus-edit',
-  components:{UE},
+  components:{},
   data(){
     return {
  	 	data:{is_show:1},

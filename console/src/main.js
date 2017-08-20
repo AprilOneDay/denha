@@ -16,11 +16,6 @@ import './assets/css/common.css'
 import './assets/css/css.css'
 
 
-import './assets/UE/ueditor.config.js'
-import './assets/UE/ueditor.all.js'
-import './assets/UE/lang/zh-cn/zh-cn.js'
-import './assets/UE/ueditor.parse.min.js'
-
 const VueHtml5EditorConfig = {
     // 全局组件名称，使用new VueHtml5Editor(options)时该选项无效 
     // global component name
