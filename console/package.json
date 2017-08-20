@@ -73,6 +73,7 @@
     "vue-layer":"^0.8.0",
     "vuex":"^2.0.0",
     "vue-html5-editor":"^1.0.0",
+    "vue-datepicker-simple":"^1.5.0",
     "font-awesome":"^4.0.0",
     "webpack": "^2.6.1",
     "webpack-dev-middleware": "^1.10.0",

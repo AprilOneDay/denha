@@ -1,5 +1,5 @@
 <template>
-	<div id="console-setting-menus-edit">
+	<div id="console-content-edit">
 		<div class="modal-content">
 			<div class="modal-body clearfix">
 				<div class="panel">
@@ -12,28 +12,27 @@
 										<span>标题</span>
 									</label>
 									<div class="col-sm-8">
-										<input type="text" v-model="data.name" placeholder="标题" required class="form-control">	
+										<input type="text" v-model="data.title" placeholder="标题" required class="form-control">	
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="control-label col-sm-3">
 										<span class="text-danger">*</span>
-										<span>上级菜单</span>
+										<span for="myDate">标签</span>
 									</label>
-									 <div class="col-sm-8">
-										<select v-model="data.parentid" class="form-control w160">
-											<option value="0">作为一级菜单</option>
-											<option v-for="vo in menulist" v-bind:value="vo.id" v-html="vo.htmlname"></option>
+									<div class="col-sm-8">
+										<select v-model="data.tag" class="form-control w160">
+											<option v-for="(value,key) in other.tag" v-bind:value="key" v-html="value"></option>
 										</select>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="control-label col-sm-3">
 										<span class="text-danger">*</span>
-										<span>发布时间</span>
+										<span for="myDate">发布时间</span>
 									</label>
 									<div class="col-sm-8">
-										<input type="text" v-model="data.icon" placeholder="Icon图标" class="form-control">	
+										<my-datepicker field="myDate"	placeholder="选择日期" v-model="data.created" format="yyyy/mm/dd" :backward="false" :no-today="false" :forward="false"></my-datepicker>
 									</div>
 								</div>
 								<div class="form-group">
@@ -42,7 +41,7 @@
 										<span>摘要</span>
 									</label>
 									<div class="col-sm-8">
-										<input type="text" v-model="data.module" placeholder="控制器名称" class="form-control">
+										<textarea  v-model="data.module" placeholder="输入摘要内容" class="form-control"></textarea>
 									</div>
 								</div>
 								<div class="form-group">
@@ -51,7 +50,7 @@
 										<span>内容</span>
 									</label>
 									<div class="col-sm-8">
-										<vue-html5-editor :content="content" :height="500"></vue-html5-editor>
+										<vue-html5-editor :content="data.content" :height="500" @change="updateData"></vue-html5-editor>
 									</div>
 								</div>
 								<div class="form-group">
@@ -73,26 +72,28 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" class="btn btn-primary" v-on:click="comply">确定</button>
-				<button type="button" class="btn btn-default" id="btn-close" v-on:click="btnClose">取消</button>
+				<button type="submit" class="btn btn-primary" @click="comply">确定</button>
+				<button type="button" class="btn btn-default" id="btn-close"@click="btnClose">取消</button>
 			</div>
 		</div>
 	</div>
 </template>
+<style>
+.vue-datepicker .vue-datepicker-panels{ width: auto; }
+</style>
 <script>
+import myDatepicker from 'vue-datepicker-simple/datepicker-2.vue'; //引入对应的组件
 export default {
-  name: 'console-setting-menus-edit',
-  components:{},
+  name: 'console-content-edit',
+  components:{myDatepicker},
   data(){
     return {
- 	 	data:{is_show:1},
-      	menulist:{},
- 		content: '这里是UE测试',
+ 	 	data:{is_show:1,created:'',tag:1,content:''},
+ 	 	other:{},
         config: {
           initialFrameWidth: null,
           initialFrameHeight: 350
         },
-        ue: 'ue', // 不同编辑器必须不同的id
     }
   },
   props:['msg'],
@@ -102,23 +103,18 @@ export default {
   mounted:function() {
   }, 
   methods: {
+  	updateData:function(content){
+  		this.data.content = content;
+  	},
   	getDetail:function(){
   		this.$layer.loading();
-  		this.$http.get(config.data.console+'/setting/menus/tree_list',{data:JSON.stringify(this.data)}).then(function(reslut){
-  			this.menulist = reslut.body.menulist;
-	  	})
 	  	//获取菜单ID内容
-	  	if(store.state.settingMenusEditId){
-			this.$http.get(config.data.console+'/setting/menus/edit?id='+store.state.settingMenusEditId).then(function(reslut){
-	  			this.data = reslut.body.data.data;
-	  		})
-	  	}
-
-	  	//定位父级菜单
-	  	if(store.state.settingMenusEditparentId){
-	  		this.data.parentid = store.state.settingMenusEditparentId;
-	  	}
-
+		this.$http.get(config.data.console+'/article/index/edit?id='+store.state.UPDATE_EDIT_ID).then(function(reslut){
+			if(reslut.body.data.data){
+				this.data = reslut.body.data.data;
+			}
+  			this.other = reslut.body.data.other;
+  		})
 	  	this.$layer.closeAll('loading');
   	},
   	btnClose:function(){
@@ -127,7 +123,8 @@ export default {
     },
     comply: function () {
     	this.$layer.loading();
-   		this.$http.post(config.data.console+'/setting/menus/edit',{data:JSON.stringify(this.data)}).then(function(reslut){
+    	console.log(this.content);
+   		this.$http.post(config.data.console+'/article/index/edit',{data:JSON.stringify(this.data)}).then(function(reslut){
    			this.$layer.closeAll('loading');
    			var data = reslut.body;
    			this.$layer.msg(data.msg);
@@ -137,9 +134,8 @@ export default {
    		})
     },
     clear:function(){
-    	store.dispatch('settingMenusList',true);
-    	store.dispatch('settingMenusEditId','');
-    	store.dispatch('settingMenusEditparentId','')
+    	store.dispatch('UPDATE_LIST',true);
+    	store.dispatch('UPDATE_EDIT_ID','');
     },
     
   },

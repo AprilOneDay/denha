@@ -210,6 +210,37 @@ function comprise($path)
     include VIEW_PATH . $path . '.html';
 }
 
+//获取配置常量
+//getVar('tags','console.article') 获取 appliaction/console/tools/var/article文件中的 tags.$ext 文件
+//getVar('tags','article') 获取 appliaction/tools/var/article文件中的 tags.$ext 文件
+function getVar($filename, $path, $ext = EXT)
+{
+    static $_vars = [];
+
+    if (!$filename) {
+        return null;
+    }
+
+    $name = md5($filename . $path);
+    if (isset($_vars[$name])) {
+        return $name;
+    } else {
+        if (($length = stripos($path, '.')) === false) {
+            $filePath = APP_PATH . 'tools' . DS . 'var' . DS . $path . DS . $filename . $ext;
+        } else {
+            $filePath = APP_PATH . substr($path, 0, $length) . DS . 'tools' . DS . 'var' . DS . substr(strstr($path, '.'), 1) . DS . $filename . $ext;
+        }
+
+        if (is_file($filePath)) {
+            $_vars[$name] = include $filePath;
+
+            return $_vars[$name];
+        }
+    }
+
+    return null;
+}
+
 //获取config下配置文档
 function getConfig($path = 'config', $name = '')
 {
