@@ -39,7 +39,7 @@
 .card-box {padding: 20px;border: 1px solid rgba(54, 64, 74, 0.05);-webkit-border-radius: 5px; border-radius: 5px;-moz-border-radius: 5px;background-clip: padding-box; margin-bottom: 20px; background-color: #ffffff;box-shadow: 0 0 14px rgba(0,0,0,.1);}
 .panel-heading img{width: 100px; height: 100px; margin: 0 auto;}
 .card-box .panel-heading{text-align: center;}
-.form-control {background-color: #FFFFFF; border: 1px solid #E3E3E3; border-radius: 4px; color: #565656; padding: 7px 12px; height: 38px; max-width: 100%;box-shadow: none;}
+.form-control {background-color: #FFFFFF; border: 1px solid #E3E3E3; border-radius: 4px; color: #565656; padding: 7px 12px; height: 34px; max-width: 100%;box-shadow: none;}
 .form-control:focus {background-color: #FFFFFF; border: 1px solid #AAAAAA; -webkit-box-shadow: none; box-shadow: none; outline: 0 !important; color: #333333;}
 .btn-primary,.btn-primary:focus {background-color: #09c; border: 1px solid #027fa9 !important; color: #ffffff; padding: 8px 0;}
 .btn-primary:hover,.btn-primary:active{background-color: #008cbb; border-color:#09c;}

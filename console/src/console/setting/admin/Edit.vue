@@ -112,10 +112,11 @@ export default {
     	this.$layer.loading();
    		this.$http.post(config.data.console+'/setting/admin/edit',{data:JSON.stringify(this.data)}).then(function(reslut){
    			this.$layer.closeAll('loading');
+   			let _this = this;
    			var data = reslut.body;
    			this.$layer.msg(data.msg);
    			if(data.status){
-   				this.btnClose();
+   				setTimeout(function(){_this.btnClose();},2000);
    			}
    		})
     },

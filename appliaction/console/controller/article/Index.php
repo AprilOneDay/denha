@@ -5,6 +5,47 @@ use denha;
 
 class Index extends denha\Controller
 {
+
+    public function index()
+    {
+        $param['field']   = get('field', 'text', '');
+        $param['keyword'] = get('keyword', 'text', '');
+        $param['tag']     = get('tag', 'intval', 0);
+
+        $param['pageNo']   = get('pageNo', 'intval', 1);
+        $param['pageSize'] = get('pageSize', 'intval', 1);
+
+        $offer = ($param['pageNo'] - 1) * $param['pageSize'];
+
+        $map['del_status'] = 0;
+
+        if ($param['tag']) {
+            $map['tag'] = $param['tag'];
+        }
+
+        if ($param['field'] && $param['keyword']) {
+            if ($param['field'] == 'title') {
+                $map['title'] = ['like', '%' . $param['keyword'] . '%'];
+            }
+        }
+        $total = table('Article')->where($map)->count();
+        $pages = new denha\pages($total, $param['pageNo'], $param['pageSize']);
+        $list  = table('Article')->where($map)->limit($offer, $param['pageSize'])->find('array');
+
+        $data = [
+            'data'  => [
+                'list'  => $list,
+                'param' => $param,
+                'pages' => $pages->pages(),
+            ],
+            'other' => [
+                'tag'        => getVar('tags', 'console.article'),
+                'isShowCopy' => [0 => '隐藏', 1 => '显示'],
+            ],
+        ];
+        $this->ajaxReturn(['status' => true, 'msg' => '获取数据成果', 'data' => $data]);
+    }
+
     public function edit()
     {
         if (IS_POST) {

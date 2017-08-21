@@ -1,7 +1,6 @@
 <template>
 	<div id="console-content-index-index">
 		<div class="view-content-container" >
-
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="console-title console-title-border clearfix">
@@ -12,6 +11,20 @@
 							<a class="btn btn-primary" v-on:click="open($event)" data-id="" data-height="750">添加文章</a>
 						</div>
 					</div>
+					<form class="form-inline ng-pristine ng-valid">
+                        <div class="form-group">
+                    	  	<select class="form-control" v-model="data.param.tag">
+                                <option value="0">选择类型</option>
+                               <option v-for="(value,key) in other.tag" v-bind:value="key" v-html="value"></option>
+                            </select>
+                            <select class="form-control" v-model="data.param.field">
+                                <option value="">请选择搜索条件</option>
+                                <option value="title">标题</option>
+                            </select>
+                            <input type="text" class="form-control w120" placeholder="Search" v-model="data.param.keyword" >
+                            <button type="button" class="btn btn-default" @click="search()">搜索</button>
+                        </div>
+                    </form>
 					<div class="console-form">
 						<div class="mt8">
 							<form>
@@ -29,23 +42,18 @@
 									<tbody>
 									 	<tr v-for="list in data.list">
 											<td>{{list.id}}</td>
-											<td><span v-html="list.delimiter"></span>{{list.name}}</td>
-											<td>{{list.module}}</td>
-											<td>{{list.controller}}</td>
-											<td>{{list.action}}</td>
-											<td>{{list.parameter}}</td>
-											<td align='center'>{{list.sort}}</td>
-											<td align='center'>{{list.status}}</td>
-											<td align='center'>{{list.is_show}}</td>
+											<td>{{list.title}}</td>
+											<td>{{other.tag[list.tag]}}</td>
+											<td>{{list.created * 1000 | date('YMD')}}</td>
+											<td>{{other.isShowCopy[list.is_show]}}</td>
 											<td align='center'>
-												<a v-on:click="open($event)" data-title="编辑菜单" data-height="800" v-bind:data-parentId="list.id">添加子菜单</a>
-												<span class="text-explode">|</span>
-												<a v-on:click="open($event)" data-title="编辑菜单" v-bind:data-id="list.id"  data-height="800">编辑</a>
+												<a v-on:click="open($event)" data-title="编辑文章" v-bind:data-id="list.id"  data-height="800">编辑</a>
 												<span class="text-explode">|</span>
 												<a ng-click="delete(list.id)">删除</a>
 											</td>
 										</tr>
 									</tbody>
+									<page :param="data.pages"></page>
 								</table>
 							</form>
 						</div>
@@ -57,27 +65,28 @@
 </template>
 <script>
 import edit from './Edit.vue'
+import page from '@/components/page/page.vue'
 export default {
 	name: 'console-content-index-index',
-	components: {edit},
+	components: {page,edit},
     data() {
       return {
-      	data:{},
-      	ue2:'ue2',
-      	config:{
-      		initialFrameWidth: null,
-        	initialFrameHeight: 350
-        },
-        content:'AAAA',
+      	data:{param:{}},
+      	other:{},
       }
     },
 	methods:{
 	  	getList:function(){
 			this.$layer.loading();
-		  	this.$http.get(config.data.console+'/setting/menus/index').then(function(reslut){
+			let get = config.data.unserializeArray(this.data.param);
+		  	this.$http.get(config.data.console+'/article/index'+get).then(function(reslut){
 		  		this.$layer.closeAll('loading');
-				this.data = reslut.body.data.data;
+				this.data  = reslut.body.data.data;
+				this.other = reslut.body.data.other;
 		  	})	
+	  	},
+	  	search:function(){
+	  		this.getList();
 	  	},
 	  	open:function(event){
 
@@ -85,9 +94,7 @@ export default {
 		    var title 	 =  event.target.getAttribute('data-title');
 		    var parentId =  event.target.getAttribute('data-parentId');
 
-
-		    id 		 ?  store.dispatch('settingMenusEditId',id) : '';
-		    parentId ?  store.dispatch('settingMenusEditparentId',parentId) : '';
+		  	id 		 ?  store.dispatch('UPDATE_EDIT_ID',id) : '';
 		    title 	 = title ? title : event.target.innerHTML; 
 
 	  		this.$layer.iframe({
@@ -97,7 +104,7 @@ export default {
 				  data:['msg']//props
 				},
 				closeBtn: 1,
-				area:['890px', '770px'],
+				area:['1200px', '770px'],
 				title:title
 			  });
 		},
@@ -106,14 +113,14 @@ export default {
 		this.getList();
 	},
 	computed: {
-		settingMenusList() {
-			return store.state.settingMenusList;
+		UPDATE_LIST() {
+			return store.state.UPDATE_LIST;
 		}	
 	},
 	watch: {
-		settingMenusList(val) {
+		UPDATE_LIST(val) {
 			this.getList();
-			store.dispatch('settingMenusList',false);
+			store.dispatch('UPDATE_LIST',false);
 		}
 	}
 }

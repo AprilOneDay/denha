@@ -322,7 +322,7 @@ function getCookie($name, $encode = false)
 //保存Session
 function session($name = '', $value = '')
 {
-    !isset($_SESSION) ? session_start() : '';
+    isset($_SESSION) ?: session_start();
     // 数组
     if (is_array($name)) {
         foreach ($name as $k => $v) {
@@ -337,13 +337,14 @@ function session($name = '', $value = '')
     } else {
         $_SESSION[$name] = $value;
     }
-
+    //关闭session 可防止高并发下死锁问题
+    session_write_close();
 }
 
 //判断是否存在session
 function issetSession($name)
 {
-    !isset($_SESSION) ? session_start() : '';
+    isset($_SESSION) ?: session_start();
     if (isset($_SESSION[$name])) {
         return true;
     }
@@ -354,22 +355,23 @@ function issetSession($name)
 //读取Session
 function getSession($name)
 {
-    !isset($_SESSION) ? session_start() : '';
+    isset($_SESSION) ?: session_start();
     $data = isset($_SESSION[$name]) ? $_SESSION[$name] : '';
     if (is_object($data)) {
         $data = (array) $data;
     }
+    session_write_close(); //关闭session
     return $data;
 }
 
 //删除session
 function delSession($name)
 {
-    !isset($_SESSION) ? session_start() : '';
+    isset($_SESSION) ?: session_start();
     if (isset($_SESSION[$name])) {
         unset($_SESSION[$name]);
     }
-
+    session_write_close(); //关闭session
     return true;
 }
 
