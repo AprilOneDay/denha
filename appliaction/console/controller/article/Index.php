@@ -8,9 +8,10 @@ class Index extends denha\Controller
 
     public function index()
     {
-        $param['field']   = get('field', 'text', '');
+        $param['field']   = get('field', 'text', 'title');
         $param['keyword'] = get('keyword', 'text', '');
         $param['tag']     = get('tag', 'intval', 0);
+        $param['is_show'] = get('is_show', 'text', '');
 
         $param['pageNo']   = get('pageNo', 'intval', 1);
         $param['pageSize'] = get('pageSize', 'intval', 25);
@@ -21,6 +22,10 @@ class Index extends denha\Controller
 
         if ($param['tag']) {
             $map['tag'] = $param['tag'];
+        }
+
+        if ($param['is_show'] != '') {
+            $map['is_show'] = $param['is_show'];
         }
 
         if ($param['field'] && $param['keyword']) {
@@ -100,6 +105,8 @@ class Index extends denha\Controller
                 $map[$article . '.id'] = $id;
 
                 $rs = table('Article')->join($articleData, "$articleData.id = $article.id", 'left')->where($map)->find();
+
+                $rs['created'] = date('Y-m-d', $rs['created']);
             }
 
             $data = [

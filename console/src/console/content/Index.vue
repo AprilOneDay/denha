@@ -17,6 +17,10 @@
                                 <option value="0">选择类型</option>
                                <option v-for="(value,key) in other.tag" v-bind:value="key" v-html="value"></option>
                             </select>
+                        	<select class="form-control" v-model="data.param.is_show">
+                                <option value="">选择状态</option>
+                               <option v-for="(value,key) in other.isShowCopy" v-bind:value="key" v-html="value"></option>
+                            </select>
                             <select class="form-control" v-model="data.param.field">
                                 <option value="">请选择搜索条件</option>
                                 <option value="title">标题</option>

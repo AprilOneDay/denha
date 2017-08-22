@@ -62,16 +62,19 @@ export default {
 	},
 	components:{AppTop},
 	methods:{
+		//检测是否登录
 		oauth:function(){
 			if(!sessionStorage.admin){
-				this.$router.push({path:'/'})
+				this.$router.push({path:'/login'})
 			}
 		},
+		//获取一级菜单
 		getListOne:function(){
 		  	this.$http.get(config.data.console+'/index/index/menus').then(function(reslut){
 				this.list = reslut.body.list;
 		  	})
 	  	},
+	  	//获取二级菜单
 	  	getSecListSec:function(id){
 	  		if(id){
 	  			this.$http.get(config.data.console+'/index/index/menus?id='+id).then(function(reslut){

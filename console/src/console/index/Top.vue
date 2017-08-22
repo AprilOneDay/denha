@@ -26,12 +26,15 @@ export default {
 	//更换验证码
 	methods: {
 		outLogin:function(){
-			sessionStorage.consoleid = '';
-			this.$router.push({path:'/'})
+			sessionStorage.admin = '';
+			this.$router.push({path:'/login'})
 		},
 	},
 	created:function(){
-		this.data = JSON.parse(sessionStorage.admin);
+		if(sessionStorage.admin){
+			this.data = JSON.parse(sessionStorage.admin);
+		}
+		
 	}
 }
 </script>
