@@ -53,7 +53,7 @@
 											</td>
 										</tr>
 									</tbody>
-									<page :param="data.pages"></page>
+									<page :pages="data.pages" v-on:getPages="getPages"></page>
 								</table>
 							</form>
 						</div>
@@ -81,9 +81,13 @@ export default {
 			let get = config.data.unserializeArray(this.data.param);
 		  	this.$http.get(config.data.console+'/article/index'+get).then(function(reslut){
 		  		this.$layer.closeAll('loading');
-				this.data  = reslut.body.data.data;
-				this.other = reslut.body.data.other;
+				this.data   = reslut.body.data.data;
+				this.other  = reslut.body.data.other;
 		  	})	
+	  	},
+	  	getPages:function(pageNo){
+	  		this.data.param.pageNo = pageNo;
+	  		this.getList();
 	  	},
 	  	search:function(){
 	  		this.getList();
@@ -109,7 +113,7 @@ export default {
 			  });
 		},
 	},
-	created:function(){
+	mounted:function(){
 		this.getList();
 	},
 	computed: {

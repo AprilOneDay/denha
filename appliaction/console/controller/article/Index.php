@@ -13,7 +13,7 @@ class Index extends denha\Controller
         $param['tag']     = get('tag', 'intval', 0);
 
         $param['pageNo']   = get('pageNo', 'intval', 1);
-        $param['pageSize'] = get('pageSize', 'intval', 1);
+        $param['pageSize'] = get('pageSize', 'intval', 25);
 
         $offer = ($param['pageNo'] - 1) * $param['pageSize'];
 
