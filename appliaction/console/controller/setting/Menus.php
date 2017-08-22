@@ -15,7 +15,10 @@ class Menus extends denha\Controller
      */
     public function index()
     {
-        $result = table('ConsoleMenus')->order('sort asc,id asc')->find('array');
+        $map['del_status'] = 0;
+
+        $result = table('ConsoleMenus')->where($map)->order('sort asc,id asc')->find('array');
+
         if ($result) {
             $tree = new \app\console\tools\util\MenuTree();
             $tree->setConfig('id', 'parentid', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
@@ -92,7 +95,7 @@ class Menus extends denha\Controller
 
         } else {
             $id = get('id', 'intval');
-            $rs = table('ConsoleMenus')->where(array('id' => $id))->find();
+            $rs = table('ConsoleMenus')->where(['id' => $id])->find();
 
             $data = [
                 'data' => $rs,
@@ -100,6 +103,30 @@ class Menus extends denha\Controller
             $this->ajaxReturn(['status' => true, 'data' => $data]);
         }
     }
+
+    /**
+     * 删除菜单
+     * @date   2017-08-22T14:59:55+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function delete()
+    {
+        $id = post('id', 'intval', 0);
+        if (!$id) {
+            $this->ajaxReturn(['status' => false, 'msg' => '参数错误']);
+        }
+
+        $result = table('ConsoleMenus')->where(['id' => $id])->save(['del_status' => 1]);
+
+        if ($result) {
+            $this->ajaxReturn(['status' => true, 'msg' => '删除成功']);
+        }
+
+        $this->ajaxReturn(['status' => false, 'msg' => '删除失败']);
+
+    }
+
     /**
      * [获取树状菜单列表]
      * @date   2016-09-05T10:21:46+0800

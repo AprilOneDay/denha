@@ -18,6 +18,15 @@
 								<div class="form-group">
 									<label class="control-label col-sm-3">
 										<span class="text-danger">*</span>
+										<span>缩略图</span>
+									</label>
+									<div class="col-sm-8">
+										<up-img></up-img>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-sm-3">
+										<span class="text-danger">*</span>
 										<span for="myDate">标签</span>
 									</label>
 									<div class="col-sm-8">
@@ -41,7 +50,7 @@
 										<span>摘要</span>
 									</label>
 									<div class="col-sm-8">
-										<textarea  v-model="data.module" placeholder="输入摘要内容" class="form-control"></textarea>
+										<textarea  v-model="data.description" placeholder="输入摘要内容" class="form-control"></textarea>
 									</div>
 								</div>
 								<div class="form-group">
@@ -82,10 +91,8 @@
 .vue-datepicker .vue-datepicker-panels{ width: auto; }
 </style>
 <script>
-import myDatepicker from 'vue-datepicker-simple/datepicker-2.vue'; //引入对应的组件
 export default {
   name: 'console-content-edit',
-  components:{myDatepicker},
   data(){
     return {
  	 	data:{is_show:1,created:'',tag:1,content:''},
@@ -129,7 +136,7 @@ export default {
    			var data = reslut.body;
    			this.$layer.msg(data.msg);
    			if(data.status){
-   				setTimeout(function(){_this.btnClose();},2000);
+   				setTimeout(function(){_this.btnClose();},1000);
    			}
    		})
     },

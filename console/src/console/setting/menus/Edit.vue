@@ -141,7 +141,6 @@ export default {
       menulist:{},
     }
   },
-  props:['msg'],
   created:function(){
  	this.getDetail();
   },
@@ -180,6 +179,7 @@ export default {
    			}
    		})
     },
+    
     clear:function(){
     	store.dispatch('settingMenusList',true);
     	store.dispatch('settingMenusEditId','');

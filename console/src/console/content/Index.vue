@@ -51,7 +51,9 @@
 											<td>{{list.created * 1000 | date('YMD')}}</td>
 											<td>{{other.isShowCopy[list.is_show]}}</td>
 											<td align='center'>
-												<a v-on:click="open($event)" data-title="编辑文章" v-bind:data-id="list.id"  data-height="800">编辑</a>
+												<a @click="open($event)" data-title="编辑文章" v-bind:data-id="list.id"  data-height="800">编辑</a>
+												<span class="text-explode">|</span>
+												<a>评价</a>
 												<span class="text-explode">|</span>
 												<a ng-click="delete(list.id)">删除</a>
 											</td>
@@ -69,10 +71,9 @@
 </template>
 <script>
 import edit from './Edit.vue'
-import page from '@/components/page/page.vue'
 export default {
 	name: 'console-content-index-index',
-	components: {page,edit},
+	components: {edit},
     data() {
       return {
       	data:{param:{}},

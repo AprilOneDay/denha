@@ -75,6 +75,10 @@ class Index extends denha\Controller
                 $this->ajaxReturn(['status' => false, 'msg' => '请输入内容']);
             }
 
+            if (!$data['description']) {
+                $data['description'] = mb_substr(strip_tags($dataContent['content']), 0, 255, 'UTF-8');
+            }
+
             if ($param['id']) {
                 $result = table('Article')->where(['id' => $param['id']])->save($data);
                 if ($result) {

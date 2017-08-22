@@ -26,7 +26,7 @@ class Start
             self::$config = array_merge(include (CONFIG_PATH . 'config.php'), include (CONFIG_PATH . $client . '.config.php'));
         }
 
-        //error_reporting(0);
+        error_reporting(0);
         register_shutdown_function('denha\Trace::catchError');
         set_error_handler('denha\Trace::catchNotice');
         set_exception_handler('denha\Trace::catchApp');
@@ -95,7 +95,7 @@ class Start
     {
         $dir = [
             'controller' => ['index'],
-            'tools'      => ['dao', 'vendor', 'util'],
+            'tools'      => ['dao', 'vendor', 'util', 'var'],
             'view'       => ['index'],
         ];
 

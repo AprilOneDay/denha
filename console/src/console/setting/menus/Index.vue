@@ -41,11 +41,11 @@
 											<td align='center'>{{list.status}}</td>
 											<td align='center'>{{list.is_show}}</td>
 											<td align='center'>
-												<a v-on:click="open($event)" data-title="编辑菜单" data-height="800" v-bind:data-parentId="list.id">添加子菜单</a>
+												<a @click="open($event)" data-title="编辑菜单" data-height="800" v-bind:data-parentId="list.id">添加子菜单</a>
 												<span class="text-explode">|</span>
-												<a v-on:click="open($event)" data-title="编辑菜单" v-bind:data-id="list.id"  data-height="800">编辑</a>
+												<a @click="open($event)" data-title="编辑菜单" v-bind:data-id="list.id"  data-height="800">编辑</a>
 												<span class="text-explode">|</span>
-												<a ng-click="delete(list.id)">删除</a>
+												<a @click="del(list.id)">删除</a>
 											</td>
 										</tr>
 									</tbody>
@@ -99,6 +99,17 @@ export default {
 				title:title
 			  });
 		},
+		del:function(id){
+	    	this.$layer.loading();
+	    	this.$http.post(config.data.console+'/setting/menus/delete',{id:id}).then(function(reslut){
+	   			this.$layer.closeAll('loading');
+	   			var data = reslut.body;
+	   			this.$layer.msg(data.msg);
+	   			if(data.status){
+	   				this.getList();
+	   			}
+	   		})	
+	    },
 	},
 	created:function(){
 		this.getList();

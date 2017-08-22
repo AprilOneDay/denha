@@ -2,8 +2,12 @@ import Vue from 'vue'
 import VueResource from 'vue-resource'
 import App from './App'
 import layer from 'vue-layer'
+
+//引入对应的组件
 import VueHtml5Editor from 'vue-html5-editor'
-import MyDatepicker from 'vue-datepicker-simple/datepicker-2.vue' //引入对应的组件
+import MyDatepicker from 'vue-datepicker-simple/datepicker-2.vue' 
+import Page from './components/Page.vue'
+import UpImg from './components/UpImg.vue'
 
 
 import store from './vuex/store'
@@ -22,6 +26,10 @@ Vue.use(VueResource)
 Vue.use(VueHtml5Editor,VueHtml5EditorConfig)
 
 Vue.prototype.$layer = layer(Vue)
+
+Vue.component('my-datepicker', MyDatepicker)
+Vue.component('page', Page)
+Vue.component('up-img', UpImg)
 
 Vue.http.options.xhr = { withCredentials: true }
 Vue.http.options.emulateJSON = true;
