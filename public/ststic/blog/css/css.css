@@ -1,0 +1,10 @@
+body{ background: #ccc; }
+.wapper{ background: #fff; padding-left: 15px; padding-right: 15px; }
+.top{ border-bottom: 1px #ccc solid; line-height: 35px; }
+.top a{ padding-left: 5px; }
+
+.left .news li{ border-bottom: 1px solid #ccc; padding-bottom: 20px; }
+.left .news li span{ line-height: 45px; font-size: 21px; font-weight: bolder;  display: block; }
+.left .news li .news-content img{ width: 150px; height: 100px; float: left; margin-right: 15px; }
+.left .news li .news-content .desc{ min-height: 70px; } 
+.left .news li .news-content dl{ float: left; }
