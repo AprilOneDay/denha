@@ -47,6 +47,7 @@ class Index extends denha\Controller
                 'tag'        => getVar('tags', 'console.article'),
                 'isShowCopy' => [0 => '隐藏', 1 => '显示'],
             ],
+            'sql'   => table('Article')->getSql(),
         ];
         $this->ajaxReturn(['status' => true, 'msg' => '获取数据成果', 'data' => $data]);
     }
