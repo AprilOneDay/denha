@@ -6,10 +6,10 @@
 	<meta name="keywords" content=""/>
 	<meta name="description" content=""/>
 	<link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="{{getConfig('config','vendor')}}/bootstrap/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="{{getConfig('config','vendor')}}/pace/themes/blue/pace-theme-minimal.css" />
-	<link rel="stylesheet" href="{{getConfig('config','ststic')}}/blog/css/common.css" />
-	<link rel="stylesheet" href="{{getConfig('config','ststic')}}/blog/css/css.css" />
+	<link rel="stylesheet" href="<?php echo getConfig('config','vendor'); ?>/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="<?php echo getConfig('config','vendor'); ?>/pace/themes/blue/pace-theme-minimal.css" />
+	<link rel="stylesheet" href="<?php echo getConfig('config','ststic'); ?>/blog/css/common.css" />
+	<link rel="stylesheet" href="<?php echo getConfig('config','ststic'); ?>/blog/css/css.css" />
 </head>
 <body>
 	<div class="wapper w14">
@@ -174,7 +174,7 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript" src="{{getConfig('config','ststic')}}/console/js/jquery-1.12.3.min.js"></script>
-	<script type="text/javascript" src="{{getConfig('config','vendor')}}/pace/pace.min.js"></script>
+	<script type="text/javascript" src="<?php echo getConfig('config','ststic'); ?>/console/js/jquery-1.12.3.min.js"></script>
+	<script type="text/javascript" src="<?php echo getConfig('config','vendor'); ?>/pace/pace.min.js"></script>
 </body>
 </html>
