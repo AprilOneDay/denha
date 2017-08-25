@@ -112,6 +112,7 @@ class Index extends denha\Controller
                 $rs = table('Article')->join($articleData, "$articleData.id = $article.id", 'left')->where($map)->find();
 
                 $rs['created'] = date('Y-m-d', $rs['created']);
+                $rs['thumb']   = imgUrl($rs['thumb'], 'blog');
             }
 
             $data = [

@@ -21,7 +21,7 @@
 										<span>缩略图</span>
 									</label>
 									<div class="col-sm-8">
-										<up-img :max-num="3" :images="data.thumb" :path="'blog'"></up-img>
+										<up-img  :imagesOne="data.thumb" :path="'blog'"></up-img>
 									</div>
 								</div>
 								<div class="form-group">

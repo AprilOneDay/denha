@@ -21,7 +21,7 @@ class Upload
                 //检查是否有该文件夹，如果没有就创建，并给予最高权限
                 mkdir($path, 0700, true);
             }
-            $fileName = time() . ".{$type}";
+            $fileName = md5(uniqid('', true)) . ".{$type}";
             $newFile  = $path . $fileName;
 
             if (file_put_contents($newFile, base64_decode(str_replace($match[1], '', $data)))) {

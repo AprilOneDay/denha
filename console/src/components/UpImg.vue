@@ -1,16 +1,17 @@
 <template>
    <div>
-      <input type="file" style="display:none;" @change="upImg" multiple="multiple" >
-      <a id='add' @click="add" class="btn btn-primary pull-left" style="margin-right:15px;" >添加图片</a>
-      <a class="btn btn-primary pull-left" >上传图片</a>
+      <form>
+        <input type="file" style="display:none;" @change="upImg" multiple="multiple" >
+        <a id='add' @click="add" class="btn btn-primary pull-left" style="margin-right:15px;" >添加图片</a>
+      <!-- <a class="btn btn-primary pull-left" >上传图片</a> -->
+      </form>
       <div class="clearfix"></div>
       <div v-if="images.length > 0" style="margin-top:20px;">
          <ul>
             <li v-for="(value,key) in images">
-                <img :src="value" @click='delImage(key)' class="pull-left" />
-               <a href="javascript:;" style="position:absolute;float:left;margin-left:-15px;" @click='delImage(key)'>
-                 
-                  <span class="glyphicon glyphicon-remove"></span>
+              <img :src="value" class="pull-left" />
+              <a href="javascript:;" style="position:relative;float:left;margin-left:-15px;" @click='delImage(key)'>
+                <span class="glyphicon glyphicon-remove"></span>
               </a>
             </li>
             <div class="clearfix"></div>
@@ -27,7 +28,6 @@
     data () {
       return {
         images:[],
-        data:[],
       }
     },
     props: {
@@ -48,14 +48,14 @@
     },
     methods: {
     	add:function(){
+        //重置表单 支持同一个文件多次上传
+        $('input[type=file]').wrap('<form>').closest('form').get(0).reset();
     		$('input[type=file]').trigger('click');
     	},
       upImg:function(e){
          var files = e.target.files || e.dataTransfer.files;
-         if(this.maxNum && this.maxNum >= this.images.length +  files.length){
-            //this.createImage(files);
-         }else{
-            return this.$layer.msg('最多只能传'+this.maxNum+'张图片');
+         if(this.maxNum  && this.maxNum <= this.images.length +  files.length){
+             return this.$layer.msg('最多只能传'+this.maxNum+'张图片');
          }
          this.upServerImg(files);
       },
@@ -66,12 +66,10 @@
           }
           let _this = this; 
           let leng  = file.length;
-          var data  = new Array;
           for(let i=0;i<leng;i++){
               var reader = new FileReader();
               reader.readAsDataURL(file[i]); 
-              reader.onload = function(e){
-                data.push(e.target.result);   
+              reader.onload = function(e){ 
                 //上传图片                                 
                 _this.$http.post(config.data.console+'/common/upload/up_base64_img',{data:e.target.result,path:_this.path}).then(function(reslut){
                     if(reslut.body.status){
@@ -101,12 +99,22 @@
 
       //删除图片
       delImage:function(key){
-        this.images.shift(key);
+        console.log(key);
+        if(this.images.length == 1){
+          this.images = []
+        }else if(key == 0 && this.images.length > 1){
+          this.images.shift();
+        }else{
+          this.images.splice(1,key);
+        }
       }
     },
     watch:{
       imagesOne:function(val){
-         this.images[0] = val;
+        this.images.push(val);
+      },
+      imagesArray:function(val){
+        this.images = val;
       }
 
     },
