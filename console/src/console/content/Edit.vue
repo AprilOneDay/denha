@@ -21,7 +21,7 @@
 										<span>缩略图</span>
 									</label>
 									<div class="col-sm-8">
-										<up-img  v-model="data.thumb" :path="'blog'"></up-img>
+										<up-img  v-model="data.thumb" :max-num="1" :path="'blog'"></up-img>
 									</div>
 								</div>
 								<div class="form-group">
@@ -129,6 +129,7 @@ export default {
     	this.$layer.closeAll();
     },
     comply: function () {
+    	//console.log(this.data);return;
     	this.$layer.loading();
    		this.$http.post(config.data.console+'/article/index/edit',{data:JSON.stringify(this.data)}).then(function(reslut){
    			this.$layer.closeAll('loading');

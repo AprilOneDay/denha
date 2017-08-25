@@ -62,6 +62,7 @@ class Index extends denha\Controller
 
             $data['title']       = (string) $param['title'];
             $data['description'] = (string) $param['description'];
+            $data['thumb']       = !$param['thumb'] ?: (string) ltrim($param['thumb'], substr($param['thumb'], 0, strripos($param['thumb'], '/') + 1));
 
             $data['tag']     = max((int) $param['tag'], 1);
             $data['is_show'] = (int) $param['is_show'];

@@ -6,6 +6,7 @@
       <!-- <a class="btn btn-primary pull-left" >上传图片</a> -->
       </form>
       <div class="clearfix"></div>
+      <!--多图显示-->
       <div v-if="images.length > 0" style="margin-top:20px;">
          <ul>
             <li v-for="(value,key) in images">
@@ -16,6 +17,13 @@
             </li>
             <div class="clearfix"></div>
           </ul>
+      </div>
+      <!--单图显示-->
+      <div v-if="oneImg" style="margin-top:20px;">
+          <img :src="oneImg" class="pull-left" style="width:150px;height:100px;" />
+          <a href="javascript:;" style="position:relative;float:left;margin-left:-15px;" @click='delImage()'>
+            <span class="glyphicon glyphicon-remove"></span>
+          </a>
       </div>
    </div>
 </template>
@@ -28,6 +36,7 @@
     data () {
       return {
         images:[],
+        oneImg:'',
       }
     },
     props: {
@@ -50,7 +59,7 @@
     	},
       upImg:function(e){
          var files = e.target.files || e.dataTransfer.files;
-         if(this.maxNum  && this.maxNum <= this.images.length +  files.length){
+         if(this.maxNum  && this.maxNum < this.images.length +  files.length){
              return this.$layer.msg('最多只能传'+this.maxNum+'张图片');
          }
          this.upServerImg(files);
@@ -69,12 +78,15 @@
                 //上传图片                                 
                 _this.$http.post(config.data.console+'/common/upload/up_base64_img',{data:e.target.result,path:_this.path}).then(function(reslut){
                     if(reslut.body.status){
+                      if(this.maxNum == 1){
+                        _this.oneImg = reslut.body.data;
+                      }else{
                         _this.images.push(reslut.body.data);
+                      }
                     }
                 })
               };                 
           }
-
       },
       //预览图片
       createImage:function(file) {
@@ -93,25 +105,37 @@
           }                      
       },
       //删除图片
-      delImage:function(key){
-        if(this.images.length == 1){
-          this.images = []
-        }else if(key == 0 && this.images.length > 1){
-          this.images.shift();
-        }else{
-          this.images.splice(1,key);
+      delImage:function(key = 0){
+        if(this.maxNum == 1){
+          this.oneImg = '';
         }
+        else{
+          if(this.images.length == 1){
+            this.images = []
+          }else if(key == 0 && this.images.length > 1){
+            this.images.shift();
+          }else{
+            this.images.splice(1,key);
+          }
+        }
+        
       }
     },
     watch:{
       value:function(val){
         var type = Object.prototype.toString.call(val);
         if(type == '[object String]'){
-          this.images.push(val);
+          this.oneImg = val;
         }else{
           this.images = val;
         }
       },
+      images:function(val) {
+          this.$emit('input', val);
+      },
+      oneImg:function(val) {
+          this.$emit('input', val);
+      }
     },
   }
 </script>
