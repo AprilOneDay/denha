@@ -186,22 +186,28 @@ function table($name, $isTablepre = true)
     return $do;
 }
 
-function dao($name)
+function dao($name, $app = '')
 {
     static $_dao = array();
 
-    $class = 'Dao\\' . $name;
-    if (isset($_dao[$name])) {
-        return $_dao[$name];
+    if (!$app) {
+        $class = 'app\\tools\\dao\\' . $name;
     } else {
-        if (class_exists($class)) {
-            $_dao[$name] = new $class();
-            return $_dao[$name];
-        }
-
+        $class = 'app\\' . $app . '\\tools\\dao' . $name;
     }
 
-    die('Dao方法：' . $name . '不存在');
+    $value = md5($class);
+
+    if (isset($_dao[$value])) {
+        return $_dao[$value];
+    } else {
+        if (class_exists($class)) {
+            $_dao[$value] = new $class();
+            return $_dao[$value];
+        }
+    }
+
+    die('Dao方法：' . $class . '不存在');
 }
 
 //包含文件
@@ -317,6 +323,16 @@ function getCookie($name, $encode = false)
     }
 
     return $data;
+}
+
+//获取上传图片地址
+function imgUrl($name, $path = '', $size = 0)
+{
+    if ($path) {
+        return URL . '/uploadfile/' . $path . '/' . $name;
+    } else {
+        return URL . '/uploadfile/' . $name;
+    }
 }
 
 //保存Session

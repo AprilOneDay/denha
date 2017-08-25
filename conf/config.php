@@ -2,6 +2,7 @@
 return [
     'ststic'       => URL . '/ststic',
     'vendor'       => URL . '/vendor',
+    'uploadfile'   => URL . '/uploadfile/',
 
     //Cookie配置
     'cookieDomain' => '', //Cookie 作用域

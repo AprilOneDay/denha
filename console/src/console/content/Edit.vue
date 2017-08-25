@@ -21,7 +21,7 @@
 										<span>缩略图</span>
 									</label>
 									<div class="col-sm-8">
-										<up-img :max-num="3"></up-img>
+										<up-img :max-num="3" :images="data.thumb" :path="'blog'"></up-img>
 									</div>
 								</div>
 								<div class="form-group">
@@ -81,7 +81,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" class="btn btn-primary" @click="comply">确定</button>
+				<a type="submit" class="btn btn-primary" @click="comply">确定</a>
 				<button type="button" class="btn btn-default" id="btn-close"@click="btnClose">取消</button>
 			</div>
 		</div>

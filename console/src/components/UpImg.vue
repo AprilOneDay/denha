@@ -1,8 +1,10 @@
 <template>
    <div>
       <input type="file" style="display:none;" @change="upImg" multiple="multiple" >
-      <p id='add' @click="add" class="form-control-static" >添加图片</p>
-      <div v-if="images.length > 0">
+      <a id='add' @click="add" class="btn btn-primary pull-left" style="margin-right:15px;" >添加图片</a>
+      <a class="btn btn-primary pull-left" >上传图片</a>
+      <div class="clearfix"></div>
+      <div v-if="images.length > 0" style="margin-top:20px;">
          <ul>
             <li v-for="(value,key) in images">
                 <img :src="value" @click='delImage(key)' class="pull-left" />
@@ -25,12 +27,22 @@
     data () {
       return {
         images:[],
+        data:[],
       }
     },
     props: {
+      path:{
+        type:String
+      },
       maxNum: {
         type: Number
       },
+      imagesOne: {
+        type: String
+      },
+      imagesArray:{
+        type:Array
+      }
     },
     mounted:function() {
     },
@@ -41,19 +53,39 @@
       upImg:function(e){
          var files = e.target.files || e.dataTransfer.files;
          if(this.maxNum && this.maxNum >= this.images.length +  files.length){
-            this.createImage(files);
+            //this.createImage(files);
          }else{
             return this.$layer.msg('最多只能传'+this.maxNum+'张图片');
          }
+         this.upServerImg(files);
+      },
+      upServerImg:function(file){
+          if(typeof FileReader==='undefined'){
+              this.$layer.msg('您的浏览器不支持图片上传，请升级您的浏览器');
+              return false;
+          }
+          let _this = this; 
+          let leng  = file.length;
+          var data  = new Array;
+          for(let i=0;i<leng;i++){
+              var reader = new FileReader();
+              reader.readAsDataURL(file[i]); 
+              reader.onload = function(e){
+                data.push(e.target.result);   
+                //上传图片                                 
+                _this.$http.post(config.data.console+'/common/upload/up_base64_img',{data:e.target.result,path:_this.path}).then(function(reslut){
+                    if(reslut.body.status){
+                        _this.images.push(reslut.body.data);
+                    }
+                })
+              };                 
+          }
 
-         console.log(this.images.length);
-         console.log(this.maxNum);
-         console.log(files.length);
       },
       //预览图片
       createImage:function(file) {
-          if(typeof FileReader==='undefined'){
-              alert('您的浏览器不支持图片上传，请升级您的浏览器');
+        if(typeof FileReader==='undefined'){
+              this.$layer.msg('您的浏览器不支持图片上传，请升级您的浏览器');
               return false;
           }
           let _this = this; 
@@ -64,14 +96,19 @@
               reader.onload =function(e){
                 _this.images.push(e.target.result);                                    
               };                 
-          }
-          console.log(_this.images);                   
+          }                      
       },
+
       //删除图片
       delImage:function(key){
         this.images.shift(key);
       }
     },
-    watch:{},
+    watch:{
+      imagesOne:function(val){
+         this.images[0] = val;
+      }
+
+    },
   }
 </script>
