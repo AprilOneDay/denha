@@ -37,15 +37,11 @@
       maxNum: {
         type: Number
       },
-      imagesOne: {
-        type: String
+      value: {
+        default:false
       },
-      imagesArray:{
-        type:Array
-      }
     },
-    mounted:function() {
-    },
+    mounted:function() {},
     methods: {
     	add:function(){
         //重置表单 支持同一个文件多次上传
@@ -96,10 +92,8 @@
               };                 
           }                      
       },
-
       //删除图片
       delImage:function(key){
-        console.log(key);
         if(this.images.length == 1){
           this.images = []
         }else if(key == 0 && this.images.length > 1){
@@ -110,13 +104,14 @@
       }
     },
     watch:{
-      imagesOne:function(val){
-        this.images.push(val);
+      value:function(val){
+        var type = Object.prototype.toString.call(val);
+        if(type == '[object String]'){
+          this.images.push(val);
+        }else{
+          this.images = val;
+        }
       },
-      imagesArray:function(val){
-        this.images = val;
-      }
-
     },
   }
 </script>
