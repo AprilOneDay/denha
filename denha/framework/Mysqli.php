@@ -454,15 +454,18 @@ class Mysqli
     {
         $newField = '';
         if (is_array($data)) {
-            $i = 0;
             foreach ($data as $k => $v) {
-                if ($i == 0) {
-                    $newField .= '`' . $k . '` = \'' . $v . '\'';
+                if (is_array($v)) {
+                    if ($v[0] == 'add') {
+                        $newField .= '`' . $k . '`  = `' . $k . '` + ' . $v[1] . ',';
+                    } elseif ($v[0] == 'less') {
+                        $newField .= '`' . $k . '`  = `' . $k . '` - ' . $v[1] . ',';
+                    }
                 } else {
-                    $newField .= ",`" . $k . '`=\'' . $v . '\'';
+                    $newField .= '`' . $k . '`=\'' . $v . '\',';
                 }
-                $i++;
             }
+            $newField = substr($newField, 0, -1);
         } else {
             $newField = $field;
         }

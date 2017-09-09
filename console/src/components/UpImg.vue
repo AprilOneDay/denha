@@ -1,9 +1,9 @@
 <template>
    <div>
       <form>
-        <input type="file" style="display:none;" @change="upImg" multiple="multiple" >
+        <input type="file" style="display:none;" @change="upImg" multiple="multiple">
         <a id='add' @click="add" class="btn btn-primary pull-left" style="margin-right:15px;" >添加图片</a>
-      <!-- <a class="btn btn-primary pull-left" >上传图片</a> -->
+        <!-- <a class="btn btn-primary pull-left" >上传图片</a> -->
       </form>
       <div class="clearfix"></div>
       <!--多图显示-->
@@ -50,7 +50,10 @@
         default:false
       },
     },
-    mounted:function() {},
+    mounted:function() {
+      console.log(this.oneImg);
+      console.log(this.images);
+    },
     methods: {
     	add:function(){
         //重置表单 支持同一个文件多次上传
@@ -118,12 +121,14 @@
             this.images.splice(1,key);
           }
         }
-        
+        console.log('1:'+ this.oneImg);
+         console.log('2:'+ this.images);
       }
     },
     watch:{
       value:function(val){
         var type = Object.prototype.toString.call(val);
+        console.log(val);
         if(type == '[object String]'){
           this.oneImg = val;
         }else{
@@ -131,10 +136,12 @@
         }
       },
       images:function(val) {
-          this.$emit('input', val);
+        console.log('1:'+val);
+        this.$emit('input', val);
       },
       oneImg:function(val) {
-          this.$emit('input', val);
+        console.log('2:'+val);
+        this.$emit('input', val);
       }
     },
   }

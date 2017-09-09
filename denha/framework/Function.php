@@ -328,11 +328,26 @@ function getCookie($name, $encode = false)
 //获取上传图片地址
 function imgUrl($name, $path = '', $size = 0)
 {
-    if ($path) {
-        return URL . '/uploadfile/' . $path . '/' . $name;
+    if (!$name) {
+        $url = URL . '/ststic/console/images/nd.jpg';
     } else {
-        return URL . '/uploadfile/' . $name;
+        if ($path) {
+            $url = URL . '/uploadfile/' . $path . '/' . $name;
+        } else {
+            $url = URL . '/uploadfile/' . $name;
+        }
+
+        if (!file_get_contents($url)) {
+            $url = URL . '/ststic/console/images/nd.jpg';
+        }
     }
+
+    return $url;
+}
+
+function imgFetch($path)
+{
+    (!$path && stripos($path, 'nd.jpg') === false) ?: (string) ltrim($param['thumb'], substr($param['thumb'], 0, strripos($param['thumb'], '/') + 1));
 }
 
 //保存Session
@@ -364,7 +379,7 @@ function issetSession($name)
     if (isset($_SESSION[$name])) {
         return true;
     }
-
+    session_write_close(); //关闭session
     return false;
 }
 
@@ -389,6 +404,25 @@ function delSession($name)
     }
     session_write_close(); //关闭session
     return true;
+}
+
+/**
+ * 编码转换
+ * @date   2017-08-27T16:07:41+0800
+ * @author ChenMingjiang
+ * @param  string                   $content  [需要转码的内容]
+ * @param  string                   $mbEncode [需要转换成的编码]
+ * @return [type]                             [description]
+ */
+function mbDetectEncoding($content = '', $mbEncode = "UTF-8")
+{
+    $encode = mb_detect_encoding($content, array("ASCII", "UTF-8", "GB2312", "GBK", "BIG5", "EUC-CN"));
+    if ($encode != $mbEncode) {
+        $encode  = $encode == "EUC-CN" ? "GB2312" : $encode;
+        $content = mb_convert_encoding($content, $mbEncode, $encode);
+    }
+
+    return $content;
 }
 
 /**

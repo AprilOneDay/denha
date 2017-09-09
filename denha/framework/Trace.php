@@ -51,7 +51,8 @@ class Trace
     //捕获Notice错误信息
     public static function catchNotice($level, $message, $file, $line)
     {
-        if ($level) {
+        //var_dump($level);die;
+        if ($level && $level != 2048) {
             $info = self::$traceErrorType[$level] . ' : ' . $message . ' from ' . $file . ' in ' . $line;
             self::addErrorInfo($info);
         }

@@ -3,10 +3,10 @@ body{ background: #f0f2f7; }
 .top{ border-bottom: 1px #ccc solid; line-height: 35px; }
 .top a{ padding-left: 5px; }
 
-.left .news li{ border-bottom: 1px solid #ccc; padding-bottom: 20px; }
-.left .news li span{ line-height: 45px; font-size: 21px; font-weight: bolder;  display: block; }
+.left .news li{ border-bottom: 1px solid #ccc;  }
+.left .news li span{ line-height: 2.5rem; font-size: 2rem; font-weight: bolder;  display: block;  margin-bottom:0.5rem; margin-top: 0.5rem;}
 .left .news li .news-content img{ width: 150px; height: 100px; float: left; margin-right: 15px; }
-.left .news li .news-content .desc p{ min-height: 70px; } 
+.left .news li .news-content .desc p{ min-height: 6rem; line-height: 1.8rem } 
 .left .news li .news-content dl { float: left; padding-right: 10px;  }
 .left .news li .news-content dl i{margin-right: 5px;}
 

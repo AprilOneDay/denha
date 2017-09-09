@@ -35,7 +35,9 @@ class Index extends denha\Controller
         }
         $total = table('Article')->where($map)->count();
         $pages = new denha\pages($total, $param['pageNo'], $param['pageSize']);
-        $list  = table('Article')->where($map)->limit($offer, $param['pageSize'])->find('array');
+        $list  = table('Article')->where($map)->limit($offer, $param['pageSize'])->order('id desc')->find('array');
+
+        //echo table('Article')->getSql();die;
 
         $data = [
             'data'  => [
@@ -62,7 +64,7 @@ class Index extends denha\Controller
 
             $data['title']       = (string) $param['title'];
             $data['description'] = (string) $param['description'];
-            $data['thumb']       = !$param['thumb'] ?: (string) ltrim($param['thumb'], substr($param['thumb'], 0, strripos($param['thumb'], '/') + 1));
+            $data['thumb']       = !($param['thumb'] && stripos($param['thumb'], 'nd.jpg') === false) ? '' : next(pathinfo($param['thumb']));
 
             $data['tag']     = max((int) $param['tag'], 1);
             $data['is_show'] = (int) $param['is_show'];
@@ -78,7 +80,7 @@ class Index extends denha\Controller
             }
 
             if (!$data['description']) {
-                $data['description'] = mb_substr(strip_tags($dataContent['content']), 0, 255, 'UTF-8');
+                $data['description'] = mb_substr(str_replace(' ', '&nbsp', strip_tags($dataContent['content'])), 0, 255, 'UTF-8');
             }
 
             if ($param['id']) {
