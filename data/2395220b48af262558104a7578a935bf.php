@@ -2,9 +2,9 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>个人博客</title>
+	<title>个人博客 - <?php echo $data['title']; ?></title>
 	<meta name="keywords" content=""/>
-	<meta name="description" content=""/>
+	<meta name="description" content="<?php echo $data['description']; ?>"/>
 	<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
 	<link rel="stylesheet" href="<?php echo getConfig('config','vendor'); ?>/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="<?php echo getConfig('config','vendor'); ?>/bootstrap/css/bootstrap.min.css" />
@@ -23,43 +23,12 @@
 		<div class="clearfix"></div>
 		<div class="index-content container-fluid">
 			<div class="left col-md-9 col-xs-12">
-				<?php if($list){ ?>
-				<div class="news">
-					<ul>
-						<?php if($list){ foreach($list as $key => $value){ ?>
-						<li>
-							<span>
-								<label>[<?php echo $tagCopy[$value['tag']]; ?>]</label> 
-								<a href="<?php echo url('detail',array('id'=>$value['id'])); ?>" title="<?php echo $value['title']; ?>"><?php echo $value['title']; ?></a>
-							</span>
-							<div class="news-content">
-								<?php if($value['thumb']){ ?>
-								<a href="<?php echo url('detail',array('id'=>$value['id'])); ?>" title="<?php echo $value['title']; ?>">
-									<img src="<?php echo imgUrl($value['thumb'],'blog'); ?>" class="hidden-sm hidden-xs">
-								</a>
-								<?php } ?>
-								<div class="desc pull-left">
-									<p ><?php echo $value['description']; ?></p>
-									<dt>
-										<dl><i class="fa fa-eye"></i> 热度 555</dl>
-										<dl><i class="fa fa-fire"></i> 评论 5</dl>
-										<dl class="hidden-sm hidden-xs"><i class="fa fa-clock-o"></i> 时间 <?php echo date('Y-m-d',$value['created']); ?></dl>
-									</dt>
-								</div>
-							</div>
-							<div class="clearfix"></div>	
-						</li>
-						<?php }} ?>
-					</ul>
+				<div class="news-content">
+					<h2><?php echo $data['title']; ?></h2>
+					<div class="content">
+						<?php echo $data['content']; ?>
+					</div>
 				</div>
-				<?php }else{ ?>
-				<div class="nd-news">
-					<p>暂无相关内容</p>
-				</div>
-				<?php } ?>	
-				<nav aria-label="Page navigation">
-				  <?php echo $page; ?>
-				</nav>
 			</div>
 			<div class="right col-md-3 hidden-sm hidden-xs">
 				<form action="<?php echo url('index'); ?>" id="form">

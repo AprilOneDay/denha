@@ -44,7 +44,7 @@ class Controller
 
         if (!$peg) {
             if (!$viewPath) {
-                $path = APP_PATH . APP . DS . 'view' . DS . MODULE . DS . 'index.html';
+                $path = APP_PATH . APP . DS . 'view' . DS . MODULE . DS . ACTION . '.html';
             }
             //绝对路径
             elseif (stripos($viewPath, '/') === 0) {

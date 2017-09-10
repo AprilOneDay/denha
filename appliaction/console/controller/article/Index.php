@@ -8,10 +8,11 @@ class Index extends denha\Controller
 
     public function index()
     {
-        $param['field']   = get('field', 'text', 'title');
-        $param['keyword'] = get('keyword', 'text', '');
-        $param['tag']     = get('tag', 'intval', 0);
-        $param['is_show'] = get('is_show', 'text', '');
+        $param['field']        = get('field', 'text', 'title');
+        $param['keyword']      = get('keyword', 'text', '');
+        $param['tag']          = get('tag', 'intval', 0);
+        $param['is_show']      = get('is_show', 'text', '');
+        $param['is_recommend'] = get('is_recommend', 'text', '');
 
         $param['pageNo']   = get('pageNo', 'intval', 1);
         $param['pageSize'] = get('pageSize', 'intval', 25);
@@ -22,6 +23,10 @@ class Index extends denha\Controller
 
         if ($param['tag']) {
             $map['tag'] = $param['tag'];
+        }
+
+        if ($param['is_recommend'] != '') {
+            $map['is_recommend'] = $param['is_recommend'];
         }
 
         if ($param['is_show'] != '') {
@@ -46,8 +51,9 @@ class Index extends denha\Controller
                 'pages' => $pages->pages(),
             ],
             'other' => [
-                'tag'        => getVar('tags', 'console.article'),
-                'isShowCopy' => [0 => '隐藏', 1 => '显示'],
+                'tag'             => getVar('tags', 'console.article'),
+                'isShowCopy'      => [0 => '隐藏', 1 => '显示'],
+                'isRecommendCopy' => [1 => '推荐', 0 => '不推荐'],
             ],
             'sql'   => table('Article')->getSql(),
         ];
@@ -66,8 +72,9 @@ class Index extends denha\Controller
             $data['description'] = (string) $param['description'];
             $data['thumb']       = !($param['thumb'] && stripos($param['thumb'], 'nd.jpg') === false) ? '' : next(pathinfo($param['thumb']));
 
-            $data['tag']     = max((int) $param['tag'], 1);
-            $data['is_show'] = (int) $param['is_show'];
+            $data['tag']          = max((int) $param['tag'], 1);
+            $data['is_show']      = (int) $param['is_show'];
+            $data['is_recommend'] = (int) $param['is_recommend'];
 
             $dataContent['content'] = (string) $param['content'];
 

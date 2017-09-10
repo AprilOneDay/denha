@@ -3,8 +3,8 @@ namespace denha;
 
 class Template
 {
-    public $left  = '{{';
-    public $right = '}}';
+    public $left  = '{';
+    public $right = '}';
     public $viewPath;
     public $loadPath;
     public $content;
@@ -23,11 +23,12 @@ class Template
         $this->stampIf();
         $this->stampForeach();
 
-        //{$xxx}
+        //{$xxx} be echo $xxx;
         $this->content = preg_replace('/' . $this->left . '\$(.*?)' . $this->right . '/is', '<?php echo $\1; ?>', $this->content);
-        //??$xx
+        //??$xx  be !isset($xx) ?: $xx
         $this->content = preg_replace('/' . $this->left . '\?\?(.*?)' . $this->right . '/is', '<?php echo !isset(\1) ?: \1; ?>', $this->content);
-        $this->content = preg_replace('/' . $this->left . '(.*?)' . $this->right . '/', '<?php echo \1; ?>', $this->content);
+        //替换php函数 {F:XXX}  be echo XXX;
+        $this->content = preg_replace('/' . $this->left . 'F:(.*?)' . $this->right . '/', '<?php echo \1; ?>', $this->content);
 
         $this->saveFile();
 
@@ -46,21 +47,23 @@ class Template
 
     public function stampInclude()
     {
-        $regular = '#' . $this->left . 'include\s[\'"](.*?)[\'"](.*?)' . $this->right . '#is';
+        $regular = '#' . $this->left . 'include\s(.*?)' . $this->right . '#is';
         preg_match_all($regular, $this->content, $matches);
         if ($matches) {
             foreach ($matches[1] as $key => $value) {
+                $value = trim(str_replace('/', DS, $value));
                 if (!$value) {
-                    $path = VIEW_PATH . CONTROLLER . '/index.html';
+                    $path = APP_PATH . APP . DS . 'view' . DS . CONTROLLER . DS . 'index.html';
                 }
-                //绝对路径
-                elseif (stripos($value, '/') === 0) {
-                    $path = VIEW_PATH . substr($value, 1) . '.html';
+                //绝对路径 appliaction目录开始
+                elseif (stripos($value, DS) === 0) {
+                    $path = APP_PATH . APP . DS . 'view' . $value . '.html';
                 }
                 //相对路径
                 else {
-                    $path = VIEW_PATH . CONTROLLER . '/' . $value . '.html';
+                    $path = APP_PATH . APP . DS . 'view' . DS . CONTROLLER . DS . $value . '.html';
                 }
+
                 if (is_file($path)) {
                     $file    = fopen($path, 'r');
                     $content = fread($file, filesize($path));

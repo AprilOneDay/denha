@@ -14,7 +14,7 @@ class Pages
     public function __construct($total = 0, $pageNo = '1', $pageSize = '20', $pageUrl = '', $showPageFigure = 4)
     {
         $this->total          = $total ? $total : $this->total;
-        $this->pageNo         = $pageNo ? $pageNo : $this->pageNo;
+        $this->pageNo         = $pageNo ? max($pageNo, 1) : max($this->pageNo, 1);
         $this->pageSize       = $pageSize ? $pageSize : $this->pageSize;
         $this->pageUrl        = $pageUrl ? $pageUrl : $this->pageUrl;
         $this->showPageFigure = $showPageFigure ? $showPageFigure : $this->showPageFigure;
@@ -54,11 +54,13 @@ class Pages
             $listTmp[] = $i;
         }
 
+        $this->pageList = $listTmp;
+
         $data['pageNo']   = $this->pageNo;
         $data['pageSize'] = $this->pageSize;
         $data['allPage']  = $this->allPage;
         $data['pageList'] = $listTmp;
-        $data['limit']    = ($this->pageNo - 1) * $this->pageSize;
+        $data['limit']    = max(($this->pageNo + 1), 0) * $this->pageSize;
         $data['pageUrl']  = $this->pageUrl;
 
         return $data;
@@ -67,10 +69,12 @@ class Pages
 
     public function loadConsole()
     {
+        $this->pages();
         if ($this->allPage > 1) {
-            $this->pageUrl = $this->pageUrl . '&pageNo=';
             if (stripos($this->pageUrl, '?') === false) {
                 $this->pageUrl = $this->pageUrl . '?pageNo=';
+            } else {
+                $this->pageUrl = $this->pageUrl . '&pageNo=';
             }
 
             $pages = '<div class="pull-right page-box" pages-data="pages" param-data="param" page-function="getPageList()">' . "\r\n";
@@ -98,7 +102,6 @@ class Pages
             $pages .= '<button class="btn btn-default" type="button" >GO</button>' . "\r\n";
             $pages .= '</span>' . "\r\n";
             $pages .= '</div>' . "\r\n";
-            $pages .= '</div>' . "\r\n";
 
             return $pages;
         }
@@ -106,15 +109,17 @@ class Pages
 
     public function loadPc()
     {
+        $this->pages();
         if ($this->allPage > 1) {
-            $this->pageUrl = $this->pageUrl . '&pageNo=';
             if (stripos($this->pageUrl, '?') === false) {
                 $this->pageUrl = $this->pageUrl . '?pageNo=';
+            } else {
+                $this->pageUrl = $this->pageUrl . '&pageNo=';
             }
 
             $pages = '<div class="pull-right page-box" pages-data="pages" param-data="param" page-function="getPageList()">' . "\r\n";
             $pages .= '<div class="pagination-info">当前' . $this->pageNo . ' - ' . ($this->pageNo * $this->pageSize) . '/' . ($this->allPage * $this->pageSize) . ' 条</div>' . "\r\n";
-            $pages .= '<ul class="pagination" >' . "\r\n";
+            $pages .= '<ul class="pagination hidden-sm hidden-xs" >' . "\r\n";
             if ($this->pageNo > $this->showPageFigure) {
                 $pages .= '<li><a href="' . $this->pageUrl . '1">«</a></li>' . "\r\n";
             }
@@ -134,7 +139,6 @@ class Pages
             $pages .= '</ul>' . "\r\n";
             $pages .= '<span class="pagination-goto">' . "\r\n";
             $pages .= '</span>' . "\r\n";
-            $pages .= '</div>' . "\r\n";
             $pages .= '</div>' . "\r\n";
 
             return $pages;

@@ -63,6 +63,19 @@
 									</div>
 								</div>
 								<div class="form-group">
+									<label class="control-label col-sm-3">推荐排行榜：</label>
+									<div class="radio-inline">
+										<label>
+											<input type="radio" v-model="data.is_recommend"  value="1"> 推荐
+										</label>
+									</div>
+									<div class="radio-inline">
+										<label >
+											<input type="radio" v-model="data.is_recommend"  value="0"> 不推荐
+										</label>
+									</div>
+								</div>
+								<div class="form-group">
 									<label class="control-label col-sm-3">显示状态：</label>
 									<div class="radio-inline">
 										<label>
