@@ -6,6 +6,40 @@ class Route
     public static $path;
     public static $class;
 
+    //app 路由结构
+    //v1/user/index/index/2/ be appliaction/app/controller/v1/user/Index_2.php 中 index
+    public static function app()
+    {
+        $uri   = self::parseUri();
+        $array = explode('/', $uri);
+
+        if (count($array) > 4) {
+            define('MODULE', $array[1]);
+            define('CONTROLLER', $array[2]);
+
+            //index方法 默认
+            if (is_numeric($array[3])) {
+                define('ACTION', 'index');
+            } else {
+                define('ACTION', $array[3]);
+            }
+
+            self::$path  = APP . DS;
+            self::$class = 'app\\' . APP . '\\' . 'controller\\' . $array[0] . '\\' . parsename(MODULE, false) . '\\' . parsename(CONTROLLER, true);
+
+            //切换小版本
+            if (is_numeric($array[3])) {
+                self::$class .= '_' . $array[3];
+            } elseif (is_numeric($array[4])) {
+                self::$class .= '_' . $array[4];
+            }
+
+            //print_r($array);
+            //print_r(self::$class);die;
+        }
+
+    }
+
     public static function mca()
     {
         if (!isset($_GET['module']) && isset($_SERVER['SCRIPT_NAME']) && isset($_SERVER['REQUEST_URI'])) {
