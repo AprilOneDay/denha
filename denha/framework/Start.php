@@ -52,7 +52,7 @@ class Start
         $action = lcfirst(parsename(ACTION, 1));
 
         if (!method_exists($object, $action)) {
-            throw new Exception(CONTROLLER . 'CONTROLLER NOT FIND [ ' . ACTION . ' ] ACTION');
+            throw new Exception(parsename(CONTROLLER, true) . ' CONTROLLER NOT FIND [ ' . ACTION . ' ] ACTION');
         }
 
         $action = $object->$action();

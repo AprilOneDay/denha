@@ -85,6 +85,17 @@ class Controller
         die(json_encode($value));
     }
 
+    protected function appReturn($value)
+    {
+        $array = array(
+            'code'   => 200,
+            'status' => true,
+            'data'   => array(),
+        );
+        $value = array_merge($array, $value);
+        die(json_encode($value));
+    }
+
     /**
      * jsonpReturn返回
      * @date   2017-08-07T10:41:59+0800

@@ -13,7 +13,7 @@ class Route
         $uri   = self::parseUri();
         $array = explode('/', $uri);
 
-        if (count($array) > 4) {
+        if (count($array) >= 3) {
             define('MODULE', $array[1]);
             define('CONTROLLER', $array[2]);
 

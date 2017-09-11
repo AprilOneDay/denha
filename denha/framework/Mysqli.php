@@ -32,7 +32,11 @@ class Mysqli
         if ($dbConfig) {
             $this->dbConfig = $dbConfig;
         } else {
-            $this->dbConfig = getConfig('db');
+            if (getConfig(APP . '.db')) {
+                $this->dbConfig = getConfig(APP . '.db');
+            } else {
+                $this->dbConfig = getConfig('db');
+            }
         }
 
         $this->tablepre = $this->dbConfig['db_prefix'];
@@ -42,12 +46,7 @@ class Mysqli
         }
 
         $this->link = $this->openMysql();
-
         mysqli_query($this->link, 'set names utf8');
-
-        if (!$this->link) {
-            throw new Exception('连接数据库失败，可能数据库密码不对或数据库服务器出错！');
-        }
     }
 
     //单例实例化 避免重复New暂用资源
@@ -67,8 +66,20 @@ class Mysqli
      */
     public function openMysql()
     {
-        $rest = mysqli_connect($this->dbConfig['db_host'], $this->dbConfig['db_user'], $this->dbConfig['db_pwd'], $this->dbConfig['db_name']);
-        return $rest;
+        try {
+            $res = mysqli_connect($this->dbConfig['db_host'], $this->dbConfig['db_user'], $this->dbConfig['db_pwd'], $this->dbConfig['db_name']);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+
+        if (!$res) {
+            if (!$this->link) {
+                throw new Exception('连接数据库失败，可能数据库密码不对或数据库服务器出错！');
+            }
+
+        }
+
+        return $res;
     }
 
     public function getSql()
@@ -131,6 +142,8 @@ class Mysqli
                         $newWhere .= $k . '  ' . $v[0] . ' (' . $v[1] . ') AND ';
                     } elseif ($v[0] == 'between') {
                         $newWhere .= $k . '  ' . $v[0] . ' \'' . $v[1] . '\' AND \'' . $v[2] . '\'';
+                    } elseif ($v[0] == 'or') {
+                        $newWhere .= $k . ' = \'' . $v[1] . '\' OR ';
                     }
                 } elseif ($k == '_string') {
                     $newWhere .= $v;

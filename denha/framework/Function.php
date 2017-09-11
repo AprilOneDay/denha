@@ -45,23 +45,6 @@ function parseName($name, $type = false)
     }
 }
 
-/**
- * 根据PHP各种类型变量生成唯一标识号
- * @param mixed $mix 变量
- * @return string
- */
-function toGuidString($mix)
-{
-    if (is_object($mix)) {
-        return spl_object_hash($mix);
-    } elseif (is_resource($mix)) {
-        $mix = get_resource_type($mix) . strval($mix);
-    } else {
-        $mix = serialize($mix);
-    }
-    return md5($mix);
-}
-
 //POST过滤
 function post($name, $type = '', $default = '')
 {
@@ -482,6 +465,23 @@ function auth($string, $operation = 'ENCODE', $key = '', $expiry = 0)
     } else {
         return $keyc . rtrim(strtr(base64_encode($result), '+/', '-_'), '=');
     }
+}
+
+/**
+ * 根据PHP各种类型变量生成唯一标识号
+ * @param mixed $mix 变量
+ * @return string
+ */
+function toGuidString($mix)
+{
+    if (is_object($mix)) {
+        return spl_object_hash($mix);
+    } elseif (is_resource($mix)) {
+        $mix = get_resource_type($mix) . strval($mix);
+    } else {
+        $mix = serialize($mix);
+    }
+    return md5($mix);
 }
 
 //唯一id
