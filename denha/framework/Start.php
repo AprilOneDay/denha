@@ -52,8 +52,10 @@ class Start
         $action = lcfirst(parsename(ACTION, 1));
 
         if (!method_exists($object, $action)) {
-            throw new Exception(parsename(CONTROLLER, true) . ' CONTROLLER NOT FIND [ ' . ACTION . ' ] ACTION');
+            throw new Exception('Class : ' . Route::$class . ' NOT FIND [ ' . $action . ' ] ACTION');
         }
+
+        get('api') == false ?: self::apiDoc(Route::$class, $action);
 
         $action = $object->$action();
 
@@ -88,6 +90,18 @@ class Start
             $_COOKIE  = array_map('GSS', $_COOKIE);
             $_REQUEST = array_map('GSS', $_REQUEST);
         }
+    }
+
+    //自动创建文件夹
+    private static function apiDoc($class, $action)
+    {
+        $doc = new \ReflectionMethod($class, $action);
+        $tmp = $doc->getDocComment();
+
+        /* $flag = preg_match_all('/@cc(.*?)\n/', $tmp, $tmp);
+        $tmp  = trim($tmp[1][0]);
+        $tmp  = $tmp != '' ? $tmp : '无';*/
+        var_dump($doc);
     }
 
     //自动创建文件夹

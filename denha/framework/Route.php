@@ -30,7 +30,7 @@ class Route
             //切换小版本
             if (is_numeric($array[3])) {
                 self::$class .= '_' . $array[3];
-            } elseif (is_numeric($array[4])) {
+            } elseif (isset($array[4]) && is_numeric($array[4])) {
                 self::$class .= '_' . $array[4];
             }
 

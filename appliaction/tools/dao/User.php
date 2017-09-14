@@ -26,6 +26,10 @@ class User
             return array('status' => false, 'msg' => '两次密码不一致');
         }
 
+        if (!preg_match("/^1[34578]{1}\d{9}$/", $data['mobile'])) {
+            return array('请输入正确的电话号码');
+        }
+
         if (!$isAgree) {
             return array('status' => false, 'msg' => '请勾选服务协议');
         }
@@ -41,13 +45,17 @@ class User
         }
 
         $data['salt']     = rand(10000, 99999);
-        $data['password'] = md5($password . $data['salt']);
+        $data['password'] = md5($data['password'] . $data['salt']);
         $data['created']  = TIME;
         $data['ip']       = getIP();
 
         $reslut = table('User')->add($data);
         if (!$reslut) {
             return array('status' => false, 'msg' => '注册失败');
+        }
+
+        if ($data['type'] == 2) {
+            table('UserShop')->add(array('uid' => $reslut, 'name' => $data['username']));
         }
 
         return array('status' => true, 'msg' => '注册成功');
@@ -66,7 +74,7 @@ class User
 
         $map['mobile']   = array('or', $account);
         $map['username'] = $account;
-        $user            = table('User')->where($map)->field('password,salt,id')->find();
+        $user            = table('User')->where($map)->field('type,password,salt,id')->find();
         if (!$user) {
             return array('status' => false, 'msg' => '该用户不存在');
         }
@@ -77,12 +85,15 @@ class User
 
         $data['token']    = md5(TIME . $user['salt']);
         $data['time_out'] = TIME + 3600 * 24 * 2;
+        $data['type']     = $user['type'];
 
         $reslut = table('User')->where(array('id' => $user['id']))->save($data);
+
         if (!$reslut) {
             return array('status' => false, 'msg' => '登录失败');
         }
 
-        return array('status' => false, 'msg' => '登录失败', 'data' => $data);
+        return array('status' => true, 'msg' => '登录成功', 'data' => $data);
     }
+
 }

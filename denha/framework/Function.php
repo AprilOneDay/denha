@@ -134,6 +134,25 @@ function get($name, $type = '', $default = '')
     return $data;
 }
 
+function files($name)
+{
+    if (isset($_FILES[$name])) {
+        if (is_array($_FILES[$name]['name'])) {
+            foreach ($_FILES[$name] as $key => $value) {
+                foreach ($value as $k => $v) {
+                    $data[$k][$key] = $v;
+                }
+            }
+        } else {
+            $data = $_FILES[$name];
+        }
+    } else {
+        $data = null;
+    }
+
+    return $data;
+}
+
 //判断文件是否存在
 function existsUrl($url)
 {
@@ -309,23 +328,29 @@ function getCookie($name, $encode = false)
 }
 
 //获取上传图片地址
-function imgUrl($name, $path = '', $size = 0)
+function imgUrl($name, $path = '', $size = 0, $host = false)
 {
-    if (!$name) {
-        $url = URL . '/ststic/console/images/nd.jpg';
-    } else {
+    $imgName = is_array($name) ? $name : (array) $name;
+
+    foreach ($imgName as $key => $value) {
         if ($path) {
-            $url = URL . '/uploadfile/' . $path . '/' . $name;
+            $url = '/uploadfile/' . $path . '/' . $value;
         } else {
-            $url = URL . '/uploadfile/' . $name;
+            $url = '/uploadfile/' . $value;
         }
+
+        $url = !$host ? URL . $url : $host . $url;
 
         if (!file_get_contents($url)) {
-            $url = URL . '/ststic/console/images/nd.jpg';
+            $url = '/ststic/console/images/nd.jpg';
+            $url = !$host ? URL . $url : $host . $url;
         }
+
+        $data[] = $url;
     }
 
-    return $url;
+    $data = is_array($name) ? $data : current($data);
+    return $data;
 }
 
 function imgFetch($path)
