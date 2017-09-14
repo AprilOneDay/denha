@@ -13,6 +13,8 @@ body{ background: #f0f2f7; }
 .left .news li .news-content dl { float: left; padding-right: 10px;  }
 .left .news li .news-content dl i{margin-right: 5px;}
 
+.index-content{ padding-bottom: 20px; }
+
 .index-search{ margin-top: 25px; border: 1px solid #e1e1e1; padding: 20px; }
 
 .tags{ margin-top: 25px; }
@@ -25,7 +27,7 @@ body{ background: #f0f2f7; }
 .article .article-content{ border: 1px solid #e1e1e1;  padding: 20px;}
 .article .article-content li{float: left; width: 100%;  line-height: 25px; white-space:nowrap; overflow:hidden;text-overflow:ellipsis;}
 
-.footer{background: #363d4c; color: #fff; padding: 20px; margin-top: 25px; line-height: 35px;}
+.footer{background: #363d4c; color: #fff; padding: 20px;  line-height: 35px;}
 .footer .link { border-bottom:  1px solid #ccc; }
 .footer .link li{ float: left; padding-right: 10px;   }
 .footer .link .link-title{ font-weight: bolder;}

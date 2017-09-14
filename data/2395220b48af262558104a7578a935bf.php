@@ -98,7 +98,8 @@
 			</div> 
 		</div>
 		<div class="clearfix"></div>
-		<div class="footer w">
+	</div>
+	<div class="footer w14">
 	<div class="link hidden-sm hidden-xs">
 		<ul>
 			<li class="link-title">友情链接：</li>
@@ -114,7 +115,6 @@
 		版权所有@copy 2017 四月工作室
 	</div>
 </div>
-	</div>
 	<script type="text/javascript" src="<?php echo getConfig('config','ststic'); ?>/console/js/jquery-1.12.3.min.js"></script>
 	<script type="text/javascript" src="<?php echo getConfig('config','vendor'); ?>/pace/pace.min.js"></script>
 	<script type="text/javascript" src="<?php echo getConfig('config','vendor'); ?>/layer/layer.js"></script>
