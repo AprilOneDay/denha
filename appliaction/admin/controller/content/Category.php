@@ -1,9 +1,7 @@
 <?php
 namespace app\admin\controller\content;
 
-use denha;
-
-class Category extends denha\Controller
+class Category extends \app\admin\controller\Init
 {
     public function lists()
     {

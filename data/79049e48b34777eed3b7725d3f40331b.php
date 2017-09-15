@@ -20,7 +20,7 @@
 							<h5>菜单列表</h5>
 						</div>
 						<div class="pull-right">
-							<a class="btn btn-primary btn-open" data-href="<?php echo url('edit'); ?>" data-id="" data-height="750px">添加菜单</a>
+							<a class="btn btn-primary btn-open" data-href="<?php echo url('edit'); ?>"  data-height="750px">添加菜单</a>
 						</div>
 					</div>
 					<div class="console-form">
@@ -77,5 +77,7 @@
 	<script type="text/javascript" src="/vendor/pace/pace.min.js"></script>
 	<script type="text/javascript" src="/vendor/layer/layer.js"></script>
 
+	<script type="text/javascript">
+	</script>
 </body>
 </html>

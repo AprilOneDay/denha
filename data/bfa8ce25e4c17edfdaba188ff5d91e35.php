@@ -96,7 +96,7 @@
 										<input type="text" value="<?php echo !isset($data['url']) ? null : $data['url']; ?>" name="url" placeholder="请求地址" class="form-control">
 									</div>
 								</div>
-								<div class="form-group">
+								<div class="form-group radio" data-radio="<?php echo !isset($data['is_show']) ? null : $data['is_show']; ?>">
 									<label class="control-label col-sm-3">是否显示：</label>
 									<div class="radio-inline">
 										<label>
@@ -109,7 +109,7 @@
 										</label>
 									</div>
 								</div>
-								<div class="form-group">
+								<div class="form-group radio" data-radio="<?php echo !isset($data['is_white']) ? null : $data['is_white']; ?>">
 									<label class="control-label col-sm-3">是否白名单：</label>
 									<div class="radio-inline">
 										<label>
@@ -122,7 +122,7 @@
 										</label>
 									</div>
 								</div>
-								<div class="form-group">
+								<div class="form-group radio" data-radio="<?php echo !isset($data['status']) ? null : $data['status']; ?>">
 									<label class="control-label col-sm-3">是否有效：</label>
 									<div class="radio-inline">
 										<label>

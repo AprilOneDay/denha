@@ -91,6 +91,16 @@ $(function() {
         }
     });
 
+    //绑定radio值
+    $(".radio").each(function(){
+        var data = $(this).attr('data-radio');
+        $(this).find('input[type=radio]').each(function(){
+            if($(this).attr('value') == data){
+                $(this).attr("checked","checked");
+            }
+        })
+    })
+
    //打开弹出
     $('.btn-open').click(function() {
         var href = $(this).attr('data-href');

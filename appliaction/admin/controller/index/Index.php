@@ -3,10 +3,12 @@ namespace app\admin\controller\index;
 
 use denha;
 
-class Index extends denha\Controller
+class Index extends \app\admin\controller\Init
 {
     public function index()
     {
+        $list = getVar('list', 'admin.white');
+
         $list = $this->menus();
 
         $this->assign('list', $list);

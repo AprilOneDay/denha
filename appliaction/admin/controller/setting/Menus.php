@@ -1,9 +1,7 @@
 <?php
 namespace app\admin\controller\setting;
 
-use denha;
-
-class Menus extends denha\Controller
+class Menus extends \app\admin\controller\Init
 {
     const TYPE = ['1' => ''];
 

@@ -1,9 +1,7 @@
 <?php
 namespace app\admin\controller\index;
 
-use denha;
-
-class Login extends denha\Controller
+class Login extends \app\admin\controller\Init
 {
     //登录
     public function index()
