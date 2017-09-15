@@ -20,7 +20,7 @@ class User extends \app\app\controller\Init
 
         $user = table('UserShop')->where(array('uid' => $this->uid))->field('name,avatar,credit_level,status')->find();
 
-        $user['avatar'] = imgUrl($user['avatar'], 'avatar', 0, getConfig('console.app', 'imgUrl'));
+        $user['avatar'] = imgUrl($user['avatar'], 'avatar', 0, getConfig('config.app', 'imgUrl'));
 
         $data['user'] = $user;
         $this->appReturn(array('data' => $data));
@@ -76,10 +76,10 @@ class User extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '执行失败'));
         } else {
             $data                  = table('UserShop')->where(array('uid' => $this->uid))->field()->find();
-            $data['ablum']         = $data['ablum'] ? imgUrl(explode(',', $data['ablum']), 'shop', 0, getConfig('console.app', 'imgUrl')) : array();
+            $data['ablum']         = $data['ablum'] ? imgUrl(explode(',', $data['ablum']), 'shop', 0, getConfig('config.app', 'imgUrl')) : array();
             $data['ablum_num']     = count($data['ablum_num']);
             $data['category_copy'] = '选择分类';
-            $data['ide_ablum']     = $data['ide_ablum'] ? imgUrl(explode(',', $data['ide_ablum']), 'ide', 0, getConfig('console.app', 'imgUrl')) : array();
+            $data['ide_ablum']     = $data['ide_ablum'] ? imgUrl(explode(',', $data['ide_ablum']), 'ide', 0, getConfig('config.app', 'imgUrl')) : array();
             $this->appReturn(array('data' => $data));
         }
     }
@@ -113,7 +113,7 @@ class User extends \app\app\controller\Init
 
             $this->appReturn(array('status' => false, 'msg' => '执行失败'));
         } else {
-            $data['ide_ablum'] = $shop['ide_ablum'] ? imgUrl(explode(',', $shop['ide_ablum']), 'ide', 0, getConfig('console.app', 'imgUrl')) : array();
+            $data['ide_ablum'] = $shop['ide_ablum'] ? imgUrl(explode(',', $shop['ide_ablum']), 'ide', 0, getConfig('config.app', 'imgUrl')) : array();
             $data['is_ide']    = $shop['is_ide'];
             $this->appReturn(array('data' => $data));
         }

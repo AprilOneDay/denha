@@ -14,6 +14,12 @@ class Server extends \app\app\controller\Init
         $this->checkShop();
     }
 
+    /**
+     * 编辑查看 提交 新增 二手车
+     * @date   2017-09-15T09:32:24+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
     public function carEdit()
     {
         if (IS_POST) {
@@ -36,12 +42,11 @@ class Server extends \app\app\controller\Init
             $data['displacement'] = post('displacement', 'text', '');
             $data['model_remark'] = post('model_remark', 'text', '');
             $data['vin']          = post('vin', 'text', '');
-
-            $data['mobile']      = post('mobile', 'text', '');
-            $data['weixin']      = post('weixin', 'text', '');
-            $data['qq']          = post('qq', 'text', '');
-            $data['address']     = post('address', 'text', '');
-            $data['description'] = post('description', 'text', '');
+            $data['mobile']       = post('mobile', 'text', '');
+            $data['weixin']       = post('weixin', 'text', '');
+            $data['qq']           = post('qq', 'text', '');
+            $data['address']      = post('address', 'text', '');
+            $data['description']  = post('description', 'text', '');
 
             $data['ablum'] = post('ablum', 'json', '');
 
@@ -93,7 +98,8 @@ class Server extends \app\app\controller\Init
             $city = getVar('province', 'city');
             if ($id) {
                 $data               = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->find();
-                $data['ablum']      = $data['ablum'] ? imgUrl(explode(',', $data['ablum']), 'car', 0, getConfig('console.app', 'imgUrl')) : array();
+                $data['ablum']      = $data['ablum'] ? imgUrl(explode(',', $data['ablum']), 'car', 0, getConfig('config.app', 'imgUrl')) : array();
+                $data['guarantee']  = explode(',', $data['guarantee']);
                 $data['city_copy']  = $city[$data['city']];
                 $data['brand_copy'] = $city[$data['city']];
             }
@@ -109,6 +115,12 @@ class Server extends \app\app\controller\Init
         }
     }
 
+    /**
+     * 编辑查看 提交 新增 服务
+     * @date   2017-09-15T09:32:24+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
     public function serviceEdit()
     {
 

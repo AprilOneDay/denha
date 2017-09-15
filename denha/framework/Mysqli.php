@@ -32,7 +32,7 @@ class Mysqli
         if ($dbConfig) {
             $this->dbConfig = $dbConfig;
         } else {
-            if (getConfig(APP . '.db')) {
+            if (getConfig('db.' . APP)) {
                 $this->dbConfig = getConfig('db.' . APP);
             } else {
                 $this->dbConfig = getConfig('db');

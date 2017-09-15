@@ -24,6 +24,12 @@ class Init extends denha\Controller
         }
     }
 
+    /**
+     * 检查是否是商户用户
+     * @date   2017-09-15T09:32:09+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
     public function checkShop()
     {
         if (!$this->uid) {
@@ -58,7 +64,7 @@ class Init extends denha\Controller
                     $url         = pathinfo($value);
                     $merge[$key] = current($url);
                 }
-                $data = implode(',', array_replace($merge, $reslut['data']['name']));
+                $data = implode(',', array_filter(array_replace($merge, $reslut['data']['name'])));
                 /*var_dump($merge);var_dump($reslut['data']['name']);var_dump($data);die;*/
             } else {
                 $data = implode(',', $reslut['data']['name']);
@@ -69,6 +75,13 @@ class Init extends denha\Controller
         return $data;
     }
 
+    /**
+     * 转换一维数组成二维数组
+     * @date   2017-09-15T09:31:28+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $data [description]
+     * @return [type]                         [description]
+     */
     public function appArray($data)
     {
         foreach ($data as $key => $value) {

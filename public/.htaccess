@@ -19,4 +19,8 @@
     RewriteCond %{HTTP_HOST} ^blog.denha.loc [NC]
     RewriteCond %{REQUEST_URI} !^(\/vendor|\/ststic|\/uploadfile)(.*)$ [NC]
     RewriteRule ^ blog.host.php [L]
+
+    RewriteCond %{HTTP_HOST} ^admin.denha.loc [NC]
+    RewriteCond %{REQUEST_URI} !^(\/vendor|\/ststic|\/uploadfile)(.*)$ [NC]
+    RewriteRule ^ admin.host.php [L]
 </IfModule>
