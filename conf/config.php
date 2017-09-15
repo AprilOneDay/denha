@@ -1,5 +1,5 @@
 <?php
-return [
+return array(
     'ststic'       => URL . '/ststic',
     'vendor'       => URL . '/vendor',
     'uploadfile'   => URL . '/uploadfile/',
@@ -20,4 +20,4 @@ return [
     /* 基础设置 */
     'debug'        => false, // 是否开启调试
     'trace'        => false, // 是否显示页面Trace信息
-];
+);

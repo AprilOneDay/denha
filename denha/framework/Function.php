@@ -223,7 +223,7 @@ function comprise($path)
 //getVar('tags','article') 获取 appliaction/tools/var/article文件中的 tags.$ext 文件
 function getVar($filename, $path, $ext = EXT)
 {
-    static $_vars = [];
+    static $_vars = array();
 
     if (!$filename) {
         return null;
@@ -252,7 +252,7 @@ function getVar($filename, $path, $ext = EXT)
 //获取config下配置文档
 function getConfig($path = 'config', $name = '')
 {
-    static $_configData = [];
+    static $_configData = array();
 
     if (!isset($_configData[$path])) {
         if (is_file(CONFIG_PATH . $path . '.php')) {
