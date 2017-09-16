@@ -1,9 +1,12 @@
 <?php
-namespace app\console\controller\content;
+/**
+ * 博客内容管理
+ */
+namespace app\admin\controller\content;
 
 use denha;
 
-class Index extends \app\admin\controller\Init
+class Blog extends \app\admin\controller\Init
 {
 
     public function index()
@@ -14,10 +17,10 @@ class Index extends \app\admin\controller\Init
         $param['is_show']      = get('is_show', 'text', '');
         $param['is_recommend'] = get('is_recommend', 'text', '');
 
-        $param['pageNo']   = get('pageNo', 'intval', 1);
-        $param['pageSize'] = get('pageSize', 'intval', 25);
+        $pageNo   = get('pageNo', 'intval', 1);
+        $pageSize = get('pageSize', 'intval', 25);
 
-        $offer = ($param['pageNo'] - 1) * $param['pageSize'];
+        $offer = max(($param['pageNo'] - 1), 0) * $pageSize;
 
         $map['del_status'] = 0;
 
@@ -38,30 +41,27 @@ class Index extends \app\admin\controller\Init
                 $map['title'] = ['like', '%' . $param['keyword'] . '%'];
             }
         }
+        $list  = table('Article')->where($map)->limit($offer, $pageSize)->order('id desc')->find('array');
         $total = table('Article')->where($map)->count();
-        $pages = new denha\pages($total, $param['pageNo'], $param['pageSize']);
-        $list  = table('Article')->where($map)->limit($offer, $param['pageSize'])->order('id desc')->find('array');
+        $page  = new denha\Pages($total, $pageNo, $pageSize, url('', $param));
 
-        //echo table('Article')->getSql();die;
+        $other = array(
+            'tag'             => getVar('tags', 'console.article'),
+            'isShowCopy'      => array(0 => '隐藏', 1 => '显示'),
+            'isRecommendCopy' => array(1 => '推荐', 0 => '不推荐'),
+        );
 
-        $data = [
-            'data'  => [
-                'list'  => $list,
-                'param' => $param,
-                'pages' => $pages->pages(),
-            ],
-            'other' => [
-                'tag'             => getVar('tags', 'console.article'),
-                'isShowCopy'      => [0 => '隐藏', 1 => '显示'],
-                'isRecommendCopy' => [1 => '推荐', 0 => '不推荐'],
-            ],
-            'sql'   => table('Article')->getSql(),
-        ];
-        $this->ajaxReturn(['status' => true, 'msg' => '获取数据成果', 'data' => $data]);
+        $this->assign('list', $list);
+        $this->assign('param', $param);
+        $this->assign('pages', $page->loadConsole());
+        $this->assign('other', $other);
+
+        $this->show();
     }
 
     public function edit()
     {
+        $id = get('id', 'intval', 0);
         if (IS_POST) {
             $param = post('data', 'json');
             if (!is_array($param)) {
@@ -111,8 +111,6 @@ class Index extends \app\admin\controller\Init
             }
 
         } else {
-            $id = get('id', 'intval', 0);
-
             if ($id) {
                 $article     = table('Article')->tableName();
                 $articleData = table('ArticleBlog')->tableName();
@@ -123,15 +121,17 @@ class Index extends \app\admin\controller\Init
 
                 $rs['created'] = date('Y-m-d', $rs['created']);
                 $rs['thumb']   = imgUrl($rs['thumb'], 'blog');
+            } else {
+                $rs = array('is_show' => 1, 'is_recommend' => 0);
             }
 
-            $data = [
-                'data'  => $rs,
-                'other' => [
-                    'tag' => getVar('tags', 'console.article'),
-                ],
-            ];
-            $this->ajaxReturn(['status' => true, 'msg' => '获取数据成果', 'data' => $data]);
+            $other = array(
+                'tag' => getVar('tags', 'console.article'),
+            );
+
+            $this->assign('data', $rs);
+            $this->assign('other', $other);
+            $this->show();
         }
     }
 }

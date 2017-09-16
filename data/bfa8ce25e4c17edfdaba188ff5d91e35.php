@@ -100,7 +100,7 @@
 									<label class="control-label col-sm-3">是否显示：</label>
 									<div class="radio-inline">
 										<label>
-											<input type="radio"  name="is_show" value="1" checked> 是
+											<input type="radio"  name="is_show" value="1"> 是
 										</label>
 									</div>
 									<div class="radio-inline">
@@ -118,7 +118,7 @@
 									</div>
 									<div class="radio-inline">
 										<label >
-											<input type="radio"  name="is_white"  value="0" checked> 否
+											<input type="radio"  name="is_white"  value="0"> 否
 										</label>
 									</div>
 								</div>
@@ -126,7 +126,7 @@
 									<label class="control-label col-sm-3">是否有效：</label>
 									<div class="radio-inline">
 										<label>
-											<input type="radio"  name="status"  value="1" checked> 是
+											<input type="radio"  name="status"  value="1"> 是
 										</label>
 									</div>
 									<div class="radio-inline">

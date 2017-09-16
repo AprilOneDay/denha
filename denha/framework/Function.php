@@ -284,13 +284,15 @@ function url($location = '', $params = array())
     $param = '';
     if (!empty($params)) {
         foreach ($params as $key => $value) {
-            if ($key == 0 && stripos($locationUrl, '?') === false) {
+            if (key($params) === $key && stripos($locationUrl, '?') === false) {
                 $param = '?' . $key . '=' . $value;
             } else {
                 $param .= '&' . $key . '=' . $value;
             }
         }
     }
+
+    // var_dump($param);
 
     return $locationUrl . $param;
 }

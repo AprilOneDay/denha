@@ -132,29 +132,32 @@ class Mysqli
      */
     public function where($where)
     {
-        if (is_array($where)) {
-            $newWhere = '';
-            foreach ($where as $k => $v) {
-                if (is_array($v)) {
-                    if ($v[0] == '>' || $v[0] == '<' || $v[0] == '>=' || $v[0] == '<=' || $v[0] == '!=' || $v[0] == 'like') {
-                        $newWhere .= $k . '  ' . $v[0] . ' \'' . $v[1] . '\' AND ';
-                    } elseif ($v[0] == 'in' || $v['0'] == 'not in') {
-                        $newWhere .= $k . '  ' . $v[0] . ' (' . $v[1] . ') AND ';
-                    } elseif ($v[0] == 'between') {
-                        $newWhere .= $k . '  ' . $v[0] . ' \'' . $v[1] . '\' AND \'' . $v[2] . '\'';
-                    } elseif ($v[0] == 'or') {
-                        $newWhere .= $k . ' = \'' . $v[1] . '\' OR ';
+        if ($where) {
+            if (is_array($where)) {
+                $newWhere = '';
+                foreach ($where as $k => $v) {
+                    if (is_array($v)) {
+                        if ($v[0] == '>' || $v[0] == '<' || $v[0] == '>=' || $v[0] == '<=' || $v[0] == '!=' || $v[0] == 'like') {
+                            $newWhere .= $k . '  ' . $v[0] . ' \'' . $v[1] . '\' AND ';
+                        } elseif ($v[0] == 'in' || $v['0'] == 'not in') {
+                            $newWhere .= $k . '  ' . $v[0] . ' (' . $v[1] . ') AND ';
+                        } elseif ($v[0] == 'between') {
+                            $newWhere .= $k . '  ' . $v[0] . ' \'' . $v[1] . '\' AND \'' . $v[2] . '\'';
+                        } elseif ($v[0] == 'or') {
+                            $newWhere .= $k . ' = \'' . $v[1] . '\' OR ';
+                        }
+                    } elseif ($k == '_string') {
+                        $newWhere .= $v;
+                    } else {
+                        $newWhere .= $k . ' = \'' . $v . '\' AND ';
                     }
-                } elseif ($k == '_string') {
-                    $newWhere .= $v;
-                } else {
-                    $newWhere .= $k . ' = \'' . $v . '\' AND ';
                 }
+            } else {
+                $newWhere = $where;
             }
-        } else {
-            $newWhere = $where;
+            $this->where = ' WHERE ' . substr($newWhere, 0, -4);
         }
-        $this->where = ' WHERE ' . substr($newWhere, 0, -4);
+
         return $this;
     }
 
@@ -326,6 +329,7 @@ class Mysqli
         $sql .= $this->limit;
 
         $result = $this->query($sql);
+        $data   = mysqli_fetch_array($result, MYSQLI_NUM);
 
         return $data[0];
     }

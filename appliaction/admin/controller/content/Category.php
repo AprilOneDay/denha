@@ -1,4 +1,7 @@
 <?php
+/**
+ * 分类管理
+ */
 namespace app\admin\controller\content;
 
 class Category extends \app\admin\controller\Init

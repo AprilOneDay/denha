@@ -53,11 +53,11 @@
 									</div>
 								</div>
 								
-								<div class="form-group">
+								<div class="form-group radio"  radio-data="<?php echo !isset($data['is_show']) ? null : $data['is_show']; ?>">
 									<label class="control-label col-sm-3">是否显示：</label>
 									<div class="radio-inline">
 										<label>
-											<input type="radio"  name="is_show" value="1" checked> 是
+											<input type="radio"  name="is_show" value="1" > 是
 										</label>
 									</div>
 									<div class="radio-inline">

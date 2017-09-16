@@ -77,6 +77,10 @@ class Menus extends \app\admin\controller\Init
             }
 
             if ($id) {
+                if ($data['parentid'] == $id) {
+                    $this->ajaxReturn(['status' => false, 'msg' => '上级栏目选择错误,不可选择自己为上级栏目']);
+                }
+
                 $result = table('ConsoleMenus')->where(array('id' => $id))->save($data);
                 if ($result) {
                     $this->ajaxReturn(['status' => true, 'msg' => '修改成功']);

@@ -17,19 +17,17 @@
 				<div class="col-sm-12">
 					<div class="console-title console-title-border clearfix">
 						<div class="pull-left">
-							<h5>菜单列表</h5>
-						</div>
-						<div class="pull-right">
-							<a class="btn btn-primary btn-open" data-href="<?php echo url('edit',array('parentid'=>$parentid)); ?>"  data-height="500px" data-width="356px">添加分类</a>
+							<h5>会员列表</h5>
 						</div>
 					</div>
 					<form class="form-inline ng-pristine ng-valid" action=""  method="get">
                         <div class="form-group">
-                            <select class="form-control" name="field">
-                                <option value="title">标题</option>
+                            <select class="form-control" name="field" data-selected="<?php echo !isset($param['field']) ? null : $param['field']; ?>">
+                                <option value="id">UID</option>
+                                <option value="username">用户名</option>
                             </select>
                             <input type="text" class="form-control w120" placeholder="Search" name="keyword" value="<?php echo !isset($param['keyword']) ? null : $param['keyword']; ?>" >
-                            <button type="submit" class="btn btn-default" >搜索</button>
+                            <button type="submit" class="btn btn-default" @click="search()">搜索</button>
                         </div>
                     </form>
 					<div class="console-form">
@@ -39,26 +37,38 @@
 									<thead>
 										<tr>
 											<th style="width:75px;">ID</th>
-											<th>标题</th>
+											<th>用户名/昵称</th>
+											<th>手机号</th>
+											<th>注册时间</th>
 											<th style="width:120px;">状态</th>
-											<th style="width:160px; text-align:center;">编辑/操作</th>
+											<th style="width:160px; text-align:center;">操作</th>
 										</tr>
 									</thead>
 									<tbody>
 										<?php if($list){ foreach($list as $key => $value){ ?>
 									 	<tr v-for="list in list">
 											<td><?php echo $value['id']; ?></td>
-											<td><?php echo $value['name']; ?></td>
-											<td><?php echo $value['is_show']; ?></td>
+											<td><?php echo $value['username']; ?> / <?php echo $value['nickname']; ?></td>
+											<td><?php echo $value['mobile']; ?></td>
+											<td><?php echo date('Y-m-d',$value['created']); ?></td>
+											<td>
+												<?php if($value['status']){ ?>
+													<a href="javascript:;" style="color: green">启用</a>
+												<?php }else{ ?>
+													<a href="javascript:;" style="color: red">禁用</a>
+												<?php } ?>
+											</td>
 											<td align='center'>
-												<a data-href="<?php echo url('edit',array('parentid'=>$value['id'])); ?>"  data-height="500px" data-width="356px"  data-title="编辑分类"  class="btn-open">添加子类</a>
-												<a href="<?php echo url('lists',array('id'=>$value['id'])); ?>">查看子类</a>
-												<a data-href="<?php echo url('edit',array('id'=>$value['id'])); ?>"  data-height="500px" data-width="356px"  data-title="编辑分类"  class="btn-open">编辑</a>
+												<a data-href="<?php echo url('edit',array('parentid'=>$value['id'])); ?>"  data-height="500px" data-width="356px"  data-title="用户详情"  class="btn-open">详情</a>
 											</td>
 										</tr>
 										<?php }} ?>
 									</tbody>
-									<page :pages="pages" v-on:getPages="getPages"></page>
+								    <tfoot>
+							          	<tr>
+          									<td colspan="13"><?php echo $pages; ?></td>
+          								</tr>
+									</tfoot>
 								</table>
 							</form>
 						</div>

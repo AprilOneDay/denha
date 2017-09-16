@@ -148,6 +148,16 @@ $(function() {
         })
     })
 
+    $('.btn-ajax-get').click(function(){
+        var url = $(this).attr('data-url');
+        $.get(url,function(reslut){
+            layer.msg(reslut.msg);
+            if(reslut.status){
+                location.reload();
+            }
+        },"json");
+    })
+
     //关闭弹窗
     $('#btn-close').click(function(){
         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
