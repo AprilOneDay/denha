@@ -14,7 +14,7 @@
 	<div id="console-content-edit">
 		<div class="modal-content">
 			<div class="panel-body">
-				<form class="form-horizontal" role="form">
+				<form class="form-horizontal" role="form" action="">
 					<fieldset>
 						<div class="form-group">
 							<label class="control-label col-sm-3">
@@ -31,7 +31,7 @@
 								<span>缩略图</span>
 							</label>
 							<div class="col-sm-8">
-								<up-img  value="<?php echo !isset($data['thumb']) ? null : $data['thumb']; ?>" name="thumb" :max-num="1" :path="'blog'"></up-img>
+								<a class="btn btn-primary btn-ablum" data-name="thumb" data-path="blog" data-max="2">添加图片</a>
 							</div>
 						</div>
 						<div class="form-group">
@@ -53,7 +53,7 @@
 								<span for="myDate">发布时间</span>
 							</label>
 							<div class="col-sm-8">
-								<my-datepicker field="myDate"	placeholder="选择日期" value="<?php echo !isset($data['thumb']) ? null : $data['thumb']; ?>" name="created" format="yyyy/mm/dd" :backward="false" :no-today="false" :forward="false"></my-datepicker>
+								<input type="text" value="<?php echo !isset($data['created']) ? null : $data['created']; ?>" name="created" id="created"  class="form-control data-time">	
 							</div>
 						</div>
 						<div class="form-group">
@@ -71,17 +71,9 @@
 								<span>内容</span>
 							</label>
 							<div class="col-sm-8">
-							 	<script id="container" name="content" type="text/plain">
+							 	<script id="container" name="content" type="text/plain" class="ue-editor">
 							 	<?php echo !isset($data['content']) ? null : $data['content']; ?>
 							 	</script>
-							 	<!-- 配置文件 -->
-							    <script type="text/javascript" src="/vendor/ueditor/ueditor.config.js"></script>
-							    <!-- 编辑器源码文件 -->
-							    <script type="text/javascript" src="/vendor/ueditor/ueditor.all.js"></script>
-							    <!-- 实例化编辑器 -->
-							    <script type="text/javascript">
-							        var ue = UE.getEditor('container');
-							    </script>
 							</div>
 						</div>
 						<div class="form-group radio" data-radio="<?php echo !isset($data['is_recommend']) ? null : $data['is_recommend']; ?>">
@@ -114,8 +106,8 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<a type="submit" class="btn btn-primary" @click="comply">确定</a>
-				<button type="button" class="btn btn-default" id="btn-close"@click="btnClose">取消</button>
+				<a type="submit" class="btn btn-primary btn-comply">确定</a>
+				<button type="button" class="btn btn-default" id="btn-close" >取消</button>
 			</div>
 		</div>
 	</div>
@@ -124,8 +116,10 @@
 	<script type="text/javascript" src="/vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="/vendor/pace/pace.min.js"></script>
 	<script type="text/javascript" src="/vendor/layer/layer.js"></script>
+	<script type="text/javascript" src="/vendor/laydate/laydate.js"></script>
+    <script type="text/javascript" src="/vendor/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="/vendor/ueditor/ueditor.all.js"></script>
 
-	<script type="text/javascript">
-	</script>
+
 </body>
 </html>

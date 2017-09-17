@@ -63,20 +63,16 @@ class Blog extends \app\admin\controller\Init
     {
         $id = get('id', 'intval', 0);
         if (IS_POST) {
-            $param = post('data', 'json');
-            if (!is_array($param)) {
-                $this->ajaxReturn(['status' => false, 'msg' => '参数错误']);
-            }
 
-            $data['title']       = (string) $param['title'];
-            $data['description'] = (string) $param['description'];
-            $data['thumb']       = !($param['thumb'] && stripos($param['thumb'], 'nd.jpg') === false) ? '' : next(pathinfo($param['thumb']));
+            $data['title']       = post('title', 'text', '');
+            $data['description'] = post('description', 'text', '');
+            //$data['thumb']       = !($param['thumb'] && stripos($param['thumb'], 'nd.jpg') === false) ? '' : next(pathinfo($param['thumb']));
 
-            $data['tag']          = max((int) $param['tag'], 1);
-            $data['is_show']      = (int) $param['is_show'];
-            $data['is_recommend'] = (int) $param['is_recommend'];
+            $data['tag']          = max(post('tag', 'intval', 0), 1);
+            $data['is_show']      = post('is_show', 'intval', '');
+            $data['is_recommend'] = post('is_recommend', 'intval', '');
 
-            $dataContent['content'] = (string) $param['content'];
+            $dataContent['content'] = post('content', 'text', '');
 
             if (!$data['title']) {
                 $this->ajaxReturn(['status' => false, 'msg' => '请填写标题']);
@@ -90,13 +86,13 @@ class Blog extends \app\admin\controller\Init
                 $data['description'] = mb_substr(str_replace(' ', '&nbsp', strip_tags($dataContent['content'])), 0, 255, 'UTF-8');
             }
 
-            if ($param['id']) {
-                $result = table('Article')->where(['id' => $param['id']])->save($data);
+            if ($id) {
+                $result = table('Article')->where(array('id' => $id))->save($data);
                 if ($result) {
-                    $resultData = table('ArticleBlog')->where(['id' => $param['id']])->save($dataContent);
-                    $this->ajaxReturn(['status' => true, 'msg' => '修改成功', 'id' => $result]);
+                    $resultData = table('ArticleBlog')->where(array('id' => $id))->save($dataContent);
+                    $this->ajaxReturn(array('status' => true, 'msg' => '修改成功'));
                 } else {
-                    $this->ajaxReturn(['status' => false, 'msg' => '修改失败']);
+                    $this->ajaxReturn(array('status' => false, 'msg' => '修改失败'));
                 }
             } else {
                 $data['created'] = TIME;
@@ -104,9 +100,9 @@ class Blog extends \app\admin\controller\Init
                 if ($result) {
                     $dataContent['id'] = $result;
                     $resultData        = table('ArticleBlog')->add($dataContent);
-                    $this->ajaxReturn(['status' => true, 'msg' => '添加成功', 'id' => $result]);
+                    $this->ajaxReturn(array('status' => true, 'msg' => '添加成功'));
                 } else {
-                    $this->ajaxReturn(['status' => false, 'msg' => '添加失败']);
+                    $this->ajaxReturn(array('status' => false, 'msg' => '添加失败'));
                 }
             }
 

@@ -1,16 +1,27 @@
 $(function() {
-    //主页容器固定高宽
-    $('.sidebar-inner').height($(document).height() - $('.border-top').height());
-    $('.product-nav-scene').height($(document).height() - $('.border-top').height())
-    $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) * 0.98);
-    $('.content-main').height($(document).height() - $('.border-top').height());
 
+    init();
     $(window).resize(function() {
-        $('.sidebar-inner').height($(document).height() - $('.border-top').height());
-        $('.product-nav-scene').height($(document).height() - $('.border-top').height())
-        $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) * 0.98);
-        $('.content-main').height($(document).height() - $('.border-top').height());
+       init();
     });
+
+    //监听product-nav-scene的宽度变化
+    $(".product-nav-scene").bind("DOMNodeInserted",function(e){
+        $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) );
+        return true;
+    })
+
+    //主页容器固定高宽
+    function init(){
+        $('.sidebar-inner').height($(document).height() - $('.border-top').height() - 2);
+        $('.product-nav-scene').height($(document).height() - $('.border-top').height() - 2)
+        $('.content-main').height($(document).height() - $('.border-top').height() - 2);
+        if($('.product-nav-scene').css('display') == 'block'){
+            $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) );
+        }else{
+            $('.content-main').width(($(document).width() - $('.sidebar-inner').width()) );
+        }
+    }
 
     //收缩一级导航
     $('.sidebar-fold').click(function() {
@@ -148,6 +159,7 @@ $(function() {
         })
     })
 
+    //get提交
     $('.btn-ajax-get').click(function(){
         var url = $(this).attr('data-url');
         $.get(url,function(reslut){
@@ -156,6 +168,83 @@ $(function() {
                 location.reload();
             }
         },"json");
+    })
+
+    //渲染图片上传插件
+    $('.btn-ablum').each(function(){
+        var _this   = this;
+        var name    = $(this).attr('data-name');
+        var maxNum  = Math.max($(this).attr('data-max'),1);
+        var path    = $(this).attr('data-path'); 
+        var content = '<input type="file" style="display:none;" name="'+name+'" multiple="multiple"><div class="img-list"><ul></ul></div>';
+        if(maxNum == 1){
+            var ablum   = '';
+        }else{
+            var ablum   = new Array();
+        }
+       
+        $(this).parent().append(content);
+        //上传
+        $(this).click(function(){
+            $('input[type=file]').wrap('<form>').closest('form').get(0).reset();
+            $('input[type=file]').trigger('click');
+        })
+
+        //转换图片url
+        $('input[name='+name+']').change(function(e){
+            var imgLength = $('img-list').find('img').length;
+            console.log(imgLength);
+            var files = e.target.files || e.dataTransfer.files;
+            if(maxNum  && maxNum < files.length + imgLength){
+                 return layer.msg('最多只能传'+maxNum+'张图片');
+            }
+
+            for(var i=0;i<files.length;i++){
+                console.log(files[i]);
+                var reader = new FileReader();
+                reader.readAsDataURL(files[i]); 
+                reader.onload = function(e){
+                    var content = '<li><img src="'+e.target.result+'" width="150" height="100"> <a style="position:relative;float:left;margin-left:-15px;"><i class="glyphicon glyphicon-remove"></i></a></li>';
+                    $('img-list ul').append(content);
+                } 
+            }
+
+        })
+    })
+
+    //渲染编辑器
+    $('.ue-editor').each(function(){
+        /*if($(this).index() == 0){
+            $.getScript("/vendor/ueditor/ueditor.config.js"); 
+            $.getScript("/vendor/ueditor/ueditor.all.js"); 
+        }*/
+        var id = $(this).attr('id');
+        UE.getEditor(id);
+    })
+
+    //渲染时间插件
+    $('.data-time').each(function(){
+        var id      = $(this).attr('id');
+        var time    = $(this).val();                    //int
+        var min     = $(this).attr('data-min');         // string int
+        var max     = $(this).attr('data-max');         // string int
+        var format    = $(this).attr('data-format');
+        var type    = $(this).attr('data-type');        //year month date time datetime
+
+
+        if(!format){ format  = 'yyyy-MM-dd'; }
+        if(!min){ min = '1900-1-1';}
+        if(!max){ max = '2099-12-31';}
+        if(!type){ type = 'date';}
+
+        laydate.render({
+          elem: '#'+id, //指定元素
+          value:new Date(time),
+          format:format,
+          type:type,
+          min:min,
+          max:max,
+        });
     })
 
     //关闭弹窗
