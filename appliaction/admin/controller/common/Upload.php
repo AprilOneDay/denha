@@ -1,5 +1,5 @@
 <?php
-namespace app\console\controller\common;
+namespace app\admin\controller\common;
 
 use denha;
 

@@ -66,7 +66,7 @@ class Blog extends \app\admin\controller\Init
 
             $data['title']       = post('title', 'text', '');
             $data['description'] = post('description', 'text', '');
-            //$data['thumb']       = !($param['thumb'] && stripos($param['thumb'], 'nd.jpg') === false) ? '' : next(pathinfo($param['thumb']));
+            $data['thumb']       = post('thumb', 'text', '');
 
             $data['tag']          = max(post('tag', 'intval', 0), 1);
             $data['is_show']      = post('is_show', 'intval', '');
@@ -116,7 +116,8 @@ class Blog extends \app\admin\controller\Init
                 $rs = table('Article')->join($articleData, "$articleData.id = $article.id", 'left')->where($map)->find();
 
                 $rs['created'] = date('Y-m-d', $rs['created']);
-                $rs['thumb']   = imgUrl($rs['thumb'], 'blog');
+                $rs['thumb']   = json_encode((array) imgUrl($rs['thumb'], 'blog'));
+
             } else {
                 $rs = array('is_show' => 1, 'is_recommend' => 0);
             }

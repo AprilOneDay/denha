@@ -31,7 +31,7 @@
 								<span>缩略图</span>
 							</label>
 							<div class="col-sm-8">
-								<a class="btn btn-primary btn-ablum" data-name="thumb" data-path="blog" data-max="2">添加图片</a>
+								<a class="btn btn-primary btn-ablum" data-name="thumb" data-value='<?php echo !isset($data['thumb']) ? null : $data['thumb']; ?>' data-path="blog" data-max="1">添加图片</a>
 							</div>
 						</div>
 						<div class="form-group">
