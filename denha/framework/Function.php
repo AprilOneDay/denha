@@ -65,7 +65,7 @@ function post($name, $type = '', $default = '')
                 $data = $data === '' ? intval($default) : intval($data);
                 break;
             case 'float':
-                $data = $data === '' ? float($default) : float($data);
+                $data = $data === '' ? floatval($default) : floatval($data);
                 break;
             case 'text':
                 $data = $data === '' ? strval($default) : strval($data);
@@ -110,7 +110,7 @@ function get($name, $type = '', $default = '')
                 $data = $data === '' ? intval($default) : intval($data);
                 break;
             case 'float':
-                $data = $data === '' ? float($default) : float($data);
+                $data = $data === '' ? floatval($default) : floatval($data);
                 break;
             case 'text':
                 $data = $data === '' ? strval($default) : strval($data);
@@ -343,7 +343,15 @@ function imgUrl($name, $path = '', $size = 0, $host = false)
 
         $url = !$host ? URL . $url : $host . $url;
 
-        if (!file_get_contents($url)) {
+        //这块有点影响网速 设置超时 后续会改为检测数据库
+        $opts = array(
+            'http' => array(
+                'method'  => "GET",
+                'timeout' => 1, //单位秒
+            ),
+        );
+
+        if (!file_get_contents($url, false, stream_context_create($opts))) {
             $url = '/ststic/console/images/nd.jpg';
             $url = !$host ? URL . $url : $host . $url;
         }

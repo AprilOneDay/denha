@@ -73,12 +73,19 @@ class Server extends \app\app\controller\Init
             }
 
             $data['ablum'] = $this->appUpload($files['ablum'], $data['ablum'], 'car');
+            $data['thumb'] = substr($data['ablum'], ',');
 
             if (!$id) {
                 $data['type']    = $this->group;
                 $data['uid']     = $this->uid;
                 $data['created'] = TIME;
-                $data['title']   = $data['brand'] . ' ' .
+
+                //拼接标题
+                $data['title'] = dao('Category')->getName($data['brand'])
+                . ($data['produce_time'] != '' ? ' ' . $data['produce_time'] : '')
+                . ($data['style'] != '' ? ' ' . $data['style'] : '')
+                . ($data['displacement'] != '' ? ' ' . $data['displacement'] : '')
+                . ($data['model_remark'] != '' ? ' ' . $data['model_remark'] : '');
 
                 $result = table('GoodsCar')->add($data);
 
@@ -86,6 +93,11 @@ class Server extends \app\app\controller\Init
                     $this->appReturn(array('msg' => '添加成功'));
                 }
             } else {
+                $is = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->field('id')->find('one');
+                if (!$is) {
+                    $this->appReturn(array('status' => false, 'msg' => '非法操作'));
+                }
+
                 $result = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->save($data);
                 if ($result) {
                     $this->appReturn(array('msg' => '编辑成功'));
@@ -98,10 +110,10 @@ class Server extends \app\app\controller\Init
             $city = getVar('province', 'city');
             if ($id) {
                 $data               = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->find();
-                $data['ablum']      = $data['ablum'] ? imgUrl(explode(',', $data['ablum']), 'car', 0, getConfig('config.app', 'imgUrl')) : array();
+                $data['ablum']      = $this->appImgArray($data['ablum'], 'car');
                 $data['guarantee']  = explode(',', $data['guarantee']);
                 $data['city_copy']  = $city[$data['city']];
-                $data['brand_copy'] = $city[$data['city']];
+                $data['brand_copy'] = dao('Category')->getName($data['brand']);
             }
 
             $data['other'] = array(
@@ -124,5 +136,127 @@ class Server extends \app\app\controller\Init
     public function serviceEdit()
     {
 
+        if (IS_POST) {
+            $id = $_POST['id'];
+
+            $data['type'] = post('type', 'intval', 0);
+
+            $data['price'] = post('price', 'float', 0);
+
+            $data['title'] = post('title', 'text', '');
+
+            $data['description'] = post('description', 'text', '');
+
+            $data['ablum'] = post('ablum', 'json', '');
+
+            $files['ablum'] = files('ablum_files');
+
+            $data['ablum'] = $this->appUpload($files['ablum'], $data['ablum'], 'car');
+
+            if (!$data['type']) {
+                $this->appReturn(array('status' => false, 'msg' => '请选择类型'));
+            }
+
+            if (!$data['title']) {
+                $this->appReturn(array('status' => false, 'msg' => '请输服务标题'));
+            }
+
+            if (!$data['price']) {
+                $this->appReturn(array('status' => false, 'msg' => '请输入价格'));
+            }
+
+            if ($id) {
+                $is = table('GoodsService')->where(array('uid' => $this->uid, 'id' => $id))->field('id')->find('one');
+                if (!$is) {
+                    $this->appReturn(array('status' => false, 'msg' => '非法操作'));
+                }
+
+                $result = table('GoodsService')->where(array('id' => $id))->save($data);
+
+                if ($result) {
+                    $this->appReturn(array('msg' => '编辑成功'));
+                }
+
+            } else {
+                $data['created'] = TIME;
+                $data['uid']     = $this->uid;
+                $result          = table('GoodsService')->add($data);
+
+                if ($result) {
+                    $this->appReturn(array('msg' => '添加成功'));
+                }
+            }
+
+            $this->appReturn(array('status' => false, 'msg' => '操作失败'));
+        } else {
+            $id                = get('id', 'intval', 0);
+            $data              = (array) table('GoodsService')->where(array('id' => $id))->find();
+            $data['type_copy'] = dao('Category')->getName($data['type']);
+            $data['ablum']     = $this->appImgArray($data['ablum'], 'car');
+            $this->appReturn(array('msg' => '数据获取成功', 'data' => $data));
+        }
+    }
+
+    /**
+     * 服务列表
+     * @date   2017-09-18T11:32:25+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function serviceList()
+    {
+        $map['uid'] = $this->uid;
+        $pageNo     = get('pageNo', 'intval', 1);
+        $pageSize   = get('pageSize', 'intval', 10);
+        $offer      = max(($pageNo - 1), 0) * $pageSize;
+
+        $list = table('GoodsService')->where($map)->order('created desc')->limit($offer, $pageSize)->find('array');
+        foreach ($list as $key => $value) {
+            $list[$key]['ablum'] = $this->appImgArray($value['ablum'], 'car');
+        }
+        $this->appReturn(array('msg' => '数据获取成功', 'data' => (array) $list));
+    }
+
+    public function changeStatus()
+    {
+        $id     = post('id', 'intval', 0);
+        $type   = post('type', 'intval', 0);
+        $status = post('status', 'text', '');
+
+        if (!$type || $status == '' || !$id) {
+            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
+        }
+
+        $map['id']  = $id;
+        $map['uid'] = $this->uid;
+
+        $data['status'] = (int) $status;
+
+        switch ($type) {
+            //汽车上下架
+            case '1':
+                $table = 'GoodsCar';
+                break;
+            //服务上下架
+            case '2':
+                $table = 'GoodsService';
+                break;
+            default:
+                $this->appReturn(array('status' => false, 'msg' => '类型有误'));
+                break;
+        }
+
+        $tableId = table($table)->where($map)->field('id')->find('one');
+        if (!$tableId) {
+            $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
+        }
+
+        $result = table($table)->where(array('id' => $tableId))->save($data);
+
+        if ($result) {
+            $this->appReturn(array('msg' => '操作成功'));
+        }
+
+        $this->appReturn(array('status' => false, 'msg' => '执行失败'));
     }
 }

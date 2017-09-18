@@ -9,6 +9,7 @@ class Init extends denha\Controller
     public $uid;
     public $version;
     public $group;
+    public $lg; //返货提示信息语音版本
 
     public function __construct()
     {
@@ -91,5 +92,21 @@ class Init extends denha\Controller
         $listTemp = isset($listTemp) ? $listTemp : array();
 
         return $listTemp;
+    }
+
+    /**
+     * app切割图片
+     * @date   2017-09-18T11:21:31+0800
+     * @author ChenMingjiang
+     * @param  string                   $data [description]
+     * @param  [type]                   $path [description]
+     * @param  integer                  $size [description]
+     * @return [type]                         [description]
+     */
+    public function appImgArray($data = '', $path, $size = 0)
+    {
+
+        $data = $data ? imgUrl(explode(',', $data), 'car', 0, getConfig('config.app', 'imgUrl')) : array();
+        return $data;
     }
 }

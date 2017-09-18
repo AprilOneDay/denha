@@ -63,7 +63,6 @@ class Upload
         is_dir($path) ? '' : mkdir($path, 0077, true);
 
         foreach ($files as $key => $value) {
-            var_dump($key);
             if ($value['size'] >= $size * 1024 * 1024) {
                 return array('status' => false, 'msg' => '请上传小于' . $size . 'M的文件');
             }

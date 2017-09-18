@@ -9,9 +9,16 @@ use app\app\controller;
 class Index extends \app\app\controller\Init
 {
 
-    public function carBrand()
+    /**
+     * 获取分类
+     * @date   2017-09-18T10:16:11+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function getCategory()
     {
-        $data = $this->appArray(getVar('province', 'city'));
+        $id   = post('id', 'intval', 0);
+        $data = $this->appArray(dao('Category')->getList($id));
         $this->appReturn(array('data' => $data));
     }
 }

@@ -204,4 +204,5 @@ class User extends \app\app\controller\Init
 
         $this->appReturn($reslut);
     }
+
 }
