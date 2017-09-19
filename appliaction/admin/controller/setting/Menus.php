@@ -101,6 +101,10 @@ class Menus extends \app\admin\controller\Init
             $parentid = get('parentid', 'intval', 0);
             $rs       = table('ConsoleMenus')->where(['id' => $id])->find();
 
+            if (!$id) {
+                $rs = array('is_show' => 1, 'is_white' => 0, 'status' => 1);
+            }
+
             if ($id == 0 && $parentid != 0) {
                 $rs['parentid'] = $parentid;
                 $rs['sort']     = 0;

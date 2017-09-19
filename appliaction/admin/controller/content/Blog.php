@@ -38,7 +38,7 @@ class Blog extends \app\admin\controller\Init
 
         if ($param['field'] && $param['keyword']) {
             if ($param['field'] == 'title') {
-                $map['title'] = ['like', '%' . $param['keyword'] . '%'];
+                $map['title'] = array('like', '%' . $param['keyword'] . '%');
             }
         }
         $list  = table('Article')->where($map)->limit($offer, $pageSize)->order('id desc')->find('array');

@@ -15,6 +15,33 @@ class Server extends \app\app\controller\Init
     }
 
     /**
+     * 商品发布汽车列表
+     * @date   2017-09-19T10:17:04+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function carList()
+    {
+        $pageNo   = get('pageNo', 'intval', 1);
+        $pageSize = get('pageSize', 'intval', 10);
+        $offer    = max(($pageNo - 1), 0) * $pageSize;
+
+        $map['uid'] = $this->uid;
+
+        $list = table('GoodsCar')->where($map)->order('created desc')->limit($offer, $pageSize)->find('array');
+        foreach ($list as $key => $value) {
+            if ($value['is_lease'] || stripos($value['guarantee'], 3) !== false) {
+                $list[$key]['title'] = "【转lease】" . $value['title'];
+            }
+            $list[$key]['price']   = $value['price'] . '万';
+            $list[$key]['mileage'] = $value['mileage'] . '万公里';
+            $list[$key]['thumb']   = $this->appImg($value['thumb'], 'car');
+        }
+
+        $this->appReturn(array('msg' => '数据获取成功', 'data' => (array) $list));
+    }
+
+    /**
      * 编辑查看 提交 新增 二手车
      * @date   2017-09-15T09:32:24+0800
      * @author ChenMingjiang
@@ -48,9 +75,13 @@ class Server extends \app\app\controller\Init
             $data['address']      = post('address', 'text', '');
             $data['description']  = post('description', 'text', '');
 
-            $data['ablum'] = post('ablum', 'json', '');
+            $data['banner'] = post('banner', 'json', '');
 
-            $files['ablum'] = files('ablum_files');
+            $ablum['ablum']       = post('ablum', 'json', '');
+            $ablum['description'] = post('ablum_description', 'json', '');
+
+            $files['ablum']  = files('ablum_files');
+            $files['banner'] = files('banner_files');
 
             if (!$data['brand']) {
                 $this->appReturn(array('status' => false, 'msg' => '请选择品牌'));
@@ -72,9 +103,17 @@ class Server extends \app\app\controller\Init
                 $this->appReturn(array('status' => false, 'msg' => '请输入报价'));
             }
 
-            $data['ablum'] = $this->appUpload($files['ablum'], $data['ablum'], 'car');
-            $data['thumb'] = substr($data['ablum'], ',');
+            //上传banner图 并生成封面图片
+            $data['banner'] = $this->appUpload($files['banner'], $data['banner'], 'car');
+            if (stripos($data['ablum'], ',') !== false) {
+                $data['thumb'] = substr($data['banner'], 0, stripos($data['banner'], ','));
+            } else {
+                $data['thumb'] = $data['banner'];
+            }
 
+            $ablum['ablum'] = explode(',', $this->appUpload($files['ablum'], $data['ablum'], 'car'));
+
+            //添加
             if (!$id) {
                 $data['type']    = $this->group;
                 $data['uid']     = $this->uid;
@@ -90,9 +129,16 @@ class Server extends \app\app\controller\Init
                 $result = table('GoodsCar')->add($data);
 
                 if ($result) {
+                    //添加相册
+                    foreach ($ablum['ablum'] as $key => $value) {
+                        table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $result, 'description' => $ablum['description'][$key]));
+                    }
+
                     $this->appReturn(array('msg' => '添加成功'));
                 }
-            } else {
+            }
+            //编辑
+            else {
                 $is = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->field('id')->find('one');
                 if (!$is) {
                     $this->appReturn(array('status' => false, 'msg' => '非法操作'));
@@ -100,6 +146,12 @@ class Server extends \app\app\controller\Init
 
                 $result = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->save($data);
                 if ($result) {
+                    table('GoodsAblum')->where(array('goods_id' => $id))->delete();
+                    //添加相册
+                    foreach ($ablum['ablum'] as $key => $value) {
+                        table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $result, 'description' => $ablum['description'][$key]));
+                    }
+
                     $this->appReturn(array('msg' => '编辑成功'));
                 }
             }
@@ -110,14 +162,20 @@ class Server extends \app\app\controller\Init
             $city = getVar('province', 'city');
             if ($id) {
                 $data               = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->find();
-                $data['ablum']      = $this->appImgArray($data['ablum'], 'car');
+                $data['banner']     = $this->appImgArray($data['banner'], 'car');
                 $data['guarantee']  = explode(',', $data['guarantee']);
                 $data['city_copy']  = $city[$data['city']];
                 $data['brand_copy'] = dao('Category')->getName($data['brand']);
+                //获取相册信息
+                $ablum = table('GoodsAblum')->where(array('goods_id' => $data['id']))->field('path,description')->find('array');
+                foreach ($ablum as $key => $value) {
+                    $ablum[$key]['path'] = $this->appImg($value['path'], 'car');
+                }
+                $data['ablum'] = (array) $ablum;
             }
 
             $data['other'] = array(
-                'city'    => $this->appArray($city),
+                'city'    => $this->appArray(dao('Category')->getList(8)),
                 'gearbox' => $this->appArray(getVar('gearbox', 'car')),
                 'gases'   => $this->appArray(getVar('gases', 'car')),
                 'model'   => $this->appArray(getVar('model', 'car')),
@@ -217,6 +275,12 @@ class Server extends \app\app\controller\Init
         $this->appReturn(array('msg' => '数据获取成功', 'data' => (array) $list));
     }
 
+    /**
+     * 上架/下架/删除
+     * @date   2017-09-19T11:32:14+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
     public function changeStatus()
     {
         $id     = post('id', 'intval', 0);
@@ -231,6 +295,14 @@ class Server extends \app\app\controller\Init
         $map['uid'] = $this->uid;
 
         $data['status'] = (int) $status;
+
+        if (!in_array($type, array(1, 2))) {
+            $this->appReturn(array('status' => false, 'msg' => '非法type参数', 'data' => $type));
+        }
+
+        if (!in_array($data['status'], array(1, 2, 3, 4))) {
+            $this->appReturn(array('status' => false, 'msg' => '非法status参数'));
+        }
 
         switch ($type) {
             //汽车上下架
@@ -248,7 +320,7 @@ class Server extends \app\app\controller\Init
 
         $tableId = table($table)->where($map)->field('id')->find('one');
         if (!$tableId) {
-            $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
+            $this->appReturn(array('status' => false, 'msg' => '非法操作，信息不存在'));
         }
 
         $result = table($table)->where(array('id' => $tableId))->save($data);

@@ -103,10 +103,17 @@ class Init extends denha\Controller
      * @param  integer                  $size [description]
      * @return [type]                         [description]
      */
-    public function appImgArray($data = '', $path, $size = 0)
+    public function appImgArray($data = '', $path = '', $size = 0)
     {
 
-        $data = $data ? imgUrl(explode(',', $data), 'car', 0, getConfig('config.app', 'imgUrl')) : array();
+        $data = $data ? imgUrl(explode(',', $data), $path, 0, getConfig('config.app', 'imgUrl')) : array();
+        return $data;
+    }
+
+    public function appImg($data = '', $path = '', $size = 0)
+    {
+
+        !$data ?: $data = imgUrl($data, $path, 0, getConfig('config.app', 'imgUrl'));
         return $data;
     }
 }

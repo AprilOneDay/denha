@@ -460,6 +460,20 @@ class Mysqli
     }
 
     /**
+     * 添加多条信息
+     * @date   2017-09-19T15:45:40+0800
+     * @author ChenMingjiang
+     */
+    public function addAll($data = array())
+    {
+        foreach ($data as $key => $value) {
+            $result = $this->add($value);
+        }
+
+        return $result;
+    }
+
+    /**
      * 修改保存
      * @date   2017-03-19T16:20:24+0800
      * @author ChenMingjiang

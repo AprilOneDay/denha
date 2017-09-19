@@ -90,4 +90,37 @@ class User extends \app\app\controller\Init
 
         $this->appReturn(array('status' => true, 'msg' => '获取数据成功', 'data' => $data));
     }
+
+    /**
+     * 增加收藏
+     * @date   2017-09-19T14:39:24+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function collectionAdd()
+    {
+
+        $value = post('value', 'intval', 0);
+        $type  = post('type', 'intval', 0);
+
+        $result = dao('Collection')->add($this->uid, $type, $value);
+
+        $this->appReturn($result);
+    }
+
+    /**
+     * 删除收藏
+     * @date   2017-09-19T14:39:55+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function collectionDel()
+    {
+
+        $id = post('id', 'intval', 0);
+
+        $result = dao('Collection')->del($this->uid, $id);
+
+        $this->appReturn($result);
+    }
 }

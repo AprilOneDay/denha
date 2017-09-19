@@ -39,9 +39,11 @@ class Category extends \app\admin\controller\Init
             $id = post('id', 'intval', 0);
 
             $data['parentid'] = post('parentid', 'intval', 0);
-            $data['name']     = post('name', 'text', '');
             $data['sort']     = post('sort', 'intval', 0);
             $data['is_show']  = post('is_show', 'intval', 1);
+
+            $data['name']  = post('name', 'text', '');
+            $data['thumb'] = post('thumb', 'text', '');
 
             if (!$data['name']) {
                 $this->ajaxReturn(array('status' => false, 'msg' => '请输入分类名称'));
@@ -61,9 +63,10 @@ class Category extends \app\admin\controller\Init
 
             $this->ajaxReturn(array('status' => false, 'msg' => '操作失败'));
         } else {
-            $id       = get('id', 'intval', 0);
-            $parentid = get('parentid', 'intval', 0);
-            $rs       = table('Category')->where(['id' => $id])->find();
+            $id          = get('id', 'intval', 0);
+            $parentid    = get('parentid', 'intval', 0);
+            $rs          = table('Category')->where(array('id' => $id))->find();
+            $rs['thumb'] = json_encode((array) imgUrl($rs['thumb'], 'category'));
 
             if ($id == 0 && $parentid != 0) {
                 $rs['parentid'] = $parentid;

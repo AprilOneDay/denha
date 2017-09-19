@@ -181,7 +181,10 @@ $(function() {
         var maxNum  = Math.max($(this).attr('data-max'),1);
         var path    = $(this).attr('data-path'); 
         var content = '<input type="file" style="display:none;" id="'+name+'" multiple="multiple"><div class="img-list" style="margin-top:20px;"><ul></ul></div>';
-        var value   = jQuery.parseJSON($(this).attr('data-value'));
+        var value   = $(this).attr('data-value');
+        if(value != ''){
+            value =  jQuery.parseJSON(value);
+        }
             
         if(maxNum == 1){
             var ablum   = '';
@@ -244,14 +247,12 @@ $(function() {
 
         //删除照片
         $('.btn-del-img').click(function(){
-            console.log($(this).parent().html());
             $(this).parent().remove();
             bindValue();
         })
 
         function bindValue(){
             var data = new Array();
-            console.log($('.img-list').find('img').length);
             $('.img-list').find('img').each(function(){
                 var path  = $(this).attr('src');
                 path  = path.substring(path.lastIndexOf("/")+1,path.length);

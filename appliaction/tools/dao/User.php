@@ -157,4 +157,40 @@ class User
 
         return $data;
     }
+
+    public function getInfo($uid = 0, $field = '*')
+    {
+        $data = table('User')->where(array('id' => $uid))->field($field)->find('one');
+        return $data;
+    }
+
+    /**
+     * 获取用户名称
+     * @date   2017-09-19T09:52:14+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $uid [description]
+     * @return [type]                        [description]
+     */
+    public function getNickname($uid)
+    {
+        $data = table('User')->where(array('id' => $uid))->field('nickname')->find('one');
+
+        !$data ?: $data = '匿名';
+
+        return $data;
+    }
+
+    /**
+     * 获取商品店铺名称
+     * @date   2017-09-19T09:55:58+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $uid [description]
+     * @return [type]                        [description]
+     */
+    public function getShopName($uid)
+    {
+        $data = table('UserShop')->where(array('uid' => $uid))->field('name')->find('one');
+
+        return $data;
+    }
 }
