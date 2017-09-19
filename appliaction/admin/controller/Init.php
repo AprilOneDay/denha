@@ -6,14 +6,17 @@ use denha;
 class Init extends denha\Controller
 {
     public $consoleid;
+    public $consoleName;
     public $group;
 
     public function __construct()
     {
         $isPass = $this->getWhiteList();
         if (!$isPass) {
-            $this->consoleid = getSession('consoleid');
-            if (!$this->consoleid) {
+            $console           = getSession('console');
+            $this->consoleid   = $console['id'];
+            $this->consoleName = $console['nickname'];
+            if (!$console) {
                 header('Location:/index/login/');
             }
         }

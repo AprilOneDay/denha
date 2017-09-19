@@ -279,7 +279,9 @@ function url($location = '', $params = array())
 {
     $locationUrl = $location;
     if (stripos($location, '/') === false && $location != '') {
-        $locationUrl = URL . '/' . MODULE . '/' . CONTROLLER . '/' . $location;
+        $locationUrl = URL . DS . MODULE . DS . CONTROLLER . DS . $location;
+    } elseif (stripos($location, '/') != 1) {
+        $locationUrl = URL . DS . MODULE . DS . $location;
     }
     $param = '';
     if (!empty($params)) {
@@ -372,20 +374,30 @@ function imgFetch($path)
 function session($name = '', $value = '')
 {
     isset($_SESSION) ?: session_start();
-    // 数组
-    if (is_array($name)) {
-        foreach ($name as $k => $v) {
-            $_SESSION[$k] = $v;
+    //删除
+    if ($value === null) {
+        if (isset($_SESSION[$name])) {
+            unset($_SESSION[$name]);
         }
     }
-    //二维数组
-    elseif (is_array($value)) {
-        foreach ($value as $k => $v) {
-            $_SESSION[$name][$k] = $v;
+    //保存
+    else {
+        // 数组
+        if (is_array($name)) {
+            foreach ($name as $k => $v) {
+                $_SESSION[$k] = $v;
+            }
         }
-    } else {
-        $_SESSION[$name] = $value;
+        //二维数组
+        elseif (is_array($value)) {
+            foreach ($value as $k => $v) {
+                $_SESSION[$name][$k] = $v;
+            }
+        } else {
+            $_SESSION[$name] = $value;
+        }
     }
+
     //关闭session 可防止高并发下死锁问题
     session_write_close();
 }

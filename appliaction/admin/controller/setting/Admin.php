@@ -10,7 +10,6 @@ class Admin extends \app\admin\controller\Init
         $this->assign('list', $list);
         $this->assign('statusCopy', array(0 => '关闭', 1 => '开启'));
         $this->show();
-
     }
 
     public function edit()

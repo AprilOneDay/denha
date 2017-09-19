@@ -19,8 +19,8 @@
 			</div>
 			<div class="border-top-right fr">
 				<ul>
-					<li><a href="javascript:;">{data.nickname}</a></li>
-					<li><a href="javascript:;" @click="outLogin()">退出</a></li>
+					<li><a href="javascript:;"><?php echo $this->consoleName; ?></a></li>
+					<li><a href="<?php echo url('login/login_out'); ?>">退出</a></li>
 				</ul>
 			</div>
 		</div>
@@ -86,6 +86,10 @@
 	<script type="text/javascript" src="/vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="/vendor/pace/pace.min.js"></script>
 	<script type="text/javascript" src="/vendor/layer/layer.js"></script>
+	<script type="text/javascript" src="/vendor/laydate/laydate.js"></script>
+    <script type="text/javascript" src="/vendor/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="/vendor/ueditor/ueditor.all.js"></script>
+
 
 	<script type="text/javascript">
 	$('.sec-list-show').click(function(){

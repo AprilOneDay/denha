@@ -30,10 +30,11 @@ class Login extends \app\admin\controller\Init
             $data['login_time'] = TIME;
             table('ConsoleAdmin')->where(['id' => $admin['id']])->save($data);
 
-            session('consoleid', $admin['id']);
+            $console['id']       = $admin['id'];
+            $console['nickname'] = $admin['nickname'];
 
-            $sessionStorage['nickname'] = $admin['nickname'];
-            $sessionStorage['id']       = $admin['id'];
+            session('console', $console);
+            session('aaa', '11111');
 
             $this->ajaxReturn(['status' => true, 'msg' => '登录成功']);
 
@@ -41,6 +42,21 @@ class Login extends \app\admin\controller\Init
             $this->show();
         }
 
+    }
+
+    /**
+     * 退出登录
+     * @date   2017-09-19T21:45:21+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function loginOut()
+    {
+        session_start();
+        var_dump($_SESSION);
+        unset($_SESSION['console']);
+        session_write_close();
+        header('Location:/index/login/');
     }
 
     //检测是否登录
