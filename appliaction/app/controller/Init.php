@@ -6,7 +6,7 @@ use denha;
 class Init extends denha\Controller
 {
     public $token;
-    public $uid;
+    public $uid = 0;
     public $version;
     public $group;
     public $lg; //返货提示信息语音版本

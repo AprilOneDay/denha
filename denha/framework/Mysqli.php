@@ -124,6 +124,19 @@ class Mysqli
     }
 
     /**
+     * 判断是否存在该表
+     * @date   2017-09-20T09:57:21+0800
+     * @author ChenMingjiang
+     * @return boolean                  [description]
+     */
+    public function isTable()
+    {
+        $this->_sql = 'SHOW TABLES LIKE \'dh_banner\'';
+        $result     = (bool) mysqli_num_rows($this->query());
+        return $result;
+    }
+
+    /**
      * 查询条件
      * @date   2017-03-19T16:18:18+0800
      * @author ChenMingjiang
@@ -142,7 +155,7 @@ class Mysqli
                         } elseif ($v[0] == 'in' || $v['0'] == 'not in') {
                             $newWhere .= $k . '  ' . $v[0] . ' (' . $v[1] . ') AND ';
                         } elseif ($v[0] == 'between') {
-                            $newWhere .= $k . '  ' . $v[0] . ' \'' . $v[1] . '\' AND \'' . $v[2] . '\'';
+                            $newWhere .= $k . '  ' . $v[0] . ' \'' . $v[1] . '\' AND \'' . $v[2] . '\' AND ';
                         } elseif ($v[0] == 'or') {
                             $newWhere .= $k . ' = \'' . $v[1] . '\' OR ';
                         }
@@ -358,15 +371,15 @@ class Mysqli
             if ($this->limit == '') {$this->limit(1000);}
         }
 
-        $sql = 'SELECT ' . $this->field . ' FROM ' . $this->table;
+        $this->_sql = 'SELECT ' . $this->field . ' FROM ' . $this->table;
 
-        empty($this->join) ?: $sql .= $this->join;
-        empty($this->where) ?: $sql .= $this->where;
-        empty($this->group) ?: $sql .= $this->group;
-        empty($this->order) ?: $sql .= $this->order;
-        empty($this->limit) ?: $sql .= $this->limit;
+        empty($this->join) ?: $this->_sql .= $this->join;
+        empty($this->where) ?: $this->_sql .= $this->where;
+        empty($this->group) ?: $this->_sql .= $this->group;
+        empty($this->order) ?: $this->_sql .= $this->order;
+        empty($this->limit) ?: $this->_sql .= $this->limit;
 
-        $result = $this->query($sql);
+        $result = $this->query();
 
         //获取记录条数
         $this->total = mysqli_num_rows($result);
@@ -529,10 +542,10 @@ class Mysqli
      */
     public function query($sql)
     {
-        $this->_sql = $sql;
-        $_beginTime = microtime(true);
-        $result     = mysqli_query($this->link, $sql);
-        $_endTime   = microtime(true);
+        !$sql ?: $this->_sql = $sql;
+        $_beginTime          = microtime(true);
+        $result              = mysqli_query($this->link, $this->_sql);
+        $_endTime            = microtime(true);
 
         $this->sqlInfo['time'] = $_endTime - $_beginTime; //获取执行时间
         $this->sqlInfo['sql']  = $this->_sql;

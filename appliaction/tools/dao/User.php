@@ -160,7 +160,10 @@ class User
 
     public function getInfo($uid = 0, $field = '*')
     {
-        $data = table('User')->where(array('id' => $uid))->field($field)->find('one');
+        $data = table('User')->where(array('id' => $uid))->field($field)->find();
+        if (count($data) == 1) {
+            return $data[$field];
+        }
         return $data;
     }
 
@@ -190,6 +193,22 @@ class User
     public function getShopName($uid)
     {
         $data = table('UserShop')->where(array('uid' => $uid))->field('name')->find('one');
+
+        return $data;
+    }
+
+    /**
+     * 转换星星数量 于评价值 满分50 一个星星10分
+     * @date   2017-09-20T15:33:18+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $value [description]
+     * @return [type]                          [description]
+     */
+    public function getShopCredit($value)
+    {
+        $value         = max($value, 0);
+        $data['star']  = $value * 2;
+        $data['value'] = $value / 10;
 
         return $data;
     }

@@ -13,6 +13,7 @@ class Car extends \app\app\controller\Init
         $param['is_recommend'] = get('is_recommend', 'text', '');
         $param['is_urgency']   = get('is_urgency', 'text', '');
         $param['order_type']   = get('order_type', 'intval', 0);
+        $param['price_type']   = get('price_type', 'intval', 0);
         $param['brand']        = get('brand', 'intval', 0);
         $param['field']        = get('field', 'text', 'title');
         $param['keyword']      = get('keyword', 'text', '');
@@ -38,6 +39,8 @@ class Car extends \app\app\controller\Init
         if ($param['field'] && $param['keyword']) {
             if ($param['field'] == 'title') {
                 $map['title'] = array('like', '%' . $param['keyword'] . '%');
+                //增加搜索记录
+                dao('Search')->addLog($this->uid, 1, $param['keyword']);
             }
         }
 
@@ -68,6 +71,27 @@ class Car extends \app\app\controller\Init
                 break;
         }
 
+        switch ($param['price_type']) {
+            case '1':
+                $map['price'] = array('<=', 5);
+                break;
+            case '2':
+                $map['price'] = array('between', 5, 10);
+                break;
+            case '3':
+                $map['price'] = array('between', 10, 15);
+                break;
+            case '4':
+                $map['price'] = array('>=', 15);
+                break;
+            case '5':
+                $map['is_urgency'] = 1;
+                break;
+            default:
+                # code...
+                break;
+        }
+
         $list = table('GoodsCar')->where($map)->order($order)->limit($offer, $pageSize)->find('array');
 
         foreach ($list as $key => $value) {
@@ -82,7 +106,7 @@ class Car extends \app\app\controller\Init
         }
 
         $data['param'] = $param;
-        $data['list']  = (array) $list;
+        $data['list']  = $list ? $list : array();
 
         $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));
     }
@@ -131,27 +155,98 @@ class Car extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
         }
 
-        $data['price']   = $data['price'] . '万';
-        $data['mileage'] = $data['mileage'] . '万公里';
-        $data['thumb']   = $this->appImg($data['thumb'], 'car');
-        $data['ablum']   = $this->appImgArray($data['ablum'], 'car');
+        $city = dao('Category')->getList(8);
+
+        $data['price']         = $data['price'] . '万';
+        $data['mileage']       = $data['mileage'] . '万公里';
+        $data['thumb']         = $this->appImg($data['thumb'], 'car');
+        $data['ablum']         = $this->appImgArray($data['ablum'], 'car');
+        $data['guarantee']     = $data['guarantee'] ? explode(',', $data['guarantee']) : array();
+        $data['is_collection'] = (bool) table('Collection')->where(array('uid' => $this->uid, 'value' => $data['id'], 'type' => 1))->field('id')->find('one');
+
+        $data['banner'] = $this->appImgArray($data['banner'], 'car');
+
+        //获取车龄
+        $age['year']                      = (int) date('Y', TIME) - (int) date('Y', $data['buy_time']);
+        $age['month']                     = (int) date('m', TIME) - (int) date('m', $data['buy_time']);
+        $data['car_age']                  = '';
+        !$age['year'] ?: $data['car_age'] = $age['year'] . '年';
+        !$age['month'] ?: $data['car_age'] .= $age['month'] . '月';
 
         $data['user'] = array();
         $data['shop'] = array();
 
+        $data['city_copy'] = (string) $city[$data['city']];
+
+        //获取图片介绍
+        $data['content'] = '';
+        $ablum           = table('GoodsAblum')->where(array('goods_id' => $data['id']))->find('array');
+        foreach ($ablum as $key => $value) {
+            $data['content'] .= '<p><img src="' . $this->appImg($value['path'], 'car') . '" /></p>';
+            if ($value['description']) {
+                $data['content'] .= '<p>' . $value['description'] . '</p>';
+            }
+
+        }
+
         if ($data['type'] == 1) {
-            $user = dao('User')->getInfo($uid, 'nickname,avatar');
+            $user = dao('User')->getInfo($uid, 'nickname,avatar,mobile');
 
             $data['user']['avatar']   = $this->appImg($user['avatar'], 'avatar');
             $data['user']['nickname'] = $user['nickname'];
             $data['user']['address']  = $data['address'];
+            $data['user']['mobile']   = $data['mobile'];
         }
 
         if ($data['type'] == 2) {
-            $shop                   = table('UserShop')->where(array('uid' => $data['uid']))->field('avatar,name,address')->find();
-            $data['shop']           = $shop;
-            $data['shop']['avatar'] = $this->appImg($shop['avatar'], 'avatar');
+            $shop                         = table('UserShop')->where(array('uid' => $data['uid']))->field('avatar,name,address,credit_level')->find();
+            $data['shop']                 = $shop;
+            $data['shop']['avatar']       = $this->appImg($shop['avatar'], 'avatar');
+            $data['shop']['mobile']       = (string) dao('User')->getInfo($data['uid'], 'mobile');
+            $data['shop']['credit_level'] = dao('User')->getShopCredit($shop['credit_level']);
         }
-        print_r($data);
+
+        $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));
+    }
+
+    /**
+     * 获取汽车搜索推荐
+     * @date   2017-09-20T10:26:09+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function searchTags()
+    {
+        $map['type']   = 1;
+        $map['status'] = 1;
+
+        $list         = table('SearchRemmond')->where($map)->find()->limit(5)->order('sort asc')->field('name')->find('one', true);
+        $data['list'] = (array) $list;
+
+        $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));
+    }
+
+    /**
+     * 排序文案
+     * @date   2017-09-20T15:46:38+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function getSeachOrderByTags()
+    {
+        $data = $this->appArray(getVar('carListOrderbyType', 'app.car'));
+        $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));
+    }
+
+    /**
+     * 筛选价格文案
+     * @date   2017-09-20T15:46:46+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function getSeachPriceTags()
+    {
+        $data = $this->appArray(getVar('carListOrderbyPrice', 'app.car'));
+        $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));
     }
 }

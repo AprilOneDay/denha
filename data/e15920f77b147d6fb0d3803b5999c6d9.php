@@ -20,56 +20,48 @@
 						<div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger">*</span>
-								<span>上级分类</span>
+								<span>关键词</span>
 							</label>
-							 <div class="col-sm-8">
-								<select name="parentid" class="form-control w160" data-selected="<?php echo !isset($data['parentid']) ? null : $data['parentid']; ?>">
-									<option value="0">作为一级分类</option>
-									<?php if($treeList){ foreach($treeList as $key => $value){ ?>
-									<option value="<?php echo $value['id']; ?>" ><?php echo $value['htmlname']; ?></option>
+							<div class="col-sm-8">
+								<select name="type" class="form-control w160" >
+									<option value="0">选择类型</option>
+									<?php if($other['typeCopy']){ foreach($other['typeCopy'] as $key => $value){ ?>
+									<option value="<?php echo $key; ?>" ><?php echo $value; ?></option>
 									<?php }} ?>
 								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-sm-3">
-								<span class="text-danger">*</span>
-								<span>分类名称</span>
-							</label>
-							<div class="col-sm-8">
-								<input type="text" value="<?php echo !isset($data['name']) ? null : $data['name']; ?>" name="name" placeholder="分类名称" class="form-control">	
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-sm-3">
-								<span class="text-danger">*</span>
-								<span>缩略图</span>
-							</label>
-							<div class="col-sm-8">
-								<a class="btn btn-primary btn-ablum" data-name="thumb" data-value='<?php echo !isset($data['thumb']) ? null : $data['thumb']; ?>' data-path="category" data-max="1">添加图片</a>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger">*</span>
+								<span>关键词</span>
+							</label>
+							<div class="col-sm-8">
+								<input type="text" name="value" placeholder="关键词" class="form-control">	
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger"></span>
 								<span>排序</span>
 							</label>
 							<div class="col-sm-8">
-								<input type="text" value="<?php echo !isset($data['sort']) ? null : $data['sort']; ?>" name="sort" placeholder="排序" class="form-control">	
+								<input type="text" name="sort" value="0"  placeholder="排序" class="form-control">	
 							</div>
 						</div>
 						
-						<div class="form-group radio"  data-radio="<?php echo !isset($data['is_show']) ? null : $data['is_show']; ?>">
-							<label class="control-label col-sm-3">是否显示：</label>
+						<div class="form-group radio" >
+							<label class="control-label col-sm-3">状态：</label>
 							<div class="radio-inline">
 								<label>
-									<input type="radio"  name="is_show" value="1" > 是
+									<input type="radio"  name="status" value="1" checked> 开启
 								</label>
 							</div>
 							<div class="radio-inline">
 								<label >
-									<input type="radio"  name="is_show" value="0"> 否
+									<input type="radio"  name="status" value="0"> 关闭
 								</label>
 							</div>
 						</div>

@@ -241,7 +241,6 @@ function getVar($filename, $path, $ext = EXT)
 
         if (is_file($filePath)) {
             $_vars[$name] = include $filePath;
-
             return $_vars[$name];
         }
     }
@@ -279,9 +278,9 @@ function url($location = '', $params = array())
 {
     $locationUrl = $location;
     if (stripos($location, '/') === false && $location != '') {
-        $locationUrl = URL . DS . MODULE . DS . CONTROLLER . DS . $location;
+        $locationUrl = URL . '/' . MODULE . '/' . CONTROLLER . '/' . $location;
     } elseif (stripos($location, '/') != 1) {
-        $locationUrl = URL . DS . MODULE . DS . $location;
+        $locationUrl = URL . '/' . MODULE . '/' . $location;
     }
     $param = '';
     if (!empty($params)) {
