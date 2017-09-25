@@ -25,6 +25,14 @@
 			<div class="left col-md-9 col-xs-12">
 				<div class="news-content">
 					<h2>{$data['title']}</h2>
+					<div class="desc pull-left">
+						<dt>
+							<dl><i class="fa fa-eye"></i> 热度 555</dl>
+							<dl><i class="fa fa-fire"></i> 评论 5</dl>
+							<dl class="hidden-sm hidden-xs"><i class="fa fa-clock-o"></i> 时间 {F:date('Y-m-d',$data['created'])}</dl>
+						</dt>
+					</div>
+					<div class="clearfix"></div>
 					<div class="content">
 						{$data['content']}
 					</div>

@@ -76,6 +76,10 @@
 	<script type="text/javascript" src="/vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="/vendor/pace/pace.min.js"></script>
 	<script type="text/javascript" src="/vendor/layer/layer.js"></script>
+	<script type="text/javascript" src="/vendor/laydate/laydate.js"></script>
+    <script type="text/javascript" src="/vendor/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="/vendor/ueditor/ueditor.all.js"></script>
+
 
 	<script type="text/javascript">
 	</script>

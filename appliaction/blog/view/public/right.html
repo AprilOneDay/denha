@@ -24,9 +24,9 @@
 					<div class="title btn737">热门文章</div>
 					<div class="article-content">
 						<ul>
-							{loop $list $key $value}
+							{loop $randList $key $value}
 							<li>
-								<a href="javascript:;" title="{$value['title']}">
+								<a href="{F:url('detail',array('id'=>$value['id']))}" title="{$value['title']}">
 								· {$value['title']}
 								</a>
 							</li>

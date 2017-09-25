@@ -10,8 +10,8 @@ body{ background: #f0f2f7; }
 .left .news li .news-content img{ width:150px; height: 100px; float: left; margin-right: 15px; margin-bottom: 1rem; }
 .left .news li .news-content .desc{ display: inline-block; }
 .left .news li .news-content .desc p{ line-height: 1.85rem;align-items: center; overflow: hidden;} 
-.left .news li .news-content dl { float: left; padding-right: 10px;  }
-.left .news li .news-content dl i{margin-right: 5px;}
+.desc dl { float: left; padding-right: 10px;  }
+.desc dl i{margin-right: 5px;}
 
 .index-content{ padding-bottom: 20px; }
 
