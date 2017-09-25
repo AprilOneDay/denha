@@ -75,6 +75,7 @@
 					<div class="title btn737">分类目录</div>
 					<div class="tags-content">
 						<ul>
+							<li><a href="/">全部</a></li>
 							<?php if($listClass){ foreach($listClass as $key => $value){ ?>
 							<li><a href="<?php echo url('index',array('tag'=>$value['tag'])); ?>"><?php echo $tagCopy[$value['tag']]; ?> (<?php echo $value['num']; ?>)</a></li>
 							<?php }} ?>
