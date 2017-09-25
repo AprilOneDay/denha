@@ -37,23 +37,28 @@ class User
         }
 
         if (!preg_match("/^1[34578]{1}\d{9}$/", $data['mobile'])) {
-            return array('请输入正确的电话号码');
+            return array('status' => false, 'msg' => '请输入正确的电话号码');
+        }
+
+        if (!$data['type']) {
+            return array('status' => false, 'msg' => '请选择注册类型');
         }
 
         if (!$isAgree) {
             return array('status' => false, 'msg' => '请勾选服务协议');
         }
 
-        $isUser = table('User')->where(array('username' => $data['username']))->field('id')->find('one');
+        $isUser = table('User')->where(array('username' => $data['username'], 'type' => $data['type']))->field('id')->find('one');
         if ($isUser) {
             return array('status' => false, 'msg' => '用户名已注册请更换用户名');
         }
 
-        $isMobile = table('User')->where(array('mobile' => $data['mobile']))->field('id')->find('one');
+        $isMobile = table('User')->where(array('mobile' => $data['mobile'], 'type' => $data['type']))->field('id')->find('one');
         if ($isUser) {
             return array('status' => false, 'msg' => '手机号已注册');
         }
 
+        $data['nickname'] = $data['username'];
         $data['salt']     = rand(10000, 99999);
         $data['password'] = md5($data['password'] . $data['salt']);
         $data['created']  = TIME;
@@ -101,9 +106,11 @@ class User
             return array('status' => false, 'msg' => '密码有误');
         }
 
-        $data['token']    = md5(TIME . $user['salt']);
-        $data['time_out'] = TIME + 3600 * 24 * 2;
-        $data['type']     = $user['type'];
+        $data['token']      = md5(TIME . $user['salt']);
+        $data['time_out']   = TIME + 3600 * 24 * 2;
+        $data['type']       = $user['type'];
+        $data['login_ip']   = getIP();
+        $data['login_time'] = TIME;
 
         $reslut = table('User')->where(array('id' => $user['id']))->save($data);
 

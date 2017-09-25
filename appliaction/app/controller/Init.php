@@ -5,8 +5,8 @@ use denha;
 
 class Init extends denha\Controller
 {
-    public $token;
-    public $uid = 0;
+    public $token = '';
+    public $uid   = 0;
     public $version;
     public $group;
     public $lg; //返货提示信息语音版本
@@ -16,17 +16,22 @@ class Init extends denha\Controller
         !isset($_SERVER['HTTP_TOKEN']) ?: $this->token     = (string) $_SERVER['HTTP_TOKEN'];
         !isset($_SERVER['HTTP_VERSION']) ?: $this->version = (string) $_SERVER['HTTP_VERSION'];
 
-        $user = table('User')->where(array('token' => $this->token))->field('id,type')->find();
-        if ($user) {
-            $this->uid        = $user['id'];
-            $this->group      = $user['type'];
-            $data['time_out'] = TIME + 3600 * 24 * 2;
-            $reslut           = table('User')->where(array('id' => $user['id']))->save($data);
+        if ($this->token) {
+            $map['token']    = $this->token;
+            $map['login_ip'] = getIP();
+
+            $user = table('User')->where($map)->field('id,type')->find();
+            if ($user) {
+                $this->uid        = $user['id'];
+                $this->group      = $user['type'];
+                $data['time_out'] = TIME + 3600 * 24 * 2;
+                $reslut           = table('User')->where(array('id' => $user['id']))->save($data);
+            }
         }
     }
 
     /**
-     * 检查是否是商户用户
+     * 必须是商户用户登录
      * @date   2017-09-15T09:32:09+0800
      * @author ChenMingjiang
      * @return [type]                   [description]
@@ -39,6 +44,34 @@ class Init extends denha\Controller
 
         if ($this->group != 2) {
             $this->appReturn(array('status' => false, 'msg' => '权限不足'));
+        }
+
+    }
+
+    public function checkIndividual()
+    {
+        if (!$this->uid) {
+            $this->appReturn(array('status' => false, 'msg' => '请登录'));
+        }
+
+        if ($this->group != 1) {
+            $this->appReturn(array('status' => false, 'msg' => '必须为个人用户'));
+        }
+    }
+
+    /**
+     * 商户用户必须通过认证
+     * @date   2017-09-21T10:38:24+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function checkIde()
+    {
+        $isIde = table('UserShop')->where(array('uid' => $this->uid))->field('is_ide')->find('one');
+        if ($isIde == 2) {
+            $this->appReturn(array('status' => false, 'msg' => '认证未通过,请在店铺资料修改中修改后重新提交'));
+        } elseif ($isIde == 0) {
+            $this->appReturn(array('status' => false, 'msg' => '请先申请认证,或等待认证通过后操作'));
         }
     }
 
@@ -106,14 +139,14 @@ class Init extends denha\Controller
     public function appImgArray($data = '', $path = '', $size = 0)
     {
 
-        $data = $data ? imgUrl(explode(',', $data), $path, 0, getConfig('config.app', 'imgUrl')) : array();
-        return $data;
+        $data = $data ? (array) imgUrl($data, $path, 0, getConfig('config.app', 'imgUrl')) : array();
+        return (array) $data;
     }
 
     public function appImg($data = '', $path = '', $size = 0)
     {
 
-        !$data ?: $data = imgUrl($data, $path, 0, getConfig('config.app', 'imgUrl'));
-        return $data;
+        $data = !$data ? '' : imgUrl($data, $path, 0, getConfig('config.app', 'imgUrl'));
+        return (string) $data;
     }
 }

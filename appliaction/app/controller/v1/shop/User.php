@@ -10,9 +10,6 @@ class User extends \app\app\controller\Init
 {
     /**
      * 会员中心首页
-     * @date   2017-09-14T10:47:40+0800
-     * @author ChenMingjiang
-     * @return [type]                   [description]
      */
     public function index()
     {
@@ -28,9 +25,6 @@ class User extends \app\app\controller\Init
 
     /**
      * 编辑店铺信息
-     * @date   2017-09-14T10:47:32+0800
-     * @author ChenMingjiang
-     * @return [type]                   [description]
      */
     public function edit()
     {
@@ -78,7 +72,8 @@ class User extends \app\app\controller\Init
             $data                  = table('UserShop')->where(array('uid' => $this->uid))->field()->find();
             $data['ablum']         = $data['ablum'] ? imgUrl(explode(',', $data['ablum']), 'shop', 0, getConfig('config.app', 'imgUrl')) : array();
             $data['ablum_num']     = count($data['ablum_num']);
-            $data['category_copy'] = '选择分类';
+            $data['category']      = explode(',', $data['category']);
+            $data['category_copy'] = !$data['category'] ? '选择分类' : dao('Category')->getName($data['category']);
             $data['ide_ablum']     = $data['ide_ablum'] ? imgUrl(explode(',', $data['ide_ablum']), 'ide', 0, getConfig('config.app', 'imgUrl')) : array();
             $this->appReturn(array('data' => $data));
         }
@@ -86,9 +81,6 @@ class User extends \app\app\controller\Init
 
     /**
      * 资质认证
-     * @date   2017-09-14T12:06:12+0800
-     * @author ChenMingjiang
-     * @return [type]                   [description]
      */
     public function upide()
     {
@@ -122,9 +114,6 @@ class User extends \app\app\controller\Init
 
     /**
      * 店铺开启/关闭
-     * @date   2017-09-14T15:17:39+0800
-     * @author ChenMingjiang
-     * @return [type]                   [description]
      */
     public function changeStatus()
     {
@@ -136,6 +125,16 @@ class User extends \app\app\controller\Init
             }
 
             $reslut = table('UserShop')->where(array('uid' => $this->uid))->save(array('status' => $status));
+            //开启店铺商品
+            if ($status == 1) {
+                table('GoodsCar')->where(array('uid' => $this->uid))->save(array('is_show', 1));
+                table('GoodsService')->where(array('uid' => $this->uid))->save(array('is_show', 1));
+            }
+            //屏蔽店铺商品
+            else {
+                table('GoodsCar')->where(array('uid' => $this->uid))->save(array('is_show', 0));
+                table('GoodsService')->where(array('uid' => $this->uid))->save(array('is_show', 0));
+            }
 
             if ($reslut) {
                 $this->appReturn(array('msg' => '操作成功'));
@@ -178,9 +177,6 @@ class User extends \app\app\controller\Init
 
     /**
      * 注册
-     * @date   2017-09-14T15:14:27+0800
-     * @author ChenMingjiang
-     * @return [type]                   [description]
      */
     public function login()
     {

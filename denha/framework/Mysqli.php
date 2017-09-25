@@ -143,32 +143,40 @@ class Mysqli
      * @param  [type]                   $where [description]
      * @return [type]                          [description]
      */
-    public function where($where)
+    public function where($where, $value = '')
     {
-        if ($where) {
-            if (is_array($where)) {
-                $newWhere = '';
-                foreach ($where as $k => $v) {
-                    if (is_array($v)) {
-                        if ($v[0] == '>' || $v[0] == '<' || $v[0] == '>=' || $v[0] == '<=' || $v[0] == '!=' || $v[0] == 'like') {
-                            $newWhere .= $k . '  ' . $v[0] . ' \'' . $v[1] . '\' AND ';
-                        } elseif ($v[0] == 'in' || $v['0'] == 'not in') {
-                            $newWhere .= $k . '  ' . $v[0] . ' (' . $v[1] . ') AND ';
-                        } elseif ($v[0] == 'between') {
-                            $newWhere .= $k . '  ' . $v[0] . ' \'' . $v[1] . '\' AND \'' . $v[2] . '\' AND ';
-                        } elseif ($v[0] == 'or') {
-                            $newWhere .= $k . ' = \'' . $v[1] . '\' OR ';
+        if ($value && !is_array($where)) {
+            $this->where = ' WHERE ' . $where . ' = \'' . $value . '\'';
+        } else {
+            if ($where) {
+                if (is_array($where)) {
+                    $newWhere = '';
+                    foreach ($where as $k => $v) {
+                        if (is_array($v)) {
+                            if ($v[0] == '>' || $v[0] == '<' || $v[0] == '>=' || $v[0] == '<=' || $v[0] == '!=' || $v[0] == 'like') {
+                                $newWhere .= $k . '  ' . $v[0] . ' \'' . $v[1] . '\' AND ';
+                            } elseif ($v[0] == 'in' || $v['0'] == 'not in') {
+                                if (!$v[1]) {
+                                    $newWhere .= $k . '  ' . $v[0] . ' (\'\') AND ';
+                                } else {
+                                    $newWhere .= $k . '  ' . $v[0] . ' (' . $v[1] . ') AND ';
+                                }
+                            } elseif ($v[0] == 'between') {
+                                $newWhere .= $k . '  ' . $v[0] . ' \'' . $v[1] . '\' AND \'' . $v[2] . '\' AND ';
+                            } elseif ($v[0] == 'or') {
+                                $newWhere .= $k . ' = \'' . $v[1] . '\' OR ';
+                            }
+                        } elseif ($k == '_string') {
+                            $newWhere .= $v;
+                        } else {
+                            $newWhere .= $k . ' = \'' . $v . '\' AND ';
                         }
-                    } elseif ($k == '_string') {
-                        $newWhere .= $v;
-                    } else {
-                        $newWhere .= $k . ' = \'' . $v . '\' AND ';
                     }
+                } else {
+                    $newWhere = $where;
                 }
-            } else {
-                $newWhere = $where;
+                $this->where = ' WHERE ' . substr($newWhere, 0, -4);
             }
-            $this->where = ' WHERE ' . substr($newWhere, 0, -4);
         }
 
         return $this;
@@ -493,25 +501,30 @@ class Mysqli
      * @param  string                   $data [description]
      * @return [type]                         [description]
      */
-    public function save($data = '')
+    public function save($data = '', $value = '')
     {
         $newField = '';
-        if (is_array($data)) {
-            foreach ($data as $k => $v) {
-                if (is_array($v)) {
-                    if ($v[0] == 'add') {
-                        $newField .= '`' . $k . '`  = `' . $k . '` + ' . $v[1] . ',';
-                    } elseif ($v[0] == 'less') {
-                        $newField .= '`' . $k . '`  = `' . $k . '` - ' . $v[1] . ',';
-                    }
-                } else {
-                    $newField .= '`' . $k . '`=\'' . $v . '\',';
-                }
-            }
-            $newField = substr($newField, 0, -1);
+        if ($value && !is_array($data)) {
+            $newField = '`' . $data . '`=\'' . $value . '\'';
         } else {
-            $newField = $field;
+            if (is_array($data)) {
+                foreach ($data as $k => $v) {
+                    if (is_array($v)) {
+                        if ($v[0] == 'add') {
+                            $newField .= '`' . $k . '`  = `' . $k . '` + ' . $v[1] . ',';
+                        } elseif ($v[0] == 'less') {
+                            $newField .= '`' . $k . '`  = `' . $k . '` - ' . $v[1] . ',';
+                        }
+                    } else {
+                        $newField .= '`' . $k . '`=\'' . $v . '\',';
+                    }
+                }
+                $newField = substr($newField, 0, -1);
+            } else {
+                $newField = $field;
+            }
         }
+
         $this->field = $newField;
 
         $sql = 'UPDATE ' . $this->table . ' SET ' . $this->field;
@@ -531,6 +544,30 @@ class Mysqli
         $sql    = 'DELETE FROM ' . $this->table . $this->where;
         $result = $this->query($sql);
         return $result;
+    }
+
+    //开启事务
+    public function startTrans()
+    {
+        mysqli_query($this->link, 'begin');
+        /*$this->query('begin');*/
+        return true;
+    }
+
+    //回滚事务
+    public function rollback()
+    {
+        mysqli_query($this->link, 'rollback');
+        /*$this->query('rollback');*/
+        return true;
+    }
+
+    //提交事务
+    public function commit()
+    {
+        mysqli_query($this->link, 'commit');
+        /* $this->query('commit');*/
+        return true;
     }
 
     /**

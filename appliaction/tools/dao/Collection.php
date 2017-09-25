@@ -26,9 +26,9 @@ class Collection
         $data['value']   = $value;
         $data['created'] = TIME;
 
-        $is = table('Collection')->where(array('uid' => $uid, 'type' => $type, 'value' => $value))->field('id')->find('one');
+        $is = table('Collection')->where(array('uid' => $uid, 'type' => $type, 'value' => $value, 'del_status' => 0))->field('id')->find('one');
         if ($is) {
-            return array('status' => true, 'msg' => '已经收藏了,请勿重复收藏');
+            return array('status' => false, 'msg' => '已经收藏了,请勿重复收藏');
         }
 
         $result = table('Collection')->add($data);
@@ -47,7 +47,7 @@ class Collection
      * @param  integer                  $id  [description]
      * @return [type]                        [description]
      */
-    public function del($uid = 0, $id = 0)
+    public function del($uid = 0, $type = 0, $id = 0)
     {
         if (!$uid) {
             return array('status' => false, 'msg' => '请登录');
@@ -57,12 +57,16 @@ class Collection
             return array('status' => false, 'msg' => '参数错误');
         }
 
-        $is = table('Collection')->where(array('id' => $id, 'uid' => $uid, 'del_status' => 1))->field('id')->find('one');
-        if ($is) {
+        if (!$type) {
+            return array('status' => false, 'msg' => '参数类型错误');
+        }
+
+        $collectionId = table('Collection')->where(array('value' => $id, 'uid' => $uid, 'type' => $type, 'del_status' => 0))->field('id')->find('one');
+        if (!$collectionId) {
             return array('status' => true, 'msg' => '操作失败,信息不存在');
         }
 
-        $result = table('Collection')->where(array('id' => $id, 'uid' => $uid))->save(array('del_status' => 1));
+        $result = table('Collection')->where(array('id' => $collectionId))->save(array('del_status' => 1));
 
         if ($result) {
             return array('status' => true, 'msg' => '删除收藏成功');

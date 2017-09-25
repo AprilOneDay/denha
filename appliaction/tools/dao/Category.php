@@ -39,7 +39,19 @@ class Category
      */
     public function getName($id)
     {
-        $name = (string) table('Category')->where(array('id' => $id))->field('name')->find('one');
+        if (stripos($id, ',') !== false) {
+            $map['id'] = array('in', $id);
+        } elseif (is_array($id)) {
+            $map['id'] = array('in',implode(',', $id))
+        }else{
+            $map['id'] = $id;
+        }
+
+        $name = (string) table('Category')->where($map)->field('name')->find('one',true);
+        if(count($name) == 1){
+            return $name[0];
+        }
+        
         return $name;
     }
 

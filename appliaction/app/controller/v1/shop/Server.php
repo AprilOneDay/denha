@@ -12,6 +12,7 @@ class Server extends \app\app\controller\Init
     {
         parent::__construct();
         $this->checkShop();
+        $this->checkIde();
     }
 
     /**
@@ -105,10 +106,18 @@ class Server extends \app\app\controller\Init
 
             //上传banner图 并生成封面图片
             $data['banner'] = $this->appUpload($files['banner'], $data['banner'], 'car');
-            if (stripos($data['ablum'], ',') !== false) {
+            if (stripos($data['banner'], ',') !== false) {
                 $data['thumb'] = substr($data['banner'], 0, stripos($data['banner'], ','));
             } else {
                 $data['thumb'] = $data['banner'];
+            }
+
+            if (!$data['banner']) {
+                $this->appReturn(array('status' => false, 'msg' => '请上传图片'));
+            }
+
+            if (count(explode(',', $data['banner'])) > 5) {
+                $this->appReturn(array('status' => false, 'msg' => '最多可传5张图片'));
             }
 
             $ablum['ablum'] = explode(',', $this->appUpload($files['ablum'], $data['ablum'], 'car'));

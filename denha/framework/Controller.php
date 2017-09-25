@@ -93,6 +93,7 @@ class Controller
             'code'   => 200,
             'status' => true,
             'data'   => array(),
+            'msg'    => '获取数据成功',
         );
         $value = array_merge($array, $value);
         exit(json_encode($value));

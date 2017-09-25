@@ -333,7 +333,12 @@ function getCookie($name, $encode = false)
 //获取上传图片地址
 function imgUrl($name, $path = '', $size = 0, $host = false)
 {
-    $imgName = is_array($name) ? $name : (array) $name;
+
+    if (stripos($name, ',') !== false) {
+        $imgName = explode(',', $name);
+    } else {
+        $imgName = is_array($name) ? $name : (array) $name;
+    }
 
     foreach ($imgName as $key => $value) {
         if ($path) {
@@ -360,7 +365,7 @@ function imgUrl($name, $path = '', $size = 0, $host = false)
         $data[] = $url;
     }
 
-    $data = is_array($name) ? $data : current($data);
+    $data = count($data) > 1 ? $data : current($data);
     return $data;
 }
 

@@ -22,6 +22,9 @@ class Car extends \app\app\controller\Init
         $pageSize = get('pageSize', 'intval', 10);
         $offer    = max(($pageNo - 1), 0) * $pageSize;
 
+        $map['is_show'] = 1;
+        $map['status']  = 1;
+
         if ($param['is_recommend'] != '') {
             $map['is_recommend'] = $param['is_recommend'];
         }
@@ -101,7 +104,7 @@ class Car extends \app\app\controller\Init
 
             $list[$key]['price']   = $value['price'] . '万';
             $list[$key]['mileage'] = $value['mileage'] . '万公里';
-            $list[$key]['thumb']   = $this->appImgArray($value['thumb'], 'car');
+            $list[$key]['thumb']   = $this->appImg($value['thumb'], 'car');
 
         }
 
@@ -113,9 +116,6 @@ class Car extends \app\app\controller\Init
 
     /**
      * 字母区分带图标的品牌
-     * @date   2017-09-19T13:51:29+0800
-     * @author ChenMingjiang
-     * @return [type]                   [description]
      */
     public function brandList()
     {
@@ -162,7 +162,7 @@ class Car extends \app\app\controller\Init
         $data['thumb']         = $this->appImg($data['thumb'], 'car');
         $data['ablum']         = $this->appImgArray($data['ablum'], 'car');
         $data['guarantee']     = $data['guarantee'] ? explode(',', $data['guarantee']) : array();
-        $data['is_collection'] = (bool) table('Collection')->where(array('uid' => $this->uid, 'value' => $data['id'], 'type' => 1))->field('id')->find('one');
+        $data['is_collection'] = (bool) table('Collection')->where(array('uid' => $this->uid, 'value' => $data['id'], 'type' => 1, 'del_status' => 0))->field('id')->find('one');
 
         $data['banner'] = $this->appImgArray($data['banner'], 'car');
 
@@ -206,6 +206,10 @@ class Car extends \app\app\controller\Init
             $data['shop']['credit_level'] = dao('User')->getShopCredit($shop['credit_level']);
         }
 
+        //增加浏览记录
+        dao('Footprints')->add($this->uid, 1, $data['id'], $data['uid']);
+        //增加数据库访问记录
+        dao('Footprints')->addHot($this->uid, 1, $data['id']);
         $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));
     }
 
@@ -249,4 +253,5 @@ class Car extends \app\app\controller\Init
         $data = $this->appArray(getVar('carListOrderbyPrice', 'app.car'));
         $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));
     }
+
 }
