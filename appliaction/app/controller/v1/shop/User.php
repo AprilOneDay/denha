@@ -42,8 +42,8 @@ class User extends \app\app\controller\Init
             $files['avatar'] = files('avatar');
             $files['ablum']  = files('ablum_files');
 
-            $data['ablum']  = $this->appUpload($files['ablum'], $data['ablum'], 'shop');
-            $data['avatar'] = $this->appUpload($files['avatar'], '', 'avatar');
+            $data['ablum']                       = $this->appUpload($files['ablum'], $data['ablum'], 'shop');
+            !$files['avatar'] ?: $data['avatar'] = $this->appUpload($files['avatar'], '', 'avatar');
 
             if (!$data['name']) {
                 $this->appReturn(array('status' => false, 'msg' => '请输入店铺名称'));
@@ -70,11 +70,12 @@ class User extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '执行失败'));
         } else {
             $data                  = table('UserShop')->where(array('uid' => $this->uid))->field()->find();
-            $data['ablum']         = $data['ablum'] ? imgUrl(explode(',', $data['ablum']), 'shop', 0, getConfig('config.app', 'imgUrl')) : array();
+            $data['avatar']        = $this->appImg($data['avatar'], 'avatar');
+            $data['ablum']         = $this->appImgArray($data['ablum'], 'shop');
             $data['ablum_num']     = count($data['ablum_num']);
             $data['category']      = explode(',', $data['category']);
             $data['category_copy'] = !$data['category'] ? '选择分类' : dao('Category')->getName($data['category']);
-            $data['ide_ablum']     = $data['ide_ablum'] ? imgUrl(explode(',', $data['ide_ablum']), 'ide', 0, getConfig('config.app', 'imgUrl')) : array();
+            $data['ide_ablum']     = $this->appImgArray($data['ide_ablum'], 'ide');
             $this->appReturn(array('data' => $data));
         }
     }

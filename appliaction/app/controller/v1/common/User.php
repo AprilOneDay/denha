@@ -1,6 +1,6 @@
 <?php
 /**
- * 公用模块
+ * 会员模块
  */
 namespace app\app\controller\v1\common;
 

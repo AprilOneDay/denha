@@ -1,6 +1,6 @@
 <?php
 /**
- * 公用模块
+ * 会员模块
  */
 namespace app\app\controller\v1\user;
 
@@ -97,5 +97,80 @@ class Index extends \app\app\controller\Init
         $data['list'] = $list ? $list : array();
 
         $this->appReturn(array('data' => $data));
+    }
+
+    /**
+     * 编辑个人信息
+     * @date   2017-09-25T10:47:27+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function edit()
+    {
+        if (IS_POST) {
+
+            $data['mail']       = post('mail', 'text', '');
+            $data['nickname']   = post('nickname', 'text', '');
+            $data['is_message'] = post('is_message', 'intval', 0);
+
+            $files['avatar'] = files('avatar');
+
+            !$files['avatar'] ?: $data['avatar'] = $this->appUpload($files['avatar'], '', 'avatar');
+
+            if (!$data['nickname']) {
+                $this->appReturn(array('status' => false, 'msg' => '请输入昵称'));
+            }
+
+            if (!$data['mail']) {
+                $this->appReturn(array('status' => false, 'msg' => '请输入邮箱地址'));
+            }
+
+            $reslut = table('User')->where(array('id' => $this->uid))->save($data);
+
+            if ($reslut) {
+                $this->appReturn(array('msg' => '保存成功'));
+            }
+
+            $this->appReturn(array('status' => false, 'msg' => '执行失败'));
+        } else {
+            $data           = table('User')->where(array('id' => $this->uid))->field('id,nickname,mail,avatar,mobile,is_message,type')->find();
+            $data['uid']    = $data['id'];
+            $data['avatar'] = $this->appImg($data['avatar'], 'avatar');
+            $data['mobile'] = substr_replace($data['mobile'], '*****', 4, 5);
+            $this->appReturn(array('data' => $data));
+        }
+    }
+
+    /**
+     * 修改用户密码
+     * @date   2017-09-25T11:11:42+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function findPassword()
+    {
+        $uid    = $this->uid;
+        $mobile = post('mobile', 'text', '');
+
+        $password  = post('password', 'text', '');
+        $password2 = post('password2', 'text', '');
+
+        $code = post('code', 'intval', 0);
+
+        $map['id']     = $this->uid;
+        $map['mobile'] = $mobile;
+        $map['type']   = 1;
+
+        if (!$mobile) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入手机号'));
+        }
+
+        $is = table('User')->where($map)->field('id')->find('one');
+        if (!$is) {
+            $this->appReturn(array('status' => false, 'msg' => '非绑定手机号'));
+        }
+
+        $reslut = dao('User')->findPassword($this->uid, $password, $password2, $code);
+        $this->appReturn($reslut);
     }
 }

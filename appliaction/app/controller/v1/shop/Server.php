@@ -1,6 +1,6 @@
 <?php
 /**
- * 公用模块
+ * 服务信息管理
  */
 namespace app\app\controller\v1\shop;
 
@@ -142,8 +142,6 @@ class Server extends \app\app\controller\Init
                     foreach ($ablum['ablum'] as $key => $value) {
                         table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $result, 'description' => $ablum['description'][$key]));
                     }
-
-                    $this->appReturn(array('msg' => '添加成功'));
                 }
             }
             //编辑
@@ -252,6 +250,9 @@ class Server extends \app\app\controller\Init
                 if ($result) {
                     $this->appReturn(array('msg' => '添加成功'));
                 }
+                //增加商品总数 + 1
+                table('UserShop')->where(array('uid' => $this->uid))->save(array('goods_num' => array('add', 1)));
+                $this->appReturn(array('msg' => '添加成功'));
             }
 
             $this->appReturn(array('status' => false, 'msg' => '操作失败'));
@@ -334,10 +335,20 @@ class Server extends \app\app\controller\Init
 
         $result = table($table)->where(array('id' => $tableId))->save($data);
 
-        if ($result) {
-            $this->appReturn(array('msg' => '操作成功'));
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '执行失败'));
+
         }
 
-        $this->appReturn(array('status' => false, 'msg' => '执行失败'));
+        //记录服务商品数量
+        if ($type == 'GoodsService' && $status == 1) {
+            //增加商品总数 + 1
+            table('UserShop')->where(array('uid' => $this->uid))->save(array('goods_num' => array('add', 1)));
+        } elseif ($type == 'GoodsService' && $status != 1) {
+            //增加商品总数 - 1
+            table('UserShop')->where(array('uid' => $this->uid))->save(array('goods_num' => array('less', 1)));
+        }
+
+        $this->appReturn(array('msg' => '操作成功'));
     }
 }

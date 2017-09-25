@@ -1,6 +1,6 @@
 <?php
 /**
- * 汽车信息模块
+ * 广告图模块
  */
 namespace app\app\controller\v1\index;
 

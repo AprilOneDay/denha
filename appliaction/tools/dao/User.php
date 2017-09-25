@@ -122,6 +122,49 @@ class User
     }
 
     /**
+     * 修改密码
+     * @date   2017-09-25T10:47:02+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $uid       [description]
+     * @param  [type]                   $password  [description]
+     * @param  [type]                   $password2 [description]
+     * @param  [type]                   $code      [description]
+     * @return [type]                              [description]
+     */
+    public function findPassword($uid, $password, $password2, $code)
+    {
+        if (!$uid) {
+            return array('status' => false, 'msg' => '参数错误');
+        }
+
+        if (!$password) {
+            return array('status' => false, 'msg' => '请输入修改密码');
+        }
+
+        $password = trim(strtolower($password));
+
+        if ($password !== $password2) {
+            return array('status' => false, 'msg' => '两次密码不一致');
+        }
+
+        $salt = table('User')->where('id', $uid)->field('salt')->find('one');
+        if (!$salt) {
+            return array('status' => false, 'msg' => '信息有误');
+        }
+
+        $data['password'] = md5($password . $salt);
+        $data['token']    = '';
+        $reslut           = table('User')->where('id', $uid)->save($data);
+
+        if (!$reslut) {
+            return array('status' => false, 'msg' => '修改密码失败');
+        }
+
+        return array('status' => true, 'msg' => '修改密码成功');
+
+    }
+
+    /**
      * 检测用户今日可用行为 每日签到/每日分享
      * @date   2017-09-18T13:58:32+0800
      * @author ChenMingjiang
@@ -183,9 +226,7 @@ class User
      */
     public function getNickname($uid)
     {
-        $data = table('User')->where(array('id' => $uid))->field('nickname')->find('one');
-
-        !$data ?: $data = '匿名';
+        $data = (string) table('User')->where(array('id' => $uid))->field('nickname')->find('one');
 
         return $data;
     }

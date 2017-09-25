@@ -1,6 +1,6 @@
 <?php
 /**
- * 公用模块
+ * 会员汽车模块
  */
 namespace app\app\controller\v1\user;
 
@@ -85,7 +85,7 @@ class Car extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '预约超过一天了'));
         }
 
-        $map['id']         = $id;
+        $map['goods_id']   = $id;
         $map['start_time'] = $data['start_time'];
         $map['end_time']   = $data['end_time'];
 

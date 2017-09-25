@@ -30,13 +30,13 @@ class Orders extends \app\app\controller\Init
 
         $offer = max(($pageNo - 1), 0) * $pageSize;
 
-        $map['uid']        = $this->uid;
+        $map['seller_uid'] = $this->uid;
         $map['del_seller'] = 0;
         if ($orderStatus) {
             $map['order_status'] = $orderStatus;
         }
 
-        $list = table('Orders')->where($mapCar)->field('id,order_sn,message,seller_magess,status,order_status,acount_original,acount')->limit($offer, $pageSize)->order('id desc')->find('array');
+        $list = table('Orders')->where($map)->field('id,order_sn,message,seller_message,status,order_status,acount_original,acount')->limit($offer, $pageSize)->order('id desc')->find('array');
         foreach ($list as $key => $value) {
             $goods = table('OrdersCar')->where('order_sn', $value['order_sn'])->field('title,ascription,goods_id,thumb,price_original,price,produce_time,mileage,start_time,end_time')->find('array');
             foreach ($goods as $k => $v) {
@@ -68,17 +68,18 @@ class Orders extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '参数错误'));
         }
 
-        $map['uid']      = $this->uid;
-        $map['order_sn'] = $orderSn;
-        $map['status']   = 0;
+        $map['seller_uid'] = $this->uid;
+        $map['order_sn']   = $orderSn;
+        $map['status']     = 0;
 
         $id = table('Orders')->where($map)->field('id')->find('one');
         if (!$id) {
             $this->appReturn(array('status' => false, 'msg' => '可操作信息不存在'));
         }
 
-        $data['status']    = 1;
-        $data['pass_time'] = TIME;
+        $data['status']       = 1;
+        $data['pass_time']    = TIME;
+        $data['order_status'] = 2;
 
         $reslut = table('Orders')->where('id', $id)->save($data);
         if (!$reslut) {
@@ -101,9 +102,9 @@ class Orders extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '参数错误'));
         }
 
-        $map['uid']      = $this->uid;
-        $map['order_sn'] = $orderSn;
-        $map['status']   = 3;
+        $map['seller_uid'] = $this->uid;
+        $map['order_sn']   = $orderSn;
+        $map['status']     = 3;
 
         $id = table('Orders')->where($map)->field('id')->find('one');
         if (!$id) {
@@ -135,9 +136,9 @@ class Orders extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '参数错误'));
         }
 
-        $map['uid']      = $this->uid;
-        $map['order_sn'] = $orderSn;
-        $map['status']   = 0;
+        $map['seller_uid'] = $this->uid;
+        $map['order_sn']   = $orderSn;
+        $map['status']     = 0;
 
         $id = table('Orders')->where($map)->field('id')->find('one');
         if (!$id) {
@@ -191,7 +192,7 @@ class Orders extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '参数错误'));
         }
 
-        $map['uid']          = $this->uid;
+        $map['seller_uid']   = $this->uid;
         $map['order_sn']     = $orderSn;
         $map['status']       = 1;
         $map['order_status'] = 2;

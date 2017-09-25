@@ -40,4 +40,5 @@ class ChangeTable
 
         return array('status' => true, 'msg' => '操作成功');
     }
+
 }
