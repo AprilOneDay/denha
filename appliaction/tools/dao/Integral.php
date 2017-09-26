@@ -23,8 +23,9 @@ class Integral
      * 增加积分明细
      * @date   2017-09-18T13:42:46+0800
      * @author ChenMingjiang
-     * @param  [type]                   $uid [description]
-     * @param  [type]                   $id  [description]
+     * @param  [type]                   $uid      [增加积分明细用户]
+     * @param  [type]                   $id       [积分规则]
+     * @param  [type]                   $content  [增加积分文案替换]
      */
     public function add($uid = 0, $id, $content = '')
     {

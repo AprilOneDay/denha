@@ -22,9 +22,10 @@ class MyCar extends \app\app\controller\Init
      */
     public function lists()
     {
-        $pageNo            = get('pageNo', 'intval', 1);
-        $pageSize          = get('pageSize', 'intval', 10);
-        $offer             = max(($pageNo - 1), 0) * $pageSize;
+        $pageNo   = get('pageNo', 'intval', 1);
+        $pageSize = get('pageSize', 'intval', 10);
+        $offer    = max(($pageNo - 1), 0) * $pageSize;
+
         $map['uid']        = $this->uid;
         $map['del_status'] = 0;
 

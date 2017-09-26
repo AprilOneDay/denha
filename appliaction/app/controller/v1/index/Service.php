@@ -62,6 +62,7 @@ class Service extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '服务已下架'));
         }
 
+        $data['thumb']                = $this->appImg($data['thumb'], 'car');
         $data['ablum']                = $this->appImgArray($data['ablum'], 'car');
         $data['shop']                 = table('UserShop')->where('uid', $data['uid'])->field('name,uid,credit_level')->find();
         $data['shop']['credit_level'] = dao('User')->getShopCredit($data['shop']['credit_level']);

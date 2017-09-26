@@ -8,6 +8,13 @@ use app\app\controller;
 
 class Service extends \app\app\controller\Init
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->checkIndividual();
+    }
+
     /**
      * 预约看车
      * @date   2017-09-20T16:25:21+0800
@@ -56,5 +63,53 @@ class Service extends \app\app\controller\Init
         $result   = dao('Orders')->add($this->uid, 2, $dataInfo, 0, 0, $message, $origin, $version);
 
         $this->appReturn($result);
+    }
+
+    /**
+     * 帮忙推荐服务
+     */
+    public function help()
+    {
+
+        $data['sign']        = post('sign', 'intval', 0);
+        $data['price']       = post('prcie', 'text', '');
+        $data['description'] = post('description', 'text', '');
+
+        $data['created'] = TIME;
+        $data['uid']     = $this->uid;
+
+        if (!$data['sign']) {
+            $this->appReturn(array('status' => false, 'msg' => '请选择服务类型'));
+        }
+
+        if (!$data['price']) {
+            $this->appReturn(array('status' => false, 'msg' => '请选择服务价格'));
+        }
+
+        if (!$data['description']) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入详情内容'));
+        }
+
+        $result = table('HelpService')->add($data);
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '执行失败'));
+        }
+
+        $this->appReturn(array('status' => true, 'msg' => '提交成功'));
+
+    }
+
+    //获取帮助分类
+    public function getHelpType()
+    {
+        $data = $this->appArray(getVar('helpType', 'app.service'));
+        $this->appReturn(array('data' => $data));
+    }
+
+    //获取帮助价格分类
+    public function getHelpPrice()
+    {
+        $data = $this->appArray(getVar('helpPice', 'app.service'));
+        $this->appReturn(array('data' => $data));
     }
 }

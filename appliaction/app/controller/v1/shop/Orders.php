@@ -23,7 +23,7 @@ class Orders extends \app\app\controller\Init
      */
     public function lists()
     {
-        $type        = get('type', 'intval', 0);
+        $type        = get('type', 'intval', 1);
         $orderStatus = get('order_status', 'intval', 0);
         $pageNo      = get('pageNo', 'intval', 1);
         $pageSize    = get('pageSize', 'intval', 10);
@@ -36,18 +36,44 @@ class Orders extends \app\app\controller\Init
             $map['order_status'] = $orderStatus;
         }
 
+        if ($type) {
+            $map['type'] = $type;
+        }
+
         $list = table('Orders')->where($map)->field('id,order_sn,message,seller_message,status,order_status,acount_original,acount')->limit($offer, $pageSize)->order('id desc')->find('array');
         foreach ($list as $key => $value) {
             $goods = table('OrdersCar')->where('order_sn', $value['order_sn'])->field('title,ascription,goods_id,thumb,price_original,price,produce_time,mileage,start_time,end_time')->find('array');
-            foreach ($goods as $k => $v) {
-                $goods[$k]['price_original'] = $v['price_original'] . '万';
-                $goods[$k]['price']          = $v['price'] . '万';
-                $goods[$k]['mileage']        = $v['mileage'] . '万公里';
-                $goods[$k]['thumb']          = $this->appImg($v['thumb'], 'car');
-                $goods[$k]['produce_time']   = $v['produce_time'] . '年';
-                $goods[$k]['time']           = date('Y-m-d H:i', $v['start_time']) . '-' . date('H:i', $v['end_time']);
+            foreach ($list as $key => $value) {
+                switch ($type) {
+                    case '1':
+                        $goods = table('OrdersCar')->where('order_sn', $value['order_sn'])->field('title,ascription,goods_id,thumb,price_original,price,produce_time,mileage,start_time,end_time')->find('array');
+                        foreach ($goods as $k => $v) {
+                            $goods[$k]['price_original'] = $v['price_original'] . '万';
+                            $goods[$k]['price']          = $v['price'] . '万';
+                            $goods[$k]['mileage']        = $v['mileage'] . '万公里';
+                            $goods[$k]['thumb']          = $this->appImg($v['thumb'], 'car');
+                            $goods[$k]['produce_time']   = $v['produce_time'] . '年';
+                            $goods[$k]['time']           = date('Y-m-d H:i', $v['start_time']) . '-' . date('H:i', $v['end_time']);
+                        }
+                        break;
+                    case '2':
+                        $goods = table('OrdersService')->where('order_sn', $value['order_sn'])->field('title,goods_id,thumb,price_original,price,mileage,start_time,end_time,vin,brand,style,produce_time,buy_time')->find('array');
+                        foreach ($goods as $k => $v) {
+                            $goods[$k]['price_original'] = $v['price_original'] . '万';
+                            $goods[$k]['price']          = $v['price'] . '万';
+                            $goods[$k]['mileage']        = $v['mileage'] . '万公里';
+                            $goods[$k]['thumb']          = $this->appImg($v['thumb'], 'car');
+                            $goods[$k]['produce_time']   = $v['produce_time'] . '年';
+                            $goods[$k]['time']           = date('Y-m-d H:i', $v['start_time']) . '-' . date('H:i', $v['end_time']);
+                        }
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+                $list[$key]['goods'] = $goods;
             }
-            $list[$key]['goods'] = $goods;
+
         }
 
         $data = $list ? $list : array();

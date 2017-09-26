@@ -24,6 +24,10 @@ class User
             return array('status' => false, 'msg' => '请输入用户名');
         }
 
+        if (!preg_match("/^[a-zA-Z0-9_]+$/", $data['username'])) {
+            return array('status' => false, 'msg' => '用户名请勿使用特殊字符汉字字符');
+        }
+
         if (!$data['mobile']) {
             return array('status' => false, 'msg' => '请输入手机号码');
         }
@@ -71,7 +75,13 @@ class User
 
         if ($data['type'] == 2) {
             table('UserShop')->add(array('uid' => $reslut, 'name' => $data['username']));
+        } else {
+            //发送站内信
+            dao('Message')->send($reslut, 'register_user');
         }
+
+        //增加积分明细
+        dao('Integral')->add($reslut, 1);
 
         return array('status' => true, 'msg' => '注册成功');
     }

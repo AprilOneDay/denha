@@ -17,11 +17,14 @@ class Comment
             return array('status' => false, 'msg' => '内容不能为空');
         }
 
+        if ($type == 1) {
+            $data['to_uid'] = table('Circle')->where(array('id' => $goodsId))->field('uid')->find('one');
+        }
+
         $data['uid']       = $uid;
         $data['goods_id']  = $goodsId;
         $data['content']   = $content;
         $data['parent_id'] = 0;
-        $data['to_uid']    = 0;
         $data['created']   = TIME;
 
         $result = table('Comment')->add($data);
@@ -29,6 +32,15 @@ class Comment
             return array('status' => false, 'msg' => '评论失败');
         }
 
+        //发送站内信
+        $sendData = array(
+            'nickname' => dao('User')->getNickname($uid),
+        );
+        $sendJump = array(
+            'type'     => 1,
+            'goods_id' => $goodsId,
+        );
+        dao('Message')->send($data['to_uid'], 'comment_user', $sendData, $sendJump);
         return array('status' => true, 'msg' => '评论成功');
     }
 
@@ -49,7 +61,7 @@ class Comment
 
         $map['id'] = $parentId;
         $comment   = tbale('Comment')->where($map)->field('goods_id,uid')->find('one');
-        if (!$goodsId) {
+        if (!$comment) {
             return array('status' => false, 'msg' => '回复信息不存在');
         }
 
@@ -65,6 +77,15 @@ class Comment
             return array('status' => false, 'msg' => '评论失败');
         }
 
+        //发送站内信
+        $sendData = array(
+            'nickname' => dao('User')->getNickname($uid),
+        );
+        $sendJump = array(
+            'type'     => 1,
+            'goods_id' => $comment['goods_id'],
+        );
+        dao('Message')->send($data['to_uid'], 'comment_user', $sendData, $sendJump);
         return array('status' => true, 'msg' => '评论成功');
     }
 
@@ -110,6 +131,8 @@ class Comment
             $list[$key]['user']  = $user;
 
         }
+
+        $list = $list ? $list : array();
         return $list;
 
     }

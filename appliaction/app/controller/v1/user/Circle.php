@@ -42,14 +42,4 @@ class Circle extends \app\app\controller\Init
         $this->appReturn(array('data' => $data));
     }
 
-    /**
-     * 获取未读信息
-     * @date   2017-09-25T17:13:40+0800
-     * @author ChenMingjiang
-     * @return [type]                   [description]
-     */
-    public function getNotReadList()
-    {
-
-    }
 }

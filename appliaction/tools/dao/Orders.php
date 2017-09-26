@@ -29,6 +29,7 @@ class Orders
             $data['acount']          = $data['acount_original'] + $farePrice - $couponPrice;
             $data['coupon_price']    = $couponPrice;
             $data['fare_price']      = $farePrice;
+            $data['created']         = TIME;
 
             table('Orders')->startTrans();
             $orderId = table('Orders')->add($data);
@@ -69,6 +70,38 @@ class Orders
         table('Orders')->commit();
         return array('status' => true, 'msg' => '操作成功');
 
+    }
+
+    /**
+     * 获取订单详情数据
+     * @date   2017-09-26T17:29:49+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $map [description]
+     * @return [type]                        [description]
+     */
+    public function detail($map)
+    {
+        $orders = table('Orders')->where($map)->field('type,order_status,status,acount,message,seller_message')->find();
+        if (!$orders) {
+            return array('status' => false, 'msg' => '订单信息不存在');
+        }
+
+        switch ($orders['type']) {
+            case '1':
+                $ordersData = table('OrdersCar')->where('order_sn', $map['order_sn'])->find('array');
+                break;
+            case '2':
+                $ordersData = table('OrdersService')->where('order_sn', $map['order_sn'])->find('array');
+                break;
+            default:
+                # code...
+                break;
+        }
+
+        $data['orders'] = $orders;
+        $data['goods']  = $ordersData;
+
+        return array('status' => true, 'data' => $data);
     }
 
     /**

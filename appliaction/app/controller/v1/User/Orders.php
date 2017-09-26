@@ -73,6 +73,30 @@ class Orders extends \app\app\controller\Init
         $this->appReturn(array('data' => $data));
     }
 
+    public function detail()
+    {
+        $orderSn = get('order_sn', 'text', '');
+        if (!$orderSn) {
+            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
+        }
+
+        $map['uid']      = $this->uid;
+        $map['order_sn'] = $orderSn;
+
+        $reslut = dao('Orders')->detail($map);
+        if (!$reslut['status']) {
+            $this->appReturn($reslut);
+        }
+
+        $data = $reslut['data'];
+
+        foreach ($data['goods'] as $key => $value) {
+            $data['goods'][$key]['thumb'] = $this->appImg($value['thumb'], 'car');
+        }
+
+        $this->appReturn(array('data' => $data));
+    }
+
     /**
      * 买家同意预约时间
      * @date   2017-09-22T16:27:41+0800
