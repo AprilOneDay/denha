@@ -5,6 +5,26 @@ class Search
 {
 
     /**
+     * 执行
+     * @date   2017-09-28T17:08:52+0800
+     * @author ChenMingjiang
+     * @param  integer                  $uid   [description]
+     * @param  integer                  $type  [description]
+     * @param  string                   $value [description]
+     * @return [type]                          [description]
+     */
+    public function run($uid = 0, $type = 0, $value = '')
+    {
+        $result = $this->check($type, $value);
+        if (!$result['status']) {
+            return $result;
+        }
+
+        $result = $this->addLog($uid, $type, $value);
+        return true;
+    }
+
+    /**
      * 搜索检测
      * @date   2017-09-20T09:16:01+0800
      * @author ChenMingjiang

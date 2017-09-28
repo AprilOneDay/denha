@@ -83,6 +83,12 @@ class Controller
     protected function ajaxReturn($value)
     {
         header("Content-Type:application/json; charset=utf-8");
+        $array = array(
+            'status' => true,
+            'data'   => array(),
+            'msg'    => '操作成功',
+        );
+        $value = array_merge($array, $value);
         exit(json_encode($value));
     }
 

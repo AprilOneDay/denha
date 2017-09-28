@@ -20,7 +20,7 @@ class Orders
             $data['uid']             = $uid;
             $data['type']            = $type;
             $data['status']          = 0;
-            $data['origin']          = 0;
+            $data['origin']          = $origin;
             $data['version']         = $version;
             $data['seller_uid']      = $key;
             $data['order_sn']        = $orderSn;

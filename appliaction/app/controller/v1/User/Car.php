@@ -45,7 +45,7 @@ class Car extends \app\app\controller\Init
             if ($value['is_lease'] || stripos($value['guarantee'], 3) !== false) {
                 $list[$key]['title'] = "【转lease】" . $value['title'];
             }
-            $list[$key]['price']   = $value['price'] . '万';
+            $list[$key]['price']   = dao('Number')->price($value['price']);
             $list[$key]['mileage'] = $value['mileage'] . '万公里';
             $list[$key]['thumb']   = $this->appImg($value['thumb'], 'car');
         }
@@ -256,7 +256,7 @@ class Car extends \app\app\controller\Init
 
         $message = post('message', 'text', '');
 
-        $version = 'v1';
+        $version = APP_VERSION;
 
         if (!$id || !$data['start_time'] || !$data['end_time']) {
             $this->appReturn(array('status' => false, 'msg' => '参数错误'));

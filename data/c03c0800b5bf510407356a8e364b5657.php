@@ -41,7 +41,7 @@
 								<div class="desc pull-left">
 									<p ><?php echo $value['description']; ?></p>
 									<dt>
-										<dl><i class="fa fa-eye"></i> 热度 555</dl>
+										<dl><i class="fa fa-eye"></i> 热度 <?php echo $value['hot']; ?></dl>
 										<dl><i class="fa fa-fire"></i> 评论 5</dl>
 										<dl class="hidden-sm hidden-xs"><i class="fa fa-clock-o"></i> 时间 <?php echo date('Y-m-d',$value['created']); ?></dl>
 									</dt>

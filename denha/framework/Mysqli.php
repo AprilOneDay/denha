@@ -145,7 +145,7 @@ class Mysqli
      */
     public function where($where, $value = '')
     {
-        if ($value && !is_array($where)) {
+        if ($value !== '' && !is_array($where)) {
             $this->where = ' WHERE ' . $where . ' = \'' . $value . '\'';
         } else {
             if ($where) {
@@ -159,6 +159,7 @@ class Mysqli
                                 if (!$v[1]) {
                                     $newWhere .= $k . '  ' . $v[0] . ' (\'\') AND ';
                                 } else {
+                                    $v[1] = is_array($v[1]) ? implode(',', $v[1]) : $v[1];
                                     $newWhere .= $k . '  ' . $v[0] . ' (' . $v[1] . ') AND ';
                                 }
                             } elseif ($v[0] == 'between') {
@@ -167,7 +168,7 @@ class Mysqli
                                 $newWhere .= $k . ' = \'' . $v[1] . '\' OR ';
                             }
                         } elseif ($k == '_string') {
-                            $newWhere .= $v;
+                            $newWhere .= $v . ' AND ';
                         } else {
                             $newWhere .= $k . ' = \'' . $v . '\' AND ';
                         }
@@ -504,7 +505,7 @@ class Mysqli
     public function save($data = '', $value = '')
     {
         $newField = '';
-        if ($value && !is_array($data)) {
+        if ($value !== '' && !is_array($data)) {
             $newField = '`' . $data . '`=\'' . $value . '\'';
         } else {
             if (is_array($data)) {

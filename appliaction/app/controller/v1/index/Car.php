@@ -102,7 +102,7 @@ class Car extends \app\app\controller\Init
                 $list[$key]['title'] = "【转lease】" . $value['title'];
             }
 
-            $list[$key]['price']   = $value['price'] . '万';
+            $list[$key]['price']   = dao('Number')->price($value['price']);
             $list[$key]['mileage'] = $value['mileage'] . '万公里';
             $list[$key]['thumb']   = $this->appImg($value['thumb'], 'car');
 
@@ -157,7 +157,7 @@ class Car extends \app\app\controller\Init
 
         $city = dao('Category')->getList(8);
 
-        $data['price']         = $data['price'] . '万';
+        $data['price']         = dao('Number')->price($data['price']);
         $data['mileage']       = $data['mileage'] . '万公里';
         $data['thumb']         = $this->appImg($data['thumb'], 'car');
         $data['ablum']         = $this->appImgArray($data['ablum'], 'car');

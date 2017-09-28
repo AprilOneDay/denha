@@ -26,10 +26,9 @@ class Coupon extends \app\app\controller\Init
         $map['uid']        = $this->uid;
         $map['del_status'] = 0;
 
-        $list = table('Coupon')->where($map)->limit($offer, $pageSize)->order('start_time asc')->find('array');
+        $list = table('Coupon')->where($map)->limit($offer, $pageSize)->order('status desc,start_time asc')->find('array');
         foreach ($list as $key => $value) {
             $list[$key]['category_copy'] = dao('Category')->getName($value['category']);
-            $list[$key]['remainder_num'] = (string) ($value['num'] - $value['pull_num']);
         }
 
         $data['list'] = $list ? $list : array();
@@ -109,6 +108,18 @@ class Coupon extends \app\app\controller\Init
     }
 
     /**
+     * 获取抵扣卷类型
+     * @date   2017-09-27T11:24:56+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function getCouponType()
+    {
+        $data = $this->appArray(getVar('type', 'app.coupon'));
+        $this->appReturn(array('data' => $data));
+    }
+
+    /**
      * 改变抵扣卷数量
      * @date   2017-09-26T15:25:24+0800
      * @author ChenMingjiang
@@ -123,12 +134,12 @@ class Coupon extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '请输入抵扣卷数量'));
         }
 
-        $coupon = table('Coupon')->where(array('uid' => $this->uid, 'id' => $id))->field('num,pull_num')->find();
+        $coupon = table('Coupon')->where(array('uid' => $this->uid, 'id' => $id))->field('num,remainder_num')->find();
         if (!$coupon) {
             $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
         }
 
-        if ($num < $coupon['pull_num']) {
+        if ($num < $num['num'] - $coupon['remainder_num']) {
             $this->appReturn(array('status' => false, 'msg' => '修改数量不可小于已领取数量'));
         }
 

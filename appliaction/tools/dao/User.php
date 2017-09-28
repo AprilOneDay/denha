@@ -94,7 +94,7 @@ class User
      * @param  [type]                   $password [description]
      * @return [type]                             [description]
      */
-    public function login($account, $password)
+    public function login($account, $password, $imei = '')
     {
         $password = trim(strtolower($password));
         if (!$account) {
@@ -121,6 +121,7 @@ class User
         $data['type']       = $user['type'];
         $data['login_ip']   = getIP();
         $data['login_time'] = TIME;
+        $data['imei']       = $imei;
 
         $reslut = table('User')->where(array('id' => $user['id']))->save($data);
 

@@ -33,6 +33,7 @@ class Circle extends \app\app\controller\Init
 
         $list = table('Circle')->where($map)->field('id,ablum,description,uid,created')->limit($offer, $pageSize)->find('array');
         foreach ($list as $key => $value) {
+            $list[$key]['is_like'] = (bool) table('Enjoy')->where(array('type' => 1, 'value' => $value['id'], 'uid' => $this->uid))->count();
             $list[$key]['like']    = (int) table('Enjoy')->where(array('type' => 1, 'value' => $value['id']))->count();
             $list[$key]['ablum']   = $this->appImgArray($value['ablum'], 'circle');
             $list[$key]['created'] = date('Y/m/d', $value['created']);
@@ -45,6 +46,42 @@ class Circle extends \app\app\controller\Init
 
         $data['tot_read_total'] = (int) dao('Comment')->getNotReadTotal($this->uid);
         $data['list']           = $list ? $list : array();
+
+        $this->appReturn(array('data' => $data));
+    }
+
+    /**
+     * 分享详情
+     * @date   2017-09-26T09:45:49+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function detail()
+    {
+
+        $id = get('id', 'intval', 0);
+        if (!$id) {
+            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
+        }
+
+        $map['del_status'] = 0;
+        $map['id']         = $id;
+
+        $data = table('Circle')->where($map)->field('id,ablum,description,uid,created')->find();
+        if (!$data) {
+            $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
+        }
+
+        $data['is_del']  = $this->uid == $uid ? true : false;
+        $data['like']    = (int) table('Enjoy')->where(array('type' => 1, 'value' => $data['id']))->count();
+        $data['is_like'] = (bool) table('Enjoy')->where(array('type' => 1, 'value' => $data['id'], 'uid' => $this->uid))->count();
+        $data['ablum']   = $this->appImgArray($data['ablum'], 'circle');
+        $data['created'] = date('Y/m/d', $data['created']);
+        $user            = dao('User')->getInfo($data['uid'], 'nickname,avatar');
+        $user['avatar']  = $this->appImg($user['avatar'], 'avatar');
+        $data['user']    = $user;
+        $comment         = dao('Comment')->getList(1, $data['id']);
+        $data['comment'] = $comment;
 
         $this->appReturn(array('data' => $data));
     }
@@ -88,41 +125,6 @@ class Circle extends \app\app\controller\Init
     }
 
     /**
-     * 分享详情
-     * @date   2017-09-26T09:45:49+0800
-     * @author ChenMingjiang
-     * @return [type]                   [description]
-     */
-    public function detail()
-    {
-
-        $id = get('id', 'intval', 0);
-        if (!$id) {
-            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
-        }
-
-        $map['del_status'] = 0;
-        $map['id']         = $id;
-
-        $data = table('Circle')->where($map)->field('id,ablum,description,uid,created')->find();
-        if (!$data) {
-            $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
-        }
-
-        $data['is_del']  = $this->uid == $uid ? true : false;
-        $data['like']    = (int) table('Enjoy')->where(array('type' => 1, 'value' => $data['id']))->count();
-        $data['ablum']   = $this->appImgArray($data['ablum'], 'circle');
-        $data['created'] = date('Y/m/d', $data['created']);
-        $user            = dao('User')->getInfo($data['uid'], 'nickname,avatar');
-        $user['avatar']  = $this->appImg($user['avatar'], 'avatar');
-        $data['user']    = $user;
-        $comment         = dao('Comment')->getList(1, $data['id']);
-        $data['comment'] = $comment;
-
-        $this->appReturn(array('data' => $data));
-    }
-
-    /**
      * 获取未读信息
      * @date   2017-09-25T17:13:40+0800
      * @author ChenMingjiang
@@ -131,10 +133,10 @@ class Circle extends \app\app\controller\Init
     public function getNotReadList()
     {
 
-        $map['to_uid']           = $uid;
+        $map['to_uid']           = $this->uid;
         $map['is_to_uid_reader'] = 0;
 
-        $list = table('Comment')->where($map)->field('goods_id,content,uid,created')->find('array');
+        $list = table('Comment')->where($map)->field('id,goods_id,content,uid,created')->find('array');
         foreach ($list as $key => $value) {
             $user               = dao('User')->getInfo($value['uid'], 'nickname,avatar');
             $user['avatar']     = $this->appImg($user['avatar'], 'avatar');
@@ -188,7 +190,7 @@ class Circle extends \app\app\controller\Init
      */
     public function like()
     {
-        $id = get('id', 'intval', 0);
+        $id = post('id', 'intval', 0);
 
         $reslut = dao('Enjoy')->add($this->uid, 1, $id);
         $this->appReturn($reslut);
@@ -202,7 +204,7 @@ class Circle extends \app\app\controller\Init
      */
     public function delLike()
     {
-        $id = get('id', 'intval', 0);
+        $id = post('id', 'intval', 0);
 
         $reslut = dao('Enjoy')->del($this->uid, 1, $id);
         $this->appReturn($reslut);
@@ -228,7 +230,7 @@ class Circle extends \app\app\controller\Init
      * @author ChenMingjiang
      * @return [type]                   [description]
      */
-    public function replyComment()
+    public function relpyComment()
     {
         $content  = post('content', 'text', '');
         $parentId = post('comment_id', 'intval', 0);

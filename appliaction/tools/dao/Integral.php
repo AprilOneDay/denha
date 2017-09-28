@@ -23,11 +23,13 @@ class Integral
      * 增加积分明细
      * @date   2017-09-18T13:42:46+0800
      * @author ChenMingjiang
-     * @param  [type]                   $uid      [增加积分明细用户]
-     * @param  [type]                   $id       [积分规则]
-     * @param  [type]                   $content  [增加积分文案替换]
+     * @param  [type]                   $uid       [增加积分明细用户]
+     * @param  [type]                   $id        [积分规则]
+     * @param  [type]                   $content   [增加积分文案替换]
+     * @param  [type]                   $value     [直接填写积分]
+     * @param  [type]                   $isUser    [是否执行修改会员积分]
      */
-    public function add($uid = 0, $id, $content = '')
+    public function add($uid = 0, $id = 0, $content = '', $value = '', $isUser = true)
     {
         if (!$uid) {
             return array('status' => false, 'msg' => '参数错误');
@@ -44,14 +46,12 @@ class Integral
             $data['content'] = $integralRul['content'];
         }
         $content == '' ?: $data['content'] = $content;
+        $value == '' ?: $data['value']     = $value;
 
         $reslut = table('IntegralLog')->add($data);
-
-        if ($reslut) {
+        if ($reslut && $isUser) {
             //更变用户积分
-            $eve = $data['value'] > 0 ? 'add' : 'less';
-            table('User')->where(array('id' => $uid))->save(array('integral' => array($eve, $data['value'])));
-            //echo table('User')->getSql();die;
+            table('User')->where(array('id' => $uid))->save(array('integral' => array('add', $data['value'])));
             return array('status' => true, 'msg' => '操作成功', 'data' => array('value' => $data['value']));
         }
 

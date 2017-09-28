@@ -195,7 +195,7 @@ function dao($name, $app = '')
     if (!$app) {
         $class = 'app\\tools\\dao\\' . $name;
     } else {
-        $class = 'app\\' . $app . '\\tools\\dao' . $name;
+        $class = 'app\\' . $app . '\\tools\\dao\\' . $name;
     }
 
     $value = md5($class);

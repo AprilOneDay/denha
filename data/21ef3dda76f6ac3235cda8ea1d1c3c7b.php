@@ -27,7 +27,7 @@
 					<h2><?php echo $data['title']; ?></h2>
 					<div class="desc pull-left">
 						<dt>
-							<dl><i class="fa fa-eye"></i> 热度 555</dl>
+							<dl><i class="fa fa-eye"></i> 热度 <?php echo $data['hot']; ?></dl>
 							<dl><i class="fa fa-fire"></i> 评论 5</dl>
 							<dl class="hidden-sm hidden-xs"><i class="fa fa-clock-o"></i> 时间 <?php echo date('Y-m-d',$data['created']); ?></dl>
 						</dt>
@@ -83,31 +83,70 @@
 										<div class="clearfix"></div>
 									</li>
 								</ul>
-				
-
-		       				 	<form method="post"  class="form-horizontal">
+								<div class="alert alert-info" role="alert" style="margin-top: 2rem;">
+									回复评论:
+									<div class="pull-right">
+										<a href="javascript:;" class="btn-comment-up">[收起]</a>
+									</div>
+								</div>
+		       				 	<!-- <form method="post"  class="form-horizontal remark">
+		       				 	
 		       				 		<div class="form-group">
-									    <label for="inputEmail3" class="col-sm-2 control-label">称呼</label>
-									    <div class="col-sm-10">
-									      <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-									    </div>
-								  	</div>
+		       				 										    <label for="inputEmail3" class="col-sm-2 control-label">称呼</label>
+		       				 										    <div class="col-sm-10">
+		       				 										      <input type="email" class="form-control"  placeholder="Email">
+		       				 										    </div>
+		       				 									  	</div>
 		       				 		<div class="form-group">
-									    <label for="inputEmail3" class="col-sm-2 control-label">邮箱</label>
-									    <div class="col-sm-10">
-									      <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-									    </div>
-								  	</div>
-					               
-									<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
-    						 	</form>
-
-	
+		       				 										    <label for="inputEmail3" class="col-sm-2 control-label">邮箱</label>
+		       				 										    <div class="col-sm-10">
+		       				 										      <input type="email" class="form-control"  placeholder="Email">
+		       				 										    </div>
+		       				 									  	</div>
+		       				 						               <div class="form-group">
+		       				 											<label for="inputEmail3" class="col-sm-2 control-label">内容</label>
+		       				 										    <div class="col-sm-10">
+		       				 										      <textarea name="comment" class="form-control"></textarea>
+		       				 										    </div>
+		       				 	    						 		</div>
+		       				 	    						 		<div class="form-group">
+		       				 										    <div class="col-sm-offset-2 col-sm-10">
+		       				 										      <button type="button" class="btn btn-primary">确定</button>
+		       				 										    </div>
+		       				 									  	</div>
+		       				 	    						 	</form> -->
 							</div>
 							<div class="clearfix"></div>
 						</li>
 					</ul>
 				</div>
+				<div class="alert alert-info" role="alert" style="margin-top: 2rem;">发表评价:</div>
+			 	<form  class="form-horizontal remark" action="<?php echo url('comment/add'); ?>">
+		 		 	<input type="hidden" class="form-control" name="goods_id"  value="<?php echo $data['id']; ?>">
+			 		<div class="form-group">
+					    <label for="inputEmail3" class="col-sm-2 control-label">称呼</label>
+					    <div class="col-sm-10">
+					      <input type="text" class="form-control" name="nickname"  placeholder="昵称">
+					    </div>
+				  	</div>
+			 		<div class="form-group">
+					    <label for="inputEmail3" class="col-sm-2 control-label">邮箱</label>
+					    <div class="col-sm-10">
+					      <input type="email" class="form-control" name="mail"  placeholder="Email">
+					    </div>
+				  	</div>
+	               	<div class="form-group">
+						<label for="inputEmail3" class="col-sm-2 control-label">内容</label>
+					    <div class="col-sm-10">
+					      <textarea  class="form-control" name="content"></textarea>
+					    </div>
+			 		</div>
+			 		<div class="form-group">
+					    <div class="col-sm-offset-2 col-sm-10">
+					      <button type="button" class="btn btn-primary btn-comply">确定</button>
+					    </div>
+				  	</div>
+			 	</form>
 			</div>
 			<div class="right col-md-3 hidden-sm hidden-xs">
 				<form action="<?php echo url('index'); ?>" id="form">
@@ -199,5 +238,11 @@
 	<script type="text/javascript" src="<?php echo getConfig('config','vendor'); ?>/pace/pace.min.js"></script>
 	<script type="text/javascript" src="<?php echo getConfig('config','vendor'); ?>/layer/layer.js"></script>
 	<script type="text/javascript" src="<?php echo getConfig('config','ststic'); ?>/blog/js/common.js"></script>
+	<script type="text/javascript">
+	$('.btn-comment-up').click(function(){
+		var comment = $(this).parent().parent().parent();
+		comment.remove();
+	})
+	</script>
 </body>
 </html>

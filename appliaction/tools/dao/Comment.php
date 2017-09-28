@@ -7,7 +7,7 @@ namespace app\tools\dao;
 class Comment
 {
     //发表评论
-    public function add($uid = 0, $type = 0, $goodsId = 0, $content)
+    public function add($uid = 0, $type = 0, $goodsId = 0, $content, $dataContent = array(), $toUid = 0)
     {
         if (!$uid || !$goodsId || !$type) {
             return array('status' => false, 'msg' => '参数错误');
@@ -17,15 +17,18 @@ class Comment
             return array('status' => false, 'msg' => '内容不能为空');
         }
 
-        if ($type == 1) {
-            $data['to_uid'] = table('Circle')->where(array('id' => $goodsId))->field('uid')->find('one');
-        }
-
+        $data              = $dataContent;
         $data['uid']       = $uid;
         $data['goods_id']  = $goodsId;
         $data['content']   = $content;
         $data['parent_id'] = 0;
         $data['created']   = TIME;
+        $data['type']      = $type;
+        $data['to_uid']    = $toUid;
+
+        if ($type == 1) {
+            $data['to_uid'] = table('Circle')->where(array('id' => $goodsId))->field('uid')->find('one');
+        }
 
         $result = table('Comment')->add($data);
         if (!$result) {
@@ -45,7 +48,7 @@ class Comment
     }
 
     //回复评论
-    public function reply($uid, $type, $content, $parentId, $toUid)
+    public function reply($uid, $type, $content, $parentId, $toUid, $dataContent = array())
     {
         if (!$uid || !$type || !$toUid) {
             return array('status' => false, 'msg' => '参数错误');
@@ -60,11 +63,12 @@ class Comment
         }
 
         $map['id'] = $parentId;
-        $comment   = tbale('Comment')->where($map)->field('goods_id,uid')->find('one');
+        $comment   = table('Comment')->where($map)->field('goods_id,uid')->find();
         if (!$comment) {
             return array('status' => false, 'msg' => '回复信息不存在');
         }
 
+        $data              = $dataContent;
         $data['uid']       = $uid;
         $data['goods_id']  = $comment['goods_id'];
         $data['content']   = $content;
@@ -91,15 +95,10 @@ class Comment
 
     public function getNotReadTotal($uid)
     {
-        $map['uid']           = $uid;
-        $map['is_uid_reader'] = 0;
-
-        $count = (int) table('Comment')->where($map)->count();
-        unset($map);
 
         $map['to_uid']           = $uid;
         $map['is_to_uid_reader'] = 0;
-        $count += (int) table('Comment')->where($map)->count();
+        $count                   = (int) table('Comment')->where($map)->count();
 
         return $count;
     }

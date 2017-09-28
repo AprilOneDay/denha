@@ -36,7 +36,7 @@ class Service extends \app\app\controller\Init
 
         $data['ablum'] = $this->appUpload($files['ablum'], $data['ablum'], 'shop');
 
-        $version = 'v1';
+        $version = APP_VERSION;
 
         if (!$data['my_car_id']) {
             $this->appReturn(array('status' => false, 'msg' => '请选择对应爱车'));

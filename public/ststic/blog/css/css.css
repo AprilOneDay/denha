@@ -32,6 +32,9 @@ body{ background: #f0f2f7; }
 
 .comment-chlid{ border: 1px solid #e1e1e1; margin:2rem; padding:1rem; }
 
+.remark{ width: 90%; margin-top: 1rem; }
+.remark textarea{ min-height: 12rem; }
+
 .footer{background: #363d4c; color: #fff; padding: 20px;  line-height: 35px;}
 .footer .link { border-bottom:  1px solid #ccc; }
 .footer .link li{ float: left; padding-right: 10px;   }

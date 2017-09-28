@@ -26,15 +26,24 @@ class Server extends \app\app\controller\Init
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 10);
         $offer    = max(($pageNo - 1), 0) * $pageSize;
+        $status   = get('status', 'text', '');
 
         $map['uid'] = $this->uid;
+
+        if ($status > 2) {
+            $this->appReturn(array('status' => false, 'msg' => 'status 参数错误'));
+        }
+
+        if ($status) {
+            $map['status'] = $status;
+        }
 
         $list = table('GoodsCar')->where($map)->order('created desc')->limit($offer, $pageSize)->find('array');
         foreach ($list as $key => $value) {
             if ($value['is_lease'] || stripos($value['guarantee'], 3) !== false) {
                 $list[$key]['title'] = "【转lease】" . $value['title'];
             }
-            $list[$key]['price']   = $value['price'] . '万';
+            $list[$key]['price']   = dao('Number')->price($value['price']);
             $list[$key]['mileage'] = $value['mileage'] . '万公里';
             $list[$key]['thumb']   = $this->appImg($value['thumb'], 'car');
         }

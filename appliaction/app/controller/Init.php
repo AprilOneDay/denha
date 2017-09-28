@@ -10,12 +10,14 @@ class Init extends denha\Controller
     public $version;
     public $group;
     public $lg; //返货提示信息语音版本
+    public $imei;
 
     public function __construct()
     {
         !isset($_SERVER['HTTP_TOKEN']) ?: $this->token     = (string) $_SERVER['HTTP_TOKEN'];
         !isset($_SERVER['HTTP_VERSION']) ?: $this->version = (string) $_SERVER['HTTP_VERSION'];
         !isset($_SERVER['HTTP_LG']) ?: $this->lg           = (string) $_SERVER['HTTP_LG'];
+        !isset($_SERVER['HTTP_IMEI']) ?: $this->imei       = (string) $_SERVER['HTTP_IMEI'];
 
         if ($this->token) {
             $map['token']    = $this->token;
@@ -45,7 +47,6 @@ class Init extends denha\Controller
         if ($this->lg) {
             $value['msg'] = $this->baiduTrans($value['msg'], $this->lg);
         }
-
         exit(json_encode($value));
     }
 
@@ -58,7 +59,7 @@ class Init extends denha\Controller
      * @param  string                   $from  [需要翻译的语言]
      * @return [type]                          [description]
      */
-    protected function baiduTrans($value = '你好', $to = 'en', $from = 'zh')
+    protected function baiduTrans($value = '', $to = 'en', $from = 'zh')
     {
         header("Content-Type:application/json; charset=utf-8");
         $appid = getConfig('config', 'baidu_trans_appid');
@@ -69,6 +70,7 @@ class Init extends denha\Controller
 
         $result = file_get_contents($url);
         $result = json_decode($result, true);
+        //echo $url;die;
         if ($result['trans_result']) {
             return (string) $result['trans_result'][0]['dst'];
         }

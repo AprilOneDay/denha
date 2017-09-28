@@ -48,7 +48,7 @@ class Index extends \app\app\controller\Init
                 $list[$key]['title'] = "【转lease】" . $value['title'];
             }
 
-            $list[$key]['price']   = $value['price'] . '万';
+            $list[$key]['price']   = dao('Number')->price($value['price']);
             $list[$key]['mileage'] = $value['mileage'] . '万公里';
             $list[$key]['thumb']   = $this->appImg($value['thumb'], 'car');
         }
@@ -63,39 +63,42 @@ class Index extends \app\app\controller\Init
      */
     public function footprints()
     {
-        $day = 3600 * 60 * 24;
 
-        $map['uid']        = $this->uid;
-        $map['type']       = 1;
-        $map['del_status'] = 0;
+        $pageNo   = get('pageNo', 'intval', 1);
+        $pageSize = get('pageSize', 'intval', 10);
+        $offer    = max(($pageNo - 1), 0) * $pageSize;
 
-        $pageNo     = get('pageNo', 'intval', 1);
-        $startOffer = $pageNo == 1 ? 0 : $pageNo - 1;
-        $endOffer   = $pageNo == 1 ? -1 : $pageNo - 1;
+        $footprints = table('Footprints')->tableName();
+        $goodsCar   = table('GoodsCar')->tableName();
 
-        $beginToday     = mktime(0, 0, 0, date('m'), date('d') - $startOffer, date('Y'));
-        $endToday       = mktime(0, 0, 0, date('m'), date('d') - $endOffer, date('Y')) - 1;
-        $map['created'] = array('between', $beginToday, $endToday);
+        $map[$footprints . '.uid']        = $this->uid;
+        $map[$footprints . '.type']       = 1;
+        $map[$footprints . '.del_status'] = 0;
 
-        $idArray = table('Footprints')->where($map)->field('value')->find('one', true);
+        $map[$goodsCar . '.status']  = 1;
+        $map[$goodsCar . '.is_show'] = 1;
 
-        $mapCar['status']  = 1;
-        $mapCar['is_show'] = 1;
-        $mapCar['id']      = array('in', implode(',', $idArray));
-        $list              = table('GoodsCar')->where($mapCar)->field('title,type,id,thumb,price,mileage,produce_time,is_lease')->order('created desc')->find('array');
+        $field = "$goodsCar.title,$goodsCar.type,$goodsCar.id,$goodsCar.thumb,$goodsCar.price,$goodsCar.mileage,$goodsCar.produce_time,$goodsCar.is_lease,$goodsCar.guarantee,$footprints.created";
+        $list  = table('GoodsCar')->join($footprints, "$goodsCar.id = $footprints.value")->where($map)->field($field)->order("$footprints.created desc")->find('array');
         foreach ($list as $key => $value) {
+            $time = date('Y/m/d', $value['created']);
             if ($value['is_lease'] || stripos($value['guarantee'], 3) !== false) {
-                $list[$key]['title'] = "【转lease】" . $value['title'];
+                $value['title'] = "【转lease】" . $value['title'];
             }
 
-            $list[$key]['price']   = $value['price'] . '万';
-            $list[$key]['mileage'] = $value['mileage'] . '万公里';
-            $list[$key]['thumb']   = $this->appImg($value['thumb'], 'car');
+            $value['price']   = dao('Number')->price($value['price']);
+            $value['mileage'] = $value['mileage'] . '万公里';
+            $value['thumb']   = $this->appImg($value['thumb'], 'car');
+
+            $listTmp[$time][] = $value;
         }
 
-        $data['time'] = date('Y/m/d', $beginToday);
-        $data['list'] = $list ? $list : array();
+        foreach ($listTmp as $key => $value) {
+            $data[$key]['time'] = $key;
+            $data[$key]['list'] = $value;
+        }
 
+        $data = $data ? array_values($data) : array();
         $this->appReturn(array('data' => $data));
     }
 

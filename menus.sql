@@ -38,7 +38,7 @@ CREATE TABLE `dh_article` (
 
 /*Data for the table `dh_article` */
 
-insert  into `dh_article`(`id`,`type`,`tag`,`title`,`thumb`,`description`,`is_show`,`del_status`,`created`,`hot`,`is_recommend`) values (1,1,'6','Nginx 实现跨域使用字体文件','d32b6491067a0e25561eb4d192243d7e.jpeg','Nginx 实现跨域使用字体文件',1,0,1504970134,0,1),(2,1,'6','Nginx 跨域访问php  ','','Access-Control-Allow-Origin 错误',1,0,1504970371,0,0),(3,1,'10','Html 文字内容只显示一行','','&lt;ul&gt;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&lt;li&gt;&lt;a&nbsphref=\"javascript:;\"&gt;餐馆&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;css:li{&nbsp;white-space:nowrap;&nbsp;&nbsp;overflow:hidden;&nbsp;text-overflow:ellipsis;}',1,0,1505020972,0,0);
+insert  into `dh_article`(`id`,`type`,`tag`,`title`,`thumb`,`description`,`is_show`,`del_status`,`created`,`hot`,`is_recommend`) values (1,1,'6','Nginx 实现跨域使用字体文件','d32b6491067a0e25561eb4d192243d7e.jpeg','Nginx 实现跨域使用字体文件',1,0,1504970134,1,1),(2,1,'6','Nginx 跨域访问php  ','','Access-Control-Allow-Origin 错误',1,0,1504970371,1,0),(3,1,'10','Html 文字内容只显示一行','','&lt;ul&gt;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&lt;li&gt;&lt;a&nbsphref=\"javascript:;\"&gt;餐馆&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;css:li{&nbsp;white-space:nowrap;&nbsp;&nbsp;overflow:hidden;&nbsp;text-overflow:ellipsis;}',1,0,1505020972,51,0);
 
 /*Table structure for table `dh_article_blog` */
 
@@ -98,11 +98,33 @@ CREATE TABLE `dh_category` (
   `is_show` tinyint(1) unsigned DEFAULT '1' COMMENT '显示状态 1显示 0不显示',
   `created` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='分类表\r\n';
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='分类表\r\n';
 
 /*Data for the table `dh_category` */
 
-insert  into `dh_category`(`id`,`parentid`,`thumb`,`name`,`sort`,`is_show`,`created`) values (1,0,'','汽车品牌',0,1,0),(2,1,'','奥迪',1,1,0),(3,1,'3e4daf03cb497d10e0267b0f7b7de7df.png','大众',0,1,0),(4,0,'','服务类型',0,1,0),(5,4,'','汽车贴膜',0,1,0),(6,4,'','汽车维修',0,1,0),(7,4,'','汽车保养',0,1,0),(8,0,'','城市',0,1,0),(9,8,'','Toronto',0,1,0),(10,8,'','North-York',0,1,0),(11,8,'','Downtown',0,1,0),(12,8,'','Markham',0,1,0),(13,8,'','Vaughan',0,1,0),(14,8,'','Scarborough',0,1,0),(15,8,'','Brampton',0,1,0),(16,8,'','Mississauga',0,1,0),(17,8,'','Richmond-hill',0,1,0),(18,8,'','Newmarket',0,1,0),(19,0,'','店铺分类',0,1,0),(20,19,'','汽车贴膜',0,1,0),(21,19,'','汽车改装',0,1,0),(22,19,'','汽车清洗',0,1,0),(23,19,'','汽车售卖',0,1,0);
+insert  into `dh_category`(`id`,`parentid`,`thumb`,`name`,`sort`,`is_show`,`created`) values (1,0,'','汽车品牌',0,1,0),(2,1,'','奥迪',1,1,0),(3,1,'3e4daf03cb497d10e0267b0f7b7de7df.png','大众',0,1,0),(4,0,'','服务类型',0,1,0),(5,4,'','汽车贴膜',0,1,0),(6,4,'','汽车维修',0,1,0),(7,4,'','汽车保养',0,1,0),(8,0,'','城市',0,1,0),(9,8,'','Toronto',0,1,0),(10,8,'','North-York',0,1,0),(11,8,'','Downtown',0,1,0),(12,8,'','Markham',0,1,0),(13,8,'','Vaughan',0,1,0),(14,8,'','Scarborough',0,1,0),(15,8,'','Brampton',0,1,0),(16,8,'','Mississauga',0,1,0),(17,8,'','Richmond-hill',0,1,0),(18,8,'','Newmarket',0,1,0),(19,0,'','店铺分类',0,1,0),(20,19,'','汽车贴膜',0,1,0),(21,19,'','汽车改装',0,1,0),(22,19,'','汽车清洗',0,1,0),(23,19,'','汽车售卖',0,1,0),(24,19,'','汽车保养',0,1,0);
+
+/*Table structure for table `dh_chat_log` */
+
+DROP TABLE IF EXISTS `dh_chat_log`;
+
+CREATE TABLE `dh_chat_log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(10) unsigned DEFAULT '0' COMMENT '发送yud',
+  `to_uid` int(10) unsigned DEFAULT '0' COMMENT '接收uid',
+  `content` varchar(300) DEFAULT '' COMMENT '消息内容',
+  `is_reader` tinyint(1) unsigned DEFAULT '0' COMMENT '接收者是否已读 1已读 0未读',
+  `created` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `to_uid` (`to_uid`),
+  KEY `is_reader` (`is_reader`),
+  KEY `created` (`created`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='聊天记录';
+
+/*Data for the table `dh_chat_log` */
+
+insert  into `dh_chat_log`(`id`,`uid`,`to_uid`,`content`,`is_reader`,`created`) values (1,2,3,'这是我的回复信息',1,1506585491),(2,2,3,'这是我的回复信息',1,1506585529);
 
 /*Table structure for table `dh_circle` */
 
@@ -122,11 +144,11 @@ CREATE TABLE `dh_circle` (
   PRIMARY KEY (`id`),
   KEY `created` (`created`),
   KEY `del_status` (`del_status`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Data for the table `dh_circle` */
 
-insert  into `dh_circle`(`id`,`type`,`title`,`thumb`,`uid`,`description`,`ablum`,`created`,`del_status`,`status`) values (1,1,'','150632458755821.png',4,'','150632458755821.png,150632458712977.png',1506324587,0,1),(2,1,'','',4,'','',1506390246,0,1),(3,1,'','',4,'来点文字介绍了了了 ','',1506390269,0,1),(4,1,'','150639074685682.png',2,'我和你一样','150639074685682.png,150639074689516.png,150639074681938.png',1506390746,0,1);
+insert  into `dh_circle`(`id`,`type`,`title`,`thumb`,`uid`,`description`,`ablum`,`created`,`del_status`,`status`) values (1,1,'','150632458755821.png',4,'','150632458755821.png,150632458712977.png',1506324587,0,1),(2,1,'','',4,'','',1506390246,0,1),(3,1,'','',4,'来点文字介绍了了了 ','',1506390269,0,1),(4,1,'','150639074685682.png',2,'我和你一样','150639074685682.png,150639074689516.png,150639074681938.png',1506390746,0,1),(5,1,'','150658772943247.jpeg',2,'不要说话','150658772943247.jpeg,150658772976354.jpeg,150658772972256.jpeg,150658772927363.jpeg',1506587729,0,1);
 
 /*Table structure for table `dh_collection` */
 
@@ -155,26 +177,29 @@ DROP TABLE IF EXISTS `dh_comment`;
 
 CREATE TABLE `dh_comment` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `type` tinyint(1) unsigned DEFAULT '1' COMMENT '类型 1车友圈',
+  `type` tinyint(1) unsigned DEFAULT '1' COMMENT '类型 1车友圈 2订单商品',
   `uid` int(11) unsigned DEFAULT '0' COMMENT '发布者uid',
   `parent_id` int(11) unsigned DEFAULT '0' COMMENT '父级id',
   `to_uid` int(11) unsigned DEFAULT '0' COMMENT '回复者uid',
   `content` varchar(300) DEFAULT '' COMMENT '评论内容',
   `del_status` tinyint(1) unsigned DEFAULT '0' COMMENT '删除状态 1删除 0未删除',
-  `goods_id` int(11) unsigned DEFAULT NULL COMMENT '商品id',
+  `order_sn` varchar(18) DEFAULT '' COMMENT '订单编号',
+  `goods_id` int(11) unsigned DEFAULT '0' COMMENT '商品id',
+  `ablum` varchar(500) DEFAULT '' COMMENT '评价相册',
+  `status` tinyint(1) unsigned DEFAULT '1' COMMENT '状态 1开启 2关闭',
+  `is_uid_reader` tinyint(1) unsigned DEFAULT '0' COMMENT '发布者阅读状态 1已读 0未读',
+  `is_to_uid_reader` tinyint(1) unsigned DEFAULT '0' COMMENT '接受者阅读状态 1已读 0未读',
   `created` int(11) unsigned DEFAULT '0' COMMENT '创建时间',
-  `is_uid_reader` tinyint(1) DEFAULT '0' COMMENT '发布者阅读状态 1已读 0未读',
-  `is_to_uid_reader` tinyint(1) DEFAULT '0' COMMENT '接受者阅读状态 1已读 0未读',
   PRIMARY KEY (`id`),
   KEY `type` (`type`),
   KEY `uid` (`uid`),
   KEY `parent_id` (`parent_id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 /*Data for the table `dh_comment` */
 
-insert  into `dh_comment`(`id`,`type`,`uid`,`parent_id`,`to_uid`,`content`,`del_status`,`goods_id`,`created`,`is_uid_reader`,`is_to_uid_reader`) values (1,1,3,0,4,'这是我发布的第一天评论',0,1,1506327966,0,0),(2,1,3,0,4,'这是我发布的第一天评论',0,1,1506327999,0,0),(3,1,4,2,4,'这是我发布的第一天评论',0,1,1506328046,0,0),(4,1,3,2,4,'这是我发布的第一天评论',0,1,1506328046,0,0),(5,1,3,2,4,'这是我发布的第一天评论',0,1,1506328046,0,0),(6,1,3,2,4,'这是我发布的第一天评论',0,1,1506328046,0,0);
+insert  into `dh_comment`(`id`,`type`,`uid`,`parent_id`,`to_uid`,`content`,`del_status`,`order_sn`,`goods_id`,`ablum`,`status`,`is_uid_reader`,`is_to_uid_reader`,`created`) values (1,1,3,0,4,'这是我发布的第一天评论',0,'',1,'',1,0,0,1506327966),(2,1,3,0,4,'这是我发布的第一天评论',0,'',1,'',1,0,0,1506327999),(3,1,4,2,4,'这是我发布的第一天评论',0,'',1,'',1,0,0,1506328046),(4,1,3,2,4,'这是我发布的第一天评论',0,'',1,'',1,0,0,1506328046),(5,1,3,2,4,'这是我发布的第一天评论',0,'',1,'',1,0,0,1506328046),(6,1,3,2,4,'这是我发布的第一天评论',0,'',1,'',1,0,0,1506328046),(8,2,4,0,1,'啊啊啊啊啊',0,'172646797722115621',2,'',1,0,0,1506503620),(10,2,4,0,1,'啊啊啊啊啊',0,'172646797722115621',2,'',1,0,0,1506504617),(11,1,2,0,4,'这是我的评论',0,'',1,'',1,0,0,1506566061),(12,1,3,0,2,'这是第一条评论',0,'',4,'',1,0,0,1506580025),(13,1,2,12,3,'这是我的回复信息',0,'',4,'',1,0,0,1506583717),(14,1,2,4,3,'哈哈哈',0,'',1,'',1,0,0,1506584079),(15,1,2,0,2,'明年',0,'',4,'',1,0,0,1506584114),(16,1,2,4,3,'回复一次',0,'',1,'',1,0,0,1506584137),(17,1,3,4,2,'多试一下',0,'',1,'',1,0,0,1506586051),(18,1,3,4,2,'我要成功',0,'',1,'',1,0,0,1506586384),(19,1,2,12,3,'再试一次',0,'',4,'',1,0,0,1506586970),(20,1,2,12,3,'最后一个',0,'',4,'',1,0,0,1506587332),(21,1,2,0,2,'回复所有人',0,'',4,'',1,0,0,1506588087);
 
 /*Table structure for table `dh_console_admin` */
 
@@ -199,7 +224,7 @@ CREATE TABLE `dh_console_admin` (
 
 /*Data for the table `dh_console_admin` */
 
-insert  into `dh_console_admin`(`id`,`consoleid`,`nickname`,`username`,`password`,`salt`,`mobile`,`status`,`group`,`create_ip`,`login_ip`,`created`,`login_time`) values (1,0,'四月','admin','8895c4947031a4019843c0d00fa303b1','50907','15923882847',1,1,'127.0.0.1','127.0.0.1',1502522576,1506406910),(4,0,'陈明江','cmj','96c76c67a66e92c1e90bce05ebec4b5d','34366','15923882847',1,1,'127.0.0.1','0',1502531990,0);
+insert  into `dh_console_admin`(`id`,`consoleid`,`nickname`,`username`,`password`,`salt`,`mobile`,`status`,`group`,`create_ip`,`login_ip`,`created`,`login_time`) values (1,0,'四月','admin','8895c4947031a4019843c0d00fa303b1','50907','15923882847',1,1,'127.0.0.1','127.0.0.1',1502522576,1506491308),(4,0,'陈明江','cmj','96c76c67a66e92c1e90bce05ebec4b5d','34366','15923882847',1,1,'127.0.0.1','0',1502531990,0);
 
 /*Table structure for table `dh_console_menus` */
 
@@ -224,11 +249,11 @@ CREATE TABLE `dh_console_menus` (
   `created` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `type` (`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 /*Data for the table `dh_console_menus` */
 
-insert  into `dh_console_menus`(`id`,`type`,`parentid`,`name`,`module`,`controller`,`action`,`icon`,`parameter`,`url`,`status`,`is_show`,`is_white`,`sort`,`del_status`,`created`) values (1,1,0,'系统管理','setting','menus','index','glyphicon glyphicon-triangle-right','','',1,1,0,0,0,1502445648),(2,1,1,'设置','setting','menus','index','glyphicon glyphicon-wrench','','/setting/menus/index',1,1,0,0,0,1502508402),(3,1,2,'配置菜单','setting','menus','index','','','/setting/menus/index',1,1,0,0,0,1502508459),(4,1,3,'添加/编辑菜单','setting','menus','edit','','','',1,0,0,0,0,1502440822),(5,1,3,'树状菜单列表','setting','menus','tree_list','','','',1,0,0,0,0,1502440812),(6,1,2,'管理员','setting','admin','index','','','/setting/admin/index',1,1,0,0,0,1502516144),(7,1,6,'管理员列表','setting','admin','index','','','/setting/admin/index',1,1,0,0,0,1502517276),(8,1,6,'管理员分组','setting','group','index','','','/setting/group/index',1,1,0,0,0,1502517279),(10,1,0,'网站管理','content','list','index','glyphicon glyphicon-triangle-right','','/content/list/index',1,1,0,0,0,1505529695),(11,1,17,'博客','content','blog','index','glyphicon glyphicon-book','','/content/blog/index',1,1,0,0,0,1505577819),(12,1,11,'文章列表','content','blog','index','','','/content/blog/index',1,1,0,0,0,1505577827),(13,1,17,'分类管理','content','category','lists','glyphicon glyphicon-book','','/content/category/lists',1,1,0,0,0,1505529783),(14,1,13,'分类列表','content','category','lists','','','/content/category/lists',1,1,0,0,0,1505462341),(15,1,17,'会员管理','content','user','lists','','','/content/user/lists',1,1,0,0,0,1505529776),(16,1,15,'会员列表','content','user','lists','','','/content/user/lists',1,1,0,0,0,1505529506),(17,1,10,'内容管理','content','category','lists','','','/content/category/lists',1,1,0,0,0,1505529767),(18,1,15,'积分规则','content','integral_rul','lists','','','/content/integral_rul/lists',1,1,0,0,0,1505783604),(19,1,17,'商品管理','content','car','lists','','','/content/car/lists',1,1,0,0,0,1505784921),(20,1,19,'汽车管理','content','car','lists','','','/content/car/lists',1,1,0,0,0,1505784943),(21,1,19,'服务管理','content','service','lists','','','/content/service/lists',1,1,0,0,0,1505784962),(22,1,17,'广告图片管理','content','banner','lists','','','/content/banner/lists',1,1,0,0,0,1505809594),(23,1,22,'广告分类','content','banner','lists','','','/content/banner/lists',1,1,0,0,0,1505810230),(24,1,17,'搜索管理','content','search','lists','','','/content/search/lists',1,1,0,0,0,1505873873),(25,1,24,'搜索记录','content','search','lists','','','/content/search/lists',1,1,0,0,0,1505873843),(26,1,24,'推荐列表','content','search','recommend_lists','','','/content/search/recommend_lists',1,1,0,0,0,1505873952),(27,1,24,'禁用列表','content','search','disable_lists','','','/content/search/disable_lists',1,1,0,0,0,1505874438),(28,1,15,'店铺管理','content','shop','lists','','','/content/shop/lists',1,1,0,0,0,1505958027),(29,1,17,'服务管理','content','orders','lists','','','/content/orders/lists',1,1,0,0,0,1506414050),(30,1,29,'订单列表','content','orders','lists','','','/content/orders/lists',1,1,0,0,0,1506413737),(31,1,29,'推荐列表','content','recommend','lists','','','/content/recommend/lists',1,1,0,0,0,1506414081);
+insert  into `dh_console_menus`(`id`,`type`,`parentid`,`name`,`module`,`controller`,`action`,`icon`,`parameter`,`url`,`status`,`is_show`,`is_white`,`sort`,`del_status`,`created`) values (1,1,0,'系统管理','setting','menus','index','glyphicon glyphicon-triangle-right','','',1,1,0,0,0,1502445648),(2,1,1,'设置','setting','menus','index','glyphicon glyphicon-wrench','','/setting/menus/index',1,1,0,0,0,1502508402),(3,1,2,'配置菜单','setting','menus','index','','','/setting/menus/index',1,1,0,0,0,1502508459),(4,1,3,'添加/编辑菜单','setting','menus','edit','','','',1,0,0,0,0,1502440822),(5,1,3,'树状菜单列表','setting','menus','tree_list','','','',1,0,0,0,0,1502440812),(6,1,2,'管理员','setting','admin','index','','','/setting/admin/index',1,1,0,0,0,1502516144),(7,1,6,'管理员列表','setting','admin','index','','','/setting/admin/index',1,1,0,0,0,1502517276),(8,1,6,'管理员分组','setting','group','index','','','/setting/group/index',1,1,0,0,0,1502517279),(10,1,0,'网站管理','content','list','index','glyphicon glyphicon-triangle-right','','/content/list/index',1,1,0,0,0,1505529695),(11,1,17,'博客','content','blog','index','glyphicon glyphicon-book','','/content/blog/index',1,1,0,0,0,1505577819),(12,1,11,'文章列表','content','blog','index','','','/content/blog/index',1,1,0,0,0,1505577827),(13,1,17,'分类管理','content','category','lists','glyphicon glyphicon-book','','/content/category/lists',1,1,0,0,0,1505529783),(14,1,13,'分类列表','content','category','lists','','','/content/category/lists',1,1,0,0,0,1505462341),(15,1,17,'会员管理','content','user','lists','','','/content/user/lists',1,1,0,0,0,1505529776),(16,1,15,'会员列表','content','user','lists','','','/content/user/lists',1,1,0,0,0,1505529506),(17,1,10,'内容管理','content','category','lists','','','/content/category/lists',1,1,0,0,0,1505529767),(18,1,15,'积分规则','content','integral_rul','lists','','','/content/integral_rul/lists',1,1,0,0,0,1505783604),(19,1,17,'商品管理','content','car','lists','','','/content/car/lists',1,1,0,0,0,1505784921),(20,1,19,'汽车管理','content','car','lists','','','/content/car/lists',1,1,0,0,0,1505784943),(21,1,19,'服务管理','content','service','lists','','','/content/service/lists',1,1,0,0,0,1505784962),(22,1,17,'广告图片管理','content','banner','lists','','','/content/banner/lists',1,1,0,0,0,1505809594),(23,1,22,'广告分类','content','banner','lists','','','/content/banner/lists',1,1,0,0,0,1505810230),(24,1,17,'搜索管理','content','search','lists','','','/content/search/lists',1,1,0,0,0,1505873873),(25,1,24,'搜索记录','content','search','lists','','','/content/search/lists',1,1,0,0,0,1505873843),(26,1,24,'推荐列表','content','search','recommend_lists','','','/content/search/recommend_lists',1,1,0,0,0,1505873952),(27,1,24,'禁用列表','content','search','disable_lists','','','/content/search/disable_lists',1,1,0,0,0,1505874438),(28,1,15,'店铺管理','content','shop','lists','','','/content/shop/lists',1,1,0,0,0,1505958027),(29,1,17,'服务管理','content','orders','lists','','','/content/orders/lists',1,1,0,0,0,1506414050),(30,1,29,'订单列表','content','orders','lists','','','/content/orders/lists',1,1,0,0,0,1506413737),(31,1,29,'推荐列表','content','recommend','lists','','','/content/recommend/lists',1,1,0,0,0,1506414081),(32,1,17,'抵扣卷管理','content','coupon','lists','','','/content/coupon/lists',1,1,0,0,0,1506477699);
 
 /*Table structure for table `dh_coupon` */
 
@@ -247,32 +272,37 @@ CREATE TABLE `dh_coupon` (
   `start_time` int(11) DEFAULT '0' COMMENT '开始生效时间',
   `end_time` int(11) DEFAULT '0' COMMENT '结束生效时间',
   `status` tinyint(1) DEFAULT '1' COMMENT '状态 1开启 0关闭',
-  `use_num` int(11) DEFAULT '0' COMMENT '使用数量',
-  `pull_num` int(11) DEFAULT '0' COMMENT '领取数量',
+  `remainder_num` int(11) DEFAULT '0' COMMENT '剩余领取数量',
   `del_status` tinyint(1) DEFAULT '0' COMMENT '删除状态 1删除 0未删除',
   `created` int(11) DEFAULT '0' COMMENT '创建时间',
   `is_exchange` tinyint(1) DEFAULT '1' COMMENT '是否允许积分兑换 1允许 0不允许',
+  `version` int(11) DEFAULT '1' COMMENT '版本控制',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='抵扣卷模板';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='抵扣卷模板';
 
 /*Data for the table `dh_coupon` */
 
-insert  into `dh_coupon`(`id`,`type`,`category`,`uid`,`title`,`full`,`less`,`discount`,`num`,`start_time`,`end_time`,`status`,`use_num`,`pull_num`,`del_status`,`created`,`is_exchange`) values (2,1,21,1,'5折优惠卷','1000.00','100.00',0,100,1505701881,1505701881,1,0,0,0,1506411977,1),(3,1,21,1,'5折优惠卷','1000.00','100.00',0,100,1505701881,1505701881,1,0,0,0,1506411977,1);
+insert  into `dh_coupon`(`id`,`type`,`category`,`uid`,`title`,`full`,`less`,`discount`,`num`,`start_time`,`end_time`,`status`,`remainder_num`,`del_status`,`created`,`is_exchange`,`version`) values (2,1,23,1,'5折优惠卷','10.00','5.00',0,100,1505701881,1507564800,1,94,0,1506411977,1,12),(3,1,21,1,'5折优惠卷','1000.00','100.00',0,100,1505701881,1507564800,1,98,0,1506411977,1,9),(4,1,20,3,'满100减10','200.00','5.00',0,400,1509465600,1512057600,1,400,0,1506483325,1,1),(5,2,20,3,'这个是名称','0.00','0.00',8,55,1506787200,1509465600,1,300,0,1506483455,1,1),(6,1,21,1,'5折优惠卷','1000.00','100.00',0,100,1505701881,1507564800,1,100,0,1506491073,1,1),(7,1,21,1,'5折优惠卷','1000.00','100.00',0,100,1505701881,1507564800,1,100,0,1506491125,1,1),(8,1,23,3,'满100减5','100.00','5.00',0,200,1506528000,1506700800,1,200,0,1506562539,1,1);
 
 /*Table structure for table `dh_coupon_log` */
 
 DROP TABLE IF EXISTS `dh_coupon_log`;
 
 CREATE TABLE `dh_coupon_log` (
-  `id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) unsigned DEFAULT '0' COMMENT '所属用户uid',
   `coupon_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '抵扣卷模板id',
   `order_sn` char(18) DEFAULT '0' COMMENT '使用的订单号',
   `use_time` int(11) unsigned DEFAULT '0' COMMENT '使用时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='抵扣卷列表';
+  `created` int(11) unsigned DEFAULT '0' COMMENT '领取时间',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `coupon_id` (`coupon_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COMMENT='抵扣卷列表';
 
 /*Data for the table `dh_coupon_log` */
+
+insert  into `dh_coupon_log`(`id`,`uid`,`coupon_id`,`order_sn`,`use_time`,`created`) values (14,4,2,'0',0,1506483306),(18,4,2,'0',0,1506483429),(22,4,2,'0',0,1506483621),(23,4,3,'0',0,1506483637),(24,4,2,'0',0,1506483638),(25,4,2,'172646797722115621',1506500098,1506483638),(26,4,2,'172646797722115621',1506499772,1506483639),(27,4,2,'172646797722115621',1506500328,1506483674),(28,4,2,'0',0,1506483675),(29,4,3,'0',0,1506483676),(30,4,3,'0',0,1506483677),(31,4,3,'0',0,1506483678),(33,4,3,'0',0,1506484219),(36,4,3,'0',0,1506503423);
 
 /*Table structure for table `dh_enjoy` */
 
@@ -283,10 +313,13 @@ CREATE TABLE `dh_enjoy` (
   `type` tinyint(1) unsigned DEFAULT '1' COMMENT '类型 1车友圈',
   `value` varchar(10) DEFAULT '' COMMENT '对于值',
   `uid` int(10) unsigned DEFAULT '0' COMMENT '用户uid',
+  `created` int(11) DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 /*Data for the table `dh_enjoy` */
+
+insert  into `dh_enjoy`(`id`,`type`,`value`,`uid`,`created`) values (3,1,'2',2,1506577947),(4,1,'3',2,1506577953),(7,1,'4',2,1506587887);
 
 /*Table structure for table `dh_footprints` */
 
@@ -308,7 +341,26 @@ CREATE TABLE `dh_footprints` (
 
 /*Data for the table `dh_footprints` */
 
-insert  into `dh_footprints`(`id`,`uid`,`type`,`value`,`value2`,`del_status`,`ip`,`created`) values (3,1,1,1,'1',0,'127.0.0.1',1505966052),(4,2,1,8,'3',0,'127.0.0.1',1506303656),(5,4,1,2,'1',0,'127.0.0.1',1506065062),(6,2,1,5,'3',0,'127.0.0.1',1506308445),(7,2,1,3,'3',0,'127.0.0.1',1506327853),(8,4,1,1,'1',0,'127.0.0.1',1506303637);
+insert  into `dh_footprints`(`id`,`uid`,`type`,`value`,`value2`,`del_status`,`ip`,`created`) values (3,1,1,1,'1',0,'127.0.0.1',1505966052),(4,2,1,8,'3',0,'127.0.0.1',1506582970),(5,4,1,2,'1',0,'127.0.0.1',1506065062),(6,2,1,5,'3',0,'127.0.0.1',1506582973),(7,2,1,3,'3',0,'127.0.0.1',1506582976),(8,4,1,1,'1',0,'127.0.0.1',1506303637);
+
+/*Table structure for table `dh_gift` */
+
+DROP TABLE IF EXISTS `dh_gift`;
+
+CREATE TABLE `dh_gift` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `type` tinyint(1) unsigned DEFAULT '1' COMMENT '类型 1抵扣卷',
+  `uid` int(11) unsigned DEFAULT NULL COMMENT '接受者uid',
+  `order_sn` char(18) DEFAULT '0' COMMENT '订单编号',
+  `value` varbinary(10) DEFAULT '0' COMMENT '赠送类型',
+  `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态 1领取 0未领取',
+  `created` int(11) unsigned DEFAULT '0' COMMENT '赠送时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='赠送信息';
+
+/*Data for the table `dh_gift` */
+
+insert  into `dh_gift`(`id`,`type`,`uid`,`order_sn`,`value`,`status`,`created`) values (1,1,4,'172646797722115621','3',1,1506500328),(2,1,2,'172670845735945735','8',0,1506562670);
 
 /*Table structure for table `dh_goods_ablum` */
 
@@ -324,7 +376,7 @@ CREATE TABLE `dh_goods_ablum` (
 
 /*Data for the table `dh_goods_ablum` */
 
-insert  into `dh_goods_ablum`(`goods_id`,`type`,`path`,`description`) values (8,1,'150587084778216.png','车辆左侧图片'),(7,1,'150580908094311.png','第一张图的介绍'),(7,1,'150580908088887.png','第二张图的介绍'),(7,1,'150580908030846.png','第三张图的介绍'),(8,1,'150587084722911.png','车辆右侧图片'),(8,1,'150587084720442.png','车辆全方位图片'),(9,1,'150596089940011.png',''),(9,1,'150596089953019.jpeg',''),(10,1,'150596096882383.png',''),(10,1,'150596096843093.jpeg',''),(11,1,'150596115599401.png',''),(11,1,'150596115513883.jpeg',''),(12,1,'150641899559070.png',''),(12,1,'150641899567442.png',''),(13,1,'150641904798483.png',''),(13,1,'150641904741132.png',''),(14,1,'150641910419409.png',''),(14,1,'150641910499508.png',''),(15,1,'150641947518717.png',''),(15,1,'150641947595036.png',''),(16,1,'','');
+insert  into `dh_goods_ablum`(`goods_id`,`type`,`path`,`description`) values (8,1,'150587084778216.png','车辆左侧图片'),(7,1,'150580908094311.png','第一张图的介绍'),(7,1,'150580908088887.png','第二张图的介绍'),(7,1,'150580908030846.png','第三张图的介绍'),(8,1,'150587084722911.png','车辆右侧图片'),(8,1,'150587084720442.png','车辆全方位图片'),(9,1,'150596089940011.png',''),(9,1,'150596089953019.jpeg',''),(10,1,'150596096882383.png',''),(10,1,'150596096843093.jpeg',''),(11,1,'150596115599401.png',''),(11,1,'150596115513883.jpeg',''),(12,1,'150641899559070.png',''),(12,1,'150641899567442.png',''),(13,1,'150641904798483.png',''),(13,1,'150641904741132.png',''),(14,1,'150641910419409.png',''),(14,1,'150641910499508.png',''),(15,1,'150641947518717.png',''),(15,1,'150641947595036.png',''),(16,1,'',''),(17,1,'150642085914589.jpeg','第一张'),(17,1,'150642085933505.jpeg','第二张'),(17,1,'150642085934886.jpeg','第三张'),(18,1,'150647576846741.jpeg','第一张'),(18,1,'150647576885042.jpeg','第二张'),(18,1,'150647576860457.jpeg','第三张');
 
 /*Table structure for table `dh_goods_car` */
 
@@ -364,11 +416,11 @@ CREATE TABLE `dh_goods_car` (
   `is_show` tinyint(1) DEFAULT '1' COMMENT '是否显示 1显示  0不显示',
   `created` int(11) unsigned DEFAULT '0' COMMENT '发布时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='新车信息';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='新车信息';
 
 /*Data for the table `dh_goods_car` */
 
-insert  into `dh_goods_car`(`id`,`type`,`uid`,`title`,`thumb`,`brand`,`style`,`produce_time`,`model`,`buy_time`,`mileage`,`city`,`gearbox`,`gases`,`displacement`,`model_remark`,`price`,`vin`,`guarantee`,`is_lease`,`mobile`,`weixin`,`qq`,`address`,`description`,`banner`,`status`,`hot`,`is_recommend`,`is_urgency`,`is_show`,`created`) values (1,2,1,'奥迪 2013 A6L 1.6L 纪念版2','150596096890834.jpeg',2,'A6L',2013,' 三厢',1420041600,1.2,'9','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方','',1,5,0,0,1,1505701881),(2,2,1,'奥迪 2013 A6L 1.6L 纪念版2','150578956279606.png',1,'A6L',2013,' 三厢',1420041600,1.2,'17','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150578956279606.png,150578956240119.jpeg',1,24,0,0,1,1505701942),(3,2,3,'大众 2017 x5 2.0 很好','150596096890834.jpeg',3,'x5',2017,'2',1420041600,2.0,'14','2','2','2.0','很好','20.00','888888','0',1,'','','','','九成新，值得入手','',1,2,1,1,1,1505706388),(4,2,1,'汽车品牌 2013 A6L 1.6L 纪念版2','150596096890834.jpeg',1,'A6L',2013,' 三厢',1420041600,1.2,'14','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方','',1,1,0,0,1,1505706629),(5,2,3,'奥迪 2017 23 888 很好','150596096890834.jpeg',2,'23',2017,'1',1420041600,5.0,'14','2','1','888','很好','5.00','88888996','0',0,'','','','','很好的啦','',1,4,1,1,1,1505706882),(6,2,1,'汽车品牌 2013 A6L 1.6L 纪念版2','150596096890834.jpeg',1,'A6L',2013,' 三厢',1420041600,1.2,'14','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150580886964585.png,150580886964659.jpeg',1,1,0,0,1,1505808869),(7,2,1,'汽车品牌 2013 A6L 1.6L 纪念版2','150596096890834.jpeg',1,'A6L',2013,' 三厢',1420041600,1.2,'14','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150580908058688.png,150580908096283.jpeg',1,1,0,0,1,1505809080),(8,2,3,'奥迪 2017 x6 2.0 很好的汽车，九成新','150587084744692.png',2,'x6',2017,'5',1420041600,5.0,'14','1','1','2.0','很好的汽车，九成新','20.00','66666666','0',0,'','','','','很好哦，九成新，值得入手，不要犹豫','150587084744692.png,150587084733090.png',1,1,1,1,1,1505870847),(9,2,1,'汽车品牌 2013 A6L 1.6L 纪念版2','150596096890834.jpeg',1,'A6L',2013,' 三厢',2017,1.2,'5','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','',1,1,0,0,1,1505960899),(10,2,1,'汽车品牌 2013 A6L 1.6L 纪念版2','150596096890834.jpeg',1,'A6L',2013,' 三厢',2017,1.2,'5','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150596096890834.jpeg,150596096837567.jpeg,150596096889744.png',1,1,0,0,1,1505960968),(11,2,1,'汽车品牌 2013 A6L 1.6L 纪念版2','150596115541618.jpeg',1,'A6L',2013,' 三厢',2017,1.2,'5','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150596115541618.jpeg,150596115599406.jpeg,150596115594979.png',1,1,0,0,1,1505961155),(12,1,4,'汽车品牌 2013 A6L 1.6L 纪念版2','150641899599456.png',1,'A6L',2013,' 三厢',2017,1.2,'5','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150641899599456.png,150641899599165.png,150641899581683.png',1,1,0,0,1,1506418995),(13,1,4,'汽车品牌 2013 A6L 1.6L 纪念版2','150641904739627.png',1,'A6L',2013,' 三厢',2017,1.2,'5','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150641904739627.png,150641904789466.png,150641904730885.png',1,1,0,0,1,1506419047),(14,1,4,'汽车品牌 2013 A6L 1.6L 纪念版2','150641910488810.png',1,'A6L',2013,' 三厢',2017,1.2,'5','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150641910488810.png,150641910457982.png,150641910411562.png',1,1,0,0,1,1506419104),(15,1,4,'汽车品牌 2013 A6L 1.6L 纪念版2','150641947515130.png',1,'A6L',2013,' 三厢',2017,1.2,'5','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150641947515130.png,150641947565011.png,150641947546598.png',1,1,0,0,1,1506419475),(16,1,2,'奥迪 2017 j6','150641999361907.jpeg',2,'j6',2017,'',1504195200,6.0,'4','','','','','13.00','','0',0,'','','','','','150641999361907.jpeg,150641999321747.jpeg,150641999369548.jpeg',1,1,0,0,1,1506419993);
+insert  into `dh_goods_car`(`id`,`type`,`uid`,`title`,`thumb`,`brand`,`style`,`produce_time`,`model`,`buy_time`,`mileage`,`city`,`gearbox`,`gases`,`displacement`,`model_remark`,`price`,`vin`,`guarantee`,`is_lease`,`mobile`,`weixin`,`qq`,`address`,`description`,`banner`,`status`,`hot`,`is_recommend`,`is_urgency`,`is_show`,`created`) values (1,2,1,'奥迪 2013 A6L 1.6L 纪念版2','150596096890834.jpeg',2,'A6L',2013,' 三厢',1420041600,1.2,'9','自动','国V','1.6L','纪念版2','18000.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方','',1,5,0,0,1,1505701881),(2,2,1,'奥迪 2013 A6L 1.6L 纪念版2','150578956279606.png',1,'A6L',2013,' 三厢',1420041600,1.2,'17','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150578956279606.png,150578956240119.jpeg',1,24,0,0,1,1505701942),(3,2,3,'大众 2017 x5 2.0 很好','150596096890834.jpeg',3,'x5',2017,'2',1420041600,2.0,'14','2','2','2.0','很好','20.00','888888','0',1,'','','','','九成新，值得入手','',1,2,1,1,1,1505706388),(4,2,1,'汽车品牌 2013 A6L 1.6L 纪念版2','150596096890834.jpeg',1,'A6L',2013,' 三厢',1420041600,1.2,'14','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方','',1,1,0,0,1,1505706629),(5,2,3,'奥迪 2017 23 888 很好','150596096890834.jpeg',2,'23',2017,'1',1420041600,5.0,'14','2','1','888','很好','5.00','88888996','0',0,'','','','','很好的啦','',1,4,1,1,1,1505706882),(6,2,1,'汽车品牌 2013 A6L 1.6L 纪念版2','150596096890834.jpeg',1,'A6L',2013,' 三厢',1420041600,1.2,'14','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150580886964585.png,150580886964659.jpeg',1,3,0,0,1,1505808869),(7,2,1,'汽车品牌 2013 A6L 1.6L 纪念版2','150596096890834.jpeg',1,'A6L',2013,' 三厢',1420041600,1.2,'14','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150580908058688.png,150580908096283.jpeg',1,1,0,0,1,1505809080),(8,2,3,'奥迪 2017 x6 2.0 很好的汽车，九成新','150587084744692.png',2,'x6',2017,'5',1420041600,5.0,'14','1','1','2.0','很好的汽车，九成新','20.00','66666666','0',0,'','','','','很好哦，九成新，值得入手，不要犹豫','150587084744692.png,150587084733090.png',1,1,1,1,1,1505870847),(9,2,1,'汽车品牌 2013 A6L 1.6L 纪念版2','150596096890834.jpeg',1,'A6L',2013,' 三厢',2017,1.2,'5','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','',1,1,0,0,1,1505960899),(10,2,1,'汽车品牌 2013 A6L 1.6L 纪念版2','150596096890834.jpeg',1,'A6L',2013,' 三厢',2017,1.2,'5','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150596096890834.jpeg,150596096837567.jpeg,150596096889744.png',1,1,0,0,1,1505960968),(11,2,1,'汽车品牌 2013 A6L 1.6L 纪念版2','150596115541618.jpeg',1,'A6L',2013,' 三厢',2017,1.2,'5','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150596115541618.jpeg,150596115599406.jpeg,150596115594979.png',1,1,0,0,1,1505961155),(12,1,4,'汽车品牌 2013 A6L 1.6L 纪念版2','150641899599456.png',1,'A6L',2013,' 三厢',2017,1.2,'5','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150641899599456.png,150641899599165.png,150641899581683.png',1,1,0,0,1,1506418995),(13,1,4,'汽车品牌 2013 A6L 1.6L 纪念版2','150641904739627.png',1,'A6L',2013,' 三厢',2017,1.2,'5','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150641904739627.png,150641904789466.png,150641904730885.png',1,1,0,0,1,1506419047),(14,1,4,'汽车品牌 2013 A6L 1.6L 纪念版2','150641910488810.png',1,'A6L',2013,' 三厢',2017,1.2,'5','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150641910488810.png,150641910457982.png,150641910411562.png',1,1,0,0,1,1506419104),(15,1,4,'汽车品牌 2013 A6L 1.6L 纪念版2','150641947515130.png',1,'A6L',2013,' 三厢',2017,1.2,'5','自动','国V','1.6L','纪念版2','18.00','111111','0',0,'15923882847','weixin','qq','这里是测试地址信息的','这里是输入商品详情的地方11111','150641947515130.png,150641947565011.png,150641947546598.png',1,1,0,0,1,1506419475),(16,1,2,'奥迪 2017 j6','150641999361907.jpeg',2,'j6',2017,'',1504195200,6.0,'4','','','','','13.00','','0',0,'','','','','','150641999361907.jpeg,150641999321747.jpeg,150641999369548.jpeg',1,1,0,0,1,1506419993),(17,1,2,'奥迪 2017 l6 6 备注','150642085932332.png',2,'l6',2017,'2',1504195200,6.0,'4','2','1','6','备注','13.00','kdkxjxj','0',0,'','','','','差个明模式我说问一下','150642085932332.png,150642085925946.png,150642085922650.png',1,1,0,0,1,1506420859),(18,1,2,'奥迪 2017 c6 6 备注啦啦','150647576838026.jpeg',2,'c6',2017,'1',1501516800,5.0,'2','2','1','6','备注啦啦','13.00','646797997','0',0,'','','','','详细备注，让客户更好了解车子','150647576838026.jpeg,150647576843596.jpeg,150647576844041.jpeg',1,1,0,0,1,1506475768);
 
 /*Table structure for table `dh_goods_service` */
 
@@ -410,12 +462,13 @@ CREATE TABLE `dh_help_car` (
   `description` mediumtext COMMENT '详情',
   `created` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
   `status` tinyint(1) unsigned DEFAULT '1' COMMENT '状态 1申请 2失败 3完成',
+  `recommend_id` varchar(300) DEFAULT '' COMMENT '推荐id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='帮我买车';
 
 /*Data for the table `dh_help_car` */
 
-insert  into `dh_help_car`(`id`,`uid`,`brand`,`price`,`buy_time`,`mileage`,`description`,`created`,`status`) values (2,1,'大众','10万以内','今年','23万公里内的','这里是简介信息',1505957035,1),(3,2,'奥迪','20万以上','一年两个月','','',1505964715,1);
+insert  into `dh_help_car`(`id`,`uid`,`brand`,`price`,`buy_time`,`mileage`,`description`,`created`,`status`,`recommend_id`) values (2,1,'大众','10万以内','今年','23万公里内的','这里是简介信息',1505957035,1,NULL),(3,2,'奥迪','20万以上','一年两个月','','',1505964715,1,NULL);
 
 /*Table structure for table `dh_help_service` */
 
@@ -430,12 +483,13 @@ CREATE TABLE `dh_help_service` (
   `created` int(11) DEFAULT '0' COMMENT '发布时间',
   `status` tinyint(1) unsigned DEFAULT '1' COMMENT '状态 1申请 2推荐完成',
   `del_status` tinyint(1) DEFAULT '0' COMMENT '删除状态 1已删除 0未删除',
+  `recommend_id` varchar(300) DEFAULT '' COMMENT '推荐id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `dh_help_service` */
 
-insert  into `dh_help_service`(`id`,`uid`,`sign`,`price`,`description`,`created`,`status`,`del_status`) values (1,4,1,'0-500元','这里是输入简介测试的地方',1506407793,1,0);
+insert  into `dh_help_service`(`id`,`uid`,`sign`,`price`,`description`,`created`,`status`,`del_status`,`recommend_id`) values (1,4,1,'0-500元','这里是输入简介测试的地方',1506407793,1,0,'');
 
 /*Table structure for table `dh_integral_log` */
 
@@ -449,11 +503,11 @@ CREATE TABLE `dh_integral_log` (
   `created` int(11) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `content` (`content`,`created`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COMMENT='积分详情';
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8 COMMENT='积分详情';
 
 /*Data for the table `dh_integral_log` */
 
-insert  into `dh_integral_log`(`id`,`uid`,`value`,`content`,`created`) values (26,1,30,'每日签到',1505724836),(27,3,30,'每日签到',1505786396),(28,2,30,'每日签到',1505874198),(29,2,30,'每日签到',1506063422),(30,3,30,'每日签到',1506305320),(31,2,30,'每日签到',1506320372),(32,6,100,'注册赠送',1506395715);
+insert  into `dh_integral_log`(`id`,`uid`,`value`,`content`,`created`) values (26,1,30,'每日签到',1505724836),(27,3,30,'每日签到',1505786396),(28,2,30,'每日签到',1505874198),(29,2,30,'每日签到',1506063422),(30,3,30,'每日签到',1506305320),(31,2,30,'每日签到',1506320372),(32,6,100,'注册赠送',1506395715),(33,4,-500,'领取汽车贴膜优惠卷',1506482204),(34,4,-500,'领取汽车贴膜优惠卷',1506482274),(35,4,-500,'领取汽车贴膜优惠卷',1506482397),(36,4,-500,'领取汽车贴膜优惠卷',1506482445),(37,4,-500,'领取汽车贴膜优惠卷',1506482927),(38,4,-500,'领取汽车贴膜优惠卷',1506483107),(39,4,-500,'领取汽车贴膜优惠卷',1506483145),(40,4,-500,'领取汽车贴膜优惠卷',1506483146),(41,4,-500,'领取汽车贴膜优惠卷',1506483164),(42,4,-500,'领取汽车贴膜优惠卷',1506483230),(43,4,-500,'领取汽车贴膜优惠卷',1506483306),(44,4,-500,'领取汽车贴膜优惠卷',1506483621),(45,4,-500,'领取汽车贴膜优惠卷',1506483637),(46,4,-500,'领取汽车贴膜优惠卷',1506483638),(47,4,-500,'领取汽车贴膜优惠卷',1506483638),(48,4,-500,'领取汽车贴膜优惠卷',1506483639),(49,4,-500,'领取汽车贴膜优惠卷',1506483674),(50,4,-500,'领取汽车贴膜优惠卷',1506483675),(51,4,-500,'领取汽车贴膜优惠卷',1506483676),(52,4,-500,'领取汽车贴膜优惠卷',1506483677),(53,4,-500,'领取汽车贴膜优惠卷',1506483678),(54,4,-500,'领取汽车贴膜优惠卷',1506483740),(55,4,-500,'领取汽车贴膜优惠卷',1506483972),(56,4,-500,'领取汽车贴膜优惠卷',1506484028),(57,4,-500,'领取汽车贴膜优惠卷',1506484043),(58,4,-500,'领取汽车贴膜优惠卷',1506484097),(59,4,-500,'领取汽车贴膜优惠卷',1506484219),(60,2,30,'每日签到',1506498598),(61,2,30,'每日签到',1506582983);
 
 /*Table structure for table `dh_integral_rul` */
 
@@ -507,7 +561,7 @@ CREATE TABLE `dh_orders` (
   `seller_uid` int(10) unsigned DEFAULT '0' COMMENT '卖家id',
   `message` varchar(300) DEFAULT '' COMMENT '买家留言',
   `seller_message` varchar(300) DEFAULT '' COMMENT '卖家留言',
-  `order_status` tinyint(1) DEFAULT '1' COMMENT '订单状态 1待确认 2待完成 3已完成 4已评价',
+  `order_status` tinyint(1) DEFAULT '1' COMMENT '订单状态 1待确认 2待完成 3已完成 4待评价 5已评价',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '审核状态 0代审核 1审核通过 2另设时间 3直接拒绝',
   `del_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除状态 0未删除 1删除',
   `del_uid` tinyint(1) DEFAULT '0' COMMENT '买家删除 1删除 0未删除',
@@ -520,18 +574,21 @@ CREATE TABLE `dh_orders` (
   `is_temp` tinyint(1) DEFAULT '0' COMMENT '是否临时订单 1是 0否',
   `pass_time` int(10) unsigned DEFAULT '0' COMMENT '订单确认操作时间',
   `status_time` int(10) unsigned DEFAULT '0' COMMENT '订单审核操作时间',
-  `close_time` int(11) DEFAULT NULL COMMENT '订单关闭操作时间',
-  `success_time` int(11) DEFAULT NULL COMMENT '订单完成时间',
-  `origin` tinyint(1) DEFAULT '0' COMMENT '来源 0未知 1安卓 2IOS 3PC 4微信 5WAP',
+  `close_time` int(11) unsigned DEFAULT '0' COMMENT '订单关闭操作时间',
+  `success_time` int(11) unsigned DEFAULT '0' COMMENT '订单完成时间',
+  `origin` tinyint(1) unsigned DEFAULT '0' COMMENT '来源 0未知 1安卓 2IOS 3PC 4微信 5WAP',
   `version` varchar(10) DEFAULT '0' COMMENT '版本号',
   `created` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`),
-  KEY `order_sn` (`order_sn`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+  KEY `order_sn` (`order_sn`),
+  KEY `uid` (`uid`),
+  KEY `status` (`status`),
+  KEY `order_status` (`order_status`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 /*Data for the table `dh_orders` */
 
-insert  into `dh_orders`(`id`,`type`,`order_sn`,`uid`,`seller_uid`,`message`,`seller_message`,`order_status`,`status`,`del_status`,`del_uid`,`del_seller`,`acount_original`,`acount`,`coupon_price`,`fare_price`,`is_modify`,`is_temp`,`pass_time`,`status_time`,`close_time`,`success_time`,`origin`,`version`,`created`) values (2,1,'172646797722115621',4,1,'','',1,3,0,0,0,'18.00','18.00','0.00','0.00',0,0,0,0,NULL,NULL,0,'v1',0),(3,1,'172670367752827418',2,3,'希望可以准时','',2,1,0,0,0,'20.00','20.00','0.00','0.00',0,0,1506307870,0,NULL,NULL,0,'v1',0),(4,1,'172670845735945735',2,3,'','',2,1,0,0,0,'5.00','5.00','0.00','0.00',0,0,1506328741,0,NULL,NULL,0,'v1',0),(7,2,'172672149529245387',4,1,'','',1,0,0,0,0,'9.90','9.90','0.00','0.00',0,0,0,0,NULL,NULL,0,'v1',0),(8,2,'172672149660368763',4,1,'','',1,0,0,0,0,'9.90','9.90','0.00','0.00',0,0,0,0,NULL,NULL,0,'v1',0),(9,1,'172672782593092734',2,3,'','没得原因',1,3,0,1,1,'20.00','20.00','0.00','0.00',0,0,0,0,NULL,NULL,0,'v1',0),(10,2,'172681425284278516',2,3,'','',2,1,0,0,0,'200.00','200.00','0.00','0.00',0,0,1506417063,0,NULL,NULL,0,'v1',0);
+insert  into `dh_orders`(`id`,`type`,`order_sn`,`uid`,`seller_uid`,`message`,`seller_message`,`order_status`,`status`,`del_status`,`del_uid`,`del_seller`,`acount_original`,`acount`,`coupon_price`,`fare_price`,`is_modify`,`is_temp`,`pass_time`,`status_time`,`close_time`,`success_time`,`origin`,`version`,`created`) values (2,1,'172646797722115621',4,1,'','',5,1,0,0,0,'18.00','14.00','5.00','0.00',0,0,0,0,0,1506500328,0,'v1',0),(3,1,'172670367752827418',2,3,'希望可以准时','',3,1,0,0,0,'20.00','20000.00','0.00','0.00',0,0,1506307870,0,0,1506563853,0,'v1',0),(4,1,'172670845735945735',2,3,'','',3,1,0,0,0,'5.00','20000.00','0.00','0.00',0,0,1506328741,0,1506561709,1506562670,0,'v1',0),(7,2,'172672149529245387',4,1,'','',1,0,0,0,0,'9.90','9.90','0.00','0.00',0,0,0,0,0,0,0,'v1',0),(8,2,'172672149660368763',4,1,'','',1,0,0,0,0,'9.90','9.90','0.00','0.00',0,0,0,0,0,0,0,'v1',0),(9,1,'172672782593092734',2,3,'','没得原因',1,3,0,1,1,'20.00','20.00','0.00','0.00',0,0,0,0,0,0,0,'v1',0),(10,2,'172681425284278516',2,3,'','',2,1,0,0,0,'200.00','200.00','0.00','0.00',0,0,1506417063,0,0,0,0,'v1',0),(11,0,'172706472674515321',0,1,'','',1,3,0,0,0,'18.00','19.00','0.00','0.00',0,1,0,0,0,1506564726,0,'v1',1506564726);
 
 /*Table structure for table `dh_orders_car` */
 
@@ -555,11 +612,11 @@ CREATE TABLE `dh_orders_car` (
   PRIMARY KEY (`id`),
   KEY `order_sn` (`order_sn`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 /*Data for the table `dh_orders_car` */
 
-insert  into `dh_orders_car`(`id`,`order_sn`,`ascription`,`start_time`,`end_time`,`goods_id`,`title`,`thumb`,`produce_time`,`mileage`,`price_original`,`price`,`is_modify`,`coupon_id`) values (2,'172646797722115621',2,1506056400,1506074400,2,'奥迪 2013 A6L 1.6L 纪念版2','150578956279606.png','2013','1.2','18.00','18.00',0,0),(3,'172670367752827418',2,2017,2017,8,'奥迪 2017 x6 2.0 很好的汽车，九成新','150587084744692.png','2017','5.0','20.00','20.00',0,0),(4,'172670845735945735',2,2017,2017,5,'奥迪 2017 23 888 很好','150596096890834.jpeg','2017','5.0','5.00','5.00',0,0),(5,'172672782593092734',2,1504195200,1504195200,3,'大众 2017 x5 2.0 很好','150596096890834.jpeg','2017','2.0','20.00','20.00',0,0);
+insert  into `dh_orders_car`(`id`,`order_sn`,`ascription`,`start_time`,`end_time`,`goods_id`,`title`,`thumb`,`produce_time`,`mileage`,`price_original`,`price`,`is_modify`,`coupon_id`) values (2,'172646797722115621',2,1506056400,1506074400,2,'奥迪 2013 A6L 1.6L 纪念版2','150578956279606.png','2013','1.2','18.00','18.00',0,0),(3,'172670367752827418',2,2017,2017,8,'奥迪 2017 x6 2.0 很好的汽车，九成新','150587084744692.png','2017','5.0','20.00','20.00',0,0),(4,'172670845735945735',2,2017,2017,5,'奥迪 2017 23 888 很好','150596096890834.jpeg','2017','5.0','5.00','5.00',0,0),(5,'172672782593092734',2,1504195200,1504195200,3,'大众 2017 x5 2.0 很好','150596096890834.jpeg','2017','2.0','20.00','20.00',0,0),(6,'172706472674515321',2,1505701881,1505701881,11,'汽车品牌 2013 A6L 1.6L 纪念版2','150596115541618.jpeg','2013','1.2','18.00','18.00',0,0);
 
 /*Table structure for table `dh_orders_service` */
 
@@ -583,12 +640,47 @@ CREATE TABLE `dh_orders_service` (
   `title` varchar(50) DEFAULT NULL COMMENT '标题',
   `thumb` varchar(100) DEFAULT NULL COMMENT '封面图片',
   `model` varchar(10) DEFAULT NULL COMMENT '车型',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `order_sn` (`order_sn`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='订单服务详情';
 
 /*Data for the table `dh_orders_service` */
 
 insert  into `dh_orders_service`(`id`,`order_sn`,`vin`,`start_time`,`end_time`,`ablum`,`brand`,`style`,`produce_time`,`buy_time`,`mileage`,`goods_id`,`price`,`price_original`,`title`,`thumb`,`model`) values (1,'172672149529245387','',1506056400,1506074400,'150632149595531.png,150632149598385.png','汽车改装','A8','2017',1000000,'0.0',3,'9.90','9.90','免费贴膜','150578927012952.jpeg',NULL),(2,'172672149660368763','',1506056400,1506074400,'150632149622104.png,150632149619352.png','汽车改装','A8','2017',1000000,'0.0',3,'9.90','9.90','免费贴膜','150578927012952.jpeg',NULL),(3,'172681425284278516','',1506417900,1506421500,'150641425244255.jpeg,150641425271548.jpeg','大众','j8','2016年',1504195200,'5.0',11,'200.00','200.00','200','150578927012952.jpeg',NULL);
+
+/*Table structure for table `dh_report_log` */
+
+DROP TABLE IF EXISTS `dh_report_log`;
+
+CREATE TABLE `dh_report_log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `type` tinyint(1) unsigned DEFAULT '1' COMMENT '类型 1文章',
+  `uid` int(11) DEFAULT '0' COMMENT '举报用户uid',
+  `goods_id` int(10) unsigned DEFAULT '0' COMMENT 'id值',
+  `created` int(11) DEFAULT '0' COMMENT '创建时间',
+  `ip` varchar(20) DEFAULT '127.0.0.1' COMMENT 'ip地址',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='举报记录表';
+
+/*Data for the table `dh_report_log` */
+
+/*Table structure for table `dh_score` */
+
+DROP TABLE IF EXISTS `dh_score`;
+
+CREATE TABLE `dh_score` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `type` tinyint(1) unsigned DEFAULT '1' COMMENT '类型 1店铺',
+  `uid` int(11) DEFAULT '0' COMMENT '打分用户uid',
+  `value` varchar(10) DEFAULT NULL COMMENT '保存值',
+  `score` int(10) unsigned DEFAULT NULL COMMENT '打分',
+  `created` int(10) unsigned DEFAULT NULL COMMENT '打分时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='打分';
+
+/*Data for the table `dh_score` */
+
+insert  into `dh_score`(`id`,`type`,`uid`,`value`,`score`,`created`) values (1,1,4,'1',0,1506504617);
 
 /*Table structure for table `dh_search_disable` */
 
@@ -622,11 +714,11 @@ CREATE TABLE `dh_search_log` (
   PRIMARY KEY (`id`),
   KEY `keyword` (`value`),
   KEY `type` (`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='搜索记录';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='搜索记录';
 
 /*Data for the table `dh_search_log` */
 
-insert  into `dh_search_log`(`id`,`type`,`value`,`uid`,`created`,`hot`) values (2,1,'奥迪',0,1505875793,2),(3,1,'大众',0,1505876306,5),(4,1,'大众',1,1505876338,2);
+insert  into `dh_search_log`(`id`,`type`,`value`,`uid`,`created`,`hot`) values (2,1,'奥迪',0,1505875793,2),(3,1,'大众',0,1505876306,5),(4,1,'大众',1,1505876338,2),(5,1,'html',0,1506590163,1);
 
 /*Table structure for table `dh_search_remmond` */
 
@@ -660,11 +752,11 @@ CREATE TABLE `dh_shop_hot_log` (
   `time` varchar(10) NOT NULL DEFAULT '' COMMENT '当日访问记录',
   PRIMARY KEY (`id`),
   KEY `time` (`time`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 /*Data for the table `dh_shop_hot_log` */
 
-insert  into `dh_shop_hot_log`(`id`,`uid`,`num`,`time`) values (1,1,2,'2017-09-21'),(2,2,22,'2017-09-22'),(3,4,2,'2017-09-22'),(4,4,1,'2017-09-25'),(5,2,4,'2017-09-25');
+insert  into `dh_shop_hot_log`(`id`,`uid`,`num`,`time`) values (1,1,2,'2017-09-21'),(2,2,22,'2017-09-22'),(3,4,2,'2017-09-22'),(4,4,1,'2017-09-25'),(5,2,4,'2017-09-25'),(6,2,3,'2017-09-28');
 
 /*Table structure for table `dh_user` */
 
@@ -690,12 +782,14 @@ CREATE TABLE `dh_user` (
   `login_time` int(10) unsigned DEFAULT '0' COMMENT '最近一次登录时间',
   `created` int(11) unsigned DEFAULT '0' COMMENT '注册时间',
   `is_message` tinyint(1) DEFAULT '1' COMMENT '锁屏新消息是否开启 1开启 0不开启',
+  `version` int(11) DEFAULT '0' COMMENT '版本控制',
+  `imei` varchar(300) DEFAULT '' COMMENT '设备编码',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 /*Data for the table `dh_user` */
 
-insert  into `dh_user`(`id`,`type`,`username`,`nickname`,`avatar`,`mobile`,`mail`,`password`,`salt`,`token`,`time_out`,`ip`,`integral`,`status`,`del_status`,`login_ip`,`login_time`,`created`,`is_message`) values (1,2,'cheng6251','cheng6251','150631954346095.jpeg','13425778542','','7df8faa9a5f71811689662131b7f9fe5','45452','11b141ff4386fb2b8062cad3df260a6d',1506589167,'127.0.0.1',30,1,0,'127.0.0.1',1506304319,1505292648,1),(2,1,'weixuelin','魏雪林','150631954346095.jpeg','18523563220','6497646qw@163.com','f6b81aa9bcdeb6e01455a3d61e16f4d7','21749','acdc3265860e2d18336d6247c7367f7f',1506592793,'127.0.0.1',90,1,0,'127.0.0.1',1506417084,1505293289,1),(3,2,'kuangxin','kuangxin','150631954346095.jpeg','13896568031','','01bafc44de12208bb48680dca2ea4c16','12532','95ac7ebfb6850551a9b1fab0e03da897',1506589877,'127.0.0.1',60,1,0,'127.0.0.1',1506416314,1505368006,1),(4,1,'四月个人用户','四月个人用户','150631954346095.jpeg','15923882847','','ffbb0d9f227b1d1df90513144b3b73ad','14526','1ad65d2f52e29826d23425578d724323',1506592275,'127.0.0.1',0,1,0,'127.0.0.1',1506320682,1506063155,1),(5,1,'123456','123456','','15923882847','','509849f59071c6829ea94459620d9026','59117','',0,'127.0.0.1',0,1,0,'',0,1506395554,1),(6,1,'1234567','1234567','','15923882847','','de7a8d21b859e33d6fbee46781a4e08d','50621','',0,'127.0.0.1',100,1,0,'',0,1506395715,1);
+insert  into `dh_user`(`id`,`type`,`username`,`nickname`,`avatar`,`mobile`,`mail`,`password`,`salt`,`token`,`time_out`,`ip`,`integral`,`status`,`del_status`,`login_ip`,`login_time`,`created`,`is_message`,`version`,`imei`) values (1,2,'cheng6251','cheng6251','150631954346095.jpeg','13425778542','','7df8faa9a5f71811689662131b7f9fe5','45452','11b141ff4386fb2b8062cad3df260a6d',1506759820,'127.0.0.1',100000,1,0,'127.0.0.1',1506304319,1505292648,1,0,''),(2,1,'weixuelin','魏雪林','150631954346095.jpeg','18523563220','6497646qw@163.com','f6b81aa9bcdeb6e01455a3d61e16f4d7','21749','d79d70cef43a49b8eb9793ba4706567c',1506762905,'127.0.0.1',100030,1,0,'127.0.0.1',1506586770,1505293289,1,0,''),(3,2,'kuangxin','kuangxin','150631954346095.jpeg','13896568031','','01bafc44de12208bb48680dca2ea4c16','12532','b1a0dbfc84932ac4bd33e33ffd108f12',1506759495,'127.0.0.1',100000,1,0,'127.0.0.1',1506585731,1505368006,1,0,''),(4,1,'四月个人用户','四月个人用户','150631954346095.jpeg','15923882847','','ffbb0d9f227b1d1df90513144b3b73ad','14526','1ad65d2f52e29826d23425578d724323',1506759009,'127.0.0.1',100000,1,0,'127.0.0.1',1506320682,1506063155,1,0,''),(5,1,'123456','123456','','15923882847','','509849f59071c6829ea94459620d9026','59117','',0,'127.0.0.1',100000,1,0,'',0,1506395554,1,0,''),(6,1,'1234567','1234567','','15923882847','','de7a8d21b859e33d6fbee46781a4e08d','50621','',0,'127.0.0.1',100000,1,0,'',0,1506395715,1,0,'');
 
 /*Table structure for table `dh_user_message` */
 
@@ -746,6 +840,28 @@ CREATE TABLE `dh_user_shop` (
 /*Data for the table `dh_user_shop` */
 
 insert  into `dh_user_shop`(`id`,`uid`,`goods_num`,`orders`,`name`,`avatar`,`credit_level`,`woker_time`,`address`,`category`,`ablum`,`ide_ablum`,`is_ide`,`is_message`,`status`,`is_recommend`) values (1,1,8,NULL,'四月工作室','150537200968318.png',46,'9点-10点','这里是店铺地址信息','20,22','150536187327122.jpeg,150536187343181.png','150536187327122.jpeg,150536187343181.png',1,0,1,1),(2,3,1,NULL,'kuangxin','150588957988857.jpeg',49,'09:00-18:00','重庆市南岸区','20,22','150536187327122.jpeg,150536187343181.png','150588960214710.png',1,1,1,1);
+
+/*Table structure for table `dh_visitor_comment` */
+
+DROP TABLE IF EXISTS `dh_visitor_comment`;
+
+CREATE TABLE `dh_visitor_comment` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `type` tinyint(3) unsigned DEFAULT NULL COMMENT '类型',
+  `goods_id` int(10) unsigned DEFAULT NULL COMMENT '商品id',
+  `parent_id` int(10) unsigned DEFAULT NULL COMMENT '上级id',
+  `content` varchar(500) DEFAULT NULL COMMENT '评论内容',
+  `nickname` varchar(10) DEFAULT NULL COMMENT '昵称',
+  `mail` varchar(20) DEFAULT NULL COMMENT '邮箱',
+  `ip` varchar(20) DEFAULT NULL COMMENT 'ip地址',
+  `is_show` tinyint(1) unsigned DEFAULT '1' COMMENT '状态 1显示 0不显示',
+  `created` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='游客评论';
+
+/*Data for the table `dh_visitor_comment` */
+
+insert  into `dh_visitor_comment`(`id`,`type`,`goods_id`,`parent_id`,`content`,`nickname`,`mail`,`ip`,`is_show`,`created`) values (1,1,3,0,'33333','111',NULL,'127.0.0.1',1,1506592498);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

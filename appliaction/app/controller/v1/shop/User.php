@@ -31,7 +31,7 @@ class User extends \app\app\controller\Init
         $this->checkShop(); //必须商户会员登录
 
         if (IS_POST) {
-            $data['name']       = post('name', 'text', '');
+            $data['name']       = $dataUser['nickname']       = post('name', 'text', '');
             $data['woker_time'] = post('woker_time', 'text', '');
             $data['address']    = post('address', 'text', '');
             $data['category']   = post('category', 'intval', 0);
@@ -43,7 +43,7 @@ class User extends \app\app\controller\Init
             $files['ablum']  = files('ablum_files');
 
             $data['ablum']                       = $this->appUpload($files['ablum'], $data['ablum'], 'shop');
-            !$files['avatar'] ?: $data['avatar'] = $this->appUpload($files['avatar'], '', 'avatar');
+            !$files['avatar'] ?: $data['avatar'] = $dataUser['avatar'] = $this->appUpload($files['avatar'], '', 'avatar');
 
             if (!$data['name']) {
                 $this->appReturn(array('status' => false, 'msg' => '请输入店铺名称'));
@@ -60,14 +60,24 @@ class User extends \app\app\controller\Init
             if (!$data['address']) {
                 $this->appReturn(array('status' => false, 'msg' => '请输入店铺地址'));
             }
+            table('UserShop')->startTrans();
+            $result = table('UserShop')->where(array('uid' => $this->uid))->save($data);
 
-            $reslut = table('UserShop')->where(array('uid' => $this->uid))->save($data);
+            if (!$result) {
+                table('UserShop')->rollback();
+                $this->appReturn(array('status' => false, 'msg' => '执行失败'));
 
-            if ($reslut) {
-                $this->appReturn(array('msg' => '保存成功'));
             }
 
-            $this->appReturn(array('status' => false, 'msg' => '执行失败'));
+            $result = table('User')->where('id', $this->uid)->save($dataUser);
+            if (!$result) {
+                table('UserShop')->rollback();
+                $this->appReturn(array('status' => false, 'msg' => '信息修改失败'));
+
+            }
+
+            table('UserShop')->commit();
+            $this->appReturn(array('msg' => '保存成功'));
         } else {
             $data                  = table('UserShop')->where(array('uid' => $this->uid))->field()->find();
             $data['avatar']        = $this->appImg($data['avatar'], 'avatar');
@@ -98,9 +108,9 @@ class User extends \app\app\controller\Init
             $data['ide_ablum'] = $this->appUpload($files['ide_ablum'], $data['ide_ablum'], 'ide');
             $data['is_ide']    = $data['is_ide'] == 2 ? 0 : $data['is_ide'];
 
-            $reslut = table('UserShop')->where(array('uid' => $this->uid))->save($data);
+            $result = table('UserShop')->where(array('uid' => $this->uid))->save($data);
 
-            if ($reslut) {
+            if ($result) {
                 $this->appReturn(array('msg' => '申请成功'));
             }
 
@@ -125,7 +135,7 @@ class User extends \app\app\controller\Init
                 $this->appReturn(array('status' => false, 'msg' => '参数错误'));
             }
 
-            $reslut = table('UserShop')->where(array('uid' => $this->uid))->save(array('status' => $status));
+            $result = table('UserShop')->where(array('uid' => $this->uid))->save(array('status' => $status));
             //开启店铺商品
             if ($status == 1) {
                 table('GoodsCar')->where(array('uid' => $this->uid))->save(array('is_show', 1));
@@ -137,7 +147,7 @@ class User extends \app\app\controller\Init
                 table('GoodsService')->where(array('uid' => $this->uid))->save(array('is_show', 0));
             }
 
-            if ($reslut) {
+            if ($result) {
                 $this->appReturn(array('msg' => '操作成功'));
             }
             $this->appReturn(array('status' => false, 'msg' => '执行失败'));
@@ -171,9 +181,9 @@ class User extends \app\app\controller\Init
         $password2 = post('password2', 'text', '');
         $isAgree   = post('is_agree', 'intval', 0);
 
-        $reslut = dao('User')->register($data, $password2, $isAgree);
+        $result = dao('User')->register($data, $password2, $isAgree);
 
-        $this->appReturn($reslut);
+        $this->appReturn($result);
     }
 
     /**
@@ -191,15 +201,15 @@ class User extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '请选择登录方式'));
         }
 
-        $reslut = dao('User')->login($account, $password);
+        $result = dao('User')->login($account, $password);
 
-        if ($reslut['status']) {
-            if ($reslut['data']['type'] != $type) {
-                $this->appReturn(array('status' => false, 'msg' => '请选择' . $typeCopy[$reslut['data']['type']] . '登录'));
+        if ($result['status']) {
+            if ($result['data']['type'] != $type) {
+                $this->appReturn(array('status' => false, 'msg' => '请选择' . $typeCopy[$result['data']['type']] . '登录'));
             }
         }
 
-        $this->appReturn($reslut);
+        $this->appReturn($result);
     }
 
 }
