@@ -38,88 +38,66 @@
 					</div>
 				</div>
 				<div class="clearfix"></div>
+				<?php if($comment){ ?>
 				<div class="comment">
 					<ul>
+						<?php if($comment){ foreach($comment as $key => $value){ ?>
 						<li>
-							<label>xxxx</label>
-							<p>谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好</p>
+							<label><?php echo $value['nickname']; ?>:</label>
+							<p><?php echo $value['content']; ?></p>
 							<div class="buttom">
 								<div class="pull-left">
-									<i class="fa fa-clock-o"></i> 时间 <?php echo date('Y-m-d',$data['created']); ?>
+									<i class="fa fa-clock-o"></i> 时间 <?php echo date('Y-m-d',$value['created']); ?>
 								</div>
 								<div class="pull-right">
 									<a href="javascript:;">举报</a>
-									<a href="javascript:;">回复[0]</a>
+									<a href="javascript:;" data-to_id="<?php echo $value['id']; ?>" data-parent_id="<?php echo $value['id']; ?>" class="btn-show-reply">回复[<?php echo $value['total']; ?>]</a>
 								</div>
 							</div>
 							<div class="clearfix"></div>
-						</li>
-						<li>
-							<label>xxxx</label>
-							<p>谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好</p>
-							<div class="buttom">
-								<div class="pull-left">
-									<i class="fa fa-clock-o"></i> 时间 <?php echo date('Y-m-d',$data['created']); ?>
-								</div>
-								<div class="pull-right">
-									<a href="javascript:;">举报</a>
-									<a href="javascript:;">回复[0]</a>
-								</div>
-							</div>
-							<div class="clearfix"></div>
-							<div class="comment-chlid">
-								<ul>
-									<li>
-										<label>xxxx</label>
-										<p>谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好谢教授平时很忙吧？再忙也要看书学习哈，写文章还是需要点证据和论点的，逻辑混乱了不好</p>
-										<div class="buttom">
-											<div class="pull-left">
-												<i class="fa fa-clock-o"></i> 时间 <?php echo date('Y-m-d',$data['created']); ?>
-											</div>
-											<div class="pull-right">
-												<a href="javascript:;">举报</a>
-											</div>
-										</div>
-										<div class="clearfix"></div>
-									</li>
-								</ul>
+							<div class="comment-chlid" style="display: none;">
+								<ul></ul>
 								<div class="alert alert-info" role="alert" style="margin-top: 2rem;">
 									回复评论:
 									<div class="pull-right">
 										<a href="javascript:;" class="btn-comment-up">[收起]</a>
 									</div>
 								</div>
-		       				 	<!-- <form method="post"  class="form-horizontal remark">
-		       				 	
-		       				 		<div class="form-group">
-		       				 										    <label for="inputEmail3" class="col-sm-2 control-label">称呼</label>
-		       				 										    <div class="col-sm-10">
-		       				 										      <input type="email" class="form-control"  placeholder="Email">
-		       				 										    </div>
-		       				 									  	</div>
-		       				 		<div class="form-group">
-		       				 										    <label for="inputEmail3" class="col-sm-2 control-label">邮箱</label>
-		       				 										    <div class="col-sm-10">
-		       				 										      <input type="email" class="form-control"  placeholder="Email">
-		       				 										    </div>
-		       				 									  	</div>
-		       				 						               <div class="form-group">
-		       				 											<label for="inputEmail3" class="col-sm-2 control-label">内容</label>
-		       				 										    <div class="col-sm-10">
-		       				 										      <textarea name="comment" class="form-control"></textarea>
-		       				 										    </div>
-		       				 	    						 		</div>
-		       				 	    						 		<div class="form-group">
-		       				 										    <div class="col-sm-offset-2 col-sm-10">
-		       				 										      <button type="button" class="btn btn-primary">确定</button>
-		       				 										    </div>
-		       				 									  	</div>
-		       				 	    						 	</form> -->
+		       				 	<form  class="form-horizontal remark" action="<?php echo url('comment/reply'); ?>">
+		       				 		<input type="hidden" class="form-control" name="goods_id"  value="<?php echo $data['id']; ?>">
+		       				 		<input type="hidden" class="form-control" name="parent_id"  value="<?php echo $value['id']; ?>">
+		       				 		<input type="hidden" class="form-control" name="to_id"  value="<?php echo $value['id']; ?>">
+							 		<div class="form-group">
+									    <label for="inputEmail3" class="col-sm-2 control-label">称呼</label>
+									    <div class="col-sm-10">
+									      <input type="text" class="form-control" name="nickname"  placeholder="昵称">
+									    </div>
+								  	</div>
+							 		<div class="form-group">
+									    <label for="inputEmail3" class="col-sm-2 control-label">邮箱</label>
+									    <div class="col-sm-10">
+									      <input type="email" class="form-control" name="mail"  placeholder="Email">
+									    </div>
+								  	</div>
+					               	<div class="form-group">
+										<label for="inputEmail3" class="col-sm-2 control-label">内容</label>
+									    <div class="col-sm-10">
+									      <textarea  class="form-control" name="content"></textarea>
+									    </div>
+							 		</div>
+							 		<div class="form-group">
+									    <div class="col-sm-offset-2 col-sm-10">
+									      <button type="button" class="btn btn-primary btn-comply">确定</button>
+									    </div>
+								  	</div>
+    						 	</form>
 							</div>
 							<div class="clearfix"></div>
 						</li>
+						<?php }} ?>
 					</ul>
 				</div>
+				<?php } ?>
 				<div class="alert alert-info" role="alert" style="margin-top: 2rem;">发表评价:</div>
 			 	<form  class="form-horizontal remark" action="<?php echo url('comment/add'); ?>">
 		 		 	<input type="hidden" class="form-control" name="goods_id"  value="<?php echo $data['id']; ?>">
@@ -241,7 +219,23 @@
 	<script type="text/javascript">
 	$('.btn-comment-up').click(function(){
 		var comment = $(this).parent().parent().parent();
-		comment.remove();
+		comment.hide(1000);
+	})
+	$('.btn-show-reply').click(function(){
+		var goods_id  = $('input[name=goods_id]').val();
+		var parent_id = $(this).attr('data-parent_id');
+		var to_id = $(this).attr('data-to_id'); 
+		var comment = $(this).parent().parent().parent();
+		$('.comment-chlid').css('display','none');
+		comment.find('form').find('input[name=to_id]').val(to_id);
+		comment.find('.comment-chlid').show(1000);
+		$.post('<?php echo url('comment/children_list'); ?>',{goods_id:goods_id,parent_id:parent_id},function(result){
+			comment.find('ul').html(result);
+			$('.btn-show-reply').click(function(){
+			 	to_id = $(this).attr('data-to_id'); 
+				comment.find('form').find('input[name=to_id]').val(to_id);
+			});
+		},"text")
 	})
 	</script>
 </body>

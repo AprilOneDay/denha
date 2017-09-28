@@ -118,8 +118,14 @@ $(function() {
 
     //提交信息
     $('.btn-comply').click(function(){
-        var data= $('.form-horizontal').serializeArray();
-        var url = $('.form-horizontal').attr('action');
+        var form;
+        if($('.form-horizontal').length == 1){
+           form = $('.form-horizontal');
+        }else{
+           form = $(this).parent().parent().parent();
+        }
+        var data= form.serializeArray();
+        var url = form.attr('action');
 
         $.post(url,data,function(reslut){
             layer.msg(reslut.msg);

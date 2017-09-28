@@ -36,9 +36,9 @@ class VisitorComment
     }
 
     //回复评论
-    public function reply($nickname, $type, $content, $parentId, $dataContent = array())
+    public function reply($nickname, $type, $content, $parentId, $toId = 0, $dataContent = array())
     {
-        if (!$nickname || !$type || !$toUid) {
+        if (!$nickname || !$type || !$toId) {
             return array('status' => false, 'msg' => '参数错误');
         }
 
@@ -49,16 +49,18 @@ class VisitorComment
         $map['id'] = $parentId;
         $comment   = table('VisitorComment')->where($map)->field('goods_id')->find();
         if (!$comment) {
-            return array('status' => false, 'msg' => '回复信息不存在');
+            return array('status' => false, 'msg' => '回复信息不存在', 'sql' => table('VisitorComment')->getSql());
         }
 
-        $data              = $dataContent;
-        $data['nickname']  = $nickname;
-        $data['goods_id']  = $comment['goods_id'];
-        $data['content']   = $content;
-        $data['parent_id'] = $parentId;
-        $data['created']   = TIME;
-        $data['ip']        = getIP();
+        $data                = $dataContent;
+        $data['nickname']    = $nickname;
+        $data['goods_id']    = $comment['goods_id'];
+        $data['content']     = $content;
+        $data['parent_id']   = $parentId;
+        $data['created']     = TIME;
+        $data['ip']          = getIP();
+        $data['to_id']       = $toId;
+        $data['to_nickname'] = table('VisitorComment')->where('id', $toId)->field('nickname')->find('one');
 
         $result = table('VisitorComment')->add($data);
         if (!$result) {
@@ -66,6 +68,21 @@ class VisitorComment
         }
 
         return array('status' => true, 'msg' => '评论成功');
+    }
+
+    public function blogDetail($goodsId = 0, $parentId = 0)
+    {
+        $map['type']      = 1;
+        $map['goods_id']  = $goodsId;
+        $map['parent_id'] = $parentId;
+
+        $list = table('VisitorComment')->where($map)->order('id desc')->find('array');
+        foreach ($list as $key => $value) {
+            if ($value['parent_id'] == 0) {
+                $list[$key]['total'] = (int) table('VisitorComment')->where(array('is_show' => 1, 'parent_id' => $value['id']))->count();
+            }
+        }
+        return $list;
     }
 
 }

@@ -44,11 +44,12 @@ class Comment extends \app\app\controller\Init
      */
     public function reply()
     {
-        $nickname = post('nickname', 'text', '');
-        $goodsId  = post('goodsId', 'intval', 0);
-        $content  = post('content', 'text', '');
         $parentId = post('parent_id', 'intval', 0);
+        $nickname = post('nickname', 'text', '');
+        $goodsId  = post('goods_id', 'intval', 0);
+        $content  = post('content', 'text', '');
         $mail     = post('mail', 'text', '');
+        $toId     = post('to_id', 'intval', 0);
 
         if (!$nickname) {
             $this->ajaxReturn(array('status' => false, 'msg' => '输入昵称'));
@@ -58,7 +59,20 @@ class Comment extends \app\app\controller\Init
             $this->ajaxReturn(array('status' => false, 'msg' => '输入邮箱名称'));
         }
 
-        $result = dao('VisitorComment', 'blog')->reply($nickname, 1, $goodsId, $content, $parentId);
+        $result = dao('VisitorComment', 'blog')->reply($nickname, 1, $content, $parentId, $toId);
         $this->ajaxReturn($result);
+    }
+
+    public function childrenList()
+    {
+        $goodsId  = post('goods_id', 'intval', 0);
+        $parentId = post('parent_id', 'intval', 0);
+        //获取评论
+        $list = dao('VisitorComment', 'blog')->blogDetail($goodsId, $parentId);
+        //$this->ajaxReturn(array('data' => $comment));
+
+        $this->assign('list', $list);
+        $this->show();
+        die;
     }
 }

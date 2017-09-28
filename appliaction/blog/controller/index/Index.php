@@ -65,14 +65,19 @@ class Index extends denha\Controller
         $field = "$article.id,$article.title,$article.created,$article.description,$article.hot,$articleBlog.content";
         $data  = table('Article')->join($articleBlog, "$article.id = $articleBlog.id", 'left')->where($map)->field($field)->find();
 
+        //获取分类
         $class = table('Article')->where(array('is_show' => 1))->field('count(*) as num,tag')->group('tag')->find('array');
         foreach ($class as $key => $value) {
             $listClass[$value['tag']] = $value;
         }
 
+        //获取评论
+        $comment = dao('VisitorComment', 'blog')->blogDetail($id);
+
         //增加阅读记录
         table('Article')->where(array('id' => $id))->save(array('hot' => array('add', 1)));
 
+        $this->assign('comment', $comment);
         $this->assign('listClass', $listClass);
         $this->assign('tagCopy', getVar('tags', 'console.article'));
         $this->assign('randList', $this->rank());
