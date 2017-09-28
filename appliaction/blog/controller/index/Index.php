@@ -81,6 +81,9 @@ class Index extends denha\Controller
         //增加阅读记录
         table('Article')->where(array('id' => $id))->save(array('hot' => array('add', 1)));
 
+        $user = getSession('user');
+
+        $this->assign('user', $user);
         $this->assign('comment', $comment);
         $this->assign('listClass', $listClass);
         $this->assign('tagCopy', getVar('tags', 'console.article'));
