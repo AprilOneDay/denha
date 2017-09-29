@@ -47,6 +47,7 @@ class Mysqli
 
         $this->link = $this->openMysql();
         mysqli_query($this->link, 'set names utf8');
+        mysqli_query($this->link, 'SET sql_mode =\'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION\'');
     }
 
     //单例实例化 避免重复New暂用资源
@@ -396,7 +397,7 @@ class Mysqli
         if ($this->total == 0) {return false;}
         //单个字段模式
         if ($value == 'one' && !$isArray) {
-            $row = mysqli_fetch_array($result, MYSQL_NUM);
+            $row = mysqli_fetch_array($result, MYSQLI_NUM);
             if (empty($row)) {
                 return false;
             }
@@ -578,7 +579,7 @@ class Mysqli
      * @param  [type]                   $sql [description]
      * @return [type]                        [description]
      */
-    public function query($sql)
+    public function query($sql = '')
     {
         !$sql ?: $this->_sql = $sql;
         $_beginTime          = microtime(true);

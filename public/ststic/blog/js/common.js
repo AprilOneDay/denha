@@ -1,4 +1,11 @@
 $(function() {
+    $(window).scroll(function(){
+        if($(window).scrollTop() > 0){
+            $('.arrow-up').show(1000);
+        }else{
+            $('.arrow-up').hide(1000);
+        }
+    })
 	$('.news li').each(function(){
 		var img = $(this).find('img');
 		var imgShow = img.parent().find() 
@@ -54,6 +61,7 @@ $(function() {
     $('.btn-ajax-post').click(function(){
         var attr = $(this).context.attributes;
         var url = $(this).attr('data-href');
+        var reload = $(this).attr('reload');
         var data = new Object();
         for (var i = 0; i < attr.length; i++) {
             if(attr[i].localName.indexOf('data') !== -1 && attr[i].localName != 'data-href'){
@@ -63,7 +71,7 @@ $(function() {
 
         $.post(url,data,function(reslut){
             layer.msg(reslut.msg);
-            if(reslut.status){
+            if(reslut.status && reload == true){
                setTimeout(function(){location.reload();},1000);
             }
         })

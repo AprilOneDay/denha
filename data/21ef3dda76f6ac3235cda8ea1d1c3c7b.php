@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>个人博客 - <?php echo $data['title']; ?></title>
+	<title>四月 - 个人博客  - <?php echo $data['title']; ?></title>
 	<meta name="keywords" content=""/>
 	<meta name="description" content="<?php echo $data['description']; ?>"/>
 	<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
@@ -11,6 +11,15 @@
 	<link rel="stylesheet" href="<?php echo getConfig('config','vendor'); ?>/pace/themes/blue/pace-theme-minimal.css" />
 	<link rel="stylesheet" href="<?php echo getConfig('config','ststic'); ?>/blog/css/common.css" />
 	<link rel="stylesheet" href="<?php echo getConfig('config','ststic'); ?>/blog/css/css.css" />
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?eb42f04c15f2dc6876fc2c14439fc6ef";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
 </head>
 <body>
 	<div class="wapper w14">
@@ -50,7 +59,7 @@
 									<i class="fa fa-clock-o"></i> 时间 <?php echo date('Y-m-d',$value['created']); ?>
 								</div>
 								<div class="pull-right">
-									<a href="javascript:;">举报</a>
+									<a href="javascript:;" class="btn-ajax-post" data-href="<?php echo url('report/add'); ?>" data-goods_id="<?php echo $value['id']; ?>">举报</a>
 									<a href="javascript:;" data-to_id="<?php echo $value['id']; ?>" data-parent_id="<?php echo $value['id']; ?>" class="btn-show-reply">回复[<?php echo $value['total']; ?>]</a>
 								</div>
 							</div>
@@ -196,6 +205,11 @@
 		</div>
 		<div class="clearfix"></div>
 	</div>
+	<div class="fix">
+		<ul>
+			<li class="arrow-up"><i class="fa-3x fa fa-arrow-up" title="返回顶部"></i></li>
+		</ul>
+	</div>
 	<div class="footer w14">
 	<div class="link hidden-sm hidden-xs">
 		<ul>
@@ -211,6 +225,11 @@
 	<div class="copy">
 		版权所有@copy 2017 四月工作室
 	</div>
+</div>
+<div class="fix">
+	<ul>
+		<li class="arrow-up"><i class="fa-3x fa fa-arrow-up" title="返回顶部"></i></li>
+	</ul>
 </div>
 	<script type="text/javascript" src="<?php echo getConfig('config','ststic'); ?>/console/js/jquery-1.12.3.min.js"></script>
 	<script type="text/javascript" src="<?php echo getConfig('config','vendor'); ?>/pace/pace.min.js"></script>
@@ -236,6 +255,10 @@
 				comment.find('form').find('input[name=to_id]').val(to_id);
 			});
 		},"text")
+	})
+	$('.fa-arrow-up').click(function(){
+	 	var sc=$(window).scrollTop();
+   		$('body,html').animate({scrollTop:0},300);
 	})
 	</script>
 </body>
