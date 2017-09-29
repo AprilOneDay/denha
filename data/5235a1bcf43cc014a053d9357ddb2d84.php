@@ -17,16 +17,17 @@
 				<div class="col-sm-12">
 					<div class="console-title console-title-border clearfix">
 						<div class="pull-left">
-							<h5>会员列表</h5>
+							<h5>推荐汽车</h5>
 						</div>
 					</div>
 					<form class="form-inline ng-pristine ng-valid" action=""  method="get">
                         <div class="form-group">
-                            <select class="form-control" name="param[field]" data-selected="<?php echo !isset($param['field']) ? null : $param['field']; ?>">
-                                <option value="uid">UID</option>
-                                <option value="name">店铺名称</option>
+                            <select class="form-control" data-selected="<?php echo $param['status']; ?>" name="param[status]">
+                                <option value="">状态</option>
+                                <?php if($other['statusCopy']){ foreach($other['statusCopy'] as $key => $value){ ?>
+                               		<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+                            	<?php }} ?>
                             </select>
-                            <input type="text" class="form-control w120" placeholder="Search" name="param[keyword]" value="<?php echo !isset($param['keyword']) ? null : $param['keyword']; ?>" >
                             <button type="submit" class="btn btn-default" @click="search()">搜索</button>
                         </div>
                     </form>
@@ -37,33 +38,38 @@
 									<thead>
 										<tr>
 											<th style="width:75px;">ID</th>
-											<th>店铺名称</th>
-											<th>所属用户/UID</th>
-											<th>店铺联系电话</th>
-											<th style="width:120px;">资质认证</th>
-											<th style="width:120px;">状态</th>
-											<th style="width:160px; text-align:center;">操作</th>
+											<th style="width:200px;">申请用户</th>
+											<th style="width:100px;">品牌</th>
+											<th style="width:100px;">期望价格</th>
+											<th style="width:100px;">期望里程</th>
+											<th style="width:50px;">状态</th>
+											<th style="width:50px;">发布时间</th>
+											<th style="width:80px; text-align:center;">操作</th>
 										</tr>
 									</thead>
 									<tbody>
 										<?php if($list){ foreach($list as $key => $value){ ?>
 									 	<tr v-for="list in list">
 											<td><?php echo $value['id']; ?></td>
-											<td><?php echo $value['name']; ?></td>
-											<td><?php echo $value['user']['nickname']; ?> / <?php echo $value['uid']; ?></td>
-											<td><?php echo $value['user']['mobile']; ?></td>
-											<td><?php echo $other['isIdeCopy'][$value['is_ide']]; ?></td>
-											<td>
-												<?php if($value['status']){ ?>
-													<a href="javascript:;" style="color: green">营业中</a>
-												<?php }else{ ?>
-													<a href="javascript:;" style="color: red">关闭中</a>
-												<?php } ?>
-											</td>
+											<td><?php echo $value['user']['nickname']; ?></td>
+											<td><?php echo $value['brand']; ?></td>
+											<td><?php echo $value['price']; ?></td>
+											<td><?php echo $value['mileage']; ?></td>
+											<td><?php echo $other['statusCopy'][$value['status']]; ?></td>
+											<td><?php echo date('Y-m-d H:i',$value['created']); ?></td>
 											<td align='center'>
-												<a data-href="<?php echo url('edit',array('id'=>$value['id'])); ?>"  data-width="90%"  data-title="店铺详情"  class="btn-open">详情</a>
+												<a data-href="<?php echo url('show_car_list',array('id'=>$value['id'])); ?>"  data-height="500px" data-width="80%"  data-title="推荐汽车"  class="btn-open">推荐</a>
 											</td>
 										</tr>
+										<td colspan="13">
+											<table class="table" >
+												<thead> 
+													<tr>
+														<th style="width: 100px;">详细介绍:</th><th><?php echo $value['description']; ?></th>
+													</tr>
+												</thead>
+											</table>
+										</td>
 										<?php }} ?>
 									</tbody>
 								    <tfoot>

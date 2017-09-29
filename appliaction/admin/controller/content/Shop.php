@@ -10,16 +10,11 @@ class Shop extends \app\admin\controller\Init
 {
     public function lists()
     {
-        $param['field']        = get('field', 'text', 'name');
-        $param['keyword']      = get('keyword', 'text', '');
-        $param['tag']          = get('tag', 'intval', 0);
-        $param['is_show']      = get('is_show', 'text', '');
-        $param['is_recommend'] = get('is_recommend', 'text', '');
-
+        $param    = get('param', 'text');
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 25);
 
-        $offer = max(($param['pageNo'] - 1), 0) * $pageSize;
+        $offer = max(($pageNo - 1), 0) * $pageSize;
 
         if ($param['tag']) {
             $map['tag'] = $param['tag'];
@@ -36,8 +31,11 @@ class Shop extends \app\admin\controller\Init
         if ($param['field'] && $param['keyword']) {
             if ($param['field'] == 'name') {
                 $map['name'] = array('like', '%' . $param['keyword'] . '%');
+            } elseif ($param['field'] == 'uid') {
+                $map['uid'] = $param['keyword'];
             }
         }
+
         $list  = table('UserShop')->where($map)->limit($offer, $pageSize)->order('id desc')->field('id,uid,name,category,is_ide,status')->find('array');
         $total = table('UserShop')->where($map)->count();
         $page  = new denha\Pages($total, $pageNo, $pageSize, url('', $param));

@@ -277,7 +277,9 @@ function getConfig($path = 'config', $name = '')
 function url($location = '', $params = array())
 {
     $locationUrl = $location;
-    if (stripos($location, '/') === false && $location != '') {
+    if ($location === '') {
+        $locationUrl = URL . '/' . MODULE . '/' . CONTROLLER . '/' . ACTION;
+    } elseif (stripos($location, '/') === false && $location != '') {
         $locationUrl = URL . '/' . MODULE . '/' . CONTROLLER . '/' . $location;
     } elseif (stripos($location, '/') != 1) {
         $locationUrl = URL . '/' . MODULE . '/' . $location;

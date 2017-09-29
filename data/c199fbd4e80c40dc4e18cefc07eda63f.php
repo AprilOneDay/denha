@@ -15,11 +15,6 @@
 		<div class="view-content-container" >
 			<div class="row">
 				<div class="col-sm-12">
-					<div class="console-title console-title-border clearfix">
-						<div class="pull-left">
-							<h5>汽车列表</h5>
-						</div>
-					</div>
 					<form class="form-inline ng-pristine ng-valid" action=""  method="get">
                         <div class="form-group">
                         	<select class="form-control" data-selected="<?php echo !isset($param['type']) ? null : $param['type']; ?>" name="param[type]">
@@ -57,10 +52,11 @@
                     </form>
 					<div class="console-form">
 						<div class="mt8">
-							<form>
+							<form class="form-horizontal" action="<?php echo url('add_car_id',array('id'=>$id)); ?>">
 								<table class="table table-hover">
 									<thead>
 										<tr>
+											<th style="width:75px;">#</th>
 											<th style="width:75px;">ID</th>
 											<th>标题</th>
 											<th style="width:60px;">类型</th>
@@ -75,6 +71,7 @@
 									<tbody>
 										<?php if($list){ foreach($list as $key => $value){ ?>
 									 	<tr v-for="list in list">
+									 		<td><input type="checkbox" value="<?php echo $value['id']; ?>" name="id[]" <?php if(in_array($value['id'],$checkValue)){ ?>checked<?php } ?>></td>
 											<td><?php echo $value['id']; ?></td>
 											<td><?php echo $value['title']; ?></td>
 											<td><?php echo $other['typeCopy'][$value['type']]; ?></td>
@@ -101,6 +98,10 @@
           								</tr>
 									</tfoot>
 								</table>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary btn-comply" click="comply">推荐</button>
+									<button type="button" class="btn btn-default" id="btn-close">取消</button>
+								</div>
 							</form>
 						</div>
 					</div>

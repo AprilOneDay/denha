@@ -2,6 +2,15 @@
 return array(
     /* 数据库信息 */
     'db_type'        => 'mysqli', // 数据库类型
+    'db_host'        => '127.0.0.1', // 服务器地址
+    'db_name'        => 'koudaiche', // 数据库名
+    'db_user'        => 'root', // 用户名
+    'db_pwd'         => 'root', // 密
+    'db_prefix'      => 'dh_', // 数据库表前缀
+    'db_port'        => '3306', // 端口
+    'db_dsn'         => '',
+    'db_params'      => '',
+    /*  'db_type'        => 'mysqli', // 数据库类型
     'db_host'        => '74.121.150.93', // 服务器地址
     'db_name'        => 'blog', // 数据库名
     'db_user'        => 'root', // 用户名
@@ -9,7 +18,7 @@ return array(
     'db_prefix'      => 'dh_', // 数据库表前缀
     'db_port'        => '3306', // 端口
     'db_dsn'         => '',
-    'db_params'      => '',
+    'db_params'      => '',*/
 
     'db_fieldsCache' => false, // 启用字段缓存
     'db_charset'     => 'utf8', // 数据库编码默认采用utf8

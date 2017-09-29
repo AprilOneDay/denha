@@ -22,35 +22,35 @@
 					</div>
 					<form class="form-inline ng-pristine ng-valid" action=""  method="get">
                         <div class="form-group">
-                        	<select class="form-control" data-selected="<?php echo !isset($param['type']) ? null : $param['type']; ?>" name="type">
+                        	<select class="form-control" data-selected="<?php echo !isset($param['type']) ? null : $param['type']; ?>" name="param[type]">
                             	<option value="0">选择类型</option>
                             	<?php if($other['typeCopy']){ foreach($other['typeCopy'] as $key => $value){ ?>
                                		<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
                             	<?php }} ?>
                             </select>
-                        	<select class="form-control" data-selected="<?php echo !isset($param['order_status']) ? null : $param['order_status']; ?>" name="order_status">
+                        	<select class="form-control" data-selected="<?php echo !isset($param['order_status']) ? null : $param['order_status']; ?>" name="param[order_status]">
                                 <option value="">订单状态</option>
                                 <?php if($other['orderStatusCopy']){ foreach($other['orderStatusCopy'] as $key => $value){ ?>
                                		<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
                             	<?php }} ?>
                             </select>
-                            <select class="form-control" data-selected="<?php echo !isset($param['status']) ? null : $param['status']; ?>" name="status">
+                            <select class="form-control" data-selected="<?php echo !isset($param['status']) ? null : $param['status']; ?>" name="param[status]">
                                 <option value="">审核状态</option>
                                 <?php if($other['statusCopy']){ foreach($other['statusCopy'] as $key => $value){ ?>
                                		<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
                             	<?php }} ?>
                             </select>
-                             <select class="form-control" data-selected="<?php echo !isset($param['origin']) ? null : $param['origin']; ?>" name="origin">
+                             <select class="form-control" data-selected="<?php echo !isset($param['origin']) ? null : $param['origin']; ?>" name="param[origin]">
                                 <option value="">来源</option>
                                 <?php if($other['originCopy']){ foreach($other['originCopy'] as $key => $value){ ?>
                                		<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
                             	<?php }} ?>
                             </select>
-                            <select class="form-control" name="field" data-selected="<?php echo !isset($param['field']) ? null : $param['field']; ?>">
+                            <select class="form-control" name="param[field]" data-selected="<?php echo !isset($param['field']) ? null : $param['field']; ?>">
                             	<option value="">选择搜索条件</option>
                                 <option value="order_sn">订单编号</option>
                             </select>
-                            <input type="text" class="form-control w120" placeholder="Search" name="keyword" value="<?php echo !isset($param['keyword']) ? null : $param['keyword']; ?>" >
+                            <input type="text" class="form-control w120" placeholder="Search" name="param[keyword]" value="<?php echo !isset($param['keyword']) ? null : $param['keyword']; ?>" >
                             <button type="submit" class="btn btn-default" @click="search()">搜索</button>
                         </div>
                     </form>

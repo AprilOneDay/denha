@@ -118,14 +118,13 @@ $(function() {
 
     //提交信息
     $('.btn-comply').click(function(){
-        var form;
-        if($('.form-horizontal').length == 1){
-           form = $('.form-horizontal');
-        }else{
-           form = $(this).parent().parent().parent();
+        var form = $(this).closest('.form-horizontal');
+        var data = form.serializeArray();
+        var url  = form.attr('action');
+
+        if(data.length < 1){
+            return layer.msg('请上传参数');
         }
-        var data= form.serializeArray();
-        var url = form.attr('action');
 
         $.post(url,data,function(reslut){
             layer.msg(reslut.msg);
