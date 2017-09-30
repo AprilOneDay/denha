@@ -13,8 +13,8 @@
   	<body>
 	<div id="console-content-edit">
 		<div class="modal-content">
-			<div class="panel-body">
-				<form class="form-horizontal" role="form" action="">
+			<form class="form-horizontal" role="form" action="">
+				<div class="panel-body">
 					<fieldset>
 						<div class="form-group">
 							<label class="control-label col-sm-3">
@@ -103,12 +103,12 @@
 							</div>
 						</div>
 					</fieldset>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<a type="submit" class="btn btn-primary btn-comply">确定</a>
-				<button type="button" class="btn btn-default" id="btn-close" >取消</button>
-			</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary btn-comply">确定</button>
+					<button type="button" class="btn btn-default" id="btn-close" >取消</button>
+				</div>
+			</form>
 		</div>
 	</div>
 		<script type="text/javascript" src="/ststic/admin/js/jquery-1.12.3.min.js"></script>

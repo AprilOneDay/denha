@@ -71,7 +71,7 @@
 									<tbody>
 										<?php if($list){ foreach($list as $key => $value){ ?>
 									 	<tr v-for="list in list">
-									 		<td><input type="checkbox" value="<?php echo $value['id']; ?>" name="id[]" <?php if(in_array($value['id'],$checkValue)){ ?>checked<?php } ?>></td>
+									 		<td><input type="checkbox" class="checkbox" value="<?php echo $value['id']; ?>" name="id[]" data-checked='<?php echo json_encode($checkValue); ?>'></td>
 											<td><?php echo $value['id']; ?></td>
 											<td><?php echo $value['title']; ?></td>
 											<td><?php echo $other['typeCopy'][$value['type']]; ?></td>

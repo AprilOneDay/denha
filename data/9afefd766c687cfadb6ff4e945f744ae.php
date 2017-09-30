@@ -20,34 +20,34 @@
 							<h5>文章列表</h5>
 						</div>
 						<div class="pull-right">
-							<a class="btn btn-primary btn-open" data-href="<?php echo url('edit'); ?>" data-height="750px">添加文章</a>
+							<a class="btn btn-primary btn-open" data-href="<?php echo url('edit'); ?>" data-width="90%" data-height="800px">添加文章</a>
 						</div>
 					</div>
 					<form class="form-inline ng-pristine ng-valid" action=""  method="get">
                         <div class="form-group">
-                    	  	<select class="form-control" data-selected="<?php echo !isset($param['tag']) ? null : $param['tag']; ?>" name="tag">
+                    	  	<select class="form-control" data-selected="<?php echo !isset($param['tag']) ? null : $param['tag']; ?>" name="param[tag]">
                             	<option value="0">选择类型</option>
                             	<?php if($other['tag']){ foreach($other['tag'] as $key => $value){ ?>
                                		<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
                             	<?php }} ?>
                             </select>
-                        	<select class="form-control" data-selected="<?php echo !isset($param['is_show']) ? null : $param['is_show']; ?>" name="is_show">
+                        	<select class="form-control" data-selected="<?php echo !isset($param['is_show']) ? null : $param['is_show']; ?>" name="param[is_show]">
                                 <option value="">选择状态</option>
                                 <?php if($other['isShowCopy']){ foreach($other['isShowCopy'] as $key => $value){ ?>
                                		<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
                             	<?php }} ?>
                             </select>
-                            <select class="form-control" data-selected="<?php echo !isset($param['is_recommend']) ? null : $param['is_recommend']; ?>" name="is_recommend">
+                            <select class="form-control" data-selected="<?php echo !isset($param['is_recommend']) ? null : $param['is_recommend']; ?>" name="param[is_recommend]">
                                 <option value="">选择推荐状态</option>
                                 <?php if($other['isRecommendCopy']){ foreach($other['isRecommendCopy'] as $key => $value){ ?>
                                		<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
                             	<?php }} ?>
                             </select>
-                            <select class="form-control" data-selected="<?php echo !isset($param['field']) ? null : $param['field']; ?>" name="field">
+                            <select class="form-control" data-selected="<?php echo !isset($param['field']) ? null : $param['field']; ?>" name="param[field]">
                                 <option value="">请选择搜索条件</option>
                                 <option value="title">标题</option>
                             </select>
-                            <input type="text" class="form-control w120" placeholder="Search" name="keyword" value="<?php echo !isset($param['keyword']) ? null : $param['keyword']; ?>" >
+                            <input type="text" class="form-control w120" placeholder="Search" name="param[keyword]" value="<?php echo !isset($param['keyword']) ? null : $param['keyword']; ?>" >
                             <button type="submit" class="btn btn-default">搜索</button>
                         </div>
                     </form>

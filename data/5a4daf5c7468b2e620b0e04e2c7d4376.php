@@ -22,12 +22,6 @@
 					</div>
 					<form class="form-inline ng-pristine ng-valid" action=""  method="get">
                         <div class="form-group">
-                        	<select class="form-control" data-selected="<?php echo $param['is_ide']; ?>" name="param[is_ide]">
-                                <option value="">状态</option>
-                                <?php if($other['isIdeCopy']){ foreach($other['isIdeCopy'] as $key => $value){ ?>
-                               		<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
-                            	<?php }} ?>
-                            </select>
                             <select class="form-control" name="param[field]" data-selected="<?php echo !isset($param['field']) ? null : $param['field']; ?>">
                                 <option value="uid">UID</option>
                                 <option value="name">店铺名称</option>
@@ -38,10 +32,11 @@
                     </form>
 					<div class="console-form">
 						<div class="mt8">
-							<form>
+							<form class="form-horizontal" action="<?php echo url('add_service_id',array('id'=>$id)); ?>">
 								<table class="table table-hover">
 									<thead>
 										<tr>
+											<th style="width:75px;">#</th>
 											<th style="width:75px;">ID</th>
 											<th>店铺名称</th>
 											<th>所属用户/UID</th>
@@ -54,6 +49,7 @@
 									<tbody>
 										<?php if($list){ foreach($list as $key => $value){ ?>
 									 	<tr v-for="list in list">
+									 		<td><input type="checkbox" class="checkbox" value="<?php echo $value['id']; ?>" name="id[]" data-checked='<?php echo json_encode($checkValue); ?>'></td>
 											<td><?php echo $value['id']; ?></td>
 											<td><?php echo $value['name']; ?></td>
 											<td><?php echo $value['user']['nickname']; ?> / <?php echo $value['uid']; ?></td>
@@ -78,6 +74,10 @@
           								</tr>
 									</tfoot>
 								</table>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary btn-comply" click="comply">推荐</button>
+									<button type="button" class="btn btn-default" id="btn-close">取消</button>
+								</div>
 							</form>
 						</div>
 					</div>

@@ -60,7 +60,7 @@
 												<?php } ?>
 											</td>
 											<td align='center'>
-												<a data-href="<?php echo url('add_disable'); ?>"  data-type="<?php echo $value['type']; ?>" data-value="<?php echo $value['value']; ?>"  class="btn-ajax-post">删除</a>
+												<a data-href="<?php echo url('del'); ?>" data-table="SearchDisable" data-type="<?php echo $value['type']; ?>" data-value="<?php echo $value['value']; ?>"  class="btn-ajax-post">删除</a>
 											</td>
 										</tr>
 										<?php }} ?>
