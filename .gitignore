@@ -1,4 +1,5 @@
 
-console/node_modules
-/
+console/node_modules/
+data/
+public/uploadfile/
 console/README.md
