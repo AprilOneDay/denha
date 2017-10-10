@@ -214,6 +214,10 @@ class Car extends \app\app\controller\Init
             $data['shop']['avatar']       = $this->appImg($shop['avatar'], 'avatar');
             $data['shop']['mobile']       = (string) dao('User')->getInfo($data['uid'], 'mobile');
             $data['shop']['credit_level'] = dao('User')->getShopCredit($shop['credit_level']);
+            $data['coment']               = dao('Comment')->getList(2, $id); //获取评价内容
+            foreach ($data['coment'] as $key => $value) {
+                $data['coment'][$key]['ablum'] = $this->appImgArray($value['ablum'], 'comment');
+            }
         }
 
         //增加浏览记录

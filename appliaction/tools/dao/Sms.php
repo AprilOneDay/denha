@@ -10,6 +10,8 @@ class Sms
         if (isset($lg)) {
             $content = dao('BaiduTrans')->baiduTrans($content, $lg);
         } else {
+            //标识中国号码
+            stripos($moblie, '86') === 0 ?: $moblie = '86' . $moblie;
             //utf8字符转换成Unicode字符
             $content = enUnicode($content);
         }
