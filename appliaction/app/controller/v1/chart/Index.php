@@ -18,40 +18,6 @@ class Index extends \app\app\controller\Init
     }
 
     /**
-     * 拉取未读聊天记录
-     * @date   2017-09-28T15:03:17+0800
-     * @author ChenMingjiang
-     * @return [type]                   [description]
-     */
-    public function notReaderList()
-    {
-        $toUid = get('to_uid', 'intval', 0);
-        if (!$toUid) {
-            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
-        }
-
-        $map['uid']       = $this->uid;
-        $map['to_uid']    = $toUid;
-        $map['is_reader'] = 0;
-
-        $list = table('ChatLog')->where($mapCar)->field('id,uid,to_uid,content,created')->order('created asc')->find('array');
-        foreach ($list as $key => $value) {
-            if ($value['is_lease'] || stripos($value['guarantee'], 3) !== false) {
-                $list[$key]['title'] = "【转lease】" . $value['title'];
-            }
-
-            $list[$key]['price']   = dao('Number')->price($value['price']);
-            $list[$key]['mileage'] = $value['mileage'] . '万公里';
-            $list[$key]['thumb']   = $this->appImg($value['thumb'], 'car');
-        }
-
-        $data['time'] = date('Y/m/d', $beginToday);
-        $data['list'] = $list ? $list : array();
-
-        $this->appReturn(array('data' => $data));
-    }
-
-    /**
      * 拉取历史聊天记录
      * @date   2017-09-28T15:03:31+0800
      * @author ChenMingjiang
@@ -125,6 +91,9 @@ class Index extends \app\app\controller\Init
         if (!$reslut) {
             $this->appReturn(array('status' => false, 'msg' => '消息发送失败'));
         }
+
+        //发送站内推送提示
+        dao('Message')->send($toUid, 'newComment', '', '', $this->uid, 3);
 
         $this->appReturn(array('msg' => '发送成功'));
     }

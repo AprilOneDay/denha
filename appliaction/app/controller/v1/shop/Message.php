@@ -33,7 +33,7 @@ class Message extends \app\app\controller\Init
         $list = table('UserMessage')->where($map)->limit($offer, $pageSize)->field('uid,content,created,is_reader,jump_app')->order('created desc')->find('array');
 
         foreach ($list as $key => $value) {
-            if ($uid == 0) {
+            if ($value['uid'] == 0) {
                 $user = array('nickname' => '系统消息', 'avatar' => '');
             } else {
                 $user           = dao('User')->getInfo($value['uid'], 'nickname,avatar');
@@ -41,7 +41,7 @@ class Message extends \app\app\controller\Init
             }
 
             $list[$key]['user']     = $user;
-            $list[$key]['jump_app'] = $value['jump_app'] ? json_decode($value['jump_app']) : array();
+            $list[$key]['jump_app'] = $value['jump_app'] ? json_decode($value['jump_app']) : (object) array();
         }
 
         $list = $list ? $list : array();

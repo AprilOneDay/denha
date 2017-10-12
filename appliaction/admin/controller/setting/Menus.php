@@ -26,11 +26,11 @@ class Menus extends \app\admin\controller\Init
                 $list[$key]['is_show'] = $value['is_show'] ? '√' : '×';
             }
 
-            $data = [
-                'data' => [
+            $data = array(
+                'data' => array(
                     'list' => $list,
-                ],
-            ];
+                ),
+            );
         }
 
         $this->assign('list', $list);
@@ -90,9 +90,12 @@ class Menus extends \app\admin\controller\Init
             } else {
                 $result = table('ConsoleMenus')->add($data);
                 if ($result) {
-                    $this->ajaxReturn(['status' => true, 'msg' => '添加成功', 'id' => $result]);
+                    //超级管理员增加默认权限
+                    table('ConsoleGroup')->where(array('id' => 1))->save(array('power' => array('concat', ',' . $result)));
+                    echo table('ConsoleGroup')->getSql();die;
+                    $this->ajaxReturn(array('status' => true, 'msg' => '添加成功', 'id' => $result));
                 } else {
-                    $this->ajaxReturn(['status' => false, 'msg' => '添加失败']);
+                    $this->ajaxReturn(array('status' => false, 'msg' => '添加失败'));
                 }
             }
 
@@ -117,6 +120,35 @@ class Menus extends \app\admin\controller\Init
     }
 
     /**
+     * 更新排序
+     * @date   2017-10-12T11:40:35+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function updateSort()
+    {
+        $id = post('id');
+        foreach ($id as $key => $value) {
+            if ($value !== '') {
+                $data[$value][] = $key;
+            }
+        }
+
+        foreach ($data as $key => $value) {
+            $map       = array();
+            $map['id'] = array('in', $value);
+
+            $result = table('ConsoleMenus')->where($map)->save('sort', $key);
+            if (!$result) {
+                $this->ajaxReturn(array('status' => false, 'msg' => '更新失败'));
+            }
+
+        }
+
+        $this->ajaxReturn(array('msg' => '更新成功'));
+    }
+
+    /**
      * 删除菜单
      * @date   2017-08-22T14:59:55+0800
      * @author ChenMingjiang
@@ -132,11 +164,31 @@ class Menus extends \app\admin\controller\Init
         $result = table('ConsoleMenus')->where(['id' => $id])->save(['del_status' => 1]);
 
         if ($result) {
-            $this->ajaxReturn(['status' => true, 'msg' => '删除成功']);
+            $this->ajaxReturn(array('status' => true, 'msg' => '删除成功'));
         }
 
-        $this->ajaxReturn(['status' => false, 'msg' => '删除失败']);
+        $this->ajaxReturn(array('status' => false, 'msg' => '删除失败'));
 
+    }
+    /**
+     * [children 获取菜单子集]
+     * @date   2016-09-30T10:37:55+0800
+     * @author Sunpeiliang
+     * @return [type]                   [description]
+     */
+    public function children()
+    {
+        $id   = get('id', 'intval', 0);
+        $menu = table('ConsoleMenu')->order('sort asc,id asc')->select();
+        if ($menu) {
+            $tree = new \app\console\tools\util\MenuTree();
+            $tree->setConfig('id', 'parentid');
+            $ids = $tree->getChildsId($menu, $id);
+            if ($ids) {
+                $this->ajaxReturn(array('status' => true, 'data' => $ids));
+            }
+        }
+        $this->ajaxReturn(array('status' => false));
     }
 
     /**
@@ -161,24 +213,5 @@ class Menus extends \app\admin\controller\Init
 
         return $list;
     }
-    /**
-     * [children 获取菜单子集]
-     * @date   2016-09-30T10:37:55+0800
-     * @author Sunpeiliang
-     * @return [type]                   [description]
-     */
-    public function children()
-    {
-        $id   = get('id', 'intval', 0);
-        $menu = table('ConsoleMenu')->order('sort asc,id asc')->select();
-        if ($menu) {
-            $tree = new \app\console\tools\util\MenuTree();
-            $tree->setConfig('id', 'parentid');
-            $ids = $tree->getChildsId($menu, $id);
-            if ($ids) {
-                $this->ajaxReturn(['status' => 1, 'data' => $ids]);
-            }
-        }
-        $this->ajaxReturn(['status' => 0]);
-    }
+
 }

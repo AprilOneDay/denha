@@ -1,12 +1,19 @@
 $(function() {
 
     init();
-   /* $(window).resize(function() {
-       init();
-    });*/
-
     //监听product-nav-scene的宽度变化
     $(".product-nav-scene").bind("DOMNodeInserted",function(e){
+        $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) );
+        return true;
+    })
+    //监听content-main的宽度变化
+    $(".content-main").bind("DOMNodeInserted",function(e){
+        $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) -2);
+        return true;
+    })
+
+    //监听出现滚动条
+    $(window).scroll(function () {
         $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) );
         return true;
     })
@@ -17,10 +24,11 @@ $(function() {
         $('.product-nav-scene').height($(document).height() - $('.border-top').height() - 2)
         $('.content-main').height($(document).height() - $('.border-top').height() - 2);
         if($('.product-nav-scene').css('display') == 'block'){
-            $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) );
+            $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) - 2);
         }else{
-            $('.content-main').width(($(document).width() - $('.sidebar-inner').width()) );
+            $('.content-main').width(($(document).width() - $('.sidebar-inner').width()) - 2 );
         }
+
     }
 
     //收缩一级导航

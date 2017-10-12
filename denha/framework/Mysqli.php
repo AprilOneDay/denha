@@ -514,10 +514,13 @@ class Mysqli
             if (is_array($data)) {
                 foreach ($data as $k => $v) {
                     if (is_array($v)) {
+                        $v[0] = strtolower($v[0]);
                         if ($v[0] == 'add') {
                             $newField .= '`' . $k . '`  = `' . $k . '` + ' . $v[1] . ',';
                         } elseif ($v[0] == 'less') {
                             $newField .= '`' . $k . '`  = `' . $k . '` - ' . $v[1] . ',';
+                        } elseif ($v[0] == 'concat') {
+                            $newField .= '`' . $k . '`  = CONCAT(`' . $k . '`,\'\',\'' . $v[1] . '\'),';
                         }
                     } else {
                         $newField .= '`' . $k . '`=\'' . $v . '\',';

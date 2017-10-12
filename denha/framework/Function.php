@@ -231,7 +231,7 @@ function getVar($filename, $path, $ext = EXT)
 
     $name = md5($filename . $path);
     if (isset($_vars[$name])) {
-        return $name;
+        return $_vars[$name];
     } else {
         if (($length = stripos($path, '.')) === false) {
             $filePath = APP_PATH . 'tools' . DS . 'var' . DS . $path . DS . $filename . $ext;
