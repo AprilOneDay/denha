@@ -360,25 +360,31 @@ function imgUrl($name, $path = '', $size = 0, $host = false)
     }
 
     foreach ($imgName as $key => $value) {
-        if ($path) {
-            $url = '/uploadfile/' . $path . '/' . $value;
-        } else {
-            $url = '/uploadfile/' . $value;
-        }
-
-        $url = !$host ? URL . $url : $host . $url;
-
-        //这块有点影响网速 设置超时 后续会改为检测数据库
-        $opts = array(
-            'http' => array(
-                'method'  => "GET",
-                'timeout' => 1, //单位秒
-            ),
-        );
-
-        if (!file_get_contents($url, false, stream_context_create($opts))) {
-            $url = '/ststic/console/images/nd.jpg';
+        if (!$value) {
+            $url = '/ststic/default.png';
             $url = !$host ? URL . $url : $host . $url;
+        } else {
+            if ($path) {
+                $url = '/uploadfile/' . $path . '/' . $value;
+            } else {
+                $url = '/uploadfile/' . $value;
+            }
+
+            $url = !$host ? URL . $url : $host . $url;
+
+            //这块有点影响网速 设置超时 后续会改为检测数据库
+            $opts = array(
+                'http' => array(
+                    'method'  => "GET",
+                    'timeout' => 1, //单位秒
+                ),
+            );
+
+            if (!file_get_contents($url, false, stream_context_create($opts))) {
+                $url = '/ststic/default.png';
+                $url = !$host ? URL . $url : $host . $url;
+            }
+
         }
 
         $data[] = $url;

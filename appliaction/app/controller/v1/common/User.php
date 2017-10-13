@@ -79,6 +79,8 @@ class User extends \app\app\controller\Init
         $pageSize = get('pageSize', 'intval', 10);
         $offer    = max(($pageNo - 1), 0) * $pageSize;
 
+        $map['uid'] = $this->uid;
+
         $list = table('IntegralLog')->where($map)->order('created desc')->limit($offer, $pageSize)->find('array');
 
         foreach ($list as $key => $value) {
@@ -108,4 +110,15 @@ class User extends \app\app\controller\Init
         $this->appReturn($result);
     }
 
+    /**
+     * 注册规则文案
+     * @date   2017-10-13T15:49:44+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function registerRule()
+    {
+        $data['content'] = '<p>这里显示注册规则文案</p>';
+        $this->appReturn(array('data' => $data));
+    }
 }

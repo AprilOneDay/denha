@@ -166,7 +166,7 @@ class Init extends denha\Controller
     public function appImg($data = '', $path = '', $size = 0)
     {
 
-        $data = !$data ? '' : imgUrl($data, $path, 0, getConfig('config.app', 'imgUrl'));
+        $data = imgUrl($data, $path, 0, getConfig('config.app', 'imgUrl'));
         return (string) $data;
     }
 }

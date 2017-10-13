@@ -30,7 +30,17 @@ class User extends \app\app\controller\Init
         $todayend   = strtotime(date('Y-m-d' . '00:00:00', TIME + 3600 * 24)); //获取今天24:00
 
         $data['today_orders_total'] = table('Orders')->where(array('seller_uid' => $this->uid, 'status' => 1, 'created' => array('between', $todaystart, $todayend)))->count();
-        $data['not_pay_money']      = 0;
+        //待付佣金
+        $commission            = dao('Param')->getValue(1); //获取佣金比例
+        $map                   = array();
+        $map['seller_uid']     = $this->uid;
+        $map['order_status']   = array('>=', 3);
+        $map['status']         = 1;
+        $map['is_percentage']  = 0;
+        $map['type']           = 1;
+        $notPayMoney           = (int) table('Orders')->where($map)->field('SUM(acount) as acount')->find('one');
+        $data['not_pay_money'] = max($notPayMoney * $commission / 100, 0);
+
         $this->appReturn(array('data' => $data));
 
     }
@@ -118,7 +128,7 @@ class User extends \app\app\controller\Init
             $files['ide_ablum'] = files('ide_ablum_files');
 
             $data['ide_ablum'] = $this->appUpload($files['ide_ablum'], $data['ide_ablum'], 'ide');
-            $data['is_ide']    = $data['is_ide'] == 2 ? 0 : $data['is_ide'];
+            $data['is_ide']    = 0;
 
             $result = table('UserShop')->where(array('uid' => $this->uid))->save($data);
 
@@ -189,17 +199,26 @@ class User extends \app\app\controller\Init
         $data['mobile']   = post('mobile', 'text', '');
         $data['type']     = post('type', 'intval', 0);
 
+        $weixinId  = post('weixin_id', 'text', '');
         $code      = post('code', 'text', '');
         $password2 = post('password2', 'text', '');
         $isAgree   = post('is_agree', 'intval', 0);
 
-        $result = dao('User')->register($data, $password2, $isAgree);
+        $thirdParty = array();
+        if ($weixinId) {
+            $thirdParty['weixin_id'] = $weixinId;
+        }
+
+        $result = dao('User')->register($data, $password2, $isAgree, $code, $thirdParty);
 
         $this->appReturn($result);
     }
 
     /**
-     * 注册
+     * 登录
+     * @date   2017-10-13T09:58:01+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
      */
     public function login()
     {
@@ -213,12 +232,44 @@ class User extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '请选择登录方式'));
         }
 
-        $result = dao('User')->login($account, $password, $this->imei);
+        $result = dao('User')->login($account, $password, $this->imei, $type);
 
         if ($result['status']) {
             if ($result['data']['type'] != $type) {
                 $this->appReturn(array('status' => false, 'msg' => '请选择' . $typeCopy[$result['data']['type']] . '登录'));
             }
+        }
+
+        $this->appReturn($result);
+    }
+
+    /**
+     * 第三方登录
+     * @date   2017-10-13T09:58:01+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function thirdPartyLogin()
+    {
+        $account = post('account', 'text', '');
+        $type    = post('type', 'intval', 0);
+
+        $typeCopy = array('1' => '个人', '2' => '商家');
+
+        if (!$type) {
+            $this->appReturn(array('status' => false, 'msg' => '请选择登录方式'));
+        }
+
+        $result = dao('User')->thirdPartyLogin($account, $this->imei);
+
+        if ($result['status']) {
+            if ($result['data']['type'] != $type) {
+                $this->appReturn(array('status' => false, 'msg' => '请选择' . $typeCopy[$result['data']['type']] . '登录'));
+            }
+        }
+
+        if ($type == 2) {
+            $$result['data']['is_ide'] = table('UserShop')->where('uid', $result['data']['uid'])->field('is_ide')->find('one');
         }
 
         $this->appReturn($result);

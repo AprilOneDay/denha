@@ -404,8 +404,14 @@ class Orders extends \app\app\controller\Init
                 }
 
             }
-
             table('Orders')->commit();
+
+            //增加佣金财务记录
+            $money = dao('Percentage')->getOnePercentage($orderSn);
+            if ($money) {
+                dao('Finance')->add(1, $money, $orderSn, 0);
+            }
+
             $this->appReturn(array('msg' => '操作完成'));
         }
         //显示完成信息

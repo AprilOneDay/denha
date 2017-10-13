@@ -30,7 +30,7 @@ class Message extends \app\app\controller\Init
         $map['to_uid']     = $this->uid;
         $map['del_status'] = 0;
 
-        $list = table('UserMessage')->where($map)->limit($offer, $pageSize)->field('uid,content,created,is_reader,jump_app')->order('created desc')->find('array');
+        $list = table('UserMessage')->where($map)->limit($offer, $pageSize)->field('uid,content,created,is_reader,jump_app,type')->order('created desc')->find('array');
 
         foreach ($list as $key => $value) {
             if ($value['uid'] == 0) {

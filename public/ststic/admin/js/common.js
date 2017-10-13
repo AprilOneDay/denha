@@ -161,6 +161,7 @@ $(function() {
 
     //提交post信息
     $('.btn-ajax-post').click(function(){
+        var tips = $(this).attr('data-tips');
         var attr = $(this).context.attributes;
         var url = $(this).attr('data-href');
         var data = new Object();
@@ -170,12 +171,26 @@ $(function() {
             }
         }
 
-        $.post(url,data,function(reslut){
-            layer.msg(reslut.msg);
-            if(reslut.status){
+        if(tips){
+            layer.confirm(tips, {
+              btn: ['确定','取消'] //按钮
+            }, function(){
+               $.post(url,data,function(reslut){
+                    layer.msg(reslut.msg);
+                    if(reslut.status){
+                   setTimeout(function(){location.reload();},1000);
+                    }
+                })
+            }, function(){});
+        }else{
+            $.post(url,data,function(reslut){
+                layer.msg(reslut.msg);
+                if(reslut.status){
                setTimeout(function(){location.reload();},1000);
-            }
-        })
+                }
+            })
+        }
+
     })
 
     //get提交

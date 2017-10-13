@@ -16,13 +16,13 @@ class Message
      * @param  [type]                   $uid   [发送信息uid]
      * @return [type]                          [description]
      */
-    public function send($toUid = 0, $flag = '', $data = array(), $jumpData = array(), $uid = 0, $type = 1)
+    public function send($toUid = 0, $flag = '', $param = array(), $jumpData = array(), $uid = 0, $type = 1)
     {
         if (!$toUid) {
             return false;
         }
 
-        $data['content'] = $this->getContent($flag, $data);
+        $data['content'] = $this->getContent($flag, $param);
         if (!$data['content']) {
             return false;
         }

@@ -27,9 +27,6 @@ class Index extends \app\app\controller\Init
     {
 
         $toUid = get('to_uid', 'intval', 0);
-        if (!$toUid) {
-            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
-        }
 
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 10);
@@ -41,8 +38,13 @@ class Index extends \app\app\controller\Init
         $user               = (array) dao('User')->getInfo($this->uid, 'avatar,nickname');
         $user['avatar']     = $this->appImg($user['avatar'], 'avatar');
         $list[$key]['user'] = $user;
-        $toUser             = (array) dao('User')->getInfo($toUid, 'avatar,nickname');
-        $toUser['avatar']   = $this->appImg($toUser['avatar'], 'avatar');
+        if ($toUid) {
+            $toUser           = (array) dao('User')->getInfo($toUid, 'avatar,nickname');
+            $toUser['avatar'] = $this->appImg($toUser['avatar'], 'avatar');
+        } else {
+            $toUser['nickname'] = '口袋车平台';
+            $toUser['avatar']   = $this->appImg();
+        }
 
         $list = table('ChatLog')->where($map)->field('id,uid,to_uid,content,created')->order('created asc')->find('array');
         //echo table('ChatLog')->getSql();die;
@@ -68,10 +70,6 @@ class Index extends \app\app\controller\Init
     {
         $toUid   = post('to_uid', 'intval', 0);
         $content = post('content', 'text', '');
-
-        if (!$toUid) {
-            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
-        }
 
         if (!$content) {
             $this->appReturn(array('status' => false, 'msg' => '消息为空'));

@@ -32,7 +32,7 @@ class Recommend extends \app\app\controller\Init
         $map['uid']        = $this->uid;
 
         $sign = getVar('helpType', 'app.service');
-        $list = table('HelpCar')->field('id,brand,price,buy_time,mileage,description,created,status')->limit($offer, $pageSize)->order('id desc')->find('array');
+        $list = table('HelpCar')->where($map)->field('id,brand,price,buy_time,mileage,description,created,status')->limit($offer, $pageSize)->order('id desc')->find('array');
 
         $data['list'] = $list ? $list : array();
 
@@ -56,7 +56,7 @@ class Recommend extends \app\app\controller\Init
         $map['uid']        = $this->uid;
 
         $sign = getVar('helpType', 'app.service');
-        $list = table('HelpService')->field('id,sign,price,description,created,status')->limit($offer, $pageSize)->order('id desc')->find('array');
+        $list = table('HelpService')->where($map)->field('id,sign,price,description,created,status')->limit($offer, $pageSize)->order('id desc')->find('array');
         foreach ($list as $key => $value) {
             $list[$key]['sign_copy'] = $sign[$value['sign']];
         }

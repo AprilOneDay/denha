@@ -534,10 +534,10 @@ class Mysqli
 
         $this->field = $newField;
 
-        $sql = 'UPDATE ' . $this->table . ' SET ' . $this->field;
-        $sql .= $this->where ? $this->where : '';
+        $this->_sql = 'UPDATE ' . $this->table . ' SET ' . $this->field;
+        $this->_sql .= $this->where ? $this->where : '';
 
-        $result = $this->query($sql);
+        $result = $this->query();
         return $result;
     }
 
@@ -552,8 +552,8 @@ class Mysqli
         if (!$this->where) {
             return false;
         }
-        $sql    = 'DELETE FROM ' . $this->table . $this->where;
-        $result = $this->query($sql);
+        $this->_sql = 'DELETE FROM ' . $this->table . $this->where;
+        $result     = $this->query();
         return $result;
     }
 

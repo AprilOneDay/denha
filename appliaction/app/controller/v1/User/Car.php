@@ -222,8 +222,8 @@ class Car extends \app\app\controller\Init
         $data['created'] = TIME;
         $data['uid']     = $this->uid;
 
-        if (!$data['brand']) {
-            $this->appReturn(array('status' => false, 'msg' => '请输入期望品牌'));
+        if (!$data['brand'] && !$data['price'] && !$data['mileage'] && !$data['buy_time']) {
+            $this->appReturn(array('status' => false, 'msg' => '请至少输入一个/价格/品牌/里程/购买时间'));
         }
 
         $is = table('HelpCar')->where(array('uid' => $this->uid, 'brand' => $data['brand']))->field('id')->find('one');
