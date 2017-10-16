@@ -536,7 +536,7 @@ function deUnicode($name, $code = 'UTF-8')
  */
 function mbDetectEncoding($content = '', $mbEncode = "UTF-8")
 {
-    $encode = mb_detect_encoding($content, array("ASCII", "UTF-8", "GB2312", "GBK", "BIG5", "EUC-CN"));
+    $encode = mb_detect_encoding($content, array("ASCII", "UTF-8", "GB2312", "GBK", "BIG5", "EUC-CN", "UCS2"));
     if ($encode != $mbEncode) {
         $encode  = $encode == "EUC-CN" ? "GB2312" : $encode;
         $content = mb_convert_encoding($content, $mbEncode, $encode);

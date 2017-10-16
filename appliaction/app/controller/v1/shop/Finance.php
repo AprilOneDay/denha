@@ -96,6 +96,6 @@ class Finance extends \app\app\controller\Init
 
         $data['list'] = $list ? $list : array();
 
-        $this->ajaxReturn($data);
+        $this->appReturn(array('data' => $data));
     }
 }

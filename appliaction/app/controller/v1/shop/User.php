@@ -18,17 +18,22 @@ class User extends \app\app\controller\Init
         $user = table('UserShop')->where(array('uid' => $this->uid))->field('name,avatar,credit_level,status')->find();
 
         $user['avatar']         = imgUrl($user['avatar'], 'avatar', 0, getConfig('config.app', 'imgUrl'));
-        $user['credit_level']   = dao('User')->getShopCredit($shop['credit_level']);
+        $user['credit_level']   = dao('User')->getShopCredit($user['credit_level']);
         $data['user']           = $user;
         $data['tot_read_total'] = (int) dao('Comment')->getNotReadTotal($this->uid); //获取未读信息条数
+        //昨日订单量
+        $beginYesterday                 = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
+        $endYesterday                   = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
+        $data['yesterday_orders_total'] = table('Orders')->where(array('seller_uid' => $this->uid, 'status' => 1, 'created' => array('between', $beginYesterday, $endYesterday)))->count();
+        //昨日浏览量
+        $data['yesterday_hot_total'] = (int) table('ShopHotLog')->where(array('uid' => $this->uid, 'time' => date('Y-m-d', $beginYesterday)))->field('num')->find('one');
         //未完成预约数量
         $data['not_appointment_total'] = table('Orders')->where(array('seller_uid' => $this->uid, 'order_status' => 2, 'status' => 1))->count();
         //今日浏览量
         $data['today_hot_total'] = (int) table('ShopHotLog')->where(array('uid' => $this->uid, 'time' => date('Y-m-d', TIME)))->field('num')->find('one');
         //今日订单
-        $todaystart = strtotime(date('Y-m-d' . '00:00:00', TIME)); //获取今天00:00
-        $todayend   = strtotime(date('Y-m-d' . '00:00:00', TIME + 3600 * 24)); //获取今天24:00
-
+        $todaystart                 = strtotime(date('Y-m-d' . '00:00:00', TIME)); //获取今天00:00
+        $todayend                   = strtotime(date('Y-m-d' . '00:00:00', TIME + 3600 * 24)); //获取今天24:00
         $data['today_orders_total'] = table('Orders')->where(array('seller_uid' => $this->uid, 'status' => 1, 'created' => array('between', $todaystart, $todayend)))->count();
         //待付佣金
         $commission            = dao('Param')->getValue(1); //获取佣金比例
@@ -178,6 +183,47 @@ class User extends \app\app\controller\Init
     }
 
     /**
+     * 修改用户密码
+     * @date   2017-09-25T11:11:42+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function findPassword()
+    {
+        parent::__construct();
+        $this->checkShop();
+        $this->checkIde();
+
+        $uid    = $this->uid;
+        $mobile = post('mobile', 'text', '');
+
+        $password  = post('password', 'text', '');
+        $password2 = post('password2', 'text', '');
+
+        $code = post('code', 'intval', 0);
+
+        $map['id']     = $this->uid;
+        $map['mobile'] = $mobile;
+        $map['type']   = 1;
+
+        if (!$mobile) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入手机号'));
+        }
+
+        if (!$code) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入验证码'));
+        }
+
+        $is = table('User')->where($map)->field('id')->find('one');
+        if (!$is) {
+            $this->appReturn(array('status' => false, 'msg' => '非绑定手机号'));
+        }
+
+        $reslut = dao('User')->findPassword($this->uid, $password, $password2, $code);
+        $this->appReturn($reslut);
+    }
+
+    /**
      * @method 注册
      * @url    email/send?token=xxx
      * @http   POST
@@ -203,6 +249,10 @@ class User extends \app\app\controller\Init
         $code      = post('code', 'text', '');
         $password2 = post('password2', 'text', '');
         $isAgree   = post('is_agree', 'intval', 0);
+
+        if (!$code) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入验证码'));
+        }
 
         $thirdParty = array();
         if ($weixinId) {
@@ -238,6 +288,10 @@ class User extends \app\app\controller\Init
             if ($result['data']['type'] != $type) {
                 $this->appReturn(array('status' => false, 'msg' => '请选择' . $typeCopy[$result['data']['type']] . '登录'));
             }
+        }
+
+        if ($result['data']['type'] == 2) {
+            $result['data']['is_ide'] = (int) table('UserShop')->where('uid', $result['data']['uid'])->field('is_ide')->find('one');
         }
 
         $this->appReturn($result);

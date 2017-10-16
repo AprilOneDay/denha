@@ -168,6 +168,10 @@ class Index extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '请输入手机号'));
         }
 
+        if (!$code) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入验证码'));
+        }
+
         $is = table('User')->where($map)->field('id')->find('one');
         if (!$is) {
             $this->appReturn(array('status' => false, 'msg' => '非绑定手机号'));

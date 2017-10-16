@@ -63,6 +63,14 @@ class User
             return array('status' => false, 'msg' => '用户名请勿使用特殊字符汉字字符');
         }
 
+        //检测验证码
+        if ($code) {
+            $reslutCode = dao('Sms')->checkVerification($data['mobile'], $code);
+            if (!$reslutCode['status']) {
+                return $reslutCode;
+            }
+        }
+
         //检测第三方登录
         if ($thirdParty) {
             $map = array();
@@ -89,7 +97,7 @@ class User
         }
 
         if ($data['type'] == 2) {
-            table('UserShop')->add(array('uid' => $reslut, 'name' => $data['username']));
+            table('UserShop')->add(array('uid' => $reslut, 'name' => $data['username'], 'credit_level' => 50));
         } else {
             //发送站内信
             dao('Message')->send($reslut, 'register_user');
@@ -176,7 +184,8 @@ class User
         $data['login_time'] = TIME;
         $data['imei']       = (string) $imei;
 
-        $reslut = table('User')->where(array('id' => $user['id']))->save($data);
+        $reslut      = table('User')->where(array('id' => $user['id']))->save($data);
+        $data['uid'] = $user['id'];
 
         if (!$reslut) {
             return array('status' => false, 'msg' => '登录失败');

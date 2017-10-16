@@ -85,6 +85,7 @@ class User extends \app\app\controller\Init
 
         foreach ($list as $key => $value) {
             $value['value'] < 0 ?: $list[$key]['value'] = '+' . $value['value'];
+            $list[$key]['created_copy']                 = date('Y-m-d', $value['created']);
         }
 
         $data['integral'] = dao('User')->getIntegral($this->uid);
