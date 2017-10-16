@@ -151,9 +151,13 @@ $(function() {
             layer.msg(reslut.msg);
             if(reslut.status){
                 setTimeout(function(){
-                    parent.location.reload();
                     var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-                    parent.layer.close(index);
+                    if(index){
+                        parent.location.reload();
+                        parent.layer.close(index);
+                    }else{
+                        location.reload();   
+                    }
                 },1000);
             }
         })

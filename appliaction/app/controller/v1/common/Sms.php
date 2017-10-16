@@ -34,8 +34,8 @@ class Sms extends \app\app\controller\Init
         $map['mobile'] = $mobile;
         $sms           = table('SmsVerify')->where($map)->field('id,created')->find();
         if ($sms) {
-            if ($sms['created'] <= TIME + 360) {
-                $this->appReturn(array('status' => false, 'msg' => '请等待' . (360 - (time() - $sms['created'])) . '秒'));
+            if (TIME - $sms['created'] <= 360) {
+                $this->appReturn(array('status' => false, 'msg' => '请等待' . (360 - (TIME - $sms['created'])) . '秒'));
             }
 
             $data['code']    = $code;
@@ -51,7 +51,7 @@ class Sms extends \app\app\controller\Init
 
         $sendData['code'] = $code;
 
-        $reslut = dao('Sms')->send($mobile, 'verification', $sendData, 'post', $country);
+        $reslut = dao('Sms')->send($mobile, 'verification', $sendData, 'get', $country);
         $this->appReturn($reslut);
     }
 

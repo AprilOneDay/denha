@@ -108,9 +108,9 @@ class Circle extends \app\app\controller\Init
             $data['thumb'] = $data['ablum'];
         }
 
-        if (!$data['ablum']) {
-            $this->appReturn(array('status' => false, 'msg' => '请上传图片'));
-        }
+        /*if (!$data['ablum']) {
+        $this->appReturn(array('status' => false, 'msg' => '请上传图片'));
+        }*/
 
         $data['created'] = TIME;
         $data['uid']     = $this->uid;

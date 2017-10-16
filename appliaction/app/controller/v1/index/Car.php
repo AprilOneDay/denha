@@ -49,6 +49,9 @@ class Car extends \app\app\controller\Init
 
         $order = 'id desc';
         switch ($param['order_type']) {
+            //随机排序
+            case '1':
+                break;
             //最新发布
             case '2':
                 $order = 'created desc';
@@ -76,16 +79,16 @@ class Car extends \app\app\controller\Init
 
         switch ($param['price_type']) {
             case '1':
-                $map['price'] = array('<=', 5);
+                $map['price'] = array('<=', 50000);
                 break;
             case '2':
-                $map['price'] = array('between', 5, 10);
+                $map['price'] = array('between', 50000, 100000);
                 break;
             case '3':
-                $map['price'] = array('between', 10, 15);
+                $map['price'] = array('between', 100000, 150000);
                 break;
             case '4':
-                $map['price'] = array('>=', 15);
+                $map['price'] = array('>=', 150000);
                 break;
             case '5':
                 $map['is_urgency'] = 1;
@@ -109,7 +112,12 @@ class Car extends \app\app\controller\Init
         }
 
         $data['param'] = $param;
-        $data['list']  = $list ? $list : array();
+
+        $data['list'] = $list ? $list : array();
+        //随机排序
+        if ($param['order_type'] == 1) {
+            shuffle($data['list']);
+        }
 
         $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));
     }

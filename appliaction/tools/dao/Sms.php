@@ -85,7 +85,8 @@ class Sms
         }
 
         $data = $this->getConfigNexmo((string) $country . $mobile, $content);
-        $url  = $this->getRestUrl($data['url'], $data['urlValue']);
+
+        $url = $this->getRestUrl($data['url'], $data['urlValue']);
 
         if (strtolower($method) == 'post') {
             $result = $this->curlPost($data['url'], $data['urlValue']);
@@ -159,7 +160,7 @@ class Sms
      * @param  [type]                   $code   [验证码]
      * @return [type]                           [description]
      */
-    public function checkVerification($mobile = '', $code = '', $time = 360)
+    public function checkVerification($mobile = '', $code = '', $time = 3600)
     {
 
         if (!$mobile) {

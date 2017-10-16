@@ -3,7 +3,12 @@ namespace app\admin\controller\setting;
 
 class Menus extends \app\admin\controller\Init
 {
-    const TYPE = ['1' => ''];
+    public $type;
+
+    public function __construct()
+    {
+        $this->type = array();
+    }
 
     /**
      * [index 菜单管理首页]
@@ -66,7 +71,7 @@ class Menus extends \app\admin\controller\Init
             $data['action']     = strtolower(post('action', 'text', ''));
             $data['created']    = TIME;
 
-            $data['url'] = (string) $data['url'] ?: '/' . self::TYPE[$data['type']] . $data['module'] . '/' . $data['controller'] . '/' . $data['action'] . $data['parameter'];
+            $data['url'] = (string) $data['url'] ?: '/' . $this->type[$data['type']] . $data['module'] . '/' . $data['controller'] . '/' . $data['action'] . $data['parameter'];
 
             if (!$data['name']) {
                 $this->ajaxReturn(['status' => false, 'msg' => '请填写菜单名称']);
@@ -92,7 +97,6 @@ class Menus extends \app\admin\controller\Init
                 if ($result) {
                     //超级管理员增加默认权限
                     table('ConsoleGroup')->where(array('id' => 1))->save(array('power' => array('concat', ',' . $result)));
-                    echo table('ConsoleGroup')->getSql();die;
                     $this->ajaxReturn(array('status' => true, 'msg' => '添加成功', 'id' => $result));
                 } else {
                     $this->ajaxReturn(array('status' => false, 'msg' => '添加失败'));
@@ -196,7 +200,7 @@ class Menus extends \app\admin\controller\Init
      * @date   2016-09-05T10:21:46+0800
      * @author Sunpeiliang
      */
-    private function treeList()
+    public function treeList()
     {
         //格式化菜单
         $result = table('ConsoleMenus')->field('id,parentid,name,icon,module,controller,action')->find('array');

@@ -74,7 +74,7 @@ class Server extends \app\app\controller\Init
 
             $data['style']        = post('style', 'text', '');
             $data['model']        = post('model', 'text', '');
-            $data['buy_time']     = post('buy_time', 'text', '');
+            $data['buy_time']     = post('buy_time', 'intval', 0);
             $data['city']         = post('city', 'text', '');
             $data['gearbox']      = post('gearbox', 'text', '');
             $data['gases']        = post('gases', 'text', '');

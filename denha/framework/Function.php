@@ -315,7 +315,7 @@ function url($location = '', $params = array(), $isGet = false)
 }
 
 //保存Cookie
-function cookie($name = '', $value = '', $expire = 3600 * 2, $encode = false)
+function cookie($name = '', $value = '', $expire = 3600, $encode = false)
 {
     if (!$name) {
         return false;

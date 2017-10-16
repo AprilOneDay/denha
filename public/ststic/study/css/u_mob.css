@@ -1,0 +1,271 @@
+@charset "utf-8";
+/* CSS Document */
+
+@media screen and (max-width: 767px) and (min-width: 320px){
+	.classroom_right .t_cr_left b{ float:left}
+	header {display: block;width: 100%;height: 50px;background: #fff;}
+	
+	#navbar {width: 100%;}
+	.menubtn {position: relative; z-index: 101;color: #274a61;text-decoration: none;font-size: 0em;line-height: 0em;top: 10px; float:right; margin-right:1rem; right:0;padding: 15px; background-image: url(../images/hamburger.png);background-size: 25px 25px;background-repeat: no-repeat; }
+	.menubtn:hover, .openmenu .menubtn {color: #bdd43e;background-image: url(../images/hamburger-active.png);}
+	/** toggle menu **/
+	body.openmenu {overflow: hidden;}
+	#pgcontainer {padding: 45px 0;margin: 0;}
+	.overlay {position: fixed;z-index: 99;background-color: rgba(0,0,0,0.5);bottom: 0;right: 0;left: 0;}
+	.openmenu .overlay {top: 0;}
+	#hamburgermenu {height: 100%;width: 0;background: #373737;position: fixed;top: 0;left: 0;z-index: 101;overflow: hidden;overflow-y:auto; overflow-x:hidden;-webkit-box-shadow: 3px 0 7px rgba(0,0,0,0.55);-moz-box-shadow: 3px 0 7px rgba(0,0,0,0.55);box-shadow: 3px 0 7px rgba(0,0,0,0.55);
+	}
+	#navbar span{ text-align:center; line-height:45px; text-align:left}
+	#navbar span i{display:block; width:45px; height:45px; float:left; padding-left:20px}
+	#navbar span i.ico1{  background:url(../images/ke_ico.png) no-repeat center;background-size:20px 20px; }
+	#navbar span i.ico2{ background:url(../images/newsico.png) no-repeat center;background-size:30px;}
+	nav h3{ display:block; line-height:40px; background:#0b5fa5; color:#fff; font-size:15px; font-weight:lighter }
+	nav  ul{ display:block; }
+	nav  ul li{ line-height:40px; text-align:right;font-size:14px; width:95%; float:left; padding-right:5%;}
+	nav  ul li a{ color:#fff; padding-right:20px;  }
+	nav  ul li:hover a{ background:url(../images/right.png) no-repeat center right; }
+	nav  ul li.on a{ background:url(../images/right.png) no-repeat center right; color:#98d8f3 }
+	nav  ul li.black{ background:#134063}
+	.center .center_right{  width:100%;}
+	.center .center_right .qiaoxi{ width:90%; margin:10% auto;}
+	.center .center_right .qiaoxi .title{ font-size:20px; background:#f5f5f5; margin-bottom:20px}
+	.center .center_right .qiaoxi .pp{ font-size:14px; width:90%; margin:0 auto; line-height:35px; padding-bottom:20px}
+	.center .center_right .btn_next{  width:60%;line-height:35px; border-radius:20px}
+	.center  .teacher_right{ width:100%; background:url(../images/newsbg.png)  no-repeat left bottom; float:left; padding-bottom:50px;height:100%; background-size:100%}
+	.center  .teacher_right .my_news{ width:0; height:0; overflow:hidden}
+	.classroom_right .t_student{ width:0; margin:0% auto; height:0; overflow:hidden}
+	.classroom_right .t_students{ width:0; margin:0% auto; height:0; overflow:hidden}
+	.classroom_right .my_news{ width:0; margin:0% auto; height:0; overflow:hidden}
+	.classroom_right .ks_news{ width:0; margin:0% auto; height:0; overflow:hidden}
+	.classroom_right .ks_zy{ width:0; margin:0% auto; height:0; overflow:hidden}
+	.classroom_right .fbcj_n{ width:0; margin:0% auto; height:0; overflow:hidden}
+	.center  .teacher_right .t_news{ width:100%; margin:0 auto; } 
+	.teacher_right .t_news .t_news_left{ width:94%; padding:3%; background:#fff }
+	.center  .teacher_right .my_news{  margin:0% auto;}
+	.teacher_right .t_news .t_news_left ul { display:block}
+	.teacher_right .t_news .t_news_left ul li{ line-height:45px; height:45px; float:left; width:46%; margin-left:2%; margin-bottom:.1rem}
+	.teacher_right .t_news .t_news_left .btn_write{ display:block; margin:0 auto;width:50%; height:35px; line-height:35px; background:#0a5fa4; color:#fff;  }
+	.t_news  .t_news_right{ width:100%; border:none; padding-bottom:50px}
+	.t_news  .t_news_right .newsul  li .btn_read{ float:right }
+	.t_news  .t_news_right .newsul  li span{ display:block; float:left}
+	.t_news_cont .fajianren{ width:95%; padding:2%; margin:0 auto}
+	.t_news_cont .newx_cont{ width:94%; padding:3%}
+	.t_news_cont .fujian{ width:94%; padding:3%}
+	.t_news_cont .t_pp {  width:94%; padding:3%; overflow:hidden}
+	.t_news_cont .write_news{ width:94%; padding:3%; margin:.2rem auto}
+	.t_news_cont .write_news div span{ font-size:14px; width:100%; display:block; float:left; text-align:left; }
+	.t_news_cont .write_news  .btn_huifu{ display:block; float:left; width:40%; background:#0a5fa4; color:#fff; line-height:40px; text-align:center; border-radius:5px; margin-top:10px; margin-left:11%}
+	
+	.xiugais{ width:100%; height:100%; background:#fff; z-index:9999}
+	.t_news_cont .write_news div p.wenjian{ width:86%}
+	.classroom_right{ width:100%; margin-top:10px}
+	.classroom_right	.t_cr_left{width: 95%;  margin:0 auto; float:none}
+	.classroom_right	.t_cr_left .class_b{ display:block;width:90%; text-align:left}
+	.classroom_right	.t_cr_left .class_s{ display:block; float:left;width:90%; line-height:30px; margin-bottom:20px; overflow:hidden}
+	.classroom_right .t_cr_right .img_sp{ widows:90%; float:none; margin:30px auto; }
+	.classroom_right .t_cr_left ul {background:#fff;  margin-bottom:20px}
+	.classroom_right .t_cr_left ul li{ background:#fff; height:45px; overflow:hidden}
+	.classroom_right .t_fbcj .fb_pp{ margin:0 auto; float:none}
+	.classroom_right	.t_cr_lefts{width: 100%;  margin:0 auto}
+	.classroom_right .t_cr_lefts ul {background:#fff; margin-bottom:20px}
+	.classroom_right .t_cr_lefts ul li{ background:#fff; width:50%; float:left; line-height:40px}
+	.classroom_right .t_cr_right{width:95%; overflow:hidden; float:none; margin:0 auto}
+	.classroom_right .t_cr_right .join{ width:50%; margin:0 auto; margin-bottom:25px}
+	.classroom_right .t_cr_right .img_sp span{ margin:0 auto; top:0; left:0; position:relative}
+	.t_cr_right .z_i  {margin:0 auto; min-width:500px}
+	.t_cr_right .width80 .com_pp .comm_title .comm_cont{ height:auto; margin-bottom:20px}
+	.classroom_right .begain_ans2{ width:100%}
+	.classroom_right .begain_ans{ width:100%; margin-bottom:20px}
+	.classroom_right .time_ad{ float:left; text-align:left; width:100%}
+	.classroom_right .time_ad p{ display:block; float:left; width:50%; line-height:40px}
+	.dati_ul { width:95%; margin:0 auto; float:none}
+	.classroom_right  .dati_List{ width:100%; margin:0 auto;}
+	.classroom_right  .title_name{ width:100%}
+	.classroom_right  .dati_List li a{ display:block; width:100%; margin-bottom:15px;}
+	.classroom_right .wenti_hd textarea{ width:90%}
+	.classroom_right .name_divs{ text-align:center; width:95%; margin:0 auto; padding:10px}
+	.classroom_right .name_divs p{ text-align:center; margin:0 auto; width:80%; font-size:12px}
+	.table_div{ width:100%;}
+	.xiugais .xiugai_box{width:95%; padding-bottom:30px; background:none; }
+	.xiugais .xiugai_box  p  input{ width:80%; float:none; margin:0 auto}
+	.xiugai .xiugai_box{width:90%; padding-bottom:30px}
+	.t_cr_right .cj_table{ width:100%}
+	.xiugais .xiugai_box  p span{ width:100%; text-align:left }
+	.iDate.date{ width:100%; }
+	.t_cr_right .form_div{ width:95%; margin:0 auto; float:none}
+	.t_cr_right .form_div p span{ text-align:left; width:100%; display:block}
+	.t_cr_right .form_div p .input_t1{ width:60%; float:left}
+	.t_cr_right .form_div p .btn_yz{ width:30%; float:left}
+	.t_cr_right .form_div p .input_t{ width:95%}
+	.t_cr_right .form_div .btn_bc{ float:left; width:40%; margin-left:-10px;}
+	.t_cr_right .form_div p  textarea{ width:95%}
+	.t_cr_right .form_div .add_jl{ width:95%; margin:0}
+	.t_cr_right .kczy{ width:95%; float:none; margin:0 auto}
+	.t_cr_right .kczy li .left_kczy{ width:100%; margin-bottom:10px }
+		.t_cr_right .kczy li .right_kczy{ width:80%; margin:15px auto; float:none; display:block; clear:both}
+		.t_cr_right .kczy .right_kczy{ margin-top:15px}
+	.t_cr_right .table{ width:95%}
+	.t_kczy ul li{ width:33%; float:left}
+	.t_kczy ul li em a{ width:100%; height:45px; line-height:45px}
+	.t_cr_right .table td p{ min-width:10rem}
+	.t_cr_right .table .xz{ padding:0 20px; line-height:35px}
+	.t_cr_right .table{ min-width:350px;}
+	.t_cr_right .over_div{ width:95%; overflow-x:scroll; margin-bottom:40px; margin:0 auto; padding-bottom:20px}
+	
+	.t_cr_right .kczy li p.dels{ display:block; float:left; width:40%;}
+	.t_cr_right .kczy li p.times{ display:block; float:left; width:40%;}
+	.t_cr_right .kczy li p.names{ display:block; width:100%}
+	.t_cr_right .width80 { width:95%; margin:0 auto; float:none}
+	.t_cr_right .width80 .com_pp{ width:100%}
+	.t_cr_right .width80 .com_pp .left_img{ width:100%; margin:0 auto}
+	.t_cr_right .width80 .com_pp .comm_title{ width:100%}
+		
+	.classroom_right .t_ks ul li a{ color:.14rem; background:url(../images/listico.png) no-repeat left center;  padding-left:10%; padding-top:10px; line-height:35px}
+	.classroom_right .t_ks ul li{ width:100%; float:left; display:block; text-align:center; }
+	.classroom_right .t_ks ul { overflow:hidden; margin:0 auto;  width:95%; display:none}
+	.classroom_right .t_ks  p{ width:95%; margin:0 auto}
+	.t_cr_left .onli{ background:#fff url(../images/xia.png) right center no-repeat; line-height:35px; }
+	.classroom_right  .t_cr_right .kc{ width:95%; margin-bottom:50px; margin:10px auto; overflow:hidden; }
+	.classroom_right  .t_cr_right .kc li{ width:100%; margin:0 auto}
+	.classroom_right .div_over{ display:none}
+	.ly_list{ width:90%; float:none; margin:0 auto; }
+	.ly_list .pl   li{ padding-bottom:15px}
+	.ly_list   .pl_cont{ width:100%}
+	.ly_list   .pl_cont .names{ text-align:left}
+	.ly_list   .pl_cont .names span{ display:block;; width:20%; float:left}
+	.ly_list   .pl_cont .conts{ max-width:100%; float:left; margin-bottom:10px }
+	.luntan_t .comment-show{ width:95%; margin:0 auto}
+	.hf_cont{ width:90%}
+	.hf-input{width:90%}
+	.t_fbcj ul li{ width:33%; float:left; font-size:12px}
+	.t_my_pp li span{isplay: block;float: right;padding-left: 20px;color: #999;line-height: 35px;margin-right: 15px; }
+	.t_my_pp{ width:95%}
+	.t_cr_right .tie_cont{ width:90%; float:none; margin:10px auto}
+	.t_cr_right .cont{ width:90%}
+	.t_ppcont { margin-bottom:50px}
+	.t_ppcont .comment-show .my-pl-con{ }
+	.t_ppcont  .my-pl-con p{ width:90%; margin-bottom:10px; float:left; text-align:left}
+	.t_ppcont  .comment-show{ width:100%}
+	.date-dz{ width:100%}
+	.date-dz-right { width:80%; margin-left:20%}
+	.div_ul2 li{ width:100%; text-align:center}
+	.div_ul2 { display:none}
+	.div_ul2 li a{ text-align:center; margin:0 auto}
+	.t_cr_right .xy_inf{ width:95%}
+	.t_cr_right .xy_inf .add_inf{ width:45%}
+	.t_cr_right .t_s_info{ width:98%}
+	.xiugais .xiugai_box .btn_xg{ margin:0 auto}
+	.t_fbcjs ul{ display:none; margin-bottom:10px}
+	.yy_pp .comment-show-con{ width:95%}
+	.yy_pp  .date-dz-left b{ display:block; float:left}
+	.yy_pp  .pl-text{ width:100%}
+	.classroom_right .t_cr_left li a{ text-align:center; display:block; margin:0 auto; text-align:left}
+	.yy_pp  .comment-time{ display:block; float:left; text-align:left; width:100%}
+	.yy_pp  .comment-time b{ display:block; float:left; width:100%; text-align:left; line-height:30px}
+	.yy_pp .comment-show .right_a{ width:100%; margin:0 auto}
+	.yy_pp .comment-show .right_a a{ width:45%; margin-right:2%; float:right; display:inline-block; padding:0 0;}
+	.yy_pp .date-dz-right{ float:left}
+	.yy_pp .comment-show .right_a .yy_su{ float:left}
+	.t_cr_right{ background:#fff;; }
+	.yy_pp .date-dz-right .date-dz-pl{ float:right}
+	.yy_pp .date-dz-right{ float:left; width:80%; text-align:right}
+	
+	.t_news  .t_news_right .newsul  li a.title{ width:95%; margin:0 auto; float:none; height:auto; line-height:20px; font-size:14px}
+	.t_news  .t_news_right .newsul  li{min-height:100px}
+	.t_news  .t_news_right .newsul  li  span{ margin-left:20px}
+	.t_news  .t_news_right .newsul  li .btn_read{ line-height:20px}
+	.search-keyword{ width:90%}
+	.t_news_cont .write_news .input{ width:90%}
+	.t_news_cont .write_news  textarea{ width:90%}
+		.classroom_right .kaoshi{ display:none}
+		.t_cr_right .fudao_ul   .hf_te{ width:95%; padding-left:0; margin:0 auto; float:none}
+	.t_cr_right .fudao_ul{ width:95%; margin:0 auto; float:none}	
+	.t_cr_right .fudao_ul .n_t_t{ text-align:left}
+	.t_cr_right .fudao_ul .li_left{ width:100%}
+	.t_cr_right .fudao_ul .n_t_t b{ display:block; float:left; margin-right:0; margin-left:0; width:100%; font-size:13px; color:#999; }
+	.t_cr_right .fudao_ul .n_t_t  span{ text-align:left; margin-left:15px; display:block;font-size:13px; color:#999}
+	.t_cr_right  .right_li{ width:95%; margin:0 auto; float:none}
+	.navgation .div textarea{ width:95%}
+	.xiugai { background:#fff; z-index:999}
+	.xiugai .xiugai_box { width:95%; margin:0 auto; background:#fff}
+	.xiugai .xiugai_box  p { display:block; height:auto; margin-bottom:15px; height:58px}
+	.xiugai .xiugai_box  p span{ display:block; float:left; text-align:left; width:100%; height:30px; }
+	.xiugai .xiugai_box  p .form-control{ width:100%}
+	.xiugai .xiugai_box  p .form-controls{ float:left; width:45%}
+	.xiugai .xiugai_box .btn_xg{ margin-left:0; margin:0 auto; width:80%}
+	.t_cr_right .yuyue_fo{ width:95%; float:none; margin:0 auto}
+	.t_cr_right .yuyue_fo p{ width:95%; margin:0 auto}
+	.div_ul3{ width:95%; padding:2%; background:#fff; display:block; font-size:16px}
+	.t_cr_lefts .div_ul3  .select dt{ line-height:40px}
+	.classroom_right .t_cr_lefts .div_ul3 li{ width:100%; font-size:14px}
+	.t_cr_lefts .div_ul3 em{ line-height:40px;height:40px}
+	.t_cr_right .wenjian_d{ width:95%; margin:0 auto; float:none}
+	.classroom_right .t_cr_left span{ width:100%; margin-bottom:20px}
+}
+
+
+
+
+
+
+
+
+
+@media screen and (min-width:1200px){
+	.menubtn {position: relative; z-index: 101;color: #274a61;text-decoration: none;font-size: 0em;line-height: 0em;top: 2px;padding: 15px; display:none}
+	nav h3{ display:block; line-height:55px; background:#0b5fa5; color:#fff; font-size:22px; font-weight:300}
+	nav{ width:15%; background:#1c5480; float:left; height:100%; position:fixed; overflow-y:auto; overflow-x:hidden;scrollbar-highlight-color:#1b5481 ;scrollbar-face-color:#1b5481 }
+	nav .logo{ width:80%; margin:10px auto}
+	nav .logo img{ width:100%}
+	nav  ul{ display:block; padding-top:30px}
+	nav  ul li{ line-height:55px; text-align:right;font-size:16px; width:95%; float:left; padding-right:5%}
+	nav  ul li a{ color:#fff; padding-right:20px; font-size:16px }
+	nav  ul li:hover a{ background:url(../images/right.png) no-repeat center right; }
+	nav  ul li.on a{ background:url(../images/right.png) no-repeat center right; color:#98d8f3 }
+	nav  ul li.black{ background:#134063}
+	#navbar span{ color:#fff; font-size:0}
+	.t_news  .t_news_right{ border-left:#ccc 1px solid; box-sizing:border-box; width:84%; padding-left:6%}
+	.classroom_right .t_cr_left{ float:left; width:15%; padding-right:2%}
+	.classroom_right .t_cr_right{ border-left:#ccc 1px solid; box-sizing:border-box; width:80%; padding-left:5%}
+	.t_cr_right .z_i{ border:#ccc 1px solid; width:80%}
+	.xiugais .xiugai_box{width:470px; padding-bottom:50px}
+.xiugai .xiugai_box{  width:395px; height:275px;}
+.onli{ font-size:0; height:0; width:0}
+.classroom_right .t_cr_right .img_sp{ width:60%}
+.navbar span{ display:none; overflow:hidden}
+.navbar{ height:0}
+
+	
+}
+
+@media screen and (max-width: 767px) and (min-width: 320px){
+	.classroom_right .t_cr_left ul li.pop-name-list{
+		height:115px;
+		overflow:visible;
+	}
+	.pop-name-list>div{
+		top:69px;
+	}
+	.pop-name-list>div>ul>li{
+		z-index:9999;
+	}
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

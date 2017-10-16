@@ -55,10 +55,9 @@ class Recommend extends \app\app\controller\Init
         $map['del_status'] = 0;
         $map['uid']        = $this->uid;
 
-        $sign = getVar('helpType', 'app.service');
         $list = table('HelpService')->where($map)->field('id,sign,price,description,created,status')->limit($offer, $pageSize)->order('id desc')->find('array');
         foreach ($list as $key => $value) {
-            $list[$key]['sign_copy'] = $sign[$value['sign']];
+            $list[$key]['sign_copy'] = dao('Category')->getName($value['sign']);
         }
 
         $data['list'] = $list ? $list : array();
