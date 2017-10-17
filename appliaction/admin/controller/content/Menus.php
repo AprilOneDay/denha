@@ -64,6 +64,12 @@ class Menus extends \app\admin\controller\Init
 
             $data['bname'] ?: $data['bname'] = $data['name'];
 
+            $data['module']     = strtolower(post('module', 'text', 'content'));
+            $data['controller'] = strtolower(post('controller', 'text', 'article'));
+            $data['action']     = strtolower(post('action', 'text', 'lists'));
+
+            $data['url'] = (string) $data['url'] ?: '/' . $data['module'] . '/' . $data['controller'] . '/' . $data['action'] . $data['parameter'];
+
             if ($add == 1 && !$data['name']) {
                 $this->ajaxReturn(['status' => false, 'msg' => '请填写菜单名称']);
             }
@@ -94,6 +100,8 @@ class Menus extends \app\admin\controller\Init
                         }
                         $result = table('Column')->add($data);
                     }
+                } else {
+                    $result = table('Column')->add($data);
                 }
 
                 if ($result) {

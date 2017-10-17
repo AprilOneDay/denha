@@ -174,8 +174,6 @@ class Car extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
         }
 
-        $city = dao('Category')->getList(8);
-
         $data['price']         = dao('Number')->price($data['price']);
         $data['mileage']       = $data['mileage'] . '万公里';
         $data['thumb']         = $this->appImg($data['thumb'], 'car');
@@ -195,7 +193,7 @@ class Car extends \app\app\controller\Init
         $data['user'] = array();
         $data['shop'] = array();
 
-        $data['city_copy'] = (string) $city[$data['city']];
+        $data['city_copy'] = (string) dao('Category')->getName($data['city']);
 
         //获取图片介绍
         $data['content'] = '';
@@ -230,7 +228,7 @@ class Car extends \app\app\controller\Init
         }
 
         //增加浏览记录
-        dao('Footprints')->add($data['uid'], 1, $data['id'], $data['uid']);
+        dao('Footprints')->add($this->uid, 1, $data['id'], $data['uid']);
         //增加数据库访问记录
         dao('Footprints')->addHot($data['uid'], 1, $data['id']);
         $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));

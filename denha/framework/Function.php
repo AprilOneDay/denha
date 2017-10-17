@@ -79,7 +79,8 @@ function post($name, $type = '', $default = '')
             case 'json':
                 $data = $data === '' ? $default : json_decode($data, true);
                 break;
-                # code...
+            case 'img':
+                $data = stripos($data, 'default') !== false ? $default : $data;
                 break;
             default:
                 # code...
@@ -126,6 +127,9 @@ function get($name, $type = '', $default = '')
                 break;
             case 'jsonp':
                 $data = $data === '' ? $default : get('callback') . '(' . json_encode($data, true) . ')';
+            case 'img':
+                $data = stripos($data, 'default') !== false ? $default : $data;
+                break;
             default:
                 # code...
                 break;
@@ -373,17 +377,17 @@ function imgUrl($name, $path = '', $size = 0, $host = false)
             $url = !$host ? URL . $url : $host . $url;
 
             //这块有点影响网速 设置超时 后续会改为检测数据库
-            $opts = array(
-                'http' => array(
-                    'method'  => "GET",
-                    'timeout' => 1, //单位秒
-                ),
-            );
+            /*$opts = array(
+        'http' => array(
+        'method'  => "GET",
+        'timeout' => 1, //单位秒
+        ),
+        );
 
-            if (!file_get_contents($url, false, stream_context_create($opts))) {
-                $url = '/ststic/default.png';
-                $url = !$host ? URL . $url : $host . $url;
-            }
+        if (!file_get_contents($url, false, stream_context_create($opts))) {
+        $url = '/ststic/default.png';
+        $url = !$host ? URL . $url : $host . $url;
+        }*/
 
         }
 

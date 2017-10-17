@@ -39,7 +39,9 @@
 										 	<tr>
 										 		<td align="center"><input type="text" class="form-control" value="{$value['sort']}" name="id[{$value['id']}]"></td>
 												<td>{$value['id']}</td>
-												<td><span>{$value['delimiter']}</span>{$value['name']}</td>
+												<td>
+													<a href="{$value['url']}?param[column_id]={$value['id']}" target="iframe0" style="display: block;width: 100%;"><span>{$value['delimiter']}</span>{$value['name']}</a>
+												</td>
 												<td align='center'>{$value['is_show']}</td>
 												<td align='center'>
 													<a class="btn-open" data-href="{F:url('edit',array('parentid'=>$value['id']))}" data-title="编辑菜单" data-height="800px" data-parentId="list.id">添加子菜单</a>

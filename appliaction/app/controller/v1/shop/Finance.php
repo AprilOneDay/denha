@@ -21,18 +21,18 @@ class Finance extends \app\app\controller\Init
         $endThismonth   = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
 
         $map                 = array();
+        $map['seller_uid']   = $this->uid;
         $map['status']       = 1;
         $map['order_status'] = array('>=', 3);
         $map['created']      = array('between', $startThismonth, $endThismonth);
-        $map['seller_uid']   = $this->uid;
 
         $data['thismonth_turnover'] = (float) table('Orders')->where($map)->field('SUM(acount) as acount')->find('one');
 
         //本月订单
         $map               = array();
+        $map['seller_uid'] = $this->uid;
         $map['status']     = 1;
         $map['created']    = array('between', $startThismonth, $endThismonth);
-        $map['seller_uid'] = $this->uid;
 
         $data['thismonth_num'] = table('Orders')->where($map)->field('count(*) as num')->find('one');
         //echo table('Orders')->getSql();die;
@@ -41,30 +41,31 @@ class Finance extends \app\app\controller\Init
         $endLastmonth   = mktime(0, 0, 0, date('m'), 1, date('Y')) - 24 * 3600;
 
         $map                        = array();
+        $map['seller_uid']          = $this->uid;
         $map['status']              = 1;
         $map['order_status']        = array('>=', 3);
         $map['created']             = array('between', $startLastmonth, $endLastmonth);
-        $map['seller_uid']          = $this->uid;
         $data['lastmonth_turnover'] = (float) table('Orders')->where($map)->field('SUM(acount) as acount')->find('one');
         //echo table('Orders')->getSql();die;
 
         //上月总共订单
         $map                   = array();
+        $map['seller_uid']     = $this->uid;
         $map['status']         = 1;
         $map['created']        = array('between', $startLastmonth, $endLastmonth);
-        $map['seller_uid']     = $this->uid;
         $data['lastmonth_num'] = (int) table('Orders')->where($map)->field('count(*) as num')->find('one');
 
         //待确认订单
         $map                 = array();
-        $map['status']       = array('in', '0, 2');
         $map['seller_uid']   = $this->uid;
+        $map['status']       = array('in', '0, 2');
         $data['confirm_num'] = (int) table('Orders')->where($map)->field('count(*) as num')->find('one');
 
         //获取佣金比例
         $commission = dao('Param')->getValue(1);
         //待确认佣金
         $map                        = array();
+        $map['seller_uid']          = $this->uid;
         $map['status']              = 1;
         $map['order_status']        = array('<', 3);
         $data['confirm_commission'] = (float) table('Orders')->where($map)->field('SUM(acount) as acount')->find('one');
@@ -72,6 +73,7 @@ class Finance extends \app\app\controller\Init
 
         //待支付佣金
         $map                    = array();
+        $map['seller_uid']      = $this->uid;
         $map['status']          = 1;
         $map['order_status']    = array('>=', 3);
         $map['is_percentage']   = 0;

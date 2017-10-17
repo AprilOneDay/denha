@@ -494,13 +494,13 @@ class Orders extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '参数错误'));
         }
 
-        if (!$dataContent['start_time']) {
-            $this->appReturn(array('status' => false, 'msg' => '请填写开始预约时间'));
+        /*if (!$dataContent['start_time']) {
+        $this->appReturn(array('status' => false, 'msg' => '请填写开始预约时间'));
         }
 
         if (!$dataContent['end_time']) {
-            $this->appReturn(array('status' => false, 'msg' => '请填写结束预约时间'));
-        }
+        $this->appReturn(array('status' => false, 'msg' => '请填写结束预约时间'));
+        }*/
 
         if (date('Y-m-d', $dataContent['start_time']) != date('Y-m-d', $dataContent['end_time'])) {
             $this->appReturn(array('status' => false, 'msg' => '预约超过一天了'));
@@ -515,7 +515,7 @@ class Orders extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '请选择其他时间段，该时间已有预约了'));
         }
 
-        $dataInfo = dao('orders')->getAddAttachedInfo(1, $id, $dataContent);
+        $dataInfo = dao('Orders')->getAddAttachedInfo(1, $id, $dataContent);
 
         if (!$dataInfo) {
             $this->appReturn(array('status' => false, 'msg' => 'dataInfo参数错误'));

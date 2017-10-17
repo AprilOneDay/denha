@@ -20,11 +20,13 @@ class Init extends denha\Controller
         !isset($_SERVER['HTTP_IMEI']) ?: $this->imei       = (string) $_SERVER['HTTP_IMEI'];
 
         if ($this->token) {
-            $map['token']    = $this->token;
-            $map['login_ip'] = getIP();
+            $map['token'] = $this->token;
 
-            $user = table('User')->where($map)->field('id,type')->find();
+            $user = table('User')->where($map)->field('id,type,imei')->find();
             if ($user) {
+                if ($user['imei'] != $this->imei && $this->imei) {
+                    $this->appReturn(array('status' => false, 'msg' => '请登录'));
+                }
                 $this->uid        = $user['id'];
                 $this->group      = $user['type'];
                 $data['time_out'] = TIME + 3600 * 24 * 2;
@@ -99,9 +101,9 @@ class Init extends denha\Controller
      * 上传图片并替换对于旧图片
      * @date   2017-09-14T11:54:39+0800
      * @author ChenMingjiang
-     * @param  [type]                   $files [description]
-     * @param  string                   $merge [description]
-     * @param  string                   $path  [description]
+     * @param  [type]                   $files [上传相册]
+     * @param  string                   $merge [需要合并的相册]
+     * @param  string                   $path  [保存文件]
      * @return [type]                          [description]
      */
     public function appUpload($files, $merge = '', $path = '')
@@ -115,11 +117,14 @@ class Init extends denha\Controller
 
             if (is_array($merge)) {
                 foreach ($merge as $key => $value) {
+                    $url         = array();
                     $url         = pathinfo($value);
-                    $merge[$key] = current($url);
+                    $merge[$key] = $url['basename'];
                 }
                 $data = implode(',', array_filter(array_replace($merge, $reslut['data']['name'])));
-                /*var_dump($merge);var_dump($reslut['data']['name']);var_dump($data);die;*/
+/*                var_dump($merge);
+var_dump($reslut['data']['name']);
+var_dump($data);die;*/
             } else {
                 $data = implode(',', $reslut['data']['name']);
             }

@@ -131,7 +131,7 @@ class Server extends \app\app\controller\Init
                 $this->appReturn(array('status' => false, 'msg' => '最多可传5张图片'));
             }
 
-            $ablum['ablum'] = explode(',', $this->appUpload($files['ablum'], $data['ablum'], 'car'));
+            $ablum['ablum'] = explode(',', $this->appUpload($files['ablum'], $ablum['ablum'], 'car'));
 
             //添加
             if (!$id) {
@@ -176,13 +176,12 @@ class Server extends \app\app\controller\Init
 
             $this->appReturn(array('status' => false, 'msg' => '操作失败'));
         } else {
-            $id   = get('id', 'intval', 0);
-            $city = getVar('province', 'city');
+            $id = get('id', 'intval', 0);
             if ($id) {
                 $data               = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->find();
                 $data['banner']     = $this->appImgArray($data['banner'], 'car');
                 $data['guarantee']  = explode(',', $data['guarantee']);
-                $data['city_copy']  = $city[$data['city']];
+                $data['city_copy']  = (string) dao('Category')->getName($data['city']);
                 $data['brand_copy'] = dao('Category')->getName($data['brand']);
                 //获取相册信息
                 $ablum = table('GoodsAblum')->where(array('goods_id' => $data['id']))->field('path,description')->find('array');
@@ -193,7 +192,6 @@ class Server extends \app\app\controller\Init
             }
 
             $data['other'] = array(
-                'city'    => $this->appArray(dao('Category')->getList(8)),
                 'gearbox' => $this->appArray(getVar('gearbox', 'car')),
                 'gases'   => $this->appArray(getVar('gases', 'car')),
                 'model'   => $this->appArray(getVar('model', 'car')),

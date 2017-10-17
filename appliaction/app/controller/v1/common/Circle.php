@@ -31,7 +31,7 @@ class Circle extends \app\app\controller\Init
 
         $map['del_status'] = 0;
 
-        $list = table('Circle')->where($map)->field('id,ablum,description,uid,created')->limit($offer, $pageSize)->find('array');
+        $list = table('Circle')->where($map)->field('id,ablum,description,uid,created')->limit($offer, $pageSize)->order('created desc')->find('array');
         foreach ($list as $key => $value) {
             $list[$key]['is_like'] = (bool) table('Enjoy')->where(array('type' => 1, 'value' => $value['id'], 'uid' => $this->uid))->count();
             $list[$key]['like']    = (int) table('Enjoy')->where(array('type' => 1, 'value' => $value['id']))->count();
