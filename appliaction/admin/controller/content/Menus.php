@@ -125,6 +125,7 @@ class Menus extends \app\admin\controller\Init
                 $rs['sort']     = 0;
             }
 
+            $this->assign('modelIdCopy', getVar('model', 'admin.article'));
             $this->assign('treeList', $this->treeList());
             $this->assign('data', $rs);
             $this->show();

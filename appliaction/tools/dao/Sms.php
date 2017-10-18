@@ -3,7 +3,7 @@ namespace app\tools\dao;
 
 class Sms
 {
-    public function getConfigNexmo($mobile, $content)
+    public function getConfigNexmo($mobile, $content, $country)
     {
         $type    = 'text';
         $content = urlencode($content);
@@ -30,13 +30,23 @@ class Sms
         var_dump($content);
         die;
          */
+
+        switch ($country) {
+            case '1':
+                $from = '12262101807';
+                break;
+            default:
+                $from = 'China';
+                break;
+        }
+
         $content          = mbDetectEncoding($content, "UTF-8");
         $data['url']      = 'https://rest.nexmo.com/sms/json';
         $data['urlValue'] = array(
             'api_key'    => 'f3bcd87d',
             'api_secret' => '7bdf89e00ac58e81',
             'to'         => $mobile,
-            'from'       => 'KDC',
+            'from'       => $from,
             'text'       => $content,
             'type'       => $type,
         );
@@ -84,7 +94,7 @@ class Sms
             return array('status' => false, 'msg' => $dataContent['msg']);
         }
 
-        $data = $this->getConfigNexmo((string) $country . $mobile, $content);
+        $data = $this->getConfigNexmo((string) $country . $mobile, $content, $country);
 
         $url = $this->getRestUrl($data['url'], $data['urlValue']);
 
@@ -168,7 +178,7 @@ class Sms
         }
 
         if (!$code) {
-            return array('status' => false, 'msg' => '请输入验证码');
+            return array('status' => false, 'msg' => '验证码未输入');
         }
 
         $map['mobile']  = $mobile;

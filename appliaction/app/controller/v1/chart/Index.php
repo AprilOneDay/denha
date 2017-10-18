@@ -32,30 +32,10 @@ class Index extends \app\app\controller\Init
         $pageSize = get('pageSize', 'intval', 10);
         $offer    = max(($pageNo - 1), 0) * $pageSize;
 
-        $map['is_reader'] = 1;
-        $map['_string']   = "(uid = $this->uid and to_uid = $toUid) or (uid = $toUid and to_uid = $this->uid)";
+        $data['list'] = dao('Chart')->histroyLists($this->uid, $toUid);
 
-        $user               = (array) dao('User')->getInfo($this->uid, 'avatar,nickname');
-        $user['avatar']     = $this->appImg($user['avatar'], 'avatar');
-        $list[$key]['user'] = $user;
-        if ($toUid) {
-            $toUser           = (array) dao('User')->getInfo($toUid, 'avatar,nickname');
-            $toUser['avatar'] = $this->appImg($toUser['avatar'], 'avatar');
-        } else {
-            $toUser['nickname'] = '口袋车平台';
-            $toUser['avatar']   = $this->appImg();
-        }
-
-        $list = table('ChatLog')->where($map)->field('id,uid,to_uid,content,created')->order('created asc')->find('array');
-        //echo table('ChatLog')->getSql();die;
-        foreach ($list as $key => $value) {
-            $list[$key]['float']   = $value['uid'] == $this->uid ? 'right' : 'left';
-            $list[$key]['created'] = date('Y/m/d H:i:s', $value['created']);
-        }
-
-        $data['list']['user']    = $user;
-        $data['list']['to_user'] = $toUser;
-        $data['list']['content'] = $list ? $list : array();
+        $data['list']['user']['avatar']    = $this->appImg($data['list']['user']['avatar'], 'avatar');
+        $data['list']['to_user']['avatar'] = $this->appImg($data['list']['to_user']['avatar'], 'avatar');
 
         $this->appReturn(array('data' => $data));
     }

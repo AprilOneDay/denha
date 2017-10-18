@@ -11,6 +11,8 @@
 	<div id="console-content-edit">
 		<div class="modal-content">
 			<form class="form-horizontal" role="form" action="">
+				<input type="hidden" value="{??$column_id}" name="column_id">
+				<input type="hidden" value="{??$data['model_id']}" name="model_id">	
 				<div class="panel-body">
 					<fieldset>
 						<div class="form-group">
@@ -41,7 +43,7 @@
 								<span>缩略图</span>
 							</label>
 							<div class="col-sm-8">
-								<a class="btn btn-primary btn-ablum" data-name="thumb" data-value='{??$data['thumb']}' data-path="blog" data-max="1">添加图片</a>
+								<a class="btn btn-primary btn-ablum" data-name="thumb" data-value='{??$data['thumb']}' data-path="article" data-max="1">添加图片</a>
 							</div>
 						</div>
 						<div class="form-group">

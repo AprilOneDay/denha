@@ -95,6 +95,9 @@ class Comment
 
     public function getNotReadTotal($uid)
     {
+        if (!$uid) {
+            return 0;
+        }
 
         $map['to_uid']           = $uid;
         $map['is_to_uid_reader'] = 0;

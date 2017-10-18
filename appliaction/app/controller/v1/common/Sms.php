@@ -19,6 +19,10 @@ class Sms extends \app\app\controller\Init
         $country = post('country_id', 'text', '');
         $mobile  = post('mobile', 'text', '');
 
+        if (!is_numeric($mobile)) {
+            $this->appReturn(array('status' => false, 'msg' => '手机号码请不要输入特殊字符'));
+        }
+
         if (!$mobile) {
             $this->appReturn(array('status' => false, 'msg' => '请输入电话号码'));
         }
@@ -51,7 +55,8 @@ class Sms extends \app\app\controller\Init
 
         $sendData['code'] = $code;
 
-        $reslut = dao('Sms')->send($mobile, 'verification', $sendData, 'get', $country);
+        $reslut                 = dao('Sms')->send($mobile, 'verification', $sendData, 'get', $country);
+        $reslut['data']['time'] = 360;
         $this->appReturn($reslut);
     }
 

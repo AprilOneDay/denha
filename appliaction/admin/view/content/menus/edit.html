@@ -30,6 +30,19 @@
 										</select>
 									</div>
 								</div>
+								<div class="form-group">
+									<label class="control-label col-sm-3">
+										<span class="text-danger">*</span>
+										<span>所属模型</span>
+									</label>
+								 	<div class="col-sm-8">
+										<select name="model_id" class="form-control w160" data-selected="{??$data['model_id']}">
+											{loop $modelIdCopy $key $value}
+											<option value="{$key}" >{$value}</option>
+											{/loop}
+										</select>
+									</div>
+								</div>
 								{if !isset($data['id'])}
 								<div class="form-group radio" data-radio="1">
 									<label class="control-label col-sm-3">

@@ -246,7 +246,7 @@ class User extends \app\app\controller\Init
         $data['type']     = post('type', 'intval', 0);
 
         $weixinId  = post('weixin_id', 'text', '');
-        $code      = post('code', 'text', '');
+        $code      = post('Code', 'text', '');
         $password2 = post('password2', 'text', '');
         $isAgree   = post('is_agree', 'intval', 0);
 

@@ -12,6 +12,7 @@ class Service extends \app\app\controller\Init
     {
         $param['is_recommend'] = get('is_recommend', 'text', '');
         $param['category']     = get('category', 'intval', 0);
+        $param['keyword']      = get('keyword', 'text', '');
 
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 10);
@@ -26,14 +27,20 @@ class Service extends \app\app\controller\Init
         }
 
         if ($param['category']) {
-            $map['category'] = array('like', '%' . $param['category'] . '%');
+            $map['category'] = array('instr', $param['category']);
+        }
+
+        if ($param['keyword']) {
+            $mapGoods['title'] = array('instr', $param['keyword']);
+            $idArray           = table('GoodsService')->where($mapGoods)->field('uid')->group('uid')->find('one', true);
+            $map['uid']        = array('in', $idArray);
         }
 
         $orderby = 'id desc';
 
         $list = table('UserShop')->where($map)->order($orderby)->limit($offer, $pageSize)->field('name,uid')->find('array');
         foreach ($list as $key => $value) {
-            $goods = table('GoodsService')->where(array('uid' => $value['uid'], 'status' => 1))->field('id,price,thumb,title,orders')->limit(3)->find('array');
+            $goods = table('GoodsService')->where(array('uid' => $value['uid'], 'status' => 1))->field('id,price,thumb,title,orders')->order('id desc')->limit(3)->find('array');
             foreach ($goods as $k => $v) {
                 $goods[$k]['thumb'] = $this->appImg($v['thumb'], 'car');
             }

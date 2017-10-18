@@ -33,4 +33,31 @@ class Index extends \app\app\controller\Init
         $data = $this->appArray(getVar('model', 'car'));
         $this->appReturn(array('data' => $data));
     }
+
+    /**
+     * 获取分类
+     * @date   2017-09-18T10:16:11+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function getService()
+    {
+        $list = table('Category')->where(array('parentid' => 19))->field('id,name,thumb')->find('array');
+
+        foreach ($list as $key => $value) {
+            $list[$key]['thumb'] = $this->appimg($value['thumb'], 'category');
+            $list[$key]['value'] = $value['name'];
+
+            unset($list[$key]['name']);
+            if ($value['id'] == 23) {
+                unset($list[$key]);
+            }
+        }
+
+        $list = array_values($list);
+
+        $data = $list ? $list : array();
+
+        $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));
+    }
 }
