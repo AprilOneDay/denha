@@ -83,6 +83,7 @@ class Sms
      */
     public function send($mobile = '', $flag = '', $param = '', $method = 'get', $country = '')
     {
+
         if (!$mobile || !$flag) {
             return array('status' => false, 'msg' => '参数错误');
         }
@@ -106,9 +107,18 @@ class Sms
 
         if (!$result) {
             return array('status' => false, 'msg' => '发送失败,请联系管理员', 'result' => $result, 'url' => $url);
-
         }
 
+        $resultData = str_replace(PHP_EOL, '', $result);
+        $resultData = json_decode($resultData, true);
+
+        //保存验证码
+        if ($flag == 'verification' && $resultData['messages'][0]['status'] == 0) {
+            $this->saveVerif($mobile, $param['code']);
+        }
+
+        //保存短信发送记录
+        $this->log($mobile, $flag, $content);
         return array('status' => true, 'msg' => '发送成功', 'result' => $result);
 
     }
@@ -163,6 +173,57 @@ class Sms
     }
 
     /**
+     * 保存短信发送记录
+     * @date   2017-10-19T11:37:44+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $mobile  [description]
+     * @param  [type]                   $flag    [description]
+     * @param  [type]                   $content [description]
+     */
+    public function log($mobile, $flag, $content)
+    {
+        $data['content'] = $content;
+        $data['ip']      = getIP();
+        $data['created'] = TIME;
+        $data['flag']    = $flag;
+        $data['mobile']  = $mobile;
+
+        $result = table('SmsLog')->add($data);
+    }
+
+    /**
+     * 保存验证码
+     * @date   2017-10-19T11:16:44+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $mobile [description]
+     * @param  [type]                   $code   [description]
+     * @return [type]                           [description]
+     */
+    public function saveVerif($mobile, $code)
+    {
+        //保存验证码
+        $map['mobile'] = $mobile;
+        $sms           = table('SmsVerify')->where($map)->field('id,created')->find();
+        if ($sms) {
+            if (TIME - $sms['created'] <= 360) {
+                $this->appReturn(array('status' => false, 'msg' => '请等待' . (360 - (TIME - $sms['created'])) . '秒'));
+            }
+
+            $data['code']    = $code;
+            $data['created'] = TIME;
+            table('SmsVerify')->where('id', $sms['id'])->save($data);
+
+        } else {
+            $data['code']    = $code;
+            $data['created'] = TIME;
+            $data['mobile']  = $mobile;
+            table('SmsVerify')->add($data);
+        }
+
+        $sendData['code'] = $code;
+    }
+
+    /**
      * 检测验证码
      * @date   2017-10-10T12:04:31+0800
      * @author ChenMingjiang
@@ -181,12 +242,16 @@ class Sms
             return array('status' => false, 'msg' => '验证码未输入');
         }
 
-        $map['mobile']  = $mobile;
-        $map['created'] = array('<=', TIME + $time);
+        $map['mobile'] = $mobile;
 
-        $sms = table('SmsVerify')->where($map)->field('code')->find();
+        $sms = table('SmsVerify')->where($map)->field('code,created')->find();
+
         if (!$sms) {
             return array('status' => false, 'msg' => '请发送验证码');
+        }
+
+        if (TIME - $sms['created'] > $time) {
+            return array('status' => false, 'msg' => '验证码过期了,请重新申请');
         }
 
         if ($sms['code'] != $code) {

@@ -13,6 +13,10 @@ class Service extends \app\app\controller\Init
         $param['is_recommend'] = get('is_recommend', 'text', '');
         $param['category']     = get('category', 'intval', 0);
         $param['keyword']      = get('keyword', 'text', '');
+        $param['orderby']      = get('orderby', 'intval', 0);
+        $param['distanceby']   = get('distanceby', 'intval', 0);
+        $lng                   = get('lng', 'text', 0);
+        $lat                   = get('lat', 'text', 0);
 
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 10);
@@ -21,6 +25,26 @@ class Service extends \app\app\controller\Init
         $map['status']    = 1;
         $map['is_ide']    = 1;
         $map['goods_num'] = array('>', 0);
+
+        $orderby = 'id desc';
+        switch ($param['orderby']) {
+            case '1':
+                $orderby = 'credit_level desc';
+                break;
+            case '2':
+                $orderby = 'orders desc';
+                break;
+            case '3':
+                # code...
+                break;
+            default:
+                # code...
+                break;
+        }
+
+        if ($param['distanceby'] == 1) {
+            $orderby = 'km asc';
+        }
 
         if ($param['is_recommend'] != '') {
             $map['is_recommend'] = $param['is_recommend'];
@@ -36,14 +60,16 @@ class Service extends \app\app\controller\Init
             $map['uid']        = array('in', $idArray);
         }
 
-        $orderby = 'id desc';
-
-        $list = table('UserShop')->where($map)->order($orderby)->limit($offer, $pageSize)->field('name,uid')->find('array');
+        $field = "name,uid,lng,lat,(2 * 6378.137* ASIN(SQRT(POW(SIN(PI()*($lng-lng)/360),2)+COS(PI()*$lat/180)* COS(lat * PI()/180)*POW(SIN(PI()*($lat)/360),2)))) AS km";
+        $list  = table('UserShop')->where($map)->order($orderby)->limit($offer, $pageSize)->field($field)->find('array');
+        //echo table('UserShop')->getSql();die;
         foreach ($list as $key => $value) {
             $goods = table('GoodsService')->where(array('uid' => $value['uid'], 'status' => 1))->field('id,price,thumb,title,orders')->order('id desc')->limit(3)->find('array');
             foreach ($goods as $k => $v) {
                 $goods[$k]['thumb'] = $this->appImg($v['thumb'], 'car');
             }
+            $km                 = dao('Distance')->nearbyDistance($lng, $lat, $value['lng'], $value['lat']);
+            $list[$key]['km']   = !$km ? '<1Km' : round($km) . 'Km';
             $list[$key]['list'] = $goods ? $goods : array();
         }
 
@@ -74,5 +100,20 @@ class Service extends \app\app\controller\Init
         $data['shop']                 = table('UserShop')->where('uid', $data['uid'])->field('name,uid,credit_level')->find();
         $data['shop']['credit_level'] = dao('User')->getShopCredit($data['shop']['credit_level']);
         $this->appReturn(array('data' => $data));
+    }
+
+    /**
+     * 排序文案
+     * @date   2017-09-20T15:46:38+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function getSeachOrderByTags()
+    {
+        $list[] = array('id' => 1, 'value' => '信用');
+        $list[] = array('id' => 2, 'value' => '综合');
+        $list[] = array('id' => 3, 'value' => '销量');
+
+        $this->appReturn(array('msg' => '获取数据成功', 'data' => $list));
     }
 }

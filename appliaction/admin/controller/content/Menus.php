@@ -22,7 +22,7 @@ class Menus extends \app\admin\controller\Init
         $result = table('Column')->where($map)->order('sort asc,id asc')->find('array');
 
         if ($result) {
-            $tree = new \app\console\tools\util\MenuTree();
+            $tree = new \app\admin\tools\util\MenuTree();
             $tree->setConfig('id', 'parentid', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
             $list = $tree->getLevelTreeArray($result);
             foreach ($list as $key => $value) {
@@ -58,6 +58,7 @@ class Menus extends \app\admin\controller\Init
             $data['bname'] = post('bname', 'text', '');
             $data['url']   = post('url', 'text', '');
 
+            $data['model_id'] = post('model_id', 'intval', 0);
             $data['parentid'] = post('parentid', 'intval', 0);
             $data['is_show']  = post('is_show', 'intval', 0);
             $data['sort']     = post('sort', 'intval', 0);

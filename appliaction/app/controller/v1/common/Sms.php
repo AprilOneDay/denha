@@ -34,27 +34,7 @@ class Sms extends \app\app\controller\Init
         //创建验证码
         $code = rand('11111', '99999');
 
-        //保存验证码
-        $map['mobile'] = $mobile;
-        $sms           = table('SmsVerify')->where($map)->field('id,created')->find();
-        if ($sms) {
-            if (TIME - $sms['created'] <= 360) {
-                $this->appReturn(array('status' => false, 'msg' => '请等待' . (360 - (TIME - $sms['created'])) . '秒'));
-            }
-
-            $data['code']    = $code;
-            $data['created'] = TIME;
-            table('SmsVerify')->where('id', $sms['id'])->save($data);
-
-        } else {
-            $data['code']    = $code;
-            $data['created'] = TIME;
-            $data['mobile']  = $mobile;
-            table('SmsVerify')->add($data);
-        }
-
-        $sendData['code'] = $code;
-
+        $sendData['code']       = $code;
         $reslut                 = dao('Sms')->send($mobile, 'verification', $sendData, 'get', $country);
         $reslut['data']['time'] = 360;
         $this->appReturn($reslut);

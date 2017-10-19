@@ -61,7 +61,10 @@ class User extends \app\app\controller\Init
             $data['name']       = $dataUser['nickname']       = post('name', 'text', '');
             $data['woker_time'] = post('woker_time', 'text', '');
             $data['address']    = post('address', 'text', '');
-            $data['category']   = post('category', 'intval', 0);
+            $data['category']   = post('category', 'text', '0');
+
+            $data['lng'] = post('lng', 'float', 0);
+            $data['lat'] = post('lat', 'float', 0);
 
             $data['is_message'] = post('is_message', 'intval', 0);
             $data['ablum']      = post('ablum', 'json', '');
@@ -245,8 +248,11 @@ class User extends \app\app\controller\Init
         $data['mobile']   = post('mobile', 'text', '');
         $data['type']     = post('type', 'intval', 0);
 
-        $weixinId  = post('weixin_id', 'text', '');
-        $code      = post('Code', 'text', '');
+        $weixinId = post('weixin_id', 'text', '');
+        $code     = post('code', 'text', '');
+
+        $code != '' ?: $code = post('Code', 'intval', 0);
+
         $password2 = post('password2', 'text', '');
         $isAgree   = post('is_agree', 'intval', 0);
 

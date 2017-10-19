@@ -20,6 +20,8 @@ class Index extends \app\app\controller\Init
 
         $user['avatar'] = $this->appImg($user['avatar'], 'avatar');
 
+        $user['message_num'] = table('UserMessage')->where(array('to_uid' => $this->uid, 'is_reader' => 0))->field('count(*) as num')->find('one');
+
         $this->appReturn(array('data' => $user));
 
     }

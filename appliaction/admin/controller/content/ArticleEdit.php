@@ -17,6 +17,10 @@ class ArticleEdit extends \app\admin\controller\Init
             case '1':
                 $this->edit_1();
                 break;
+            case '2':
+                $this->edit_2();
+                # code...
+                break;
             default:
                 # code...
                 break;
@@ -30,6 +34,7 @@ class ArticleEdit extends \app\admin\controller\Init
         $id = get('id', 'intval', 0);
 
         $data['title']       = post('title', 'text', '');
+        $data['btitle']      = post('btitle', 'text', '');
         $data['description'] = post('description', 'text', '');
         $data['thumb']       = post('thumb', 'img', '');
         $data['origin']      = post('origin', 'text', '');
@@ -111,7 +116,58 @@ class ArticleEdit extends \app\admin\controller\Init
 
             $this->assign('data', $rs);
             $this->assign('other', $other);
-            $this->show();
+            $this->show('article_edit/edit');
+        }
+    }
+
+    //教师
+    public function edit_2()
+    {
+        $id       = get('id', 'intval', 0);
+        $columnId = get('column_id', 'intval', 0);
+
+        if (IS_POST) {
+            $data['content'] = post('content', 'text', '');
+
+            $dataId = $this->defaults(); //保存主表
+
+            if ($dataId && $id) {
+                $resultData = table('ArticleTeacher')->where(array('id' => $dataId))->save($data);
+                $this->ajaxReturn(array('status' => true, 'msg' => '修改成功'));
+            } else {
+                $resultData = table('ArticleTeacher')->where(array('id' => $dataId))->add($data);
+                $this->ajaxReturn(array('status' => true, 'msg' => '添加成功'));
+            }
+
+        } else {
+            if ($id) {
+                $article     = table('Article')->tableName();
+                $articleData = table('ArticleTeacher')->tableName();
+
+                $map[$article . '.id']     = $id;
+                $map[$articleData . '.id'] = $id;
+
+                $rs = table('Article')->join($articleData, "$articleData.id = $article.id", 'left')->where($map)->find();
+                if (!$rs) {
+                    denha\Log::error('附属表异常');
+                }
+
+                $rs['created'] = date('Y-m-d', $rs['created']);
+                $rs['thumb']   = json_encode((array) imgUrl($rs['thumb'], 'blog'));
+
+            } else {
+                $rs              = array('is_show' => 1, 'is_recommend' => 0, 'created' => date('Y-m-d', TIME), 'model_id' => 1);
+                $rs['column_id'] = $columnId;
+            }
+
+            $other = array(
+                'tag'            => getVar('tags', 'console.article'),
+                'columnListCopy' => dao('Column', 'admin')->columnList(),
+            );
+
+            $this->assign('data', $rs);
+            $this->assign('other', $other);
+            $this->show('article_edit/edit_2');
         }
     }
 }

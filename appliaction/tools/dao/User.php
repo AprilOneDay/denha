@@ -17,6 +17,8 @@ class User
     public function register($data = array(), $password2 = '', $isAgree = 0, $code = '', $thirdParty = array())
     {
         $data['password'] = trim(strtolower($data['password']));
+        $password2        = trim(strtolower($password2));
+
         if (!in_array($data['type'], array(1, 2))) {
             return array('status' => false, 'msg' => '请选择商家/个人注册');
         }
@@ -33,9 +35,9 @@ class User
             return array('status' => false, 'msg' => '两次密码不一致');
         }
 
-        if (!preg_match("/^1[34578]{1}\d{9}$/", $data['mobile'])) {
-            return array('status' => false, 'msg' => '请输入正确的电话号码');
-        }
+        /*if (!preg_match("/^1[34578]{1}\d{9}$/", $data['mobile'])) {
+        return array('status' => false, 'msg' => '请输入正确的电话号码');
+        }*/
 
         if (!$data['type']) {
             return array('status' => false, 'msg' => '请选择注册类型');

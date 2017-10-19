@@ -1,5 +1,5 @@
 <?php
-namespace app\console\tools\util;
+namespace app\admin\tools\util;
 
 /**
  * 通用的树型类，可以生成任何树型结构

@@ -31,19 +31,19 @@
 						<div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger">*</span>
-								<span>标题</span>
+								<span>教师名称</span>
 							</label>
 							<div class="col-sm-8">
-								<input type="text" value="{??$data['title']}" name="title" placeholder="标题"  required class="form-control">	
+								<input type="text" value="{??$data['title']}" name="title" placeholder="教师名称"  required class="form-control">	
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger">*</span>
-								<span>副标题</span>
+								<span>职称</span>
 							</label>
 							<div class="col-sm-8">
-								<input type="text" value="{??$data['btitle']}" name="btitle" placeholder="副标题"  required class="form-control">	
+								<input type="text" value="{??$data['btitle']}" name="btitle" placeholder="职称"  required class="form-control">	
 							</div>
 						</div>
 						<div class="form-group">
@@ -54,45 +54,19 @@
 							<div class="col-sm-8">
 								<a class="btn btn-primary btn-ablum" data-name="thumb" data-value='{??$data['thumb']}' data-path="article" data-max="1">添加图片</a>
 							</div>
-						</div>
+						</div>						
+						
+						
 						<div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger">*</span>
-								<span for="myDate">发布时间</span>
-							</label>
-							<div class="col-sm-8">
-								<input type="text" value="{??$data['created']}" name="created" id="created"  class="form-control data-time">	
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-sm-3">
-								<span class="text-danger"></span>
-								<span for="myDate">来源</span>
-							</label>
-							<div class="col-sm-8">
-								<input type="text" value="{??$data['origin']}" name="origin" placeholder="来源地址"  required class="form-control">
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-sm-3">
-								<span class="text-danger">*</span>
-								<span>摘要</span>
+								<span>简介</span>
 							</label>
 							<div class="col-sm-8">
 								<textarea name="description" placeholder="输入摘要内容" class="form-control">{??$data['description']}</textarea>
 							</div>
 						</div>
-						<div class="form-group">
-							<label class="control-label col-sm-3">
-								<span class="text-danger">*</span>
-								<span>内容</span>
-							</label>
-							<div class="col-sm-8">
-							 	<script id="container" name="content" type="text/plain" class="ue-editor">
-							 	{??$data['content']}
-							 	</script>
-							</div>
-						</div>
+						
 						<div class="form-group radio" data-radio="{??$data['is_recommend']}">
 							<label class="control-label col-sm-3">推荐排行榜：</label>
 							<div class="radio-inline">
