@@ -102,12 +102,13 @@ class ArticleEdit extends \app\admin\controller\Init
         $id       = get('id', 'intval', 0);
         $columnId = get('column_id', 'intval', 0);
         if (IS_POST) {
-            $data['content'] = post('content', 'text', '');
+            $data['content']    = post('content', 'text', '');
+            $data['content_en'] = post('content_en', 'text', '');
 
             $dataId = $this->defaults(); //保存主表
 
             if ($dataId && $id) {
-                $resultData = table('Article' . self::$dataTable)->where(array('id' => $dataId))->save($data);
+                $resultData = table('Article' . self::$dataTable)->where(array('id' => $id))->save($data);
                 $this->ajaxReturn(array('status' => true, 'msg' => '修改成功'));
             } else {
                 $data['id'] = $dataId;
@@ -150,7 +151,7 @@ class ArticleEdit extends \app\admin\controller\Init
             $dataId = $this->defaults(); //保存主表
 
             if ($dataId && $id) {
-                $resultData = table('Article' . self::$dataTable)->where(array('id' => $dataId))->save($data);
+                $resultData = table('Article' . self::$dataTable)->where(array('id' => $id))->save($data);
                 $this->ajaxReturn(array('status' => true, 'msg' => '修改成功'));
             } else {
                 $data['id'] = $dataId;
