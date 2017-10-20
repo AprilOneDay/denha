@@ -42,7 +42,7 @@ class Index extends \app\app\controller\Init
      */
     public function getService()
     {
-        $list = table('Category')->where(array('parentid' => 19))->field('id,name,thumb')->find('array');
+        $list = table('Category')->where(array('parentid' => 19, 'is_show' => 1))->field('id,name,thumb')->find('array');
 
         foreach ($list as $key => $value) {
             $list[$key]['thumb'] = $this->appimg($value['thumb'], 'category');

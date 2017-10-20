@@ -116,4 +116,33 @@ class Service extends \app\app\controller\Init
 
         $this->appReturn(array('msg' => '获取数据成功', 'data' => $list));
     }
+
+    /**
+     * 爱车服务首页栏目
+     * @date   2017-10-20T14:25:24+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function column()
+    {
+        $list = table('Category')->where(array('parentid' => 19, 'is_show' => 1))->field('id,name,thumb')->find('array');
+
+        foreach ($list as $key => $value) {
+            $list[$key]['thumb']  = $this->appimg($value['thumb'], 'category');
+            $list[$key]['value']  = $value['name'];
+            $list[$key]['is_use'] = 1;
+            $list[$key]['copy']   = '';
+
+            unset($list[$key]['name']);
+            if ($value['id'] == 23) {
+                unset($list[$key]);
+            }
+        }
+
+        $list = array_values($list);
+
+        $data = $list ? $list : array();
+
+        $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));
+    }
 }

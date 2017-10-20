@@ -119,7 +119,7 @@ class User extends \app\app\controller\Init
      */
     public function registerRule()
     {
-        $data['content'] = '<p>这里显示注册规则文案</p>';
+        $data['content'] = getVar('rule', 'app.user');
         $this->appReturn(array('data' => $data));
     }
 }

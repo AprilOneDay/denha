@@ -17,10 +17,11 @@ class User extends \app\app\controller\Init
 
         $user = table('UserShop')->where(array('uid' => $this->uid))->field('name,avatar,credit_level,status')->find();
 
-        $user['avatar']         = imgUrl($user['avatar'], 'avatar', 0, getConfig('config.app', 'imgUrl'));
-        $user['credit_level']   = dao('User')->getShopCredit($user['credit_level']);
-        $data['user']           = $user;
-        $data['tot_read_total'] = (int) dao('Comment')->getNotReadTotal($this->uid); //获取未读信息条数
+        $user['avatar']       = imgUrl($user['avatar'], 'avatar', 0, getConfig('config.app', 'imgUrl'));
+        $user['credit_level'] = dao('User')->getShopCredit($user['credit_level']);
+        $data['user']         = $user;
+        //获取未读信息条数
+        $data['tot_read_total'] = (int) table('UserMessage')->where(array('to_uid' => $this->uid, 'is_reader' => 0))->field('count(*) as num')->find('one');
         //昨日订单量
         $beginYesterday                 = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
         $endYesterday                   = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;

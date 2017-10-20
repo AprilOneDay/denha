@@ -256,13 +256,14 @@ class Car extends \app\app\controller\Init
 
         $version = APP_VERSION;
 
-        if (!$id || !$data['start_time'] || !$data['end_time']) {
+        if (!$id || !$data['start_time']) {
             $this->appReturn(array('status' => false, 'msg' => '参数错误'));
         }
 
-        if (date('Y-m-d', $data['start_time']) != date('Y-m-d', $data['end_time'])) {
-            $this->appReturn(array('status' => false, 'msg' => '预约超过一天了'));
-        }
+/*
+if (date('Y-m-d', $data['start_time']) != date('Y-m-d', $data['end_time'])) {
+$this->appReturn(array('status' => false, 'msg' => '预约超过一天了'));
+}*/
 
         $map['goods_id']   = $id;
         $map['start_time'] = $data['start_time'];
@@ -273,8 +274,8 @@ class Car extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '请选择其他时间段，该时间已有预约了'));
         }
 
-        $dataInfo = dao('orders')->getAddAttachedInfo(1, $id, $data);
-        $result   = dao('orders')->add($this->uid, 1, $dataInfo, 0, 0, $message, $origin, $version);
+        $dataInfo = dao('Orders')->getAddAttachedInfo(1, $id, $data);
+        $result   = dao('Orders')->add($this->uid, 1, $dataInfo, 0, 0, $message, $origin, $version);
 
         $this->appReturn($result);
     }

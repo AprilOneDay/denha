@@ -74,23 +74,23 @@ class Menus extends \app\admin\controller\Init
             $data['url'] = (string) $data['url'] ?: '/' . $this->type[$data['type']] . $data['module'] . '/' . $data['controller'] . '/' . $data['action'] . $data['parameter'];
 
             if (!$data['name']) {
-                $this->ajaxReturn(['status' => false, 'msg' => '请填写菜单名称']);
+                $this->ajaxReturn(array('status' => false, 'msg' => '请填写菜单名称'));
             }
 
             if (!$data['module'] || !$data['controller'] || !$data['action']) {
-                $this->ajaxReturn(['status' => false, 'msg' => '请填写模块/控制器/方法名称']);
+                $this->ajaxReturn(array('status' => false, 'msg' => '请填写模块/控制器/方法名称'));
             }
 
             if ($id) {
                 if ($data['parentid'] == $id) {
-                    $this->ajaxReturn(['status' => false, 'msg' => '上级栏目选择错误,不可选择自己为上级栏目']);
+                    $this->ajaxReturn(array('status' => false, 'msg' => '上级栏目选择错误,不可选择自己为上级栏目'));
                 }
 
                 $result = table('ConsoleMenus')->where(array('id' => $id))->save($data);
                 if ($result) {
-                    $this->ajaxReturn(['status' => true, 'msg' => '修改成功']);
+                    $this->ajaxReturn(array('status' => true, 'msg' => '修改成功'));
                 } else {
-                    $this->ajaxReturn(['status' => false, 'msg' => '修改失败']);
+                    $this->ajaxReturn(array('status' => false, 'msg' => '修改失败'));
                 }
             } else {
                 $result = table('ConsoleMenus')->add($data);
@@ -162,7 +162,7 @@ class Menus extends \app\admin\controller\Init
     {
         $id = post('id', 'intval', 0);
         if (!$id) {
-            $this->ajaxReturn(['status' => false, 'msg' => '参数错误']);
+            $this->ajaxReturn(array('status' => false, 'msg' => '参数错误'));
         }
 
         $result = table('ConsoleMenus')->where(['id' => $id])->save(['del_status' => 1]);

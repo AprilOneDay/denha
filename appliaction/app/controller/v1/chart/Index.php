@@ -30,9 +30,8 @@ class Index extends \app\app\controller\Init
 
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 10);
-        $offer    = max(($pageNo - 1), 0) * $pageSize;
 
-        $data['list'] = dao('Chart')->histroyLists($this->uid, $toUid);
+        $data['list'] = dao('Chart')->histroyLists($this->uid, $toUid, $pageNo, $pageSize);
 
         $data['list']['user']['avatar']    = $this->appImg($data['list']['user']['avatar'], 'avatar');
         $data['list']['to_user']['avatar'] = $this->appImg($data['list']['to_user']['avatar'], 'avatar');

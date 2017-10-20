@@ -66,6 +66,10 @@ class Orders
             }
 
         }
+        foreach ($ordersInfo as $key => $value) {
+            //发送站内信
+            dao('Message')->send($key, 'appointment_success');
+        }
 
         table('Orders')->commit();
         return array('status' => true, 'msg' => '操作成功');

@@ -53,7 +53,7 @@ class User
         }
 
         $isMobile = table('User')->where(array('mobile' => $data['mobile'], 'type' => $data['type']))->field('id')->find('one');
-        if ($isUser) {
+        if ($isMobile) {
             return array('status' => false, 'msg' => '手机号已注册');
         }
 

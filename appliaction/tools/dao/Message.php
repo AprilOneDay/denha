@@ -71,6 +71,9 @@ class Message
             case 'newComment':
                 $content = '你有新的消息';
                 break;
+            case 'appointment_success':
+                $content = '你有新的预约订单';
+                break;
             default:
                 # code...
                 break;

@@ -22,11 +22,17 @@ class Init extends denha\Controller
         if ($this->token) {
             $map['token'] = $this->token;
 
-            $user = table('User')->where($map)->field('id,type,imei')->find();
+            $user = table('User')->where($map)->field('id,type,imei,time_out')->find();
             if ($user) {
                 if ($user['imei'] != $this->imei && $this->imei) {
                     $this->appReturn(array('status' => false, 'msg' => '请登录'));
                 }
+
+                //超过token时间 重新登录
+                if ($user['time_out'] < TIME) {
+                    $this->appReturn(array('status' => false, 'msg' => '请登录'));
+                }
+
                 $this->uid        = $user['id'];
                 $this->group      = $user['type'];
                 $data['time_out'] = TIME + 3600 * 24 * 2;
