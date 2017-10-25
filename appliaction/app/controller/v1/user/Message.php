@@ -45,7 +45,7 @@ class Message extends \app\app\controller\Init
 
         $list = $list ? $list : array();
 
-        //当前接受者标记未已读
+        //收者将标记改为已读
         table('UserMessage')->where(array('to_uid' => $this->uid, 'is_reader' => 0))->save('is_reader', 1);
 
         $this->appReturn(array('data' => $list));

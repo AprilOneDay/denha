@@ -78,6 +78,7 @@ class Server extends \app\app\controller\Init
             $data['city']         = post('city', 'text', '');
             $data['gearbox']      = post('gearbox', 'text', '');
             $data['gases']        = post('gases', 'text', '');
+            $data['guarantee']    = post('guarantee', 'text', '');
             $data['displacement'] = post('displacement', 'text', '');
             $data['model_remark'] = post('model_remark', 'text', '');
             $data['vin']          = post('vin', 'text', '');
@@ -103,9 +104,9 @@ class Server extends \app\app\controller\Init
                 $this->appReturn(array('status' => false, 'msg' => '请输入款号'));
             }
 
-            if (!$data['mileage']) {
-                $this->appReturn(array('status' => false, 'msg' => '请输入里程数'));
-            }
+            /* if (!$data['mileage']) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入里程数'));
+            }*/
 
             if (!$data['city']) {
                 $this->appReturn(array('status' => false, 'msg' => '请输入城市'));
@@ -115,8 +116,15 @@ class Server extends \app\app\controller\Init
                 $this->appReturn(array('status' => false, 'msg' => '请输入报价'));
             }
 
+            //判断是否可用添加卖车信息
+            $shop = table('UserShop')->where('uid', $this->uid)->field('category')->find();
+            if (!in_array(23, explode(',', $shop['category']))) {
+                $this->appReturn(array('status' => false, 'msg' => '您没有售卖汽车资格,请添加店铺汽车售卖分类'));
+            }
+
             //上传banner图 并生成封面图片
             $data['banner'] = $this->appUpload($files['banner'], $data['banner'], 'car');
+
             if (stripos($data['banner'], ',') !== false) {
                 $data['thumb'] = substr($data['banner'], 0, stripos($data['banner'], ','));
             } else {
@@ -151,7 +159,7 @@ class Server extends \app\app\controller\Init
                 if ($result) {
                     //添加相册
                     foreach ($ablum['ablum'] as $key => $value) {
-                        table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $result, 'description' => $ablum['description'][$key]));
+                        table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $id, 'description' => $ablum['description'][$key]));
                     }
 
                     $this->appReturn(array('msg' => '添加成功'));
@@ -166,10 +174,12 @@ class Server extends \app\app\controller\Init
 
                 $result = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->save($data);
                 if ($result) {
+                    //清空相册
                     table('GoodsAblum')->where(array('goods_id' => $id))->delete();
                     //添加相册
+
                     foreach ($ablum['ablum'] as $key => $value) {
-                        table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $result, 'description' => $ablum['description'][$key]));
+                        table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $id, 'description' => $ablum['description'][$key]));
                     }
 
                     $this->appReturn(array('msg' => '编辑成功'));
@@ -180,17 +190,23 @@ class Server extends \app\app\controller\Init
         } else {
             $id = get('id', 'intval', 0);
             if ($id) {
-                $data               = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->find();
+                $data = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->find();
+
+                if (!$data) {
+                    $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
+                }
+
                 $data['banner']     = $this->appImgArray($data['banner'], 'car');
                 $data['guarantee']  = explode(',', $data['guarantee']);
                 $data['city_copy']  = (string) dao('Category')->getName($data['city']);
                 $data['brand_copy'] = dao('Category')->getName($data['brand']);
                 //获取相册信息
                 $ablum = table('GoodsAblum')->where(array('goods_id' => $data['id']))->field('path,description')->find('array');
+
                 foreach ($ablum as $key => $value) {
                     $ablum[$key]['path'] = $this->appImg($value['path'], 'car');
                 }
-                $data['ablum'] = (array) $ablum;
+                $data['ablum'] = $ablum ? (array) $ablum : array();
             }
 
             $data['other'] = array(
@@ -239,6 +255,12 @@ class Server extends \app\app\controller\Init
 
             if (!$data['price']) {
                 $this->appReturn(array('status' => false, 'msg' => '请输入价格'));
+            }
+
+            //判断是否可用添加卖车信息
+            $shop = table('UserShop')->where('uid', $this->uid)->field('category')->find();
+            if (!in_array($data['type'], explode(',', $shop['category']))) {
+                $this->appReturn(array('status' => false, 'msg' => '店铺分类未认证,请添加店铺服务分类后尝试'));
             }
 
             if ($id) {

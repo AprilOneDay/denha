@@ -57,9 +57,9 @@
 											<td>{$value['user']['mobile']}</td>
 											<td>{$other['isIdeCopy'][$value['is_ide']]}</td>
 											<td>
-												{if $value['status']}
+												{if $value['status'] == 1}
 													<a href="javascript:;" style="color: green">营业中</a>
-												{else}
+												{elseif $value['status'] == 2}
 													<a href="javascript:;" style="color: red">关闭中</a>
 												{/if}
 											</td>

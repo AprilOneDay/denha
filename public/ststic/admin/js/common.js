@@ -91,6 +91,18 @@ $(function() {
         })
     })
 
+    //tips提示
+    $('[data-tooltip]').mouseover(function(){
+        var msg = $(this).attr('data-tooltip');
+        layer.tips(msg, this, {
+          tips: [1, '#3595CC'],
+          time: 10000
+        });
+    })
+    $('[data-tooltip]').mouseout(function(){
+        layer.closeAll('tips');
+    })
+
     //绑定checkbox
     $('.checkbox').each(function(){
         var data  = $(this).val();
@@ -316,7 +328,6 @@ $(function() {
 
     //渲染时间插件
     $('.data-time').each(function(){
-        var id      = $(this).attr('id');
         var time    = $(this).val();                    //int
         var min     = $(this).attr('data-min');         // string int
         var max     = $(this).attr('data-max');         // string int
@@ -328,9 +339,10 @@ $(function() {
         if(!min){ min = '1900-1-1';}
         if(!max){ max = '2099-12-31';}
         if(!type){ type = 'date';}
+        if(!time){ time = Date.parse(new Date());}
 
         laydate.render({
-          elem: '#'+id, //指定元素
+          elem: this, //指定元素
           value:new Date(time),
           format:format,
           type:type,

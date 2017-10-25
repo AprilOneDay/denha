@@ -1,6 +1,6 @@
 <?php
 /**
- * 抵扣卷模块管理
+ * 评价模块管理
  */
 namespace app\app\controller\v1\shop;
 
@@ -8,13 +8,20 @@ use app\app\controller;
 
 class Comment extends \app\app\controller\Init
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->checkShop();
+        $this->checkIde();
+    }
+
     public function lists()
     {
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 10);
         $offer    = max(($pageNo - 1), 0) * $pageSize;
 
-        $map['type']   = 2;
+        $map['type']   = array('in', '2,3');
         $map['to_uid'] = $this->uid;
 
         $list = table('Comment')->where($map)->limit($offer, $pageSize)->order('status desc,created desc')->find('array');

@@ -13,7 +13,7 @@ class Index extends \app\app\controller\Init
     {
         parent::__construct();
         if (!$this->uid) {
-            $this->appReturn(array('status' => false, 'msg' => '请登录'));
+            $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
         }
     }
 
@@ -25,7 +25,6 @@ class Index extends \app\app\controller\Init
      */
     public function histroyLists()
     {
-
         $toUid = get('to_uid', 'intval', 0);
 
         $pageNo   = get('pageNo', 'intval', 1);

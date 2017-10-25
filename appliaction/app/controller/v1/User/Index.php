@@ -126,9 +126,9 @@ class Index extends \app\app\controller\Init
                 $this->appReturn(array('status' => false, 'msg' => '请输入昵称'));
             }
 
-            if (!$data['mail']) {
-                $this->appReturn(array('status' => false, 'msg' => '请输入邮箱地址'));
-            }
+            /*if (!$data['mail']) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入邮箱地址'));
+            }*/
 
             $reslut = table('User')->where(array('id' => $this->uid))->save($data);
 

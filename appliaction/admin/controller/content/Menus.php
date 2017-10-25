@@ -26,7 +26,7 @@ class Menus extends \app\admin\controller\Init
             $tree->setConfig('id', 'parentid', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
             $list = $tree->getLevelTreeArray($result);
             foreach ($list as $key => $value) {
-                $list[$key]['is_show'] = $value['is_show'] ? '√' : '×';
+                $list[$key]['is_show_copy'] = $value['is_show'] ? '√' : '×';
             }
 
             $data = array(

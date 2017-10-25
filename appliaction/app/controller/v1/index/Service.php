@@ -98,7 +98,7 @@ class Service extends \app\app\controller\Init
         $data['thumb']                = $this->appImg($data['thumb'], 'car');
         $data['ablum']                = $this->appImgArray($data['ablum'], 'car');
         $data['shop']                 = table('UserShop')->where('uid', $data['uid'])->field('name,uid,credit_level')->find();
-        $data['shop']['credit_level'] = dao('User')->getShopCredit($data['shop']['credit_level']);
+        $data['shop']['credit_level'] = dao('User')->getShopCredit($data['shop']['uid']);
         $this->appReturn(array('data' => $data));
     }
 

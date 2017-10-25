@@ -1,6 +1,6 @@
 <?php
 /**
- * 抵扣卷模块管理
+ * 抵扣券模块管理
  */
 namespace app\app\controller\v1\shop;
 
@@ -20,11 +20,16 @@ class Coupon extends \app\app\controller\Init
     {
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 10);
+        $status   = get('status', 'text', '');
 
         $offer = max(($pageNo - 1), 0) * $pageSize;
 
         $map['uid']        = $this->uid;
         $map['del_status'] = 0;
+
+        if ($status != '') {
+            $map['status'] = $status;
+        }
 
         $list = table('Coupon')->where($map)->limit($offer, $pageSize)->order('status desc,start_time asc')->find('array');
         foreach ($list as $key => $value) {
@@ -37,7 +42,7 @@ class Coupon extends \app\app\controller\Init
     }
 
     /**
-     * 商家发布抵扣卷
+     * 商家发布抵扣券
      * @date   2017-09-26T15:19:17+0800
      * @author ChenMingjiang
      */
@@ -63,7 +68,7 @@ class Coupon extends \app\app\controller\Init
     }
 
     /**
-     * 开启/关闭 抵扣卷
+     * 开启/关闭 抵扣券
      * @date   2017-09-26T15:24:45+0800
      * @author ChenMingjiang
      * @return [type]                   [description]
@@ -109,7 +114,7 @@ class Coupon extends \app\app\controller\Init
     }
 
     /**
-     * 获取抵扣卷类型
+     * 获取抵扣券类型
      * @date   2017-09-27T11:24:56+0800
      * @author ChenMingjiang
      * @return [type]                   [description]
@@ -121,7 +126,7 @@ class Coupon extends \app\app\controller\Init
     }
 
     /**
-     * 改变抵扣卷数量
+     * 改变抵扣券数量
      * @date   2017-09-26T15:25:24+0800
      * @author ChenMingjiang
      * @return [type]                   [description]
@@ -132,9 +137,9 @@ class Coupon extends \app\app\controller\Init
         $num = post('num', 'intval', 0);
 
         if (!$num) {
-            $this->appReturn(array('status' => false, 'msg' => '请输入抵扣卷数量'));
+            $this->appReturn(array('status' => false, 'msg' => '请输入抵扣券数量'));
         }
-
+        //获取抵扣卷模板信息
         $coupon = table('Coupon')->where(array('uid' => $this->uid, 'id' => $id))->field('num,remainder_num')->find();
         if (!$coupon) {
             $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
@@ -144,7 +149,10 @@ class Coupon extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '修改数量不可小于已领取数量'));
         }
 
-        $result = table('Coupon')->where('id', $id)->save('num', $num);
+        $data['num']           = $num;
+        $data['remainder_num'] = $data['remainder_num'] + $coupon['num'] - $num;
+
+        $result = table('Coupon')->where('id', $id)->save($data);
         if (!$result) {
             $this->appReturn(array('status' => false, 'msg' => '修改失败'));
         }

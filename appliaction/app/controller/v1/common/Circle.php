@@ -12,7 +12,7 @@ class Circle extends \app\app\controller\Init
     {
         parent::__construct();
         if (!$this->uid) {
-            $this->appReturn(array('status' => false, 'msg' => '请登录'));
+            $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
         }
     }
 

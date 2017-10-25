@@ -1,4 +1,7 @@
 <?php
+/**
+ * 用户管理模块
+ */
 namespace app\tools\dao;
 
 class User
@@ -112,7 +115,7 @@ class User
         }
 
         //增加积分明细
-        dao('Integral')->add($reslut, 1);
+        dao('Integral')->add($reslut, 'user_registered');
         return array('status' => true, 'msg' => '注册成功');
     }
 
@@ -179,12 +182,12 @@ class User
             return array('status' => false, 'msg' => '密码有误');
         }
 
-        $data['token']      = md5(TIME . $user['salt']);
-        $data['time_out']   = TIME + 3600 * 24 * 2;
-        $data['type']       = $user['type'];
-        $data['login_ip']   = getIP();
-        $data['login_time'] = TIME;
-        $data['imei']       = (string) $imei;
+        $data['token']          = md5(TIME . $user['salt']);
+        $data['time_out']       = TIME + 3600 * 24 * 2;
+        $data['type']           = $user['type'];
+        $data['login_ip']       = getIP();
+        $data['login_time']     = TIME;
+        !$imei ?: $data['imei'] = (string) $imei;
 
         $reslut      = table('User')->where(array('id' => $user['id']))->save($data);
         $data['uid'] = $user['id'];
@@ -246,15 +249,15 @@ class User
      * @param  integer                  $uid [description]
      * @return boolean                       [true 可用 false 不可用]
      */
-    public function todayAvailableBehavior($uid = 0, $content = '每日签到')
+    public function todayAvailableBehavior($uid = 0, $content = '')
     {
-        if (!$uid) {
+        if (!$uid || !$content) {
             return array('status' => false, 'msg' => '参数错误', 'data' => false);
         }
         //今日时间戳
         $map['created'] = array('>=', mktime(0, 0, 0, date('m'), date('d'), date('Y')));
         $map['uid']     = $uid;
-        $map['content'] = $content;
+        $map['flag']    = $content;
 
         $is = table('IntegralLog')->where($map)->field('id')->find();
         //echo table('IntegralLog')->getSql();die;
@@ -283,6 +286,14 @@ class User
         return $data;
     }
 
+    /**
+     * 根据uid获取用户信息
+     * @date   2017-10-25T16:28:32+0800
+     * @author ChenMingjiang
+     * @param  integer                  $uid   [description]
+     * @param  string                   $field [description]
+     * @return [type]                          [description]
+     */
     public function getInfo($uid = 0, $field = '*')
     {
         $data = table('User')->where(array('id' => $uid))->field($field)->find();
@@ -327,11 +338,24 @@ class User
      * @param  [type]                   $value [description]
      * @return [type]                          [description]
      */
-    public function getShopCredit($value)
+    public function getShopCredit($uid = 0)
     {
-        $value         = max($value, 0);
-        $data['star']  = $value * 2;
-        $data['value'] = $value / 10;
+        if (!$uid) {
+            return '';
+        }
+
+        $map['type']     = 1;
+        $map['shop_uid'] = $uid;
+        $value           = table('Score')->where($map)->field('AVG(score) as score')->find('one');
+
+        if ($value) {
+            $value         = max($value, 0);
+            $data['star']  = $value * 2;
+            $data['value'] = $value / 10;
+        } else {
+            $data['star']  = 100;
+            $data['value'] = 5;
+        }
 
         return $data;
     }

@@ -11,7 +11,6 @@
 	<div id="console-setting-menus-edit">
 		<div class="modal-content">
 			<form class="form-horizontal" role="form" action="">
-			<input type="hidden" value="{??$data['id']}" name="id">	
 				<div class="panel-body">
 					<fieldset>
 						<div class="form-group">
@@ -20,69 +19,41 @@
 								<span>上级分类</span>
 							</label>
 							 <div class="col-sm-8">
-								<select name="parentid" class="form-control w160" data-selected="{??$data['parentid']}">
-									<option value="0">作为一级分类</option>
-									{loop $treeList $key $value}
-									<option value="{$value['id']}" >{$value['htmlname']}</option>
+								<select name="category" class="form-control w160" data-selected="{??$data['category']}">
+									<option value="">选择分类</option>
+									{loop $other['categoryCopy'] $key $value}
+									<option value="{$key}" >{$value}</option>
 									{/loop}
 								</select>
 							</div>
 						</div>
-						{if !isset($data['id'])}
-						<div class="form-group radio" data-radio="1">
-							<label class="control-label col-sm-3">
-								<span class="text-danger"></span>
-								<span>添加方式</span>
-							</label>
-							<div class="col-sm-8">
-								<div class="radio-inline">
-									<label>
-										<input type="radio"  name="add" value="1"> 单条
-									</label>
-								</div>
-								<div class="radio-inline">
-									<label >
-										<input type="radio"  name="add" value="2"> 批量
-									</label>
-								</div>
-							</div>
-						</div>
-						{/if}
-						<div class="form-group add2" style="display: none;">
+						
+						<div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger">*</span>
-								<span>分类名称</span>
-							</label>
-							<div class="col-sm-5">
-								<textarea class="form-control" rows="5" name="content">{??$data['name']}</textarea>
-							</div>
-							<label class="clo-sm-2">如：<br/>菜单名称|别名<br/>关于我们|about us<br/>竖线以及后面的名称可留空</label>
-						</div>
-						<div class="form-group add1">
-							<label class="control-label col-sm-3">
-								<span class="text-danger">*</span>
-								<span>分类名称</span>
+								<span>兑换名称</span>
 							</label>
 							<div class="col-sm-8">
 								<input type="text" value="{??$data['name']}" name="name" placeholder="分类名称" class="form-control">	
 							</div>
 						</div>
-						<div class="form-group add1">
-							<label class="control-label col-sm-3">
-								<span class="text-danger">*</span>
-								<span>分类别名</span>
-							</label>
-							<div class="col-sm-8">
-								<input type="text" value="{??$data['bname']}" name="bname" placeholder="分类别名" class="form-control">	
-							</div>
-						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger">*</span>
-								<span>缩略图</span>
+								<span>所需积分</span>
 							</label>
 							<div class="col-sm-8">
-								<a class="btn btn-primary btn-ablum" data-name="thumb" data-value='{??$data['thumb']}' data-path="category" data-max="1">添加图片</a>
+								<input type="text" value="{??$data['integral']}" name="integral" placeholder="所需积分" class="form-control">	
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger">*</span>
+								<span>ICO图片</span>
+							</label>
+							<div class="col-sm-8">
+								<a class="btn btn-primary btn-ablum" data-name="ico" data-value='{??$data['ico']}' data-path="coupon" data-max="1">添加图片</a>
 							</div>
 						</div>
 
@@ -96,16 +67,16 @@
 							</div>
 						</div>
 						
-						<div class="form-group radio"  data-radio="{??$data['is_show']}">
-							<label class="control-label col-sm-3">是否显示：</label>
+						<div class="form-group radio"  data-radio="{??$data['status']}">
+							<label class="control-label col-sm-3">状态：</label>
 							<div class="radio-inline">
 								<label>
-									<input type="radio"  name="is_show" value="1" > 是
+									<input type="radio"  name="status" value="1" > 开启
 								</label>
 							</div>
 							<div class="radio-inline">
 								<label >
-									<input type="radio"  name="is_show" value="0"> 否
+									<input type="radio"  name="status" value="0"> 关闭
 								</label>
 							</div>
 						</div>

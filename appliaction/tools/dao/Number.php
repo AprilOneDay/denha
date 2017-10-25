@@ -1,4 +1,7 @@
 <?php
+/**
+ * 数字处理模块
+ */
 namespace app\tools\dao;
 
 class Number

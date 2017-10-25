@@ -25,12 +25,12 @@ class Init extends denha\Controller
             $user = table('User')->where($map)->field('id,type,imei,time_out')->find();
             if ($user) {
                 if ($user['imei'] != $this->imei && $this->imei) {
-                    $this->appReturn(array('status' => false, 'msg' => '请登录'));
+                    $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
                 }
 
                 //超过token时间 重新登录
                 if ($user['time_out'] < TIME) {
-                    $this->appReturn(array('status' => false, 'msg' => '请登录'));
+                    $this->appReturn(array('status' => false, 'msg' => '登录超时,请重新登录', 'code' => 501));
                 }
 
                 $this->uid        = $user['id'];
@@ -67,7 +67,7 @@ class Init extends denha\Controller
     public function checkShop()
     {
         if (!$this->uid) {
-            $this->appReturn(array('status' => false, 'msg' => '请登录'));
+            $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
         }
 
         if ($this->group != 2) {
@@ -79,7 +79,7 @@ class Init extends denha\Controller
     public function checkIndividual()
     {
         if (!$this->uid) {
-            $this->appReturn(array('status' => false, 'msg' => '请登录'));
+            $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
         }
 
         if ($this->group != 1) {
@@ -118,23 +118,25 @@ class Init extends denha\Controller
         if ($files) {
             $reslut = dao('Upload')->uploadfile($files, $path);
             if (!$reslut) {
-                $this->appReturn($rreslut);
+                $this->appReturn($reslut);
             }
+        } else {
+            $reslut['data']['name'] = array();
+        }
 
-            if (is_array($merge)) {
-                foreach ($merge as $key => $value) {
-                    $url         = array();
-                    $url         = pathinfo($value);
-                    $merge[$key] = $url['basename'];
-                }
-                $data = implode(',', array_filter(array_replace($merge, $reslut['data']['name'])));
+        if (is_array($merge)) {
+            foreach ($merge as $key => $value) {
+                $url         = array();
+                $url         = pathinfo($value);
+                $merge[$key] = $url['basename'];
+            }
+            //替换数组
+            $data = implode(',', array_filter(array_replace($merge, $reslut['data']['name'])));
 /*                var_dump($merge);
 var_dump($reslut['data']['name']);
 var_dump($data);die;*/
-            } else {
-                $data = implode(',', $reslut['data']['name']);
-            }
-
+        } else {
+            $data = implode(',', $reslut['data']['name']);
         }
 
         return $data;

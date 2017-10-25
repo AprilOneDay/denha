@@ -16,72 +16,41 @@
 						<div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger"></span>
-								<span>店铺名称</span>
+								<span>用户名</span>
 							</label>
 							<div class="col-sm-8">
-								<input type="text" value="{??$data['name']}" name="name" placeholder="标题"  disabled class="form-control">	
+								<input type="text" value="{??$data['username']}" name="username" placeholder="标题"  disabled class="form-control">	
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger"></span>
-								<span>店铺头图</span>
+								<span>用户昵称</span>
 							</label>
 							<div class="col-sm-8">
-								<img src="{$data['avatar']}" width="150" height="100" style="margin-left: 10px;">
+								<input type="text" value="{??$data['nickname']}" name="nickname" placeholder="标题"  disabled class="form-control">	
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger"></span>
-								<span for="myDate">店铺评分</span>
+								<span>手机号</span>
 							</label>
 							<div class="col-sm-8">
-								<input type="text" value="{??$data['credit_level']['value']}"  disabled class="form-control">	
+								<input type="text" value="{??$data['mobile']}" name="mobile"  disabled class="form-control">	
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger"></span>
-								<span for="myDate">店铺照片</span>
+								<span for="myDate">会员积分</span>
 							</label>
 							<div class="col-sm-8">
-								{loop $data['ablum'] $key $value}
-									<img src="{$value}" width="150" height="100" style="margin-left: 10px;">
-								{/loop}
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-sm-3">
-								<span class="text-danger"></span>
-								<span for="myDate">店铺认证信息</span>
-							</label>
-							<div class="col-sm-8">
-								{loop $data['ide_ablum'] $key $value}
-									<img src="{$value}" width="150" height="100" style="margin-left: 10px;">
-								{/loop}
-							</div>
-						</div>
-						<div class="form-group radio" data-radio="{??$data['is_ide']}">
-							<label class="control-label col-sm-3">认证状态：</label>
-							<div class="radio-inline">
-								<label>
-									<input type="radio"  name="is_ide"  value="0"> 未认证 
-								</label>
-							</div>
-							<div class="radio-inline">
-								<label >
-									<input type="radio" name="is_ide"  value="1"> 已认证
-								</label>
-							</div>
-							<div class="radio-inline">
-								<label>
-									<input type="radio"  name="is_ide"  value="2"> 认证未通过
-								</label>
+								<input type="text" value="{??$data['integral']}" name="integral"  disabled class="form-control">	
 							</div>
 						</div>
 						<div class="form-group radio" data-radio="{??$data['status']}">
-							<label class="control-label col-sm-3">店铺状态</label>
+							<label class="control-label col-sm-3">会员状态</label>
 							<div class="radio-inline">
 								<label>
 									<input type="radio" name="status"  value="1"> 开启

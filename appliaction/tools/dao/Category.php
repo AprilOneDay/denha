@@ -1,4 +1,7 @@
 <?php
+/**
+ * 分类模块管理
+ */
 namespace app\tools\dao;
 
 class Category

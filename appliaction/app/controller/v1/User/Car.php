@@ -12,7 +12,7 @@ class Car extends \app\app\controller\Init
     {
         parent::__construct();
         if (!$this->uid) {
-            $this->appReturn(array('status' => false, 'msg' => '请登录'));
+            $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
         }
     }
 
@@ -74,12 +74,13 @@ class Car extends \app\app\controller\Init
             $data['mileage'] = post('mileage', 'floatval', 0);
             $data['price']   = post('price', 'floatval', 0);
 
-            $data['style']        = post('style', 'text', '');
-            $data['model']        = post('model', 'text', '');
-            $data['buy_time']     = post('buy_time', 'intval', 0);
-            $data['city']         = post('city', 'text', '');
-            $data['gearbox']      = post('gearbox', 'text', '');
-            $data['gases']        = post('gases', 'text', '');
+            $data['style']    = post('style', 'text', '');
+            $data['model']    = post('model', 'text', '');
+            $data['buy_time'] = post('buy_time', 'intval', 0);
+            $data['city']     = post('city', 'text', '');
+            $data['gearbox']  = post('gearbox', 'text', '');
+            $data['gases']    = post('gases', 'text', '');
+
             $data['displacement'] = post('displacement', 'text', '');
             $data['model_remark'] = post('model_remark', 'text', '');
             $data['vin']          = post('vin', 'text', '');
@@ -105,9 +106,9 @@ class Car extends \app\app\controller\Init
                 $this->appReturn(array('status' => false, 'msg' => '请输入款号'));
             }
 
-            if (!$data['mileage']) {
-                $this->appReturn(array('status' => false, 'msg' => '请输入里程数'));
-            }
+            /* if (!$data['mileage']) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入里程数'));
+            }*/
 
             if (!$data['city']) {
                 $this->appReturn(array('status' => false, 'msg' => '请输入城市'));
@@ -119,6 +120,8 @@ class Car extends \app\app\controller\Init
 
             //上传banner图 并生成封面图片
             $data['banner'] = $this->appUpload($files['banner'], $data['banner'], 'car');
+
+            //取第一张图片封面图
             if (stripos($data['banner'], ',') !== false) {
                 $data['thumb'] = substr($data['banner'], 0, stripos($data['banner'], ','));
             } else {
@@ -153,7 +156,7 @@ class Car extends \app\app\controller\Init
                 if ($result) {
                     //添加相册
                     foreach ($ablum['ablum'] as $key => $value) {
-                        table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $result, 'description' => $ablum['description'][$key]));
+                        table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $id, 'description' => $ablum['description'][$key]));
                     }
                 }
 
@@ -171,7 +174,7 @@ class Car extends \app\app\controller\Init
                     table('GoodsAblum')->where(array('goods_id' => $id))->delete();
                     //添加相册
                     foreach ($ablum['ablum'] as $key => $value) {
-                        table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $result, 'description' => $ablum['description'][$key]));
+                        table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $id, 'description' => $ablum['description'][$key]));
                     }
 
                     $this->appReturn(array('msg' => '编辑成功'));
@@ -182,7 +185,12 @@ class Car extends \app\app\controller\Init
         } else {
             $id = get('id', 'intval', 0);
             if ($id) {
-                $data               = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->find();
+                $data = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->find();
+
+                if (!$data) {
+                    $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
+                }
+
                 $data['banner']     = $this->appImgArray($data['banner'], 'car');
                 $data['guarantee']  = explode(',', $data['guarantee']);
                 $data['city_copy']  = (string) dao('Category')->getName($data['city']);
@@ -192,7 +200,7 @@ class Car extends \app\app\controller\Init
                 foreach ($ablum as $key => $value) {
                     $ablum[$key]['path'] = $this->appImg($value['path'], 'car');
                 }
-                $data['ablum'] = (array) $ablum;
+                $data['ablum'] = $ablum ? (array) $ablum : array();
             }
 
             $data['other'] = array(
@@ -248,6 +256,7 @@ class Car extends \app\app\controller\Init
     {
         $data['start_time'] = post('start_time', 'intval', 0);
         $data['end_time']   = post('end_time', 'intval', 0);
+        $data['mobile']     = post('mobile', 'text', '');
 
         $id     = post('id', 'intval', 0);
         $origin = post('origin', 'intval', 0);
@@ -260,10 +269,22 @@ class Car extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '参数错误'));
         }
 
-/*
-if (date('Y-m-d', $data['start_time']) != date('Y-m-d', $data['end_time'])) {
-$this->appReturn(array('status' => false, 'msg' => '预约超过一天了'));
-}*/
+        if ($data['start_time'] <= TIME) {
+            $this->appReturn(array('status' => false, 'msg' => '选择时间错误'));
+        }
+
+        if (!$data['mobile']) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入预约电话'));
+        }
+
+        $goodsCar = table('GoodsCar')->where('id', $id)->field('status')->find();
+        if (!$goodsCar) {
+            $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
+        }
+
+        if ($goodsCar['status'] == 2) {
+            $this->appReturn(array('status' => false, 'msg' => '该商品已下架'));
+        }
 
         $map['goods_id']   = $id;
         $map['start_time'] = $data['start_time'];

@@ -40,13 +40,17 @@
 										 		<td align="center"><input type="text" class="form-control" value="{$value['sort']}" name="id[{$value['id']}]"></td>
 												<td>{$value['id']}</td>
 												<td>
-													<a href="{$value['url']}?param[column_id]={$value['id']}" target="iframe0" style="display: block;width: 100%;"><span>{$value['delimiter']}</span>{$value['name']}</a>
+													<a href="{$value['url']}?param[column_id]={$value['id']}" target="iframe0" style="display: block;width: 100%;"><span>{$value['delimiter']}</span>{$value['name']}
+														{if !$value['is_show']}
+														<span style="color: red">[隐]</span>
+														{/if}
+													</a>
 												</td>
-												<td align='center'>{$value['is_show']}</td>
+												<td align='center'>{$value['is_show_copy']}</td>
 												<td align='center'>
 													<a class="btn-open" data-href="{F:url('edit',array('parentid'=>$value['id']))}" data-title="编辑菜单" data-height="800px" data-parentId="list.id">添加子菜单</a>
 													<span class="text-explode">|</span>
-													<a class="btn-open" data-href="{F:url('edit',array('id'=>$value['id']))}" data-title="编辑菜单" data-id="list.id"  data-height="800px">编辑</a>
+													<a class="btn-open" data-href="{F:url('edit',array('id'=>$value['id']))}" data-title="编辑菜单" data-id="list.id"  data-height="800px" data-tooltip="{$value['name']}">编辑</a>
 													<span class="text-explode">|</span>
 													<a onclick="del(list.id)">删除</a>
 												</td>

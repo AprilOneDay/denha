@@ -18,7 +18,7 @@ class User extends \app\app\controller\Init
         $user = table('UserShop')->where(array('uid' => $this->uid))->field('name,avatar,credit_level,status')->find();
 
         $user['avatar']       = imgUrl($user['avatar'], 'avatar', 0, getConfig('config.app', 'imgUrl'));
-        $user['credit_level'] = dao('User')->getShopCredit($user['credit_level']);
+        $user['credit_level'] = dao('User')->getShopCredit($this->uid);
         $data['user']         = $user;
         //获取未读信息条数
         $data['tot_read_total'] = (int) table('UserMessage')->where(array('to_uid' => $this->uid, 'is_reader' => 0))->field('count(*) as num')->find('one');
@@ -113,9 +113,9 @@ class User extends \app\app\controller\Init
             $data                  = table('UserShop')->where(array('uid' => $this->uid))->find();
             $data['avatar']        = $this->appImg($data['avatar'], 'avatar');
             $data['ablum']         = $this->appImgArray($data['ablum'], 'shop');
-            $data['ablum_num']     = count($data['ablum_num']);
+            $data['ablum_num']     = count($data['ablum']);
             $data['category']      = explode(',', $data['category']);
-            $data['category_copy'] = !$data['category'] ? '选择分类' : dao('Category')->getName($data['category']);
+            $data['category_copy'] = !$data['category'] ? '选择分类' : (array) dao('Category')->getName($data['category']);
             $data['ide_ablum']     = $this->appImgArray($data['ide_ablum'], 'ide');
             $this->appReturn(array('data' => $data));
         }
@@ -137,7 +137,7 @@ class User extends \app\app\controller\Init
             $files['ide_ablum'] = files('ide_ablum_files');
 
             $data['ide_ablum'] = $this->appUpload($files['ide_ablum'], $data['ide_ablum'], 'ide');
-            $data['is_ide']    = 0;
+            $data['is_ide']    = 3;
 
             $result = table('UserShop')->where(array('uid' => $this->uid))->save($data);
 

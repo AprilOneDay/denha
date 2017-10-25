@@ -94,6 +94,7 @@ class Route
         $module     = self::initValue('module', 'index');
         $controller = self::initValue('controller', 'index');
         $action     = self::initValue('action', 'index');
+
         define('MODULE', $module);
         define('CONTROLLER', $controller);
         define('ACTION', $action);

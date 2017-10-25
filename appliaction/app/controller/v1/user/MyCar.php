@@ -69,7 +69,7 @@ class MyCar extends \app\app\controller\Init
             }
 
             if (!$data['produce_time']) {
-                $this->appReturn(array('status' => false, 'msg' => '请输入生成时间'));
+                $this->appReturn(array('status' => false, 'msg' => '请输入生产时间'));
             }
 
             if (!$data['buy_time']) {

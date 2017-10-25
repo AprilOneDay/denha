@@ -17,7 +17,7 @@ class User extends \app\app\controller\Init
     public function todayAvailableBehavior()
     {
         if (!$this->uid) {
-            $this->appReturn(array('status' => false, 'msg' => '请登录'));
+            $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
         }
 
         $type = post('type', 'intval', 0);
@@ -44,16 +44,16 @@ class User extends \app\app\controller\Init
     public function todaySign()
     {
         if (!$this->uid) {
-            $this->appReturn(array('status' => false, 'msg' => '请登录'));
+            $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
         }
 
-        $isResult = dao('User')->todayAvailableBehavior($this->uid, '每日签到');
+        $isResult = dao('User')->todayAvailableBehavior($this->uid, 'user_daily_bonus');
 
         if ($isResult['status'] && !$isResult['data']['bool']) {
             $this->appReturn(array('status' => false, 'msg' => '已签到'));
         }
 
-        $result = dao('Integral')->add($this->uid, 2);
+        $result = dao('Integral')->add($this->uid, 'user_daily_bonus');
 
         if ($result['status']) {
             $this->appReturn(array('msg' => '签到成功', 'data' => $result['data']));
@@ -72,7 +72,7 @@ class User extends \app\app\controller\Init
     public function myIntegral()
     {
         if (!$this->uid) {
-            $this->appReturn(array('status' => false, 'msg' => '请登录'));
+            $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
         }
 
         $pageNo   = get('pageNo', 'intval', 1);

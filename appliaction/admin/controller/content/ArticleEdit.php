@@ -12,6 +12,8 @@ class ArticleEdit extends \app\admin\controller\Init
     private static $modelId;
     //当前模型数据库
     private static $dataTable;
+    //模板视图地址
+    private static $tpl;
     //模型数据库类型
     public function edit()
     {
@@ -23,6 +25,7 @@ class ArticleEdit extends \app\admin\controller\Init
 
         self::$modelId   = $modelId;
         self::$dataTable = $modelTable[self::$modelId];
+        self::$tpl       = 'article_edit/edit_' . $modelId;
 
         if ($isEdit) {
             denha\Log::error('存在子级栏目,不可创建文章');
@@ -34,6 +37,8 @@ class ArticleEdit extends \app\admin\controller\Init
                 break;
             case '2':
                 $this->edit_2();
+            case '3':
+                $this->edit_3();
                 # code...
                 break;
             default:
@@ -132,7 +137,7 @@ class ArticleEdit extends \app\admin\controller\Init
 
             $this->assign('data', $rs);
             $this->assign('other', $other);
-            $this->show('article_edit/edit');
+            $this->show(self::$tpl);
         }
     }
 
@@ -175,7 +180,50 @@ class ArticleEdit extends \app\admin\controller\Init
 
             $this->assign('data', $rs);
             $this->assign('other', $other);
-            $this->show('article_edit/edit_2');
+            $this->show(self::$tpl);
+        }
+    }
+
+    //课程
+    public function edit_3()
+    {
+        $id       = get('id', 'intval', 0);
+        $columnId = get('column_id', 'intval', 0);
+
+        if (IS_POST) {
+            $data['teacher_uid'] = post('teacher_uid', 'intval', 0);
+
+            $data['position']    = post('position', 'text', '');
+            $data['position_en'] = post('position_en', 'text', '');
+
+            $dataId = $this->defaults(); //保存主表
+
+            if ($dataId && $id) {
+                $resultData = table('Article' . self::$dataTable)->where(array('id' => $id))->save($data);
+                $this->ajaxReturn(array('status' => true, 'msg' => '修改成功'));
+            } else {
+                $data['id'] = $dataId;
+                $resultData = table('Article' . self::$dataTable)->add($data);
+                $this->ajaxReturn(array('status' => true, 'msg' => '添加成功'));
+            }
+
+        } else {
+            if ($id) {
+                $rs = $this->getEditConent($id);
+
+            } else {
+                $rs              = array('is_show' => 1, 'is_recommend' => 0, 'created' => date('Y-m-d', TIME), 'model_id' => self::$modelId);
+                $rs['column_id'] = $columnId;
+            }
+
+            $other = array(
+                'featuredCopy'   => dao('Category')->getList(34),
+                'columnListCopy' => dao('Column', 'admin')->columnList(),
+            );
+
+            $this->assign('data', $rs);
+            $this->assign('other', $other);
+            $this->show(self::$tpl);
         }
     }
 

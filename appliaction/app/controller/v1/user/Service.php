@@ -27,6 +27,14 @@ class Service extends \app\app\controller\Init
         $data['end_time']   = post('end_time', 'intval', 0);
         $data['my_car_id']  = post('my_car_id', 'intval', 0);
 
+        $data['buy_time'] = post('buy_time', 'intval', '');
+        $data['mileage']  = post('mobile', 'intval', '');
+
+        $data['style']        = post('style', 'text', '');
+        $data['brand']        = post('brand', 'text', '');
+        $data['produce_time'] = post('produce_time', 'text', '');
+        $data['mobile']       = post('mobile', 'text', '');
+
         $id     = post('id', 'intval', 0);
         $origin = post('origin', 'intval', 0);
 
@@ -38,12 +46,38 @@ class Service extends \app\app\controller\Init
 
         $version = APP_VERSION;
 
-        if (!$data['my_car_id']) {
-            $this->appReturn(array('status' => false, 'msg' => '请选择对应爱车'));
-        }
-
         if (!$id || !$data['start_time']) {
             $this->appReturn(array('status' => false, 'msg' => '参数错误'));
+        }
+
+        if ($data['start_time'] <= TIME) {
+            $this->appReturn(array('status' => false, 'msg' => '选择时间错误'));
+        }
+
+        if (!$data['mobile']) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入预约电话'));
+        }
+
+        if (!$data['my_car_id'] && !$data['brand']) {
+            $this->appReturn(array('status' => false, 'msg' => '请选择品牌'));
+        }
+
+        if (!$data['my_car_id'] && !$data['mileage']) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入里程数'));
+        }
+
+        /*if (!$data['my_car_id']) {
+        $this->appReturn(array('status' => false, 'msg' => '请选择对应爱车'));
+        }
+         */
+
+        $goods = table('GoodsService')->where('id', $id)->field('status')->find();
+        if (!$goods) {
+            $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
+        }
+
+        if ($goods['status'] == 2) {
+            $this->appReturn(array('status' => false, 'msg' => '该商品已下架'));
         }
 
         /*if (date('Y-m-d', $data['start_time']) != date('Y-m-d', $data['end_time'])) {

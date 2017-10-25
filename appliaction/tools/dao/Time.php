@@ -1,4 +1,7 @@
 <?php
+/**
+ * 时间处理模块
+ */
 namespace app\tools\dao;
 
 class Time
@@ -14,10 +17,10 @@ class Time
     public function hdStatus($startTime = 0, $endTime = 0)
     {
         //未开始
-        $status = 0;
+        $status = 1;
         //进行中
         if ($startTime >= TIME) {
-            $status = 1;
+            $status = 0;
         }
         //已结束
         elseif ($endTime <= TIME) {

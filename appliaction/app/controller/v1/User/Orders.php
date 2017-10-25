@@ -22,6 +22,9 @@ class Orders extends \app\app\controller\Init
      */
     public function lists()
     {
+        //定时任务关闭超过预约时间的订单
+        dao('Orders', 'app')->changeOrdersStatus($this->uid);
+
         $type        = get('type', 'intval', 1);
         $orderStatus = get('order_status', 'intval', 0);
         $pageNo      = get('pageNo', 'intval', 1);
@@ -40,7 +43,7 @@ class Orders extends \app\app\controller\Init
         foreach ($list as $key => $value) {
             switch ($type) {
                 case '1':
-                    $goods = table('OrdersCar')->where('order_sn', $value['order_sn'])->field('title,ascription,goods_id,thumb,price_original,price,produce_time,mileage,start_time,end_time')->find('array');
+                    $goods = table('OrdersCar')->where('order_sn', $value['order_sn'])->field('title,ascription,goods_id,thumb,price_original,price,produce_time,mileage,start_time,end_time,mobile')->find('array');
                     foreach ($goods as $k => $v) {
                         $goods[$k]['price_original'] = dao('Number')->price($v['price_original']);
                         $goods[$k]['price']          = dao('Number')->price($v['price']);
@@ -51,7 +54,7 @@ class Orders extends \app\app\controller\Init
                     }
                     break;
                 case '2':
-                    $goods = table('OrdersService')->where('order_sn', $value['order_sn'])->field('title,goods_id,thumb,price_original,price,mileage,start_time,end_time,vin,brand,style,produce_time,buy_time')->find('array');
+                    $goods = table('OrdersService')->where('order_sn', $value['order_sn'])->field('title,goods_id,thumb,price_original,price,mileage,start_time,end_time,vin,brand,style,produce_time,buy_time,mobile')->find('array');
                     foreach ($goods as $k => $v) {
                         $goods[$k]['price_original'] = dao('Number')->price($v['price_original']);
                         $goods[$k]['price']          = dao('Number')->price($v['price']);
@@ -133,6 +136,51 @@ class Orders extends \app\app\controller\Init
     }
 
     /**
+     * 买家拒绝预约
+     * @date   2017-09-22T17:12:24+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function refuseTime()
+    {
+        $orderSn = post('order_sn', 'text', '');
+
+        if (!$orderSn) {
+            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
+        }
+
+        $map['uid']      = $this->uid;
+        $map['order_sn'] = $orderSn;
+        $map['status']   = 2;
+
+        $orders = table('Orders')->where($map)->field('id,seller_uid')->find();
+        if (!$orders) {
+            $this->appReturn(array('status' => false, 'msg' => '可操作信息不存在'));
+        }
+
+        $user = table('User')->where('id', $this->uid)->field('nickname,mobile')->find();
+
+        //发送站内信参数
+        $sendData = array(
+            'nickname' => $user['nickname'],
+            'mobile'   => $user['mobile'],
+        );
+        //站内信跳转参数
+        $jumpData = array('type' => 2, 'order_sn' => $orderSn);
+
+        $data['status'] = 3;
+
+        $result = table('Orders')->where('id', $orders['id'])->save($data);
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '执行失败'));
+        }
+
+        dao('Message')->send($orders['seller_uid'], 'seller_appointment_refuse_time', $sendData, $jumpData);
+
+        $this->appReturn(array('msg' => '操作成功'));
+    }
+
+    /**
      * 买家删除已拒绝订单
      * @date   2017-09-22T16:41:34+0800
      * @author ChenMingjiang
@@ -204,7 +252,8 @@ class Orders extends \app\app\controller\Init
         //领取抵扣卷
         $gift = table('Gift')->where(array('order_sn' => $orderSn, 'status' => 0))->find();
         if ($gift['type'] == 1) {
-            $result = dao('Coupon')->send($this->uid, $gift['id'], $gift['value']);
+            //增加抵扣卷领取记录
+            $result = dao('Coupon')->send($this->uid, $gift['value'], 1, $gift['id']);
             if (!$result['status']) {
                 table('Orders')->rollback();
                 $this->appReturn($result);
@@ -223,7 +272,7 @@ class Orders extends \app\app\controller\Init
     public function comment()
     {
         $orderSn = post('order_sn', 'text', '');
-        $score   = post('score', 'intval', 0);
+        $score   = post('score', 'intval', 50);
 
         $content = post('content', 'text', '');
 
@@ -275,11 +324,11 @@ class Orders extends \app\app\controller\Init
             }
 
             //增加店铺打分
-            $data['score']   = $score;
-            $data['type']    = 1;
-            $data['value']   = $orders['seller_uid'];
-            $data['created'] = TIME;
-            $data['uid']     = $this->uid;
+            $data['score']    = $score;
+            $data['type']     = 1;
+            $data['shop_uid'] = $orders['seller_uid'];
+            $data['created']  = TIME;
+            $data['uid']      = $this->uid;
 
             $resultScore = table('Score')->add($data);
             if (!$resultScore) {

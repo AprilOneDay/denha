@@ -1,4 +1,7 @@
 <?php
+/**
+ * 短信模块
+ */
 namespace app\tools\dao;
 
 class Sms

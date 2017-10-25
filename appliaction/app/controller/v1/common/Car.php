@@ -18,7 +18,7 @@ class Car extends \app\app\controller\Init
     {
 
         if (!$this->uid) {
-            $this->appReturn(array('status' => false, 'msg' => '请登录'));
+            $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
         }
 
         $id     = post('id', 'intval', 0);

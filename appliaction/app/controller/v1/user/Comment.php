@@ -1,6 +1,6 @@
 <?php
 /**
- * 抵扣卷模块管理
+ * 评论模块管理
  */
 namespace app\app\controller\v1\user;
 
@@ -12,7 +12,7 @@ class Comment extends \app\app\controller\Init
     {
         parent::__construct();
         if (!$this->uid) {
-            $this->appReturn(array('status' => false, 'msg' => '请登录'));
+            $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
         }
     }
 

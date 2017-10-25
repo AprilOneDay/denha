@@ -19,12 +19,14 @@ class Sms extends \app\app\controller\Init
         $country = post('country_id', 'text', '');
         $mobile  = post('mobile', 'text', '');
 
-        if (!is_numeric($mobile)) {
-            $this->appReturn(array('status' => false, 'msg' => '手机号码请不要输入特殊字符'));
-        }
+        /*$this->appReturn(array('status' => false, 'msg' => json_encode($_POST), 'mobile' => $_POST['mobile'], ',mobile_2' => $mobile, 'post_array' => implode(',', $_POST)));*/
 
         if (!$mobile) {
             $this->appReturn(array('status' => false, 'msg' => '请输入电话号码'));
+        }
+
+        if (!is_numeric(trim($mobile))) {
+            $this->appReturn(array('status' => false, 'msg' => '手机号码请不要输入特殊字符'));
         }
 
         if (!$country) {
