@@ -12,7 +12,6 @@ class Circle extends \app\app\controller\Init
     {
         parent::__construct();
         $this->checkShop();
-        $this->checkIde();
     }
 
     public function lists()

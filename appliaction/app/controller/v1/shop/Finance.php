@@ -20,22 +20,22 @@ class Finance extends \app\app\controller\Init
         $startThismonth = mktime(0, 0, 0, date('m'), 1, date('Y'));
         $endThismonth   = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
 
-        $map                 = array();
-        $map['seller_uid']   = $this->uid;
-        $map['status']       = 1;
-        $map['order_status'] = array('>=', 3);
-        $map['created']      = array('between', $startThismonth, $endThismonth);
-
+        $map                        = array();
+        $map['seller_uid']          = $this->uid;
+        $map['status']              = 1;
+        $map['order_status']        = array('>=', 3);
+        $map['created']             = array('between', $startThismonth, $endThismonth);
         $data['thismonth_turnover'] = (float) table('Orders')->where($map)->field('SUM(acount) as acount')->find('one');
+        $data['thismonth_turnover'] = sprintf('%.2f', $data['thismonth_turnover']);
 
         //本月订单
-        $map               = array();
-        $map['seller_uid'] = $this->uid;
-        $map['status']     = 1;
-        $map['created']    = array('between', $startThismonth, $endThismonth);
-
+        $map                   = array();
+        $map['seller_uid']     = $this->uid;
+        $map['status']         = 1;
+        $map['created']        = array('between', $startThismonth, $endThismonth);
         $data['thismonth_num'] = table('Orders')->where($map)->field('count(*) as num')->find('one');
         //echo table('Orders')->getSql();die;
+        //
         //上月营业额
         $startLastmonth = mktime(0, 0, 0, date('m') - 1, 1, date('Y'));
         $endLastmonth   = mktime(0, 0, 0, date('m'), 1, date('Y')) - 24 * 3600;
@@ -46,6 +46,7 @@ class Finance extends \app\app\controller\Init
         $map['order_status']        = array('>=', 3);
         $map['created']             = array('between', $startLastmonth, $endLastmonth);
         $data['lastmonth_turnover'] = (float) table('Orders')->where($map)->field('SUM(acount) as acount')->find('one');
+        $data['lastmonth_turnover'] = sprintf('%.2f', $data['lastmonth_turnover']);
         //echo table('Orders')->getSql();die;
 
         //上月总共订单

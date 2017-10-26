@@ -69,8 +69,8 @@ class Server extends \app\app\controller\Init
             $data['brand']        = post('brand', 'intval', 0);
             $data['is_lease']     = post('is_lease', 'intval', 0);
 
-            $data['mileage'] = post('mileage', 'floatval', 0);
-            $data['price']   = post('price', 'floatval', 0);
+            $data['mileage'] = post('mileage', 'float', 0);
+            $data['price']   = post('price', 'float', 0);
 
             $data['style']        = post('style', 'text', '');
             $data['model']        = post('model', 'text', '');
@@ -132,18 +132,18 @@ class Server extends \app\app\controller\Init
             }
 
             if (!$data['banner']) {
-                $this->appReturn(array('status' => false, 'msg' => '请上传图片'));
+                $this->appReturn(array('status' => false, 'msg' => '请上传主图'));
             }
 
             if (count(explode(',', $data['banner'])) > 5) {
-                $this->appReturn(array('status' => false, 'msg' => '最多可传5张图片'));
+                $this->appReturn(array('status' => false, 'msg' => '最多可传5张主图'));
             }
 
             $ablum['ablum'] = explode(',', $this->appUpload($files['ablum'], $ablum['ablum'], 'car'));
 
             //添加
             if (!$id) {
-                $data['type']    = $this->group;
+                $data['type']    = 2;
                 $data['uid']     = $this->uid;
                 $data['created'] = TIME;
 
@@ -155,6 +155,10 @@ class Server extends \app\app\controller\Init
                 . ($data['model_remark'] != '' ? ' ' . $data['model_remark'] : '');
 
                 $result = table('GoodsCar')->add($data);
+
+                if (!$result) {
+                    $this->appReturn(array('status' => false, 'msg' => '执行失败,请联系管理员'));
+                }
 
                 if ($result) {
                     //添加相册
@@ -173,6 +177,11 @@ class Server extends \app\app\controller\Init
                 }
 
                 $result = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->save($data);
+
+                if (!$result) {
+                    $this->appReturn(array('status' => false, 'msg' => '执行失败,请联系管理员'));
+                }
+
                 if ($result) {
                     //清空相册
                     table('GoodsAblum')->where(array('goods_id' => $id))->delete();
@@ -271,6 +280,10 @@ class Server extends \app\app\controller\Init
 
                 $result = table('GoodsService')->where(array('id' => $id))->save($data);
 
+                if (!$result) {
+                    $this->appReturn(array('status' => false, 'msg' => '执行失败,请联系管理员'));
+                }
+
                 if ($result) {
                     $this->appReturn(array('msg' => '编辑成功'));
                 }
@@ -306,10 +319,21 @@ class Server extends \app\app\controller\Init
      */
     public function serviceList()
     {
+        $pageNo   = get('pageNo', 'intval', 1);
+        $pageSize = get('pageSize', 'intval', 10);
+        $status   = get('status', 'text', '');
+
+        $offer = max(($pageNo - 1), 0) * $pageSize;
+
         $map['uid'] = $this->uid;
-        $pageNo     = get('pageNo', 'intval', 1);
-        $pageSize   = get('pageSize', 'intval', 10);
-        $offer      = max(($pageNo - 1), 0) * $pageSize;
+
+        if ($status > 2) {
+            $this->appReturn(array('status' => false, 'msg' => 'status 参数错误'));
+        }
+
+        if ($status) {
+            $map['status'] = $status;
+        }
 
         $list = table('GoodsService')->where($map)->order('created desc')->limit($offer, $pageSize)->find('array');
         foreach ($list as $key => $value) {

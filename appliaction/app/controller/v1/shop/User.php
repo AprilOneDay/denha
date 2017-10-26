@@ -45,7 +45,7 @@ class User extends \app\app\controller\Init
         $map['is_percentage']  = 0;
         $map['type']           = 1;
         $notPayMoney           = (int) table('Orders')->where($map)->field('SUM(acount) as acount')->find('one');
-        $data['not_pay_money'] = max($notPayMoney * $commission / 100, 0);
+        $data['not_pay_money'] = sprintf('%.2f', max($notPayMoney * $commission / 100, 0));
 
         $this->appReturn(array('data' => $data));
 

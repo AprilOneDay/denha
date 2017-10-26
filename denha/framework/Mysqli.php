@@ -397,6 +397,9 @@ class Mysqli
         empty($this->limit) ?: $this->_sql .= $this->limit;
 
         $result = $this->query();
+        if (!$result) {
+            throw new Exception('查询sql错误:' . $this->_sql);
+        }
 
         //获取记录条数
         $this->total = mysqli_num_rows($result);
@@ -417,12 +420,12 @@ class Mysqli
         }
         //单字段数组模式
         elseif ($value == 'one' && $isArray) {
-            while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+            while ($row = mysqli_fetch_array($result, MYSQLI_NUM)) {
                 $this->field = str_replace('`', '', $this->field);
                 if (count($row) > 1) {
                     throw new Exception('sql模块中one只能查询单个字段内容请设置field函数');
                 }
-                $data[] = $row[$this->field];
+                $data[] = $row[0];
             }
 
             if (empty($data)) {
@@ -483,9 +486,11 @@ class Mysqli
         }
         $this->field = $newField;
 
-        $sql    = 'INSERT INTO `' . $this->table . '` SET ' . $this->field;
-        $result = $this->query($sql);
-        $result = mysqli_insert_id($this->link);
+        $this->_sql = 'INSERT INTO `' . $this->table . '` SET ' . $this->field;
+        $result     = $this->query();
+        if ($result) {
+            $result = mysqli_insert_id($this->link);
+        }
         return $result;
     }
 
@@ -560,6 +565,7 @@ class Mysqli
         if (!$this->where) {
             return false;
         }
+
         $this->_sql = 'DELETE FROM ' . $this->table . $this->where;
         $result     = $this->query();
         return $result;
@@ -606,15 +612,30 @@ class Mysqli
         $this->sqlInfo['time'] = $_endTime - $_beginTime; //获取执行时间
         $this->sqlInfo['sql']  = $this->_sql;
 
-        Trace::addSqlInfo($this->sqlInfo);
-        $this->sqlLog(); //记录sql
-
         if ($result) {
+            Trace::addSqlInfo($this->sqlInfo); //存入调试信息中
+            $this->addSqlLog(); //存入文件中
             return $result;
         } else {
-            throw new Exception('SQL ERROR :' . $this->_sql);
+            Trace::addErrorInfo('[SQL ERROR] ' . $this->_sql);
+            $this->addErrorSqlLog(); //存入文件
+            return false;
         }
 
+    }
+
+    public function addErrorSqlLog()
+    {
+        //如果没有写入权限尝试修改权限 如果修改后还是失败 则跳过
+        if (isWritable(DATA_PATH . 'sql_log')) {
+            $path = DATA_PATH . 'sql_log' . DS . $this->dbConfig['db_name'] . DS;
+            is_dir($path) ? '' : mkdir($path, 0755, true);
+            $path .= 'error_' . date('Y_m_d_H', TIME) . '.text';
+            $content = $this->sqlInfo['sql'] . ';';
+            $file    = fopen($path, 'a');
+            fwrite($file, $content . PHP_EOL);
+            fclose($file);
+        }
     }
 
     /**
@@ -623,22 +644,27 @@ class Mysqli
      * @author ChenMingjiang
      * @return [type]                   [description]
      */
-    public function sqlLog()
+    public function addSqlLog()
     {
+        //如果没有写入权限尝试修改权限 如果修改后还是失败 则跳过
+        if (!isWritable(DATA_PATH . 'sql_log')) {
+            return false;
+        }
+
         if ($this->sqlInfo && $this->dbConfig['db_sqlLog']) {
             $path = DATA_PATH . 'sql_log' . DS . $this->dbConfig['db_name'] . DS;
-            is_dir($path) ? '' : mkdir($path, 0077, true);
+            is_dir($path) ? '' : mkdir($path, 0755, true);
             if (stripos($this->sqlInfo['sql'], 'select') === 0) {
-                $path .= date('Y_m_d_H', TIME) . '_select.text';
+                $path .= 'select_' . date('Y_m_d_H', TIME) . '.text';
                 $content = $this->sqlInfo['sql'] . '|' . $this->sqlInfo['time'];
             } elseif (stripos($this->sqlInfo['sql'], 'update') === 0) {
-                $path .= date('Y_m_d_H', TIME) . '_update.text';
+                $path .= 'update_' . date('Y_m_d_H', TIME) . '.text';
                 $content = $this->sqlInfo['sql'] . ';';
             } elseif (stripos($this->sqlInfo['sql'], 'delete') === 0) {
-                $path .= date('Y_m_d_H', TIME) . '_delete.text';
+                $path .= 'delete_' . date('Y_m_d_H', TIME) . '.text';
                 $content = $this->sqlInfo['sql'] . ';';
             } elseif (stripos($this->sqlInfo['sql'], 'insert') === 0) {
-                $path .= date('Y_m_d_H', TIME) . '_add.text';
+                $path .= 'add_' . date('Y_m_d_H', TIME) . '.text';
                 $content = $this->sqlInfo['sql'] . ';';
             }
 

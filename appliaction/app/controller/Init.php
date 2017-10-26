@@ -21,17 +21,16 @@ class Init extends denha\Controller
 
         if ($this->token) {
             $map['token'] = $this->token;
-
-            $user = table('User')->where($map)->field('id,type,imei,time_out')->find();
+            $user         = table('User')->where($map)->field('id,type,imei,time_out')->find();
             if ($user) {
                 if ($user['imei'] != $this->imei && $this->imei) {
-                    $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
+                    $this->appReturn(array('status' => false, 'msg' => '你的账户已在其他手机登录,请重新登录', 'code' => 501));
                 }
 
                 //超过token时间 重新登录
-                if ($user['time_out'] < TIME) {
-                    $this->appReturn(array('status' => false, 'msg' => '登录超时,请重新登录', 'code' => 501));
-                }
+                /*if ($user['time_out'] < TIME) {
+                $this->appReturn(array('status' => false, 'msg' => '登录超时,请重新登录', 'code' => 501));
+                }*/
 
                 $this->uid        = $user['id'];
                 $this->group      = $user['type'];
@@ -39,23 +38,6 @@ class Init extends denha\Controller
                 $reslut           = table('User')->where(array('id' => $user['id']))->save($data);
             }
         }
-    }
-
-    protected function appReturn($value)
-    {
-        header("Content-Type:application/json; charset=utf-8");
-        $array = array(
-            'code'   => 200,
-            'status' => true,
-            'data'   => array(),
-            'msg'    => '获取数据成功',
-        );
-
-        $value = array_merge($array, $value);
-        if ($this->lg) {
-            $value['msg'] = dao('BaiduTrans')->baiduTrans($value['msg'], $this->lg);
-        }
-        exit(json_encode($value));
     }
 
     /**
@@ -101,6 +83,23 @@ class Init extends denha\Controller
         } elseif ($isIde == 0) {
             $this->appReturn(array('status' => false, 'msg' => '请先申请认证,或等待认证通过后操作'));
         }
+    }
+
+    protected function appReturn($value)
+    {
+        header("Content-Type:application/json; charset=utf-8");
+        $array = array(
+            'code'   => 200,
+            'status' => true,
+            'data'   => array(),
+            'msg'    => '获取数据成功',
+        );
+
+        $value = array_merge($array, $value);
+        if ($this->lg) {
+            $value['msg'] = dao('BaiduTrans')->baiduTrans($value['msg'], $this->lg);
+        }
+        exit(json_encode($value));
     }
 
     /**

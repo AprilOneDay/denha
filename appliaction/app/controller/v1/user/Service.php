@@ -42,8 +42,6 @@ class Service extends \app\app\controller\Init
 
         $files['ablum'] = files('ablum_files');
 
-        $data['ablum'] = $this->appUpload($files['ablum'], $data['ablum'], 'shop');
-
         $version = APP_VERSION;
 
         if (!$id || !$data['start_time']) {
@@ -92,6 +90,8 @@ class Service extends \app\app\controller\Init
         if ($is) {
             $this->appReturn(array('status' => false, 'msg' => '请选择其他时间段，该时间已有预约了'));
         }
+
+        $data['ablum'] = $this->appUpload($files['ablum'], $data['ablum'], 'shop');
 
         $dataInfo = dao('Orders')->getAddAttachedInfo(2, $id, $data);
         $result   = dao('Orders')->add($this->uid, 2, $dataInfo, 0, 0, $message, $origin, $version);

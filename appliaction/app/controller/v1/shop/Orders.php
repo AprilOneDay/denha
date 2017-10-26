@@ -38,6 +38,9 @@ class Orders extends \app\app\controller\Init
         if ($orderStatus) {
             if ($orderStatus == 3) {
                 $map['order_status'] = array('>=', $orderStatus);
+            } elseif ($orderStatus == 1) {
+                $map['order_status'] = 1;
+                $map['status']       = array('in', '0,2');
             } else {
                 $map['order_status'] = $orderStatus;
             }
@@ -593,12 +596,13 @@ class Orders extends \app\app\controller\Init
      */
     public function add()
     {
-        $dataContent['start_time'] = post('start_time', 'intval', 0);
-        $dataContent['end_time']   = post('end_time', 'intval', 0);
+        $data['start_time'] = post('start_time', 'intval', 0);
+        $data['end_time']   = post('end_time', 'intval', 0);
 
         $id     = post('id', 'intval', 0);
         $origin = post('origin', 'intval', 0);
         $acount = post('price', 'intval', 0);
+        $type   = post('type', 'intval', 0);
 
         $message = post('message', 'text', '');
 
@@ -608,20 +612,31 @@ class Orders extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '参数错误'));
         }
 
-        $isGoodsCar = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->field('id,status')->find();
-        if (!$isGoodsCar) {
+        if (!$type || !in_array($type, array(1, 2))) {
+            $this->appReturn(array('status' => false, 'msg' => '请选择type类型'));
+        }
+
+        if ($type == 1) {
+            $isGoods = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->field('id,status')->find();
+        } else {
+            $isGoods = table('GoodsService')->where(array('uid' => $this->uid, 'id' => $id))->field('id,status')->find();
+        }
+
+        if (!$isGoods) {
             $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
         }
 
-        if ($isGoodsCar['status'] == 2) {
+        if ($isGoods['status'] == 2) {
             $this->appReturn(array('status' => false, 'msg' => '该商品已下架'));
         }
 
-        $dataInfo = dao('Orders')->getAddAttachedInfo(1, $id, $dataContent);
+        $dataInfo = dao('Orders')->getAddAttachedInfo($type, $id, $data);
 
         if (!$dataInfo) {
             $this->appReturn(array('status' => false, 'msg' => 'dataInfo参数错误'));
         }
+
+        $data = array();
 
         //sellserUid => 商品lists
         foreach ($dataInfo as $key => $value) {
@@ -629,7 +644,7 @@ class Orders extends \app\app\controller\Init
 
             $data['is_temp']         = 1;
             $data['uid']             = 0;
-            $data['type']            = 1;
+            $data['type']            = $type;
             $data['status']          = 1;
             $data['order_status']    = 3;
             $data['origin']          = $origin;
@@ -638,7 +653,7 @@ class Orders extends \app\app\controller\Init
             $data['order_sn']        = $orderSn;
             $data['message']         = $message;
             $data['acount_original'] = $value['data']['acount_original'];
-            $data['acount']          = $acount;
+            $data['acount']          = !$acount ? $data['acount_original'] : $acount;
             $data['coupon_price']    = 0;
             $data['fare_price']      = 0;
             $data['created']         = $data['success_time']         = $data['pass_time']         = TIME;
@@ -655,7 +670,12 @@ class Orders extends \app\app\controller\Init
                 $goodsInfo             = $v;
                 $goodsInfo['order_sn'] = $orderSn;
 
-                $result = table('OrdersCar')->add($goodsInfo);
+                if ($type == 1) {
+                    $result = table('OrdersCar')->add($goodsInfo);
+                } else {
+                    $result = table('OrdersService')->add($goodsInfo);
+                }
+
                 if (!$result) {
                     table('Orders')->rollback();
                     $this->appReturn(array('status' => false, 'msg' => '保存附属信息有误'));
@@ -663,15 +683,6 @@ class Orders extends \app\app\controller\Init
 
             }
 
-        }
-
-        //汽车商品下架
-        if ($orders['type'] == 1) {
-            $goodsResult = table('GoodsCar')->where('id', $id)->save('status', 2);
-            if (!$goodsResult) {
-                table('User')->rollback();
-                $this->appReturn(array('status' => false, 'msg' => '汽车下架失败'));
-            }
         }
 
         table('Orders')->commit();

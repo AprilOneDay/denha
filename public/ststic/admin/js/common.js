@@ -172,7 +172,7 @@ $(function() {
                     }
                 },1000);
             }
-        })
+        },"json")
     })
 
     //提交post信息
@@ -196,7 +196,7 @@ $(function() {
                     if(reslut.status){
                    setTimeout(function(){location.reload();},1000);
                     }
-                })
+                },"json")
             }, function(){});
         }else{
             $.post(url,data,function(reslut){
@@ -204,7 +204,7 @@ $(function() {
                 if(reslut.status){
                setTimeout(function(){location.reload();},1000);
                 }
-            })
+            },"json")
         }
 
     })

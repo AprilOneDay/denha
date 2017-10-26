@@ -71,8 +71,8 @@ class Car extends \app\app\controller\Init
             $data['brand']        = post('brand', 'intval', 0);
             $data['is_lease']     = post('is_lease', 'intval', 0);
 
-            $data['mileage'] = post('mileage', 'floatval', 0);
-            $data['price']   = post('price', 'floatval', 0);
+            $data['mileage'] = post('mileage', 'float', 0);
+            $data['price']   = post('price', 'float', 0);
 
             $data['style']    = post('style', 'text', '');
             $data['model']    = post('model', 'text', '');
@@ -129,11 +129,11 @@ class Car extends \app\app\controller\Init
             }
 
             if (!$data['banner']) {
-                $this->appReturn(array('status' => false, 'msg' => '请上传图片'));
+                $this->appReturn(array('status' => false, 'msg' => '请上传主图'));
             }
 
             if (count(explode(',', $data['banner'])) > 5) {
-                $this->appReturn(array('status' => false, 'msg' => '最多可传5张图片'));
+                $this->appReturn(array('status' => false, 'msg' => '最多可传5张主图'));
             }
 
             $ablum['ablum'] = explode(',', $this->appUpload($files['ablum'], $ablum['ablum'], 'car'));
@@ -153,6 +153,10 @@ class Car extends \app\app\controller\Init
 
                 $result = table('GoodsCar')->add($data);
 
+                if (!$result) {
+                    $this->appReturn(array('status' => false, 'msg' => '执行失败,请联系管理员,请联系管理员'));
+                }
+
                 if ($result) {
                     //添加相册
                     foreach ($ablum['ablum'] as $key => $value) {
@@ -170,6 +174,10 @@ class Car extends \app\app\controller\Init
                 }
 
                 $result = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->save($data);
+                if (!$result) {
+                    $this->appReturn(array('status' => false, 'msg' => '执行失败,请联系管理员,请联系管理员'));
+                }
+
                 if ($result) {
                     table('GoodsAblum')->where(array('goods_id' => $id))->delete();
                     //添加相册
@@ -177,11 +185,10 @@ class Car extends \app\app\controller\Init
                         table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $id, 'description' => $ablum['description'][$key]));
                     }
 
-                    $this->appReturn(array('msg' => '编辑成功'));
                 }
             }
 
-            $this->appReturn(array('status' => false, 'msg' => '操作失败'));
+            $this->appReturn(array('msg' => '编辑成功'));
         } else {
             $id = get('id', 'intval', 0);
             if ($id) {
@@ -239,7 +246,7 @@ class Car extends \app\app\controller\Init
 
         $result = table('HelpCar')->add($data);
         if (!$result) {
-            $this->appReturn(array('status' => false, 'msg' => '执行失败'));
+            $this->appReturn(array('status' => false, 'msg' => '执行失败,请联系管理员'));
         }
 
         $this->appReturn(array('status' => true, 'msg' => '提交成功'));

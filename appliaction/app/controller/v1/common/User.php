@@ -26,9 +26,9 @@ class User extends \app\app\controller\Init
         }
 
         if ($type == 1) {
-            $result = dao('User')->todayAvailableBehavior($this->uid, '每日签到');
+            $result = dao('User')->todayAvailableBehavior($this->uid, 'user_daily_bonus');
         } elseif ($type == 2) {
-            $result = dao('User')->todayAvailableBehavior($this->uid, '每日分享');
+            $result = dao('User')->todayAvailableBehavior($this->uid, 'user_share');
         }
 
         $this->appReturn($result);

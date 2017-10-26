@@ -17,5 +17,6 @@ return array(
     'db_rwSeparate'  => false, // 数据库读写是否分离 主从式有效
     'db_masterNum'   => 1, // 读写分离后 主服务器数量
     'db_slaveNo'     => '', // 指定从服务器序号
+
     'db_sqlLog'      => true, // 记录SQL信息
 );

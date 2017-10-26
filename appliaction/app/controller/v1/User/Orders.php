@@ -35,7 +35,13 @@ class Orders extends \app\app\controller\Init
         $map['uid']     = $this->uid;
         $map['del_uid'] = 0;
         if ($orderStatus) {
-            $map['order_status'] = $orderStatus;
+            if ($orderStatus == 1) {
+                $map['order_status'] = 1;
+                $map['status']       = array('in', '0,2');
+            } else {
+                $map['order_status'] = $orderStatus;
+            }
+
         }
         $map['type'] = $type;
 

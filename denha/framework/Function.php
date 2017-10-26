@@ -222,6 +222,21 @@ function comprise($path)
     include VIEW_PATH . $path . '.html';
 }
 
+//如果没有写入权限尝试修改权限 如果修改后还是失败 则跳过
+function isWritable($path)
+{
+    if (!is_writable($path)) {
+        chmod($path, 0755);
+        if (!is_writable($path)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    return true;
+}
+
 //获取配置常量
 //getVar('tags','console.article') 获取 appliaction/console/tools/var/article文件中的 tags.$ext 文件
 //getVar('tags','article') 获取 appliaction/tools/var/article文件中的 tags.$ext 文件

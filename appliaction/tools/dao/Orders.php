@@ -6,7 +6,6 @@ namespace app\tools\dao;
 
 class Orders
 {
-
     public function add($uid, $type, $ordersInfo = array(), $farePrice = 0, $couponPrice = 0, $message = '', $origin = 0, $version = 0)
     {
 
@@ -16,7 +15,6 @@ class Orders
 
         if (!$ordersInfo) {
             return array('status' => false, 'msg' => 'dataInfo参数错误');
-
         }
 
         //sellserUid => 商品lists
@@ -56,7 +54,6 @@ class Orders
                         if (!$result) {
                             table('Orders')->rollback();
                             return array('status' => false, 'msg' => '保存附属信息有误', 'sql' => table('OrdersCar')->getSql());
-
                         }
                         break;
                     case '2':
@@ -64,8 +61,8 @@ class Orders
                         if (!$result) {
                             table('Orders')->rollback();
                             return array('status' => false, 'msg' => '保存附属信息有误', 'sql' => table('OrdersService')->getSql());
-
                         }
+                        var_dump($result);die;
                         break;
                     default:
                         # code...
