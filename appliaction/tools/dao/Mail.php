@@ -24,6 +24,17 @@ class Mail
             return false;
         }
 
+        //如果当天已经发送两次则不再发送
+        $todaystart = strtotime(date('Y-m-d' . '00:00:00', TIME)); //获取今天00:00
+        $todayend   = strtotime(date('Y-m-d' . '00:00:00', TIME + 3600 * 24)); //获取今天24:00
+
+        $map['md5']     = md5($content);
+        $map['created'] = array('between', $todaystart, $todayend);
+        $num            = table('MailLog')->where($map)->count();
+        if ($num >= 2) {
+            return false;
+        }
+
         $smtp   = new denha\Smtp();
         $result = $smtp->sendmail($to, $title, $content);
 
