@@ -63,7 +63,7 @@ class Upload
         $type ?: $type = 'jpg,png,gif,jpeg';
 
         $path = PUBLIC_PATH . 'uploadfile' . DS . $path . DS;
-        is_dir($path) ? '' : mkdir($path, 0077, true);
+        is_dir($path) ? '' : mkdir($path, 0755, true);
 
         foreach ($files as $key => $value) {
             if ($value['size'] >= $size * 1024 * 1024) {
@@ -71,6 +71,7 @@ class Upload
             }
 
             $ext = ltrim($value['type'], substr($value['type'], 0, stripos($value['type'], '/') + 1));
+
             //$ext = end(pathinfo($value['tmp_name']));
 
             if (stripos($type, $ext) === false) {

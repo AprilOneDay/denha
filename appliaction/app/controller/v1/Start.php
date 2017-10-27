@@ -16,6 +16,7 @@ class Start
      */
     public static function up($route = 'mca')
     {
+        //var_dump($client);die;
         //执行创建文件
         get('build') == false ?: self::bulid();
 

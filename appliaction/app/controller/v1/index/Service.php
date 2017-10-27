@@ -99,6 +99,7 @@ class Service extends \app\app\controller\Init
         $data['ablum']                = $this->appImgArray($data['ablum'], 'car');
         $data['shop']                 = table('UserShop')->where('uid', $data['uid'])->field('name,uid,credit_level')->find();
         $data['shop']['credit_level'] = dao('User')->getShopCredit($data['shop']['uid']);
+        $data['coment']               = dao('Comment')->getList(3, $id); //获取评价内容
         $this->appReturn(array('data' => $data));
     }
 

@@ -36,6 +36,14 @@ class Sms extends \app\app\controller\Init
         //创建验证码
         $code = rand('11111', '99999');
 
+        //判断是否已过验证码时间
+        $map['mobile'] = $mobile;
+        $sms           = table('SmsVerify')->where($map)->field('id,created')->find();
+
+        if (TIME - $sms['created'] <= 360) {
+            $this->appReturn(array('status' => false, 'msg' => '请等待' . (360 - (TIME - $sms['created'])) . '秒'));
+        }
+
         $sendData['code']       = $code;
         $reslut                 = dao('Sms')->send($mobile, 'verification', $sendData, 'get', $country);
         $reslut['data']['time'] = 360;
@@ -52,5 +60,10 @@ class Sms extends \app\app\controller\Init
     {
         $data = $this->appArray(getVar('country', 'sms'));
         $this->appReturn(array('data' => $data));
+    }
+
+    public function sendMail()
+    {
+        dao('1234');
     }
 }

@@ -212,8 +212,8 @@ function dao($name, $app = '')
             return $_dao[$value];
         }
     }
-
-    die('Dao方法：' . $class . '不存在');
+    throw new Exception('Dao方法：' . $class . '不存在');
+    //die('Dao方法：' . $class . '不存在');
 }
 
 //包含文件
@@ -372,7 +372,7 @@ function getCookie($name, $encode = false)
 function imgUrl($name, $path = '', $size = 0, $host = false)
 {
 
-    if (stripos($name, ',') !== false) {
+    if (stripos($name, ',') !== false && !is_array($name)) {
         $imgName = explode(',', $name);
     } else {
         $imgName = is_array($name) ? $name : (array) $name;
@@ -411,6 +411,18 @@ function imgUrl($name, $path = '', $size = 0, $host = false)
 
     $data = count($data) > 1 ? $data : current($data);
     return $data;
+}
+
+/**
+ * 根骨图片地址获取到图片名称
+ * @date   2017-10-27T08:53:23+0800
+ * @author ChenMingjiang
+ * @param  [type]                   $path [description]
+ * @return [type]                         [description]
+ */
+function fromImgaUrlGetImgaName($path)
+{
+    (!$path && stripos($path, 'nd.jpg') === false) ?: (string) ltrim($param['thumb'], substr($param['thumb'], 0, strripos($param['thumb'], '/') + 1));
 }
 
 function imgFetch($path)

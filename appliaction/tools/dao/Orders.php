@@ -62,7 +62,6 @@ class Orders
                             table('Orders')->rollback();
                             return array('status' => false, 'msg' => '保存附属信息有误', 'sql' => table('OrdersService')->getSql());
                         }
-                        var_dump($result);die;
                         break;
                     default:
                         # code...

@@ -297,10 +297,10 @@ class Car extends \app\app\controller\Init
         $map['start_time'] = $data['start_time'];
         $map['end_time']   = $data['end_time'];
 
-        $is = table('OrdersCar')->where($map)->field('id')->find('one');
+        /* $is = table('OrdersCar')->where($map)->field('id')->find('one');
         if ($is) {
-            $this->appReturn(array('status' => false, 'msg' => '请选择其他时间段，该时间已有预约了'));
-        }
+        $this->appReturn(array('status' => false, 'msg' => '请选择其他时间段，该时间已有预约了'));
+        }*/
 
         $dataInfo = dao('Orders')->getAddAttachedInfo(1, $id, $data);
         $result   = dao('Orders')->add($this->uid, 1, $dataInfo, 0, 0, $message, $origin, $version);

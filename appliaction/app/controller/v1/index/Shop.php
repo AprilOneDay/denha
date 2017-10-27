@@ -8,6 +8,12 @@ use app\app\controller;
 
 class Shop extends \app\app\controller\Init
 {
+    /**
+     * 汽车店铺首页
+     * @date   2017-10-27T10:29:53+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
     public function index()
     {
         $uid      = get('uid', 'intval', 0);
@@ -21,13 +27,14 @@ class Shop extends \app\app\controller\Init
 
         $map['uid'] = $uid;
 
-        $shop = table('UserShop')->field('avatar,address,woker_time,name,ablum,status')->where($map)->find();
+        $shop = table('UserShop')->field('uid,avatar,address,woker_time,name,ablum,status')->where($map)->find();
 
         if (!$shop) {
             $this->appReturn(array('status' => false, 'msg' => '店铺信息不存在'));
         }
-        $shop['avatar'] = $this->appImg($shop['avatar'], 'avatar');
-        $shop['ablum']  = $this->appImgArray($shop['ablum'], 'shop');
+        $shop['avatar']       = $this->appImg($shop['avatar'], 'avatar');
+        $shop['ablum']        = $this->appImgArray($shop['ablum'], 'shop');
+        $shop['credit_level'] = dao('User')->getShopCredit($shop['uid']);
 
         if (!$shop['status']) {
             $this->appReturn(array('status' => false, 'msg' => '店铺暂停营业,敬请期待'));
@@ -53,6 +60,12 @@ class Shop extends \app\app\controller\Init
 
     }
 
+    /**
+     * 服务店铺首页
+     * @date   2017-10-27T10:29:53+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
     public function service()
     {
         $uid      = get('uid', 'intval', 0);
@@ -66,13 +79,14 @@ class Shop extends \app\app\controller\Init
 
         $map['uid'] = $uid;
 
-        $shop = table('UserShop')->field('avatar,address,woker_time,name,ablum,status')->where($map)->find();
+        $shop = table('UserShop')->field('uid,avatar,address,woker_time,name,ablum,status')->where($map)->find();
 
         if (!$shop) {
             $this->appReturn(array('status' => false, 'msg' => '店铺信息不存在'));
         }
-        $shop['avatar'] = $this->appImg($shop['avatar'], 'avatar');
-        $shop['ablum']  = $this->appImgArray($shop['ablum'], 'shop');
+        $shop['avatar']       = $this->appImg($shop['avatar'], 'avatar');
+        $shop['ablum']        = $this->appImgArray($shop['ablum'], 'shop');
+        $shop['credit_level'] = dao('User')->getShopCredit($shop['uid']);
 
         if (!$shop['status']) {
             $this->appReturn(array('status' => false, 'msg' => '店铺暂停营业,敬请期待'));

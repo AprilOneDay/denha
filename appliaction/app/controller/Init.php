@@ -116,7 +116,7 @@ class Init extends denha\Controller
         $data = '';
         if ($files) {
             $reslut = dao('Upload')->uploadfile($files, $path);
-            if (!$reslut) {
+            if (!$reslut['status']) {
                 $this->appReturn($reslut);
             }
         } else {
@@ -170,7 +170,6 @@ var_dump($data);die;*/
      */
     public function appImgArray($data = '', $path = '', $size = 0)
     {
-
         $data = $data ? (array) imgUrl($data, $path, 0, getConfig('config.app', 'imgUrl')) : array();
         return (array) $data;
     }

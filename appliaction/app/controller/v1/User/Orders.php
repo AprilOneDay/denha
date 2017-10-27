@@ -38,6 +38,8 @@ class Orders extends \app\app\controller\Init
             if ($orderStatus == 1) {
                 $map['order_status'] = 1;
                 $map['status']       = array('in', '0,2');
+            } elseif ($orderStatus == 3) {
+                $map['order_status'] = array('>=', 3);
             } else {
                 $map['order_status'] = $orderStatus;
             }
@@ -292,6 +294,10 @@ class Orders extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '评分最高5星,最低0星'));
         }
 
+        if (!$content) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入评价内容'));
+        }
+
         $dataContent['ablum']    = $this->appUpload($ablum, '', 'comment');
         $dataContent['order_sn'] = $orderSn;
 
@@ -307,10 +313,10 @@ class Orders extends \app\app\controller\Init
 
         if ($orders['type'] == 1) {
             $commentType = 2;
-            $ordersData  = table('OrdersCar')->where('order_sn', $orderSn)->field('goods_id')->find('one');
+            $ordersData  = table('OrdersCar')->where('order_sn', $orderSn)->field('goods_id')->find();
         } else {
             $commentType = 3;
-            $ordersData  = table('OrdersService')->where('order_sn', $orderSn)->field('goods_id')->find('one');
+            $ordersData  = table('OrdersService')->where('order_sn', $orderSn)->field('goods_id')->find();
         }
 
         $is = table('Comment')->where(array('order_sn' => $orderSn, 'uid' => $this->uid))->field('id')->find();

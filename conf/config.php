@@ -19,9 +19,21 @@ return array(
 
     /* 基础设置 */
     'debug'             => true, // 是否开启调试
-    'trace'             => true, // 是否显示页面Trace信息
+    'trace'             => false, // 是否显示页面Trace信息
 
     /* 百度翻译api */
     'baidu_trans_appid' => '20170926000085221',
     'baidu_trans_key'   => 'dEmcRIqvTsUWa1greRa4',
+
+    /* 邮件发送设置 */
+    'send_debug_mail'   => true, //错误信息是否发送邮箱
+    'send_mail'         => '350375092@qq.com', //接收邮箱账户
+
+    /* stmp邮箱发送设置 */
+    'smtp_port'         => 25, //smtp端口
+    'smtp_host'         => 'smtp.163.com', //服务器地址
+    'smtp_user'         => 'senddebug', //账户
+    'smtp_password'     => 'uVqe2aZ0Wc0DiAVo', //密码
+    'smtp_mail'         => 'senddebug@163.com', //发送邮箱名
+
 );
