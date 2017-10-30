@@ -471,19 +471,14 @@ class Mysqli
     public function add($data = '')
     {
         $newField = '';
-        if (is_array($data)) {
-            $i = 0;
-            foreach ($data as $k => $v) {
-                if ($i == 0) {
-                    $newField .= '`' . $k . '` = \'' . $v . '\'';
-                } else {
-                    $newField .= ",`" . $k . '`=\'' . $v . '\'';
-                }
-                $i++;
-            }
-        } else {
-            $newField = $field;
+        $data     = is_array($data) ? $data : explode(',', $data);
+
+        foreach ($data as $k => $v) {
+            $v = str_replace('\'', '\\\'', $v);
+            $newField .= '`' . $k . '` = \'' . $v . '\',';
         }
+
+        $newField    = substr($newField, 0, -1);
         $this->field = $newField;
 
         $this->_sql = 'INSERT INTO `' . $this->table . '` SET ' . $this->field;
@@ -522,21 +517,21 @@ class Mysqli
 
         $newField = '';
         if ($value !== '' && !is_array($data)) {
-            $newField = '`' . $data . '`=\'' . $value . '\'';
+            $newField = '`' . $data . '`=\'' . str_replace('\'', '\\\'', $value) . '\'';
         } else {
             if (is_array($data)) {
                 foreach ($data as $k => $v) {
                     if (is_array($v)) {
                         $v[0] = strtolower($v[0]);
                         if ($v[0] == 'add') {
-                            $newField .= '`' . $k . '`  = `' . $k . '` + ' . $v[1] . ',';
+                            $newField .= '`' . $k . '`  = `' . $k . '` + ' . str_replace('\'', '\\\'', $v[1]) . ',';
                         } elseif ($v[0] == 'less') {
-                            $newField .= '`' . $k . '`  = `' . $k . '` - ' . $v[1] . ',';
+                            $newField .= '`' . $k . '`  = `' . $k . '` - ' . str_replace('\'', '\\\'', $v[1]) . ',';
                         } elseif ($v[0] == 'concat') {
-                            $newField .= '`' . $k . '`  = CONCAT(`' . $k . '`,\'\',\'' . $v[1] . '\'),';
+                            $newField .= '`' . $k . '`  = CONCAT(`' . $k . '`,\'\',\'' . str_replace('\'', '\\\'', $v[1]) . '\'),';
                         }
                     } else {
-                        $newField .= '`' . $k . '`=\'' . $v . '\',';
+                        $newField .= '`' . $k . '`=\'' . str_replace('\'', '\\\'', $v) . '\',';
                     }
                 }
                 $newField = substr($newField, 0, -1);

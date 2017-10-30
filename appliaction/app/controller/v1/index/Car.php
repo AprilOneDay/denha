@@ -199,7 +199,7 @@ class Car extends \app\app\controller\Init
         $data['content'] = '';
         $ablum           = table('GoodsAblum')->where(array('goods_id' => $data['id']))->find('array');
         foreach ($ablum as $key => $value) {
-            $data['content'] .= '<p><img src="' . $this->appImg($value['path'], 'car') . '" style="width:90%;text-algin:center" /></p>';
+            $data['content'] .= '<p><img src="' . $this->appImg($value['path'], 'car') . '" style="width:96%;margin-left:2%;display:block;" /></p>';
             if ($value['description']) {
                 $data['content'] .= '<p>' . $value['description'] . '</p>';
             }

@@ -323,6 +323,7 @@ $(function() {
 
     //渲染时间插件
     $('.data-time').each(function(){
+
         var time    = $(this).val();                    //int
         var min     = $(this).attr('data-min');         // string int
         var max     = $(this).attr('data-max');         // string int
@@ -347,7 +348,7 @@ $(function() {
     })
 
     //关闭弹窗
-    $('#btn-close').click(function(){
+    $('#btn-close').on('click',function(){
         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
         parent.layer.close(index);
     });

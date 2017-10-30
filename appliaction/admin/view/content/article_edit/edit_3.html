@@ -160,24 +160,15 @@
 								<span class="text-danger"></span>
 								<span>课程安排</span>
 							</label>
-							<div class="col-sm-8">
+							<div class="col-sm-8" id="course">
 								<div class="container-fluid time" style="padding-bottom: 10px;">
-									<div class="col-sm-6 pull-left">
+									<div class="col-sm-3 pull-left">
 										<input type="text" value="{??$data['syllabus']}" name="syllabus[]"  class="form-control data-time" data-format="yyyy-dd-mm HH:mm" data-type="datetime">	
 									</div>
 									<div class="col-sm-2 pull-left">
 										<input type="text" value="{??$data['credit']}" name="credit[]"  class="form-control" placeholder="学分">	
 									</div>
-									<div class="col-sm-2">
-										<a class="btn btn-primary add-syllabus">添加</a>
-										<a class="btn btn-primary del-add-syllabus">删除</a>
-									</div>
-								</div>
-								<div class="container-fluid time" style="padding-bottom: 10px;">
-									<div class="col-sm-8 pull-left">
-										<input type="text" value="{??$data['syllabus']}" name="syllabus[]"  class="form-control data-time" data-format="yyyy-dd-mm HH:mm" data-type="datetime">	
-									</div>
-									<div class="col-sm-2">
+									<div class="col-sm-5">
 										<a class="btn btn-primary add-syllabus">添加</a>
 										<a class="btn btn-primary del-add-syllabus">删除</a>
 									</div>
@@ -273,8 +264,48 @@
 	</div>
 	{include /public/global_js}
 	<script type="text/javascript">
-	$('.add-syllabus').click(function(){
-		console.log(1111);
+	//增加课程
+	$('#course').on('click','.add-syllabus',function(){
+		$(this).parents('.container-fluid').parent().append($(this).parents('.container-fluid').clone());
+		//渲染时间插件
+	    $('.data-time').each(function(){
+	    	//判断标记 根据标记渲染
+	    	if(laydate.index  <= $('.data-time').index(this) && laydate.index >= 3){
+	    		console.log($('.data-time').index(this));
+	    		var time    = 0;                    //int
+		        var min     = $(this).attr('data-min');         // string int
+		        var max     = $(this).attr('data-max');         // string int
+		        var format    = $(this).attr('data-format');
+		        var type    = $(this).attr('data-type');        //year month date time datetime
+
+		        if(!format){ format  = 'yyyy-MM-dd'; }
+		        if(!min){ min = '1900-1-1';}
+		        if(!max){ max = '2099-12-31';}
+		        if(!type){ type = 'date';}
+		        if(!time){ time = Date.parse(new Date());}
+
+		        laydate.render({
+		          elem: this, //指定元素
+		          value:new Date(time),
+		          format:format,
+		          type:type,
+		          min:min,
+		          max:max,
+		        });
+		      
+	    	}
+	    })
+	})
+
+	//删除课程
+	$('#course').on('click','.del-add-syllabus',function(){
+		if($('.del-add-syllabus').length > 1){
+			$(this).parents('.container-fluid').remove();
+			laydate.index -= 1; //清除时间插件标记
+		}else{
+			$(this).parents().find('input[name="syllabus[]"]').val('');
+			$(this).parents().find('input[name="credit[]"]').val('0');
+		}
 	})
 	</script>
 </body>

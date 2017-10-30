@@ -245,7 +245,7 @@ class ArticleEdit extends \app\admin\controller\Init
         }
 
         $rs['created'] = date('Y-m-d', $rs['created']);
-        $rs['thumb']   = json_encode(imgUrl($rs['thumb'], 'article'));
+        $rs['thumb']   = json_encode((array) imgUrl($rs['thumb'], 'article'));
 
         return $rs;
     }

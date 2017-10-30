@@ -154,7 +154,7 @@ class Car extends \app\app\controller\Init
                 $result = table('GoodsCar')->add($data);
 
                 if (!$result) {
-                    $this->appReturn(array('status' => false, 'msg' => '执行失败,请联系管理员,请联系管理员'));
+                    $this->appReturn(array('status' => false, 'msg' => '执行失败,请联系管理员'));
                 }
 
                 if ($result) {
@@ -175,7 +175,7 @@ class Car extends \app\app\controller\Init
 
                 $result = table('GoodsCar')->where(array('uid' => $this->uid, 'id' => $id))->save($data);
                 if (!$result) {
-                    $this->appReturn(array('status' => false, 'msg' => '执行失败,请联系管理员,请联系管理员'));
+                    $this->appReturn(array('status' => false, 'msg' => '执行失败,请联系管理员'));
                 }
 
                 if ($result) {
