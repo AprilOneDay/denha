@@ -286,8 +286,9 @@ class Orders extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '可操作信息不存在'));
         }
 
-        $data['close_time'] = TIME;
-        $date['status']     = 2;
+        $data['close_time']   = TIME;
+        $data['status']       = 3;
+        $data['order_status'] = 0;
 
         $result = table('Orders')->where('id', $id)->save($data);
         if (!$result) {

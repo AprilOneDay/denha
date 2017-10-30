@@ -692,6 +692,90 @@ function getIP()
     return $ip;
 }
 
+//获取用户浏览器版本信息
+function getBrowser($agent = '')
+{
+    $agent ?: $agent = $_SERVER['HTTP_USER_AGENT'];
+    $browseragent    = ''; //浏览器
+    $browserversion  = ''; //浏览器的版本
+    if (ereg('MSIE ([0-9].[0-9]{1,2})', $agent, $version)) {
+        $browserversion = $version[1];
+        $browseragent   = "Internet Explorer";
+    } else if (ereg('Opera/([0-9]{1,2}.[0-9]{1,2})', $agent, $version)) {
+        $browserversion = $version[1];
+        $browseragent   = "Opera";
+    } else if (ereg('Firefox/([0-9.]{1,5})', $agent, $version)) {
+        $browserversion = $version[1];
+        $browseragent   = "Firefox";
+    } else if (ereg('Chrome/([0-9.]{1,3})', $agent, $version)) {
+        $browserversion = $version[1];
+        $browseragent   = "Chrome";
+    } else if (ereg('Safari/([0-9.]{1,3})', $agent, $version)) {
+        $browseragent   = "Safari";
+        $browserversion = "";
+    } else {
+        $browserversion = "";
+        $browseragent   = "Unknown";
+    }
+    return $browseragent . " " . $browserversion . ' ';
+}
+
+//获取用户操作系统
+function getSystem($agent = '')
+{
+    $agent ?: $agent = $_SERVER['HTTP_USER_AGENT'];
+    $browserplatform == '';
+    if (eregi('win', $agent) && strpos($agent, '95')) {
+        $browserplatform = "Windows 95";
+    } elseif (eregi('win 9x', $agent) && strpos($agent, '4.90')) {
+        $browserplatform = "Windows ME";
+    } elseif (eregi('win', $agent) && ereg('98', $agent)) {
+        $browserplatform = "Windows 98";
+    } elseif (eregi('win', $agent) && eregi('nt 5.0', $agent)) {
+        $browserplatform = "Windows 2000";
+    } elseif (eregi('win', $agent) && eregi('nt 5.1', $agent)) {
+        $browserplatform = "Windows XP";
+    } elseif (eregi('win', $agent) && eregi('nt 6.0', $agent)) {
+        $browserplatform = "Windows Vista";
+    } elseif (eregi('win', $agent) && eregi('nt 6.1', $agent)) {
+        $browserplatform = "Windows 7";
+    } elseif (eregi('win', $agent) && ereg('32', $agent)) {
+        $browserplatform = "Windows 32";
+    } elseif (eregi('win', $agent) && eregi('nt', $agent)) {
+        $browserplatform = "Windows NT";
+    } elseif (eregi('Mac OS', $agent)) {
+        $browserplatform = "Mac OS";
+    } elseif (eregi('linux', $agent)) {
+        $browserplatform = "Linux";
+    } elseif (eregi('unix', $agent)) {
+        $browserplatform = "Unix";
+    } elseif (eregi('sun', $agent) && eregi('os', $agent)) {
+        $browserplatform = "SunOS";
+    } elseif (eregi('ibm', $agent) && eregi('os', $agent)) {
+        $browserplatform = "IBM OS/2";
+    } elseif (eregi('Mac', $agent) && eregi('PC', $agent)) {
+        $browserplatform = "Macintosh";
+    } elseif (eregi('PowerPC', $agent)) {
+        $browserplatform = "PowerPC";
+    } elseif (eregi('AIX', $agent)) {
+        $browserplatform = "AIX";
+    } elseif (eregi('HPUX', $agent)) {
+        $browserplatform = "HPUX";
+    } elseif (eregi('NetBSD', $agent)) {
+        $browserplatform = "NetBSD";
+    } elseif (eregi('BSD', $agent)) {
+        $browserplatform = "BSD";
+    } elseif (ereg('OSF1', $agent)) {
+        $browserplatform = "OSF1";
+    } elseif (ereg('IRIX', $agent)) {
+        $browserplatform = "IRIX";
+    } elseif (eregi('FreeBSD', $agent)) {
+        $browserplatform = "FreeBSD";
+    }
+    if ($browserplatform == '') {$browserplatform = "Unknown";}
+    return $browserplatform . ' ';
+}
+
 //百度转腾讯坐标转换
 function baiduToTenxun($lat, $lng)
 {

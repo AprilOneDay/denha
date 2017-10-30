@@ -163,7 +163,7 @@ class Server extends \app\app\controller\Init
                 if ($result) {
                     //添加相册
                     foreach ($ablum['ablum'] as $key => $value) {
-                        table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $id, 'description' => $ablum['description'][$key]));
+                        table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $result, 'description' => $ablum['description'][$key]));
                     }
 
                     $this->appReturn(array('msg' => '添加成功'));

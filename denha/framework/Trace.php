@@ -67,8 +67,8 @@ class Trace
                 return include FARM_PATH . DS . 'trace' . DS . 'error.html';
             } else {
                 if (getConfig('config', 'send_debug_mail')) {
-                    $title   = $_SERVER['HTTP_HOST'] . '有一个致命错误';
-                    $content = 'FATAL ERROR : ' . $e['message'] . ' from ' . $e['file'] . ' on line ' . $e['line'];
+                    $title   = $_SERVER['HTTP_HOST'] . ' 有一个致命错误';
+                    $content = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . PHP_EOL . 'FATAL ERROR : ' . $e['message'] . ' from ' . $e['file'] . ' on line ' . $e['line'];
                     dao('Mail')->send(getConfig('config', 'send_mail'), $title, $content);
                 }
                 header("http/1.1 404 not found");
@@ -105,13 +105,12 @@ class Trace
         if (TRACE) {
             return include FARM_PATH . DS . 'trace' . DS . 'error.html';
         } else {
-
-            if (getConfig('config', 'send_debug_mail')) {
-                $title   = $_SERVER['HTTP_HOST'] . '有一个致命错误';
-                $content = $e['message'] . ' from ' . $e['file'] . ' on line ' . $e['line'] . PHP_EOL . $e['trace'];
-                dao('Mail')->send(getConfig('config', 'send_mail'), $title, $content);
-            }
-
+            //暂时不需提醒
+            /*if (getConfig('config', 'send_debug_mail')) {
+            $title   = $_SERVER['HTTP_HOST'] . ' 有一个致命错误';
+            $content = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . PHP_EOL . $e['message'] . ' from ' . $e['file'] . ' on line ' . $e['line'] . PHP_EOL . $e['trace'];
+            dao('Mail')->send(getConfig('config', 'send_mail'), $title, $content);
+            }*/
             header("http/1.1 404 not found");
             header("status: 404 not found");
             return include FARM_PATH . DS . 'trace' . DS . '404.html';

@@ -228,36 +228,36 @@ $(function() {
         var name    = $(this).attr('data-name');
         var maxNum  = Math.max($(this).attr('data-max'),1);
         var path    = $(this).attr('data-path'); 
-        var content = '<input type="file" style="display:none;" id="'+name+'" multiple="multiple"><div class="img-list" style="margin-top:20px;"><ul></ul></div>';
+        var content = '<input type="file" style="display:none;" id="'+name+'"  multiple="multiple"><div class="img-list" style="margin-top:20px;"><ul></ul></div>';
         var value   = $(this).attr('data-value');
         if(value != ''){
             value =  jQuery.parseJSON(value);
         }
-            
+
         if(maxNum == 1){
             var ablum   = '';
         }else{
             var ablum   = new Array();
         }
        
-        $(this).parent().append(content);
+        $(_this).parent().append(content);
 
         //渲染初始图片
         for(var i=0;i<value.length;i++){
-            var content = '<li style="float:left;width:150px;height:100px;margin-left:10px;"><img src="'+value[i]+'" width="150" height="100" style="border:1px solid #ccc;"> <a style="float:right;margin-top:-100px;margin-right:2px;cursor: pointer;" class="btn-del-img"><i class="glyphicon glyphicon-remove"></i></a></li>';
-            $('.img-list ul').append(content);
+            var content = '<li style="float:left;width:150px;height:100px;margin-left:10px;margin-top:10px;"><img src="'+value[i]+'" width="150" height="100" style="border:1px solid #ccc;"> <a style="float:right;margin-top:-100px;margin-right:2px;cursor: pointer;" class="btn-del-img"><i class="glyphicon glyphicon-remove"></i></a></li>';
+            $(_this).parent().find('.img-list ul').append(content);
         }
 
 
         //上传
-        $(this).click(function(){
-            $('input[type=file]').wrap('<form>').closest('form').get(0).reset();
-            $('input[type=file]').trigger('click');
+        $(_this).click(function(){
+            $('input[id='+name+']').wrap('<form>').closest('form').get(0).reset();
+            $('input[id='+name+']').trigger('click');
         })
 
         //转换图片url
         $('#'+name).change(function(e){
-            var imgLength = $('.img-list').find('img').length;
+            var imgLength = $(_this).parent().find('.img-list ul img').length;
             var files = e.target.files || e.dataTransfer.files;
             if(maxNum  && maxNum < files.length + imgLength){
                  return layer.msg('最多只能传'+maxNum+'张图片');
@@ -267,41 +267,36 @@ $(function() {
                 var reader = new FileReader();
                 reader.readAsDataURL(files[i]); 
                 reader.onload = function(e){
-
                     $.post('/common/upload/up_base64_img',{data:e.target.result,path:path},function(result){
                         if(result.status){
-                            var content = '<li style="float:left;width:150px;height:100px;margin-left:10px;"><img src="'+result.data+'" width="150" height="100" style="border:1px solid #ccc;"> <a style="float:right;margin-top:-100px;margin-right:2px;cursor: pointer;" class="btn-del-img"><i class="glyphicon glyphicon-remove"></i></a></li>';
-                            $('.img-list ul').append(content);  
+                            var content = '<li style="float:left;width:150px;height:100px;margin-left:10px;margin-top:10px;"><img src="'+result.data+'" width="150" height="100" style="border:1px solid #ccc;"> <a style="float:right;margin-top:-100px;margin-right:2px;cursor: pointer;" class="btn-del-img"><i class="glyphicon glyphicon-remove"></i></a></li>';
+                            $(_this).parent().find('.img-list ul').append(content);  
                         }
 
                         //删除照片
                         $('.btn-del-img').click(function(){
+                            //console.log($(this).parent().html());
                             $(this).parent().remove();
                             bindValue();    
                         })
 
                         bindValue();    
                     },"json");
-
-
-                   
                 }
             }
-
         })
-
         //绑定初始值
         bindValue();
-
         //删除照片
         $('.btn-del-img').click(function(){
             $(this).parent().remove();
             bindValue();
         })
 
+        //绑定input
         function bindValue(){
             var data = new Array();
-            $('.img-list').find('img').each(function(){
+            $(_this).parent().find('.img-list').find('img').each(function(){
                 var path  = $(this).attr('src');
                 path  = path.substring(path.lastIndexOf("/")+1,path.length);
                 if(path != 'nd.jpg'){
@@ -309,11 +304,11 @@ $(function() {
                 }
                 
             })
+
             var content = '<input type="hidden" name="'+name+'" value="'+data.join(',')+'" />';
             $('input[name='+name+']').remove();
-            $('.btn-ablum').parent().append(content);
+            $(_this).parent().append(content);
         }
-
     })
 
     //渲染编辑器

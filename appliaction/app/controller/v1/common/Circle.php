@@ -51,6 +51,17 @@ class Circle extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '分享失败'));
         }
 
+        //增加 每日分享赠送积分
+        $map            = array();
+        $map['created'] = array('>=', mktime(0, 0, 0, date('m'), date('d'), date('Y')));
+        $map['uid']     = $this->uid;
+        $map['flag']    = 'user_share';
+
+        $isSend = table('IntegralLog')->where($map)->field('id')->find();
+        if (!$isSend) {
+            $result = dao('Integral')->add($this->uid, 'user_share');
+        }
+
         $this->appReturn(array('msg' => '分享成功'));
     }
 

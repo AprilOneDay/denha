@@ -37,9 +37,9 @@ class ArticleEdit extends \app\admin\controller\Init
                 break;
             case '2':
                 $this->edit_2();
+                break;
             case '3':
                 $this->edit_3();
-                # code...
                 break;
             default:
                 # code...
@@ -167,7 +167,6 @@ class ArticleEdit extends \app\admin\controller\Init
         } else {
             if ($id) {
                 $rs = $this->getEditConent($id);
-
             } else {
                 $rs              = array('is_show' => 1, 'is_recommend' => 0, 'created' => date('Y-m-d', TIME), 'model_id' => self::$modelId);
                 $rs['column_id'] = $columnId;
@@ -227,7 +226,7 @@ class ArticleEdit extends \app\admin\controller\Init
         }
     }
 
-    public function getEditConent($id = 0)
+    private function getEditConent($id = 0)
     {
         if (!$id) {
             return '';
@@ -246,7 +245,7 @@ class ArticleEdit extends \app\admin\controller\Init
         }
 
         $rs['created'] = date('Y-m-d', $rs['created']);
-        $rs['thumb']   = json_encode((array) imgUrl($rs['thumb'], 'article'));
+        $rs['thumb']   = json_encode(imgUrl($rs['thumb'], 'article'));
 
         return $rs;
     }
