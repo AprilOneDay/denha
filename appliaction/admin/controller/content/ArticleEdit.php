@@ -27,6 +27,10 @@ class ArticleEdit extends \app\admin\controller\Init
         self::$dataTable = $modelTable[self::$modelId];
         self::$tpl       = 'article_edit/edit_' . $modelId;
 
+        if (!self::$dataTable) {
+            denha\Log::error('模型库尚未创建....');
+        }
+
         if ($isEdit) {
             denha\Log::error('存在子级栏目,不可创建文章');
         }
@@ -190,34 +194,98 @@ class ArticleEdit extends \app\admin\controller\Init
         $columnId = get('column_id', 'intval', 0);
 
         if (IS_POST) {
-            $data['teacher_uid'] = post('teacher_uid', 'intval', 0);
 
-            $data['position']    = post('position', 'text', '');
-            $data['position_en'] = post('position_en', 'text', '');
+            $data               = post('info');
+            $data['start_time'] = post('info.start_time', 'time');
+            $data['end_time']   = post('info.end_time', 'time');
+
+            if (!$data['sale_price']) {
+                $this->ajaxReturn(array('status' => false, 'msg' => '请输入售卖价格'));
+            }
+
+            if (!$data['sale_price']) {
+                $this->ajaxReturn(array('status' => false, 'msg' => '请输入售卖价格'));
+            }
+
+            if (!$data['teacher_id']) {
+                $this->ajaxReturn(array('status' => false, 'msg' => '请关联老师'));
+            }
+
+            if ($data['start_time'] > $data['end_time']) {
+                $this->ajaxReturn(array('status' => false, 'msg' => '开始时间大于结束时间'));
+            }
+
+            //开启事务
+            table('Article')->startTrans();
 
             $dataId = $this->defaults(); //保存主表
-
+            //编辑
             if ($dataId && $id) {
                 $resultData = table('Article' . self::$dataTable)->where(array('id' => $id))->save($data);
-                $this->ajaxReturn(array('status' => true, 'msg' => '修改成功'));
+                $dataId     = $id;
             } else {
                 $data['id'] = $dataId;
                 $resultData = table('Article' . self::$dataTable)->add($data);
-                $this->ajaxReturn(array('status' => true, 'msg' => '添加成功'));
             }
+
+            if (!$resultData) {
+                table('Article')->rollback();
+                $this->ajaxReturn(array('status' => false, 'msg' => '操作失败,请重新尝试'));
+            }
+
+            //保存课程表
+            $schedule['syllabus'] = post('syllabus');
+            $schedule['credit']   = post('credit');
+            if ($schedule) {
+                //删除 课程表
+                table('Article' . self::$dataTable . 'Schedule')->where('id', $dataId)->delete();
+
+                if (count($schedule['syllabus']) != count(array_unique($schedule['syllabus']))) {
+                    $this->ajaxReturn(array('status' => false, 'msg' => '课程时间存在相同时间，请修改'));
+                }
+
+                foreach ($schedule['syllabus'] as $key => $value) {
+                    if ($value) {
+                        $data           = array();
+                        $data           = array('id' => $dataId, 'time' => strtotime($value), 'credit' => $schedule['credit'][$key]);
+                        $resultSchedule = table('Article' . self::$dataTable . 'Schedule')->add($data);
+                        if (!$resultSchedule) {
+                            table('Article')->rollback();
+                            $this->ajaxReturn(array('status' => false, 'msg' => '课程信息保存失败,请重新尝试'));
+                        }
+                    }
+                }
+            }
+
+            table('Article')->commit();
+            $this->ajaxReturn(array('status' => true, 'msg' => '操作成功'));
 
         } else {
             if ($id) {
                 $rs = $this->getEditConent($id);
+                //获取课程信息
+                $schedule = table('Article' . self::$dataTable . 'Schedule')->where('id', $id)->field('time,credit')->find('array');
 
             } else {
-                $rs              = array('is_show' => 1, 'is_recommend' => 0, 'created' => date('Y-m-d', TIME), 'model_id' => self::$modelId);
+                $rs = array(
+                    'is_show'      => 1,
+                    'is_recommend' => 0,
+                    'created'      => date('Y-m-d', TIME),
+                    'model_id'     => self::$modelId,
+                    'sale_price'   => 0.00,
+                    'dis_price'    => 0.00,
+                    'credit'       => 0,
+                    'num'          => 0,
+                    'base_orders'  => 0,
+                    'class_type'   => 1,
+                );
                 $rs['column_id'] = $columnId;
             }
 
             $other = array(
                 'featuredCopy'   => dao('Category')->getList(34),
                 'columnListCopy' => dao('Column', 'admin')->columnList(),
+                'schedule'       => isset($schedule) ? $schedule : array(),
             );
 
             $this->assign('data', $rs);
@@ -239,7 +307,6 @@ class ArticleEdit extends \app\admin\controller\Init
         $map[$articleData . '.id'] = $id;
 
         $rs = table('Article')->join($articleData)->where($map)->find();
-
         if (!$rs) {
             denha\Log::error('附属表异常');
         }

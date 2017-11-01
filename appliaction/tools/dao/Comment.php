@@ -156,13 +156,16 @@ class Comment
         $map['del_status'] = 0;
 
         $list = table('Comment')->where($map)->order('created desc')->field('content,uid,created,to_uid')->find('array');
-        foreach ($list as $key => $value) {
-            $toUser               = dao('User')->getInfo($value['to_uid'], 'nickname,avatar');
-            $toUser['avatar']     = getConfig('config.app', 'imgUrl') . '/uploadfile/avatar/' . $toUser['avatar'];
-            $list[$key]['toUser'] = $toUser;
-            $user                 = dao('User')->getInfo($value['uid'], 'nickname,avatar');
-            $list[$key]['user']   = $user;
+        if ($list) {
+            foreach ($list as $key => $value) {
+                $toUser               = dao('User')->getInfo($value['to_uid'], 'nickname,avatar');
+                $toUser['avatar']     = getConfig('config.app', 'imgUrl') . '/uploadfile/avatar/' . $toUser['avatar'];
+                $list[$key]['toUser'] = $toUser;
+                $user                 = dao('User')->getInfo($value['uid'], 'nickname,avatar');
+                $list[$key]['user']   = $user;
+            }
         }
+
         $list = $list ? $list : array();
         return $list;
     }

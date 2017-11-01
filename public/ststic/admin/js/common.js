@@ -8,9 +8,13 @@ $(function() {
     })
     //监听content-main的宽度变化
     $(".content-main").bind("DOMNodeInserted",function(e){
-        $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) -2);
+        $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) - 10);
         return true;
     })
+
+    $(window).resize(function(){
+        init();
+    });
 
     //监听出现滚动条
     $(window).scroll(function () {
@@ -24,7 +28,7 @@ $(function() {
         $('.product-nav-scene').height($(document).height() - $('.border-top').height() - 2)
         $('.content-main').height($(document).height() - $('.border-top').height() - 2);
         if($('.product-nav-scene').css('display') == 'block'){
-            $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) - 2);
+            $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) - 10);
         }else{
             $('.content-main').width(($(document).width() - $('.sidebar-inner').width()) - 2 );
         }
@@ -324,27 +328,39 @@ $(function() {
     //渲染时间插件
     $('.data-time').each(function(){
 
-        var time    = $(this).val();                    //int
-        var min     = $(this).attr('data-min');         // string int
-        var max     = $(this).attr('data-max');         // string int
-        var format    = $(this).attr('data-format');
-        var type    = $(this).attr('data-type');        //year month date time datetime
+
+        var time       = $(this).val() * 1000;                    //int
+        var min        = $(this).attr('data-min');         // string int
+        var max        = $(this).attr('data-max');         // string int
+        var format     = $(this).attr('data-format');
+        var type       = $(this).attr('data-type');        //year month date time datetime
+        var isNull     = $(this).attr('data-isnull');        //year month date time datetime
 
 
         if(!format){ format  = 'yyyy-MM-dd'; }
         if(!min){ min = '1900-1-1';}
         if(!max){ max = '2099-12-31';}
         if(!type){ type = 'date';}
-        if(!time){ time = Date.parse(new Date());}
-
-        laydate.render({
-          elem: this, //指定元素
-          value:new Date(time),
-          format:format,
-          type:type,
-          min:min,
-          max:max,
-        });
+        if(!time){ time = new Date();}
+        if(!isNull){
+            laydate.render({
+              elem: this, //指定元素
+              value:new Date(time),
+              format:format,
+              type:type,
+              min:min,
+              max:max,
+            });
+        }else{
+            laydate.render({
+              elem: this, //指定元素
+              format:format,
+              type:type,
+              min:min,
+              max:max,
+            });
+        }
+        
     })
 
     //关闭弹窗

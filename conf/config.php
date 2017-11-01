@@ -19,7 +19,7 @@ return array(
 
     /* 基础设置 */
     'debug'             => true, // 是否开启调试
-    'trace'             => false, // 是否显示页面Trace信息
+    'trace'             => true, // 是否显示页面Trace信息
 
     /* 百度翻译api */
     'baidu_trans_appid' => '20170926000085221',

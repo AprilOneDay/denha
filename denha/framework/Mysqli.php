@@ -484,7 +484,7 @@ class Mysqli
         $this->_sql = 'INSERT INTO `' . $this->table . '` SET ' . $this->field;
         $result     = $this->query();
         if ($result) {
-            $result = mysqli_insert_id($this->link);
+            $result = max(mysqli_insert_id($this->link), 1);
         }
         return $result;
     }

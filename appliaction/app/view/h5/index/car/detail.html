@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+    <title>{$data['title']}</title>
+    <link rel="stylesheet" href="/ststic/kdqc/css/style.css">
+    <script type="text/javascript" src="/ststic/kdqc/js/flexible.js"></script>
+    <script src="/ststic/kdqc/js/zepto.min.js"></script>
+    <script src="/ststic/kdqc/js/zepto.fx.js"></script>
+    <script src="/ststic/kdqc/js/zepto.touch.js"></script>
+</head>
+<body>
+    <div class="i-title">
+        <a href="javascript:;">
+            <img src="/ststic/kdqc/images/i-left.png">
+        </a>
+        <div>
+           <!--  <a href="javascript:;">
+               <img src="/ststic/kdqc/images/i-home.png">
+           </a>
+           <a href="javascript:;">
+               <img src="/ststic/kdqc/images/i-share.png">
+           </a> -->
+            <div>车辆详情</div>
+        </div>
+    </div>
+    <div class="i-banner">
+        {if $data['banner']}
+        <div class="i-banner-box">
+            <ul data-type="img">
+                {loop $data['banner'] $value}
+                <li>
+                    <img src="{$value}">
+                </li>
+                {/loop}
+            </ul>
+            <div data-type="circle">
+                {loop $data['banner'] $value}
+                    <span class="hover"></span>
+                {/loop}
+            </div>
+        </div>
+        {/if}
+        <div class="i-car-data">
+            <p>{$data['title']}</p>
+            <p>{$data['price']}</p>
+        </div>
+        <div class="i-car-list">
+            <ul>
+                <li>
+                    <p>车龄</p>
+                    <p>{$data['car_age']}</p>
+                </li>
+                <li>
+                    <p>里程</p>
+                    <p>{$data['mileage']}</p>
+                </li>
+                <li>
+                    <p>变速箱</p>
+                    <p>{$data['gearbox']}</p>
+                </li>
+                <li>
+                    <p>所在地</p>
+                    <p>{$data['city_copy']}</p>
+                </li>
+            </ul>
+            {if $data['guarantee']}
+            <div class="i-hr"></div>
+            <ul class="i-label">
+                <li>服务保障<span>（多重保障 放心购车）</span></li>
+                <li>
+                    {if in_array(1,$data['guarantee'])}
+                    <div>一年保修<img src="/ststic/kdqc/images/i-gou.png"></div>
+                    {/if}
+                    {if in_array(2,$data['guarantee'])}
+                    <div>三次保养<img src="/ststic/kdqc/images/i-gou.png"></div>
+                    {/if}
+                    {if in_array(3,$data['guarantee'])}
+                    <div>LEASE<img src="/ststic/kdqc/images/i-gou.png"></div>
+                    {/if}
+                </li>
+            </ul>
+            {/if}
+        </div>
+    </div>
+    <div class="i-car-intro">
+        <div class="i-intro-hearder">
+            <div></div>
+            {if $data['type'] == 1}
+            <ul>
+                <li>{$data['user']['nickname']}</li>
+                <li><img src="/ststic/kdqc/images/i-sj.png">个人<img src="/ststic/kdqc/images/i-address.png">地址:{$data['user']['address']}</li>
+            </ul>
+            {else}
+            <ul>
+                <li>{$data['shop']['name']}</li>
+                <li><img src="/ststic/kdqc/images/i-sj.png">商家<img src="/ststic/kdqc/images/i-address.png">地址:{$data['shop']['address']}</li>
+            </ul>
+            {/if}
+        </div>
+        {if $data['description']}
+        <div class="i-intro-txt">
+            <p>{$data['description']}</p>
+            <img src="/ststic/kdqc/images/i-yihao1.png" class="yh-left">
+            <img src="/ststic/kdqc/images/i-yihao2.png" class="yh-right">
+        </div>
+        {/if}
+    </div>
+    <ul class="i-intro-img" style="font-size: 0.5rem; padding-left: 20px;">
+        {$data['content']}
+    </ul>
+    <div class="i-evaluate">
+        <div>
+            <span>评价</span>
+            <img src="/ststic/kdqc/images/i-star.png">
+            <img src="/ststic/kdqc/images/i-star.png">
+            <img src="/ststic/kdqc/images/i-star.png">
+            <img src="/ststic/kdqc/images/i-star.png">
+            <img src="/ststic/kdqc/images/i-star.png">
+            <span>{$data['shop']['credit_level']['value']}分</span>
+            <a href="javascript:;">
+                <img src="/ststic/kdqc/images/i-right2.png">
+            </a>
+        </div>
+        <p></p>
+        {if $data['coment']}
+        <ul>
+            {loop $data['coment'] $value}
+            <li>
+                <div>
+                    <img src="{$value['user']['avatar']}">
+                </div>
+                <ul>
+                    <li>{$value['content']}</li>
+                    <li>{F:date('Y/m/d',$value['created'])}</li>
+                </ul>
+            </li>
+            {/loop}
+        </ul>
+        {/if}
+    </div>
+    <div class="i-footer">
+        <ul>
+            <li>
+                <a href="javascript:;">
+                    <img src="/ststic/kdqc/images/i-star-b.png">
+                    <p>收藏</p>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="/ststic/kdqc/images/i-call.png">
+                    <p>电话咨询</p>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="/ststic/kdqc/images/i-zx.png">
+                    <p>咨询</p>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;">咨询看车</a>
+            </li>
+        </ul>
+    </div>
+    <script src="/ststic/kdqc/js/share.js"></script>
+</body>
+</html>

@@ -211,7 +211,7 @@ class Orders extends \app\app\controller\Init
         $map['order_sn']   = $orderSn;
         $map['status']     = 0;
 
-        $orders = table('Orders')->where($map)->field('id,order_sn,uid')->find();
+        $orders = table('Orders')->where($map)->field('id,order_sn,uid,type')->find();
         if (!$orders) {
             $this->appReturn(array('status' => false, 'msg' => '可操作信息不存在'));
         }
@@ -240,8 +240,12 @@ class Orders extends \app\app\controller\Init
             if (!$result) {
                 $this->appReturn(array('status' => false, 'msg' => '执行失败'));
             }
+            if ($orders['type'] == 1) {
+                $result = table('OrdersCar')->where('order_sn', $orderSn)->save($dataInfo);
+            } else {
+                $result = table('OrdersService')->where('order_sn', $orderSn)->save($dataInfo);
+            }
 
-            $result = table('OrdersCar')->where('order_sn', $orderSn)->save($dataInfo);
             if (!$result) {
                 $this->appReturn(array('status' => false, 'msg' => '修改时间执行失败'));
             }

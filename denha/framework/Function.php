@@ -56,7 +56,13 @@ function post($name, $type = '', $default = '')
         }
 
     } else {
-        $data = isset($_POST[$name]) ? $_POST[$name] : '';
+        //数组信息通过 xx.xxx 来获取
+        if (stripos($name, '.') !== false) {
+            $name = explode('.', $name);
+            $data = isset($_POST[$name[0]][$name[1]]) ? $_POST[$name[0]][$name[1]] : '';
+        } else {
+            $data = isset($_POST[$name]) ? $_POST[$name] : '';
+        }
     }
 
     if ($name != 'all' && !is_array($data)) {
@@ -81,6 +87,12 @@ function post($name, $type = '', $default = '')
                 break;
             case 'img':
                 $data = stripos($data, 'default') !== false ? $default : $data;
+                break;
+            case 'time':
+                if (stripos($data, '-') !== false) {
+                    $data = strtotime($data);
+                }
+                # code...
                 break;
             default:
                 # code...

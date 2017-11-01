@@ -144,6 +144,8 @@ class Car extends \app\app\controller\Init
             $brand[$key]['list']   = $value;
         }
 
+        array_unshift($brand, array('letter' => 'ALL', 'thumb' => $this->appimg(), 'name' => '全部', 'id' => 0, 'list' => array()));
+
         //$chart = getFirstCharter('讴歌');
         //var_dump($chart);die;
 
@@ -226,6 +228,13 @@ class Car extends \app\app\controller\Init
                 $data['coment'][$key]['ablum'] = $this->appImgArray($value['ablum'], 'comment');
             }
         }
+
+        $data['share'] = array(
+            'url'         => 'h5/index/car/detail?id=' . $data['id'],
+            'title'       => (string) $data['title'],
+            'description' => '推荐一款性价比超高的汽车给你查看',
+            'thumb'       => $data['thumb'],
+        );
 
         //增加浏览记录
         dao('Footprints')->add($this->uid, 1, $data['id'], $data['uid']);
