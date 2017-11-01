@@ -65,7 +65,9 @@ class User extends \app\admin\controller\Init
     {
         $id = get('id', 'intval', 0);
 
-        $data = table('User')->where('id', $id)->find();
+        if ($id) {
+            $data = table('User')->where('id', $id)->find();
+        }
 
         $this->assign('data', $data);
         $this->show();

@@ -144,7 +144,7 @@ class Car extends \app\app\controller\Init
             $brand[$key]['list']   = $value;
         }
 
-        array_unshift($brand, array('letter' => 'ALL', 'thumb' => $this->appimg(), 'name' => '全部', 'id' => 0, 'list' => array()));
+        array_unshift($brand, array('letter' => '', 'list' => array(array('thumb' => $this->appimg(), 'name' => '全部', 'id' => 0))));
 
         //$chart = getFirstCharter('讴歌');
         //var_dump($chart);die;
@@ -176,14 +176,18 @@ class Car extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
         }
 
+        if ($data['is_lease'] || stripos($data['guarantee'], 3) !== false) {
+            $data['is_lease'] = 1;
+            $data['title']    = "【转lease】" . $data['title'];
+        }
+
+        $data['brand_copy']    = dao('Category')->getName($data['brand']);
         $data['price']         = dao('Number')->price($data['price']);
         $data['mileage']       = $data['mileage'] . '万公里';
         $data['thumb']         = $this->appImg($data['thumb'], 'car');
-        $data['ablum']         = $this->appImgArray($data['ablum'], 'car');
         $data['guarantee']     = $data['guarantee'] ? explode(',', $data['guarantee']) : array();
         $data['is_collection'] = (bool) table('Collection')->where(array('uid' => $this->uid, 'value' => $data['id'], 'type' => 1, 'del_status' => 0))->field('id')->find('one');
-
-        $data['banner'] = $this->appImgArray($data['banner'], 'car');
+        $data['banner']        = $this->appImgArray($data['banner'], 'car');
 
         //获取车龄
         $age['year']                      = (int) date('Y', TIME) - (int) date('Y', $data['buy_time']);
@@ -203,7 +207,7 @@ class Car extends \app\app\controller\Init
         foreach ($ablum as $key => $value) {
             $data['content'] .= '<p><img src="' . $this->appImg($value['path'], 'car') . '" style="width:96%;margin-left:2%;display:block;" /></p>';
             if ($value['description']) {
-                $data['content'] .= '<p>' . $value['description'] . '</p>';
+                $data['content'] .= '<p style="line-height:1rem; padding-left:0.2rem">' . $value['description'] . '</p>';
             }
 
         }
@@ -230,7 +234,7 @@ class Car extends \app\app\controller\Init
         }
 
         $data['share'] = array(
-            'url'         => 'h5/index/car/detail?id=' . $data['id'],
+            'url'         => URL . '/h5/index/car/detail?id=' . $data['id'],
             'title'       => (string) $data['title'],
             'description' => '推荐一款性价比超高的汽车给你查看',
             'thumb'       => $data['thumb'],

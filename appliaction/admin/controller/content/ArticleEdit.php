@@ -114,20 +114,29 @@ class ArticleEdit extends \app\admin\controller\Init
             $data['content']    = post('content', 'text', '');
             $data['content_en'] = post('content_en', 'text', '');
 
+            //开启事务
+            table('Article')->startTrans();
             $dataId = $this->defaults(); //保存主表
 
+            //编辑
             if ($dataId && $id) {
                 $resultData = table('Article' . self::$dataTable)->where(array('id' => $id))->save($data);
-                $this->ajaxReturn(array('status' => true, 'msg' => '修改成功'));
+                $dataId     = $id;
             } else {
                 $data['id'] = $dataId;
                 $resultData = table('Article' . self::$dataTable)->add($data);
-                $this->ajaxReturn(array('status' => true, 'msg' => '添加成功'));
             }
+
+            if (!$resultData) {
+                table('Article')->rollback();
+                $this->ajaxReturn(array('status' => false, 'msg' => '操作失败,请重新尝试'));
+            }
+
+            table('Article')->commit();
+            $this->ajaxReturn(array('status' => true, 'msg' => '操作成功'));
 
         } else {
             if ($id) {
-
                 $rs = $this->getEditConent($id);
             } else {
                 $rs              = array('is_show' => 1, 'is_recommend' => 0, 'created' => date('Y-m-d', TIME), 'model_id' => self::$modelId);
@@ -157,16 +166,26 @@ class ArticleEdit extends \app\admin\controller\Init
             $data['position']    = post('position', 'text', '');
             $data['position_en'] = post('position_en', 'text', '');
 
+            //开启事务
+            table('Article')->startTrans();
             $dataId = $this->defaults(); //保存主表
 
+            //编辑
             if ($dataId && $id) {
                 $resultData = table('Article' . self::$dataTable)->where(array('id' => $id))->save($data);
-                $this->ajaxReturn(array('status' => true, 'msg' => '修改成功'));
+                $dataId     = $id;
             } else {
                 $data['id'] = $dataId;
                 $resultData = table('Article' . self::$dataTable)->add($data);
-                $this->ajaxReturn(array('status' => true, 'msg' => '添加成功'));
             }
+
+            if (!$resultData) {
+                table('Article')->rollback();
+                $this->ajaxReturn(array('status' => false, 'msg' => '操作失败,请重新尝试'));
+            }
+
+            table('Article')->commit();
+            $this->ajaxReturn(array('status' => true, 'msg' => '操作成功'));
 
         } else {
             if ($id) {
@@ -292,6 +311,21 @@ class ArticleEdit extends \app\admin\controller\Init
             $this->assign('other', $other);
             $this->show(self::$tpl);
         }
+    }
+
+    public function delArticle()
+    {
+        $id = post('id', 'intval', 0);
+        if (!$id) {
+           $this->ajaxReturn(array('status'=>false,'msg'=>'参数错误'))
+        }
+
+        $modelId = table('Article')->where('id', $id)->field('id')->find();
+        if (!$modelId) {
+            $this->ajaxReturn(array('status'=>false,'msg'=>'信息不存在'));
+        }
+
+        $result = 
     }
 
     private function getEditConent($id = 0)

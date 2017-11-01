@@ -27,6 +27,11 @@ class Car extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
         }
 
+        if ($data['is_lease'] || stripos($data['guarantee'], 3) !== false) {
+            $data['is_lease'] = 1;
+            $data['title']    = "【转lease】" . $data['title'];
+        }
+
         $data['price']         = dao('Number')->price($data['price']);
         $data['mileage']       = $data['mileage'] . '万公里';
         $data['thumb']         = $this->appImg($data['thumb'], 'car');

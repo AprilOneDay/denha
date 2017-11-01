@@ -5,6 +5,7 @@ use denha;
 
 class Upload extends denha\Controller
 {
+    //上传base64图片
     public function upBase64Img()
     {
         $img  = post('data', 'text', '');
@@ -16,5 +17,12 @@ class Upload extends denha\Controller
             $reslut['data'] = imgUrl($reslut['data'], $path);
         }
         $this->ajaxReturn($reslut);
+    }
+
+    //上传文件
+    public function upFile()
+    {
+        $data = files('file');
+        $path = post('path', 'text', '');
     }
 }

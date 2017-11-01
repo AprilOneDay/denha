@@ -368,4 +368,77 @@ $(function() {
         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
         parent.layer.close(index);
     });
+
+    //上传文件
+    $('.btn-files').each(function(){  
+        var _this    = this;
+        var name     = $(this).attr('data-name');
+        var maxNum   = Math.max($(this).attr('data-max'),1);
+        var path     = $(this).attr('data-path'); 
+        var content  = '<input type="file" style="display:none;" id="'+name+'"  multiple="multiple">';
+        var progress = '<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 1%;">1%</div></div>';
+        var value   = $(this).attr('data-value');
+        if(value != ''){
+            value =  jQuery.parseJSON(value);
+        }
+
+        if(maxNum == 1){
+            var ablum   = '';
+        }else{
+            var ablum   = new Array();
+        }
+       
+        $(_this).parent().append(content);
+
+        //上传
+        $(_this).click(function(){
+            $('input[id='+name+']').wrap('<form>').closest('form').get(0).reset();
+            $('input[id='+name+']').trigger('click');
+        })
+
+        $('#'+name).change(function(e){
+            $(_this).parent().append(progress);
+            
+            var files = e.target.files || e.dataTransfer.files;
+            var formData = new FormData();
+            formData.append('file', files[0]);
+            formData.append('path', path);
+           
+            //ajax异步上传  
+            $.ajax({  
+                url: '/common/upload/up_file',  
+                type: 'POST',  
+                data: formData,  
+                contentType: false, //必须false才会自动加上正确的Content-Type  
+                processData: false,  //必须false才会避开jQuery对 formdata 的默认处理  
+                xhr: function(){ //获取ajaxSettings中的xhr对象，为它的upload属性绑定progress事件的处理函数  
+                    myXhr = $.ajaxSettings.xhr();  
+                    if(myXhr.upload){ //检查upload属性是否存在  
+                        //绑定progress事件的回调函数  
+                        myXhr.upload.addEventListener('progress',progressHandlingFunction, false);   
+                    }  
+                    return myXhr; //xhr对象返回给jQuery使用  
+                },  
+                success: function(result){  
+                    $("#result").html(result.data);  
+                },  
+            });  
+
+            //上传进度回调函数：  
+            function progressHandlingFunction(e) {
+                console.log(e);  
+                if (e.lengthComputable) {  
+                    $('progress').attr({value : e.loaded, max : e.total}); //更新数据到进度条  
+                    var percent = e.loaded/e.total*100; 
+                    $('.progress-bar').css('width',percent+'%');
+                    $('.progress-bar').text(percent+'%'); 
+                }  
+            } 
+
+        });
+
+        
+  
+        
+    })
 })

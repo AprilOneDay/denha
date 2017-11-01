@@ -272,6 +272,12 @@ class Server extends \app\app\controller\Init
                 $this->appReturn(array('status' => false, 'msg' => '店铺分类未认证,请添加店铺服务分类后尝试'));
             }
 
+            if (stripos($data['ablum'], ',') !== false) {
+                $data['thumb'] = substr($data['ablum'], 0, stripos($data['ablum'], ','));
+            } else {
+                $data['thumb'] = $data['ablum'];
+            }
+
             if ($id) {
                 $is = table('GoodsService')->where(array('uid' => $this->uid, 'id' => $id))->field('id')->find('one');
                 if (!$is) {
