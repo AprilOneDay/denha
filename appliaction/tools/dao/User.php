@@ -351,7 +351,7 @@ class User
         if ($value) {
             $value         = max($value, 0);
             $data['star']  = $value * 2;
-            $data['value'] = $value / 10;
+            $data['value'] = sprintf('%.1f', $value / 10);
         } else {
             $data['star']  = 100;
             $data['value'] = 5;

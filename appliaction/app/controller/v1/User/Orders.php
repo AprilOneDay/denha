@@ -191,6 +191,38 @@ class Orders extends \app\app\controller\Init
     }
 
     /**
+     * 卖家关闭订单
+     */
+    public function close()
+    {
+        $orderSn = post('order_sn', 'text', '');
+        if (!$orderSn) {
+            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
+        }
+
+        $map['uid']          = $this->uid;
+        $map['order_sn']     = $orderSn;
+        $map['status']       = 0;
+        $map['order_status'] = 1;
+
+        $id = table('Orders')->where($map)->field('id')->find('one');
+        if (!$id) {
+            $this->appReturn(array('status' => false, 'msg' => '可操作信息不存在'));
+        }
+
+        $data['close_time']   = TIME;
+        $data['status']       = 3;
+        $data['order_status'] = 0;
+
+        $result = table('Orders')->where('id', $id)->save($data);
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '执行失败'));
+        }
+
+        $this->appReturn(array('msg' => '操作完成'));
+    }
+
+    /**
      * 买家删除已拒绝订单
      * @date   2017-09-22T16:41:34+0800
      * @author ChenMingjiang
@@ -296,9 +328,9 @@ class Orders extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '评分最高5星,最低0星'));
         }
 
-        if (!$content) {
-            $this->appReturn(array('status' => false, 'msg' => '请输入评价内容'));
-        }
+        /*if (!$content) {
+        $this->appReturn(array('status' => false, 'msg' => '请输入评价内容'));
+        }*/
 
         $dataContent['ablum']    = $this->appUpload($ablum, '', 'comment');
         $dataContent['order_sn'] = $orderSn;

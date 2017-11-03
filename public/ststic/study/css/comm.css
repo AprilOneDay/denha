@@ -156,7 +156,7 @@
 .li_div  .tie_li .left_tie i{ font-size:12px}
 .li_div .tie_li .right_tie{ float:right;/* width:460px;*/ }
 .li_div .tie_li .right_tie .name{ /*line-height:20px;  width:460px; height:29px;*/  float:left;  display:block}
-.li_div .tie_li .right_tie .name .biaoqian{ display:block; line-height:20px; float:right; margin-left:10px; padding:0 10px}
+.li_div .tie_li .right_tie .name .biaoqian{ display:block; line-height:20px; float:left; margin-left:10px; padding:0 10px}
 .li_div .tie_li .right_tie .name span{ display:block; float:left;color:#333; display:block; /*max-width:330px;*/ height:30px; line-height:30px; overflow:hidden}
 .li_div .tie_li .right_tie  .zd{ color:#0b6aba; border:#0b6aba 1px solid; border-radius:5px}
 .li_div .tie_li .right_tie  .jh{ color:#e79e37; border:#e79e37 1px solid; border-radius:5px}
@@ -236,7 +236,7 @@
 
 .ab_cont .ab_box .notice .tab-hd { height: 40px; color: #404040; }
 .ab_cont .ab_box .notice .tab-hd ul { /*width: 450px; */ margin:0 auto; display:block}	
-.ab_cont .ab_box .notice .tab-hd li{ float: left; height: 40px; line-height: 40px;/*width:120px;*/border: 1px solid #d5d5d5; }	
+.ab_cont .ab_box .notice .tab-hd li{ float: left; height: 40px; display:flex;display:-webkit-flex;align-items: center;justify-content: center;/*width:120px;*/border: 1px solid #d5d5d5; }
 .ab_cont .ab_box .notice .tab-hd li a{ display:block; color:#333   }	
 .ab_cont .ab_box .notice .tab-hd li a:hover{ color:#fff;  }	
 .ab_cont .ab_box .notice .tab-hd li.on{ font-weight: bold; position: relative; background:#0a6ab8 }	

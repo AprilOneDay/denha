@@ -13,9 +13,9 @@ class Comment
             return array('status' => false, 'msg' => '参数错误');
         }
 
-        if (!$content) {
-            return array('status' => false, 'msg' => '内容不能为空');
-        }
+        /*if (!$content) {
+        return array('status' => false, 'msg' => '内容不能为空');
+        }*/
 
         $data              = $dataContent;
         $data['uid']       = $uid;

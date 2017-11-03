@@ -28,7 +28,8 @@
 										<tr>
 											<th >ID</th>
 											<th>管理组</th>
-											<th>状态</th>
+											<th style="width: 100px; text-align: center;">权限等级</th>
+											<th style="width: 80px; text-align: center;">状态</th>
 											<th style="text-align:center; width: 160px;">编辑/操作</th>
 										</tr>
 									</thead>
@@ -37,7 +38,8 @@
 									 	<tr v-for="list in data.list">
 											<td>{$value['id']}</td>
 											<td>{$value['name']}</td>
-											<td>
+											<td align="center">{$value['level']} 级</td>
+											<td align="center">
 												{if $value['status']}
 													<p style="color:green">{$statusCopy[$value['status']]}</p>
 												{else}

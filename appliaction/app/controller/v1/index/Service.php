@@ -43,7 +43,7 @@ class Service extends \app\app\controller\Init
         }
 
         if ($param['distanceby'] == 1) {
-            $orderby = 'km asc';
+            $orderby = 'if(isnull(km),1,0),km asc';
         }
 
         if ($param['is_recommend'] != '') {
@@ -60,17 +60,25 @@ class Service extends \app\app\controller\Init
             $map['uid']        = array('in', $idArray);
         }
 
-        $field = "name,uid,lng,lat,(2 * 6378.137* ASIN(SQRT(POW(SIN(PI()*($lng-lng)/360),2)+COS(PI()*$lat/180)* COS(lat * PI()/180)*POW(SIN(PI()*($lat)/360),2)))) AS km";
+        $field = "name,uid,lng,lat,(2 * 6378.137* ASIN(SQRT(POW(SIN(PI()*($lng-lng)/360),2)+COS(PI()*$lat/180)* COS(lat * PI()/180)*POW(SIN(PI()*($lat)/360),2)))) AS km ";
         $list  = table('UserShop')->where($map)->order($orderby)->limit($offer, $pageSize)->field($field)->find('array');
+
         //echo table('UserShop')->getSql();die;
         foreach ($list as $key => $value) {
             $goods = table('GoodsService')->where(array('uid' => $value['uid'], 'status' => 1))->field('id,price,thumb,title,orders')->order('id desc')->limit(3)->find('array');
             foreach ($goods as $k => $v) {
                 $goods[$k]['thumb'] = $this->appImg($v['thumb'], 'car');
             }
-            $km                 = dao('Distance')->nearbyDistance($lng, $lat, $value['lng'], $value['lat']);
-            $list[$key]['km']   = !$km ? '<1Km' : round($km) . 'Km';
+            if ($value['km'] !== null) {
+                $km               = (int) dao('Distance')->nearbyDistance($lng, $lat, $value['lng'], $value['lat']);
+                $list[$key]['km'] = !$km || $km < 50 ? '<10Km' : round($km) . 'Km';
+
+            } else {
+                $list[$key]['km'] = '距离太过遥远';
+            }
+
             $list[$key]['list'] = $goods ? $goods : array();
+
         }
 
         $data['param'] = $param;

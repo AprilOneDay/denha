@@ -296,7 +296,7 @@
 	.notice{ width:100%}
 	.news_four{ width:100%}
 	.li_div{ width:85%}
-	.width1200{ width:100%; }
+	.Copyright .width1200{ width:100%; }
 	.header_box{ width:100%}
 	.logo_nav{ width:50%}
 	.li_div{width:90%;  margin:0 auto;}
@@ -396,8 +396,8 @@
 	.tab-pal .azkc { width:100%}
 	.tab-pal .team li .img_t img{ vertical-align:middle;height:10rem;position: relative;
 		left: 50%;
-		-webkit-transform: ;
-		-moz-transform: ;
+		-webkit-transform: translateX(-50%);
+		-moz-transform: translateX(-50%);
 		-ms-transform: translateX(-50%);
 		-o-transform:translateX(-50%) ;
 		transform: translateX(-50%); }

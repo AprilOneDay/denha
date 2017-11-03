@@ -60,4 +60,13 @@ class Index extends \app\app\controller\Init
 
         $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));
     }
+
+    /** 获取安卓最新下载版本 */
+    public function version()
+    {
+        $data            = table('AppVersion')->order('id desc')->find();
+        $data['apk_url'] = URL . $data['apk_url'];
+
+        $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));
+    }
 }

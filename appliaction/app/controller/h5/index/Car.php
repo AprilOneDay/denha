@@ -9,7 +9,12 @@ use denha;
 
 class Car extends \app\app\controller\Init
 {
-    private static $tpl = '/h5/' . MODULE . '/' . CONTROLLER . '/' . ACTION;
+    private static $tpl;
+
+    public function __construct()
+    {
+        self::$tpl = '/h5/' . MODULE . '/' . CONTROLLER . '/' . ACTION;
+    }
 
     public function detail()
     {
@@ -90,6 +95,11 @@ class Car extends \app\app\controller\Init
         dao('Footprints')->addHot($data['uid'], 1, $data['id']);
         $this->assign('data', $data);
         //print_r($data);
+        $this->show(self::$tpl);
+    }
+
+    public function rule()
+    {
         $this->show(self::$tpl);
     }
 }

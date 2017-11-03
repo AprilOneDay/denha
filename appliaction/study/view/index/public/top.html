@@ -41,7 +41,7 @@ $(document).ready(function(){
 			    ?>
 			    {loop $columnList $value}
 			    	<?php $value['bname'] = explode(' ',trim($value['bname'])); ?>
-                	<li><a href="{$value['jump_url']}"><i></i><b>{$value['name']}</b><span><em>{$value['bname'][0]}</em><em>{$value['bname'][1]}</em></span></a></li>
+                	<li><a href="{$value['jump_url']}"><i></i><b>{$value['name']}</b><span><em>{$value['bname'][0]}&#8194;</em><em>{$value['bname'][1]}</em></span></a></li>
                 {/loop}
             </ul>
         </div>
