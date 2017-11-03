@@ -315,17 +315,25 @@ class ArticleEdit extends \app\admin\controller\Init
 
     public function delArticle()
     {
-        $id = post('id', 'intval', 0);
+        $modelTable = getVar('model_table', 'admin.article');
+        $id         = post('id', 'intval', 0);
         if (!$id) {
-           $this->ajaxReturn(array('status'=>false,'msg'=>'参数错误'))
+            $this->ajaxReturn(array('status' => false, 'msg' => '参数错误'));
         }
 
         $modelId = table('Article')->where('id', $id)->field('id')->find();
         if (!$modelId) {
-            $this->ajaxReturn(array('status'=>false,'msg'=>'信息不存在'));
+            $this->ajaxReturn(array('status' => false, 'msg' => '信息不存在'));
         }
 
-        $result = 
+        $result = table('Article')->where('id', $id)->delete();
+        if (!$result) {
+            $this->ajaxReturn(array('status' => false, 'msg' => '删除失败了'));
+        }
+
+        table('Article' . $modelTable[self::$modelId])->where('id', $id)->delete();
+
+        $this->ajaxReturn(array('status' => true, 'msg' => '删除成功'));
     }
 
     private function getEditConent($id = 0)

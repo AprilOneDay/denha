@@ -89,7 +89,7 @@ class User extends \app\app\controller\Init
         }
 
         $data['integral'] = dao('User')->getIntegral($this->uid);
-        $data['list']     = $list;
+        $data['list']     = $list ? $list : array();
 
         $this->appReturn(array('status' => true, 'msg' => '获取数据成功', 'data' => $data));
     }

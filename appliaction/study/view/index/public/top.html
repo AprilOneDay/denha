@@ -1,0 +1,49 @@
+<div class="header clearfix">
+	<div class="header_box  width1201">
+        <div class="header_left fl"><b>您好，欢迎来到恒鼎学院！</b><a href="login.html">登录<i>|</i></a><a href="reg.html">注册</a></div>
+        <div class="ch_en" href="javascript:;" >
+        	<a href="javascript:;" class="btn-ajax-post on" data-id="" data-href="/common/version/switchlg">中文</a>|
+        	<a href="javascript:;" class="btn-ajax-post" data-id="" data-href="/common/version/switchlg">English</a>
+        </div>
+        <div class="header_right fr"><input /><a class="search_ico" href="javascript:;">搜索</a><a href="user.html" class="user_ico"><i></i>会员中心</a></div>
+    </div>
+</div>
+<div class="search_box">
+    <div>
+        <input type="text" placeholder="请输入搜索内容">
+        <span></span>
+    </div>
+</div>
+<script>
+$(document).ready(function(){
+    $(".dw").click(function(){
+        $(".nav ul").slideToggle();
+    });
+
+    $(".search_ico").click(function(){
+        $(this).toggleClass("search_ico_active");
+        $(".search_box").toggleClass("search_box_open");
+    })
+});
+</script>
+<div class="nav_box">
+    <div class="logo_nav clearfix width1200">
+        <div class="logo fl"><a href="/"><img src="/ststic/study/images/logo.jpg"/></a></div>
+        <a  class="dw">点我</a>
+        <div class="nav">
+            <ul>
+            	<?php 
+        		 	$map             = array();
+			        $map['parentid'] = 0;
+			        $map['is_show']  = 1;
+
+			        $columnList = table('Column')->where($map)->field('id,name,bname,jump_url')->find('array');
+			    ?>
+			    {loop $columnList $value}
+			    	<?php $value['bname'] = explode(' ',trim($value['bname'])); ?>
+                	<li><a href="{$value['jump_url']}"><i></i><b>{$value['name']}</b><span><em>{$value['bname'][0]}</em><em>{$value['bname'][1]}</em></span></a></li>
+                {/loop}
+            </ul>
+        </div>
+    </div>
+</div>

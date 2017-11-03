@@ -72,7 +72,7 @@ class Template
                 }
                 //相对路径
                 else {
-                    $path = APP_PATH . APP . DS . 'view' . DS . MODULE . DS . CONTROLLER . DS . $value . '.html';
+                    $path = APP_PATH . APP . DS . 'view' . DS . MODULE . DS . $value . '.html';
                 }
 
                 if (is_file($path)) {

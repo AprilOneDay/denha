@@ -47,7 +47,7 @@ class Orders extends \app\app\controller\Init
         }
         $map['type'] = $type;
 
-        $list = table('Orders')->where($map)->field('id,order_sn,message,seller_message,status,order_status,acount_original,acount')->limit($offer, $pageSize)->order('id desc')->find('array');
+        $list = table('Orders')->where($map)->field('id,uid,seller_uid,order_sn,message,seller_message,status,order_status,acount_original,acount')->limit($offer, $pageSize)->order('id desc')->find('array');
         foreach ($list as $key => $value) {
             switch ($type) {
                 case '1':
@@ -76,7 +76,9 @@ class Orders extends \app\app\controller\Init
                     # code...
                     break;
             }
-            $list[$key]['goods'] = $goods;
+            $list[$key]['goods']  = $goods;
+            $list[$key]['user']   = dao('User')->getInfo($value['uid'], 'nickname,mobile');
+            $list[$key]['seller'] = dao('User')->getInfo($value['seller_uid'], 'nickname,mobile');
         }
 
         $data = $list ? $list : array();

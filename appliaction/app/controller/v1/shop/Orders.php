@@ -50,7 +50,7 @@ class Orders extends \app\app\controller\Init
             $map['type'] = $type;
         }
 
-        $list = table('Orders')->where($map)->field('id,order_sn,message,seller_message,status,order_status,acount_original,acount')->limit($offer, $pageSize)->order('id desc')->find('array');
+        $list = table('Orders')->where($map)->field('id,uid,seller_uid,order_sn,message,seller_message,status,order_status,acount_original,acount')->limit($offer, $pageSize)->order('id desc')->find('array');
 
         foreach ($list as $key => $value) {
             switch ($type) {
@@ -81,7 +81,9 @@ class Orders extends \app\app\controller\Init
                     break;
             }
 
-            $list[$key]['goods'] = $goods;
+            $list[$key]['goods']  = $goods;
+            $list[$key]['user']   = dao('User')->getInfo($value['uid'], 'nickname,mobile');
+            $list[$key]['seller'] = dao('User')->getInfo($value['seller_uid'], 'nickname,mobile');
         }
 
         $data = $list ? $list : array();
@@ -126,9 +128,10 @@ class Orders extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '参数错误'));
         }
 
-        $map['seller_uid'] = $this->uid;
-        $map['order_sn']   = $orderSn;
-        $map['status']     = 0;
+        $map['seller_uid']   = $this->uid;
+        $map['order_sn']     = $orderSn;
+        $map['status']       = 0;
+        $map['order_status'] = 1;
 
         $orders = table('Orders')->where($map)->field('id,uid,order_sn')->find();
         //echo table('Orders')->getSql();die;
@@ -348,6 +351,11 @@ class Orders extends \app\app\controller\Init
         $result = table('Orders')->where('order_sn', $orderSn)->save($data);
         if (!$result) {
             $this->appReturn(array('status' => false, 'msg' => '操作失败'));
+        }
+
+        //增加服务订单销售数量
+        if ($orders['type'] == 2) {
+            table('GoodsService')->where('id', $ordersData['goods_id'])->save(array('orders' => array('add', 1)));
         }
 
         //赠送积分

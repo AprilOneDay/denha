@@ -13,7 +13,7 @@
 .logo_nav  .nav{ width:780px; height:90px; float:right;  padding:0}
 .logo_nav  .nav ul li{ display:block; width:155px; border-right:#e8e8e8 1px solid; float:left; height:90px;}
 .logo_nav  .nav ul li a{ display:block; width:155px; margin:0 auto; height:90px; text-align:center}
-.logo_nav  .nav ul li  i{ display:block; width:100px; height:3px; background:#fff; margin:0 auto; margin-bottom:20px}
+.logo_nav  .nav ul li  i{ display:block; width:100px; height:3px; background:#fff; margin:0 auto; margin-bottom:20px !important;}
 .logo_nav{height:90px}
 .logo_nav .logo img{ width:100%;}
 .header .ch_en{ float:right; margin-left:15px; font-size:15px;  }

@@ -217,12 +217,12 @@ class Car extends \app\app\controller\Init
 
             $data['user']['avatar']   = $this->appImg($user['avatar'], 'avatar');
             $data['user']['nickname'] = $user['nickname'];
-            $data['user']['address']  = $data['address'];
-            $data['user']['mobile']   = $data['mobile'];
+            $data['user']['address']  = $user['address'];
+            $data['user']['mobile']   = $user['mobile'];
         }
 
         if ($data['type'] == 2) {
-            $shop                         = table('UserShop')->where(array('uid' => $data['uid']))->field('avatar,name,address')->find();
+            $shop                         = table('UserShop')->where(array('uid' => $data['uid']))->field('avatar,name,address,woker_time')->find();
             $data['shop']                 = $shop;
             $data['shop']['avatar']       = $this->appImg($shop['avatar'], 'avatar');
             $data['shop']['mobile']       = (string) dao('User')->getInfo($data['uid'], 'mobile');

@@ -49,7 +49,7 @@ class Mysqli
 
         $this->link = $this->openMysql();
         mysqli_query($this->link, 'set names utf8');
-        mysqli_query($this->link, 'SET sql_mode =\'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION\'');
+        mysqli_query($this->link, 'SET sql_mode =\'ANSI,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION\'');
     }
 
     //单例实例化 避免重复New暂用资源
@@ -200,7 +200,7 @@ class Mysqli
     public function join($table, $where = '', $float = 'left')
     {
         if ($table == $this->table) {
-            denha\Log::error('关联表名字一样');
+            denha\Log::error('表与关联表名字相同');
         }
 
         $where ?: $where = $this->table . '.id =' . $table . '.id';
@@ -235,6 +235,11 @@ class Mysqli
      */
     public function field($field = '*')
     {
+        if (!$field) {
+            $this->field = '*';
+            return $this;
+        }
+
         $newField = '';
         $field    = is_array($field) ? $field : explode(',', $field);
         foreach ($field as $k => $v) {
@@ -317,21 +322,18 @@ class Mysqli
      */
     public function getField()
     {
-        $this->where = 'table_name = ' . "'" . $this->table . "'";
+        $this->where = ' where table_name = ' . "'" . $this->table . "'";
         $this->field = 'column_name';
         $this->table = 'information_schema.columns';
-        $this->limit = '99';
 
-        $sql    = "select " . $this->field . " from " . $this->table;
-        $result = $this->query($sql);
+        $this->_sql = "select " . $this->field . " from " . $this->table . $this->where;
+        $result     = $this->query();
 
-        $data = mysqli_fetch_array($result, MYSQLI_ASSOC);
-
-        foreach ($data as $key => $value) {
-            $varField[$key] = $value;
+        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+            $data[] = $row['column_name'];
         }
 
-        return $varField;
+        return $data;
     }
 
     /**

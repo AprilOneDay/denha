@@ -55,40 +55,47 @@ class Route
         if (!isset($_GET['module']) && isset($_SERVER['SCRIPT_NAME']) && isset($_SERVER['REQUEST_URI'])) {
             $uri = self::parseUri();
 
-            if ($uri) {
-                $array = explode('/', $uri);
+            $array = explode('/s/', $uri);
 
-                if (isset($array[0]) && $array[0]) {
-                    $_GET['module'] = $array[0];
-                    if (isset($array[1]) && $array[1]) {
-                        if (is_numeric($array[1])) {
+            //转换路由
+            $pathArray = array_values(array_filter(explode('/', $array[0])));
+
+            if ($pathArray) {
+                if (isset($pathArray[0]) && $pathArray[0]) {
+                    $_GET['module'] = $pathArray[0];
+                    if (isset($pathArray[1]) && $pathArray[1]) {
+                        if (is_numeric($pathArray[1])) {
                             $_GET['controller'] = 'detail';
                             $_GET['action']     = 'index';
-                            $_GET['id']         = $array[1];
+                            $_GET['id']         = $pathArray[1];
                         } else {
-                            $_GET['controller'] = $array[1];
+                            $_GET['controller'] = $pathArray[1];
                         }
 
-                        if (isset($array[2]) && $array[2]) {
-                            if (is_numeric($array[2])) {
+                        if (isset($pathArray[2]) && $pathArray[2]) {
+                            if (is_numeric($pathArray[2])) {
                                 $_GET['action'] = 'detail';
-                                $_GET['id']     = $array[2];
+                                $_GET['id']     = $pathArray[2];
                             } else {
-                                $_GET['action'] = $array[2];
-                            }
-                        }
-
-                        //静态化
-                        $total = count($array);
-                        if ($total >= 4) {
-                            for ($i = 3; $i < $total;) {
-                                $_GET[$array[$i]] = $array[$i + 1];
-                                $i += 2;
+                                $_GET['action'] = $pathArray[2];
                             }
                         }
                     }
                 }
             }
+
+            //转换参数
+            if (isset($array[1])) {
+                $paramArray = array_values(array_filter(explode('/', $array[1])));
+                $total      = count($paramArray);
+
+                for ($i = 0; $i < $total;) {
+                    $_GET[$paramArray[$i]] = $paramArray[$i + 1];
+                    $i += 2;
+                }
+
+            }
+
         }
 
         $module     = self::initValue('module', 'index');
@@ -101,6 +108,7 @@ class Route
 
         self::$path  = APP ? APP . DS : '';
         self::$class = 'app\\' . APP . '\\' . 'controller\\' . parsename(MODULE) . '\\' . parsename(CONTROLLER, true);
+
     }
 
     public static function ca()

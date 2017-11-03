@@ -336,7 +336,11 @@ function url($location = '', $params = array(), $isGet = false)
                     $param .= '&' . $key . '=' . $value;
                 }
             } else {
-                $param .= '/' . $key . '/' . $value;
+                if (key($params) === $key && stripos($locationUrl, '?') === false) {
+                    $param .= '/s/' . $key . '/' . $value;
+                } else {
+                    $param .= '/' . $key . '/' . $value;
+                }
             }
 
         }

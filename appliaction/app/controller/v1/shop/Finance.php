@@ -92,7 +92,7 @@ class Finance extends \app\app\controller\Init
 
         $field   = "$tOrders.order_sn,$tOrders.acount,$tFinance.money,$tFinance.is_pay,$tFinance.created";
         $orderby = "$tFinance.created desc";
-        $list    = table('FinanceLog')->join($tOrders, "$tOrders.order_sn = $tFinance.content")->where($map)->field($field)->find('array');
+        $list    = table('FinanceLog')->join($tOrders, "$tOrders.order_sn = $tFinance.content")->where($map)->limit($offer, $pageSize)->field($field)->find('array');
         foreach ($list as $key => $value) {
             $list[$key]['goods'] = table('OrdersCar')->where('order_sn', $value['order_sn'])->field('title')->find();
         }

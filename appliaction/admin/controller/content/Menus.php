@@ -54,9 +54,10 @@ class Menus extends \app\admin\controller\Init
             $add     = post('add', 'intval', 1);
             $content = post('content', 'text', '');
 
-            $data['name']  = post('name', 'text', '');
-            $data['bname'] = post('bname', 'text', '');
-            $data['url']   = post('url', 'text', '');
+            $data['name']     = post('name', 'text', '');
+            $data['bname']    = post('bname', 'text', '');
+            $data['url']      = post('url', 'text', '');
+            $data['jump_url'] = post('jump_url', 'text', '');
 
             $data['model_id'] = post('model_id', 'intval', 0);
             $data['parentid'] = post('parentid', 'intval', 0);

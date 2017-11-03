@@ -159,8 +159,10 @@ class Car extends \app\app\controller\Init
 
                 if ($result) {
                     //添加相册
-                    foreach ($ablum['ablum'] as $key => $value) {
-                        table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $result, 'description' => $ablum['description'][$key]));
+                    if (array_filter($ablum['ablum'])) {
+                        foreach ($ablum['ablum'] as $key => $value) {
+                            table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $result, 'description' => $ablum['description'][$key]));
+                        }
                     }
                 }
 
@@ -181,8 +183,10 @@ class Car extends \app\app\controller\Init
                 if ($result) {
                     table('GoodsAblum')->where(array('goods_id' => $id))->delete();
                     //添加相册
-                    foreach ($ablum['ablum'] as $key => $value) {
-                        table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $id, 'description' => $ablum['description'][$key]));
+                    if (array_filter($ablum['ablum'])) {
+                        foreach ($ablum['ablum'] as $key => $value) {
+                            table('GoodsAblum')->add(array('path' => $value, 'goods_id' => $id, 'description' => $ablum['description'][$key]));
+                        }
                     }
 
                 }

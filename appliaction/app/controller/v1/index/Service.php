@@ -100,6 +100,9 @@ class Service extends \app\app\controller\Init
         $data['shop']                 = table('UserShop')->where('uid', $data['uid'])->field('name,uid,credit_level')->find();
         $data['shop']['credit_level'] = dao('User')->getShopCredit($data['shop']['uid']);
         $data['coment']               = dao('Comment')->getList(3, $id); //获取评价内容
+
+        //增加数据库访问记录
+        dao('Footprints')->addHot($data['uid'], 2, $id);
         $this->appReturn(array('data' => $data));
     }
 

@@ -6,8 +6,12 @@ namespace app\study\controller\index;
 
 class Index extends \app\study\controller\Init
 {
+
     public function index()
     {
-        $this->show();
+        $map['column_id'] = 10;
+        $about            = dao('Article')->getRowContent($map, 'description,description_en', 1);
+
+        $this->show(CONTROLLER . '/' . ACTION . $this->lg);
     }
 }

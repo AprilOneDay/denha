@@ -14,10 +14,8 @@ class Init extends denha\Controller
 
     public function __construct()
     {
-        !isset($_SERVER['HTTP_TOKEN']) ?: $this->token     = (string) $_SERVER['HTTP_TOKEN'];
-        !isset($_SERVER['HTTP_VERSION']) ?: $this->version = (string) $_SERVER['HTTP_VERSION'];
-        !isset($_SERVER['HTTP_LG']) ?: $this->lg           = (string) $_SERVER['HTTP_LG'];
-        !isset($_SERVER['HTTP_IMEI']) ?: $this->imei       = (string) $_SERVER['HTTP_IMEI'];
+
+        $this->lg = getCookie('lg') ? '_' . getCookie('lg') : '';
 
         if ($this->token) {
             $map['token'] = $this->token;

@@ -1,0 +1,48 @@
+<div class="header clearfix">
+	<div class="header_box  width1201">
+        <div class="header_left fl"><b>Hello, welcome to Hengding College！</b><a href="login.html">Sign in<i>|</i></a><a href="reg.html">Registered</a></div>
+        <div class="ch_en" href="javascript:;" >
+        	<a href="javascript:;" class="btn-ajax-post" data-id="" data-href="/common/version/switchlg">中文</a>|
+        	<a href="javascript:;" class="btn-ajax-post on" data-id="" data-href="/common/version/switchlg">English</a>
+        </div>
+        <div class="header_right fr"><input /><a class="search_ico" href="javascript:;">Search</a><a href="user.html" class="user_ico"><i></i>Member</a></div>
+    </div>
+</div>
+<div class="search_box">
+    <div>
+        <input type="text" placeholder="Enter search content">
+        <span></span>
+    </div>
+</div>
+<script>
+$(document).ready(function(){
+    $(".dw").click(function(){
+        $(".nav ul").slideToggle();
+    });
+
+    $(".search_ico").click(function(){
+        $(this).toggleClass("search_ico_active");
+        $(".search_box").toggleClass("search_box_open");
+    })
+});
+</script>
+<div class="nav_box">
+    <div class="logo_nav clearfix width1200">
+        <div class="logo fl"><a href="/"><img src="/ststic/study/images/logo.jpg"/></a></div>
+        <a  class="dw">点我</a>
+        <div class="nav">
+            <ul>
+            	<?php 
+        		 	$map             = array();
+			        $map['parentid'] = 0;
+			        $map['is_show']  = 1;
+
+			        $columnList = table('Column')->where($map)->field('id,name,bname,jump_url')->find('array');
+			    ?>
+			    {loop $columnList $value}
+                	<li><a href="{$value['jump_url']}"><i></i><b style="line-height: 45px;">{$value['bname']}</b></a></li>
+                {/loop}
+            </ul>
+        </div>
+    </div>
+</div>
