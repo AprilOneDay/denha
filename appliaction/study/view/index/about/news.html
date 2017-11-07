@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+	<title>新闻</title>
+	<link rel="stylesheet" href="/ststic/study/css/base.css">
+	<link rel="stylesheet" href="/ststic/study/css/comm.css">
+    <link rel="stylesheet" href="/ststic/study/css/mob.css">
+	<script src="/ststic/study/js/jquery.min.js"></script>
+    <script src="/ststic/study/js/jquery.SuperSlide.2.1.1.js"></script>
+    <script src="/ststic/study/js/common.js"></script>
+    <script type="text/javascript" src="/vendor/layer/layer.js"></script>
+
+
+</head>
+
+
+<body>
+	{include public/top}
+    <div class="banner clearfix">
+    	<div class="banner_box">
+        	<img src="images/banner01.png" />
+        </div>
+    </div>                                                                                                                    
+	
+    <div class="hs_cont clearfix adjust">
+    	<div class="hs_box">
+        	<div class="title">新闻中心</div>
+            <div class="cont"><p>该团队本着“教学促科研，科研出成果，成果获奖励，成果报项目，项目奖项带队伍，教师队伍促教学”的六环紧扣原则，提出了教改成果六个“一”的目标，即主持一批课题、建设一批精品课程、出版一批规划教材、研发一组考研品牌课程、指导一批学生参加国家赛事并获奖</p></div>
+        	
+            <ul class="news">
+                {loop $list $value}
+            	<li><a href="">
+                	   <div class="img_news"><img src="{F:imgUrl($value['thumb'],'article')}" /></div>
+                    </a>
+                    <div class="right_new">
+                    <b><a href="#">{$value['title']}</a></b>
+                    <p class="time">发布时间：{F:date('Y/m-d',$value['publish_time'])}</p>
+                    <p class="conts">{$value['description']}<a href="#">[更多]</a></p></div>
+                </li>
+                {/loop}
+            </ul>
+        </div>
+    </div>
+
+<div class="clearfix"></div>
+   {include public/footer}
+</body>
+<script>
+jQuery(".notice").slide({ titCell:".tab-hd li", mainCell:".tab-bd",delayTime:0 });
+</script>
+<script>
+    +function(){
+        $(".hs_cont .news li .right_new .conts").each(function(i,value){
+            if($(value).text().length>=36){
+                var newText=$(value).text().slice(0,37);
+                var link=$(value).children("a").html();
+                $(value).html(newText+"..."+link);
+            }
+        })
+    }()
+</script>
+</html>

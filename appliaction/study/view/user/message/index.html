@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html>
+   <head>
+    <title>学生门户-评论管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="charset=utf-8" />
+	<link rel="stylesheet" href="/ststic/study/css/base.css">
+	<link rel="stylesheet" href="/ststic/study/css/center.css">
+    <link rel="stylesheet" href="/ststic/study/css/u_mob.css"> 
+	<script type="text/javascript" src="/ststic/study/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/ststic/study/js/moment.js"></script>
+    <script type="text/javascript" src="/ststic/study/js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="/ststic/study/js/menu.js"></script>
+    <script type="text/javascript" src="/ststic/study/js/common.js"></script>
+    <script type="text/javascript" src="/vendor/layer/layer.js"></script>
+
+   </head>
+<body bgcolor="f1f1f1" >
+	
+        <div class="center">
+        	{include public/left_menus}
+            <div class="teacher_right teacher_right_t">
+        	<h3 class="my_news">我的消息</h3>
+            <div class="t_news">
+            	<div class="t_news_left  fl">
+                	<ul class=" clearfix">
+                    	<li {if $sign == 1}class="on"{/if}><a href="{F:url('index',array('sign'=>1))}">未读消息（10）</a></li>
+                        <li {if $sign == 2 || !$sign}class="on"{/if}><a href="{F:url('index',array('sign'=>2))}">所有消息（22）</a></li>
+                        <li {if $sign == 3}class="on"{/if}><a href="{F:url('index',array('sign'=>3))}">重要消息（22）</a></li>
+                        <li {if $sign == 4}class="on"{/if}><a href="{F:url('index',array('sign'=>4))}">发送（2）</a></li>
+                    </ul>
+                    <a class="btn_write clearfix"  href="{F:url('send')}">写消息</a>
+                </div>
+                <div class="t_news_right fr demo1">
+                	<ul class="newsul">
+                        {loop $list $value}
+                    	<li>
+                            <a class="title" href="{F:url('detail',array('id'=>$value['id']))}">{$value['title']}</a>
+                            <span class="btn_read"><a href="{F:url('detail',array('id'=>$value['id']))}">阅读更多</a></span>
+                            <span class="del btn-ajax-post" data-tips="确定删除该文章" data-id="{$value['id']}" data-href="{F:url('del')}">删除</span>
+                            <span class="time">{F:date('Y/m/d',$value['created'])}</span>
+                        </li>
+                        {/loop}
+                    	<div class="page"><p><b>2</b>/6</p><a href="#">上一页</a><a href="#">下一页</a></div>
+                    </ul>
+                
+                </div>
+                
+            </div>
+        </div>
+        </div>
+        <div class="pop">
+            <div class="popMain">
+                <div class="popTop"></div>
+                <div class="popMiddle">
+                    <p>是否确认删除？</p>
+                </div>
+                <div class="popBottom">
+                    <span class="confirm">确认</span>
+                    <span class="cancel">取消</span>
+                </div>
+            </div>
+        </div>
+        
+        
+</body>
+<script type="text/javascript">
+$(function(){
+	(function(){
+		var num;
+		$(".demo1").on('click', '.del', function(event) {
+			event.preventDefault();
+			num = $(this).index();
+			$(".pop").fadeIn('fast');
+		});
+		$(".popBottom").on('click', 'span', function(event) {
+			event.preventDefault();
+			if($(this).hasClass('confirm')){
+				$(".demo1 ul li").eq(num).remove();
+				num = "";
+				$(".pop").fadeOut();
+			}else{
+				$(".pop").fadeOut();
+				num = "";
+			}
+		});
+	})();
+	
+});
+</script>
+      <script>
+    $(document).ready(function(){
+  $(".onli").click(function(){
+  $(".t_cr_left ul").slideToggle();
+  });
+   });
+
+    </script> 
+</html>

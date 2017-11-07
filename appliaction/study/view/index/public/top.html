@@ -1,11 +1,15 @@
 <div class="header clearfix">
 	<div class="header_box  width1201">
-        <div class="header_left fl"><b>您好，欢迎来到恒鼎学院！</b><a href="login.html">登录<i>|</i></a><a href="reg.html">注册</a></div>
+        {if !$this->uid}
+        <div class="header_left fl"><b>您好，欢迎来到恒鼎学院！</b><a href="{F:url('/index/user/login')}">登录<i>|</i></a><a href="{F:url('/index/user/register')}">注册</a></div>
+        {else}
+        <div class="header_left fl"><b>{$this->nickname} 您好，欢迎来到恒鼎学院！</b><a href="javascript:;" class="btn-ajax-post" data-id="" data-href="{F:url('/index/user/outlogin')}" data-tips="确定退出登录?">退出登录</a></div>
+        {/if}
         <div class="ch_en" href="javascript:;" >
-        	<a href="javascript:;" class="btn-ajax-post on" data-id="" data-href="/common/version/switchlg">中文</a>|
+        	<a href="javascript:;" class="btn-ajax-post on">中文</a>|
         	<a href="javascript:;" class="btn-ajax-post" data-id="" data-href="/common/version/switchlg">English</a>
         </div>
-        <div class="header_right fr"><input /><a class="search_ico" href="javascript:;">搜索</a><a href="user.html" class="user_ico"><i></i>会员中心</a></div>
+        <div class="header_right fr"><input /><a class="search_ico" href="javascript:;">搜索</a><a href="{F:url('/index/user/login')}" class="user_ico"><i></i>会员中心</a></div>
     </div>
 </div>
 <div class="search_box">
@@ -37,9 +41,9 @@ $(document).ready(function(){
 			        $map['parentid'] = 0;
 			        $map['is_show']  = 1;
 
-			        $columnList = table('Column')->where($map)->field('id,name,bname,jump_url')->find('array');
+			        $topList = table('Column')->where($map)->field('id,name,bname,jump_url')->find('array');
 			    ?>
-			    {loop $columnList $value}
+			    {loop $topList $value}
 			    	<?php $value['bname'] = explode(' ',trim($value['bname'])); ?>
                 	<li><a href="{$value['jump_url']}"><i></i><b>{$value['name']}</b><span><em>{$value['bname'][0]}&#8194;</em><em>{$value['bname'][1]}</em></span></a></li>
                 {/loop}

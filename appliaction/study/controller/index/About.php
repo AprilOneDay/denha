@@ -21,4 +21,27 @@ class About extends \app\study\controller\Init
         $this->assign('about', $about);
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
     }
+
+    public function inquiry()
+    {
+        $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+    }
+
+    public function news()
+    {
+        $list = table('Article')->where('column_id', 21)->field('title,btitle,thumb,id,description,description_en,publish_time')->find('array');
+        $this->assign('list', $list);
+        $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+
+    }
+
+    public function detail()
+    {
+        $id        = get('id', 'intval', 0);
+        $map['id'] = $id;
+
+        $data = dao('Article')->getRowContent($map, 'id,parentid,publish_time,title,btitle,content,content_en', 1);
+        $this->assign('data', $data);
+        $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+    }
 }

@@ -163,20 +163,12 @@ class Orders extends \app\app\controller\Init
         $map['order_sn'] = $orderSn;
         $map['status']   = 2;
 
-        $orders = table('Orders')->where($map)->field('id,seller_uid')->find();
+        $orders = table('Orders')->where($map)->field('id,seller_uid,type')->find();
         if (!$orders) {
             $this->appReturn(array('status' => false, 'msg' => '可操作信息不存在'));
         }
 
         $user = table('User')->where('id', $this->uid)->field('nickname,mobile')->find();
-
-        //发送站内信参数
-        $sendData = array(
-            'nickname' => $user['nickname'],
-            'mobile'   => $user['mobile'],
-        );
-        //站内信跳转参数
-        $jumpData = array('type' => 2, 'order_sn' => $orderSn);
 
         $data['status'] = 3;
 
@@ -184,6 +176,16 @@ class Orders extends \app\app\controller\Init
         if (!$result) {
             $this->appReturn(array('status' => false, 'msg' => '执行失败'));
         }
+
+        //发送站内信参数
+        $sendData = array(
+            'nickname' => $user['nickname'],
+            'mobile'   => $user['mobile'],
+        );
+
+        //站内信跳转参数
+        $messageType = $orders['type'] == 1 ? 2 : 3;
+        $jumpData    = array('type' => $messageType, 'order_sn' => $orders['order_sn']);
 
         dao('Message')->send($orders['seller_uid'], 'seller_appointment_refuse_time', $sendData, $jumpData);
 
@@ -381,6 +383,12 @@ class Orders extends \app\app\controller\Init
                 table('Orders')->rollback();
                 $this->appReturn(array('status' => false, 'msg' => '增加评分失败'));
             }
+
+            //更新店铺综合评分
+            $data                 = array();
+            $dataScore            = dao('User')->getShopCredit($this->uid);
+            $data['credit_level'] = $dataScore['value'];
+            $resultShop           = table('UserShop')->where('uid', $this->uid)->save($data);
         }
 
         table('Orders')->commit();

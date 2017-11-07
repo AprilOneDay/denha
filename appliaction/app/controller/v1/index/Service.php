@@ -35,7 +35,7 @@ class Service extends \app\app\controller\Init
                 $orderby = 'orders desc';
                 break;
             case '3':
-                # code...
+                $orderby = 'orders_service desc';
                 break;
             default:
                 # code...

@@ -59,7 +59,6 @@ class Login extends \app\admin\controller\Init
     public function loginOut()
     {
         session_start();
-        var_dump($_SESSION);
         unset($_SESSION['console']);
         session_write_close();
         header('Location:/index/login/');

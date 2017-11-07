@@ -88,7 +88,7 @@ class Coupon
         $coupon    = table('Coupon')->tableName();
 
         $field = "$coupon.title,$coupon.uid as shop_uid,$coupon.start_time,$coupon.end_time,$coupon.type,$coupon.full,$coupon.less,$coupon.discount,$coupon.category,$couponLog.use_time,$couponLog.uid,$couponLog.id,$couponLog.origin";
-        $list  = table('CouponLog')->join($coupon, "$coupon.id = $couponLog.coupon_id")->where($map)->limit($offer, $pageSize)->field($field)->order("$couponLog.use_time asc,$coupon.end_time desc")->find('array');
+        $list  = table('CouponLog')->join($coupon, "$coupon.id = $couponLog.coupon_id")->where($map)->limit($offer, $pageSize)->field($field)->order("$couponLog.id desc,$couponLog.use_time asc,$coupon.end_time desc")->find('array');
         foreach ($list as $key => $value) {
             $list[$key]['status'] = dao('Time')->hdStatus($value['start_time'], $value['end_time']);
             if ($value['use_time']) {

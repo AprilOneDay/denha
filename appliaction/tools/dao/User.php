@@ -196,6 +196,9 @@ class User
             return array('status' => false, 'msg' => '登录失败');
         }
 
+        //登录成功保存token
+        cookie('token', $data['token'], $data['time_out']);
+
         return array('status' => true, 'msg' => '登录成功', 'data' => $data);
     }
 

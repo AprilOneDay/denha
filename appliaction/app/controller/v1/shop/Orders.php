@@ -133,7 +133,7 @@ class Orders extends \app\app\controller\Init
         $map['status']       = 0;
         $map['order_status'] = 1;
 
-        $orders = table('Orders')->where($map)->field('id,uid,order_sn')->find();
+        $orders = table('Orders')->where($map)->field('id,type,uid,order_sn')->find();
         //echo table('Orders')->getSql();die;
         if (!$orders['id']) {
             $this->appReturn(array('status' => false, 'msg' => '可操作信息不存在'));
@@ -156,7 +156,8 @@ class Orders extends \app\app\controller\Init
             'mobile'   => $seller['mobile'],
         );
 
-        $jumpData = array('type' => 2, 'order_sn' => $orders['order_sn']);
+        $messageType = $orders['type'] == 1 ? 2 : 3;
+        $jumpData    = array('type' => $messageType, 'order_sn' => $orders['order_sn']);
 
         dao('Message')->send($orders['uid'], 'user_appointment_success', $sendData, $jumpData);
 
@@ -227,7 +228,8 @@ class Orders extends \app\app\controller\Init
             'mobile'   => $seller['mobile'],
         );
         //站内信跳转参数
-        $jumpData = array('type' => 2, 'order_sn' => $orders['order_sn']);
+        $messageType = $orders['type'] == 1 ? 2 : 3;
+        $jumpData    = array('type' => $messageType, 'order_sn' => $orders['order_sn']);
 
         //另选时间
         if ($startTime) {
@@ -355,7 +357,10 @@ class Orders extends \app\app\controller\Init
 
         //增加服务订单销售数量
         if ($orders['type'] == 2) {
+            //增加商品
             table('GoodsService')->where('id', $ordersData['goods_id'])->save(array('orders' => array('add', 1)));
+            //增加店铺销售数量
+            table('UserShop')->where('uid', $this->uid)->save(array('orders_service' => array('add', 1)));
         }
 
         //赠送积分

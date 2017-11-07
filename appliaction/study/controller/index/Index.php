@@ -14,4 +14,5 @@ class Index extends \app\study\controller\Init
 
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
     }
+
 }

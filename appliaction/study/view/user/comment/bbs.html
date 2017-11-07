@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html>
+   <head>
+        <title>学生门户-评论管理</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="charset=utf-8" />
+        <link rel="stylesheet" href="/ststic/study/css/base.css">
+        <link rel="stylesheet" href="/ststic/study/css/center.css">
+        <link rel="stylesheet" href="/ststic/study/css/u_mob.css"> 
+        
+        <script type="text/javascript" src="/ststic/study/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/ststic/study/js/moment.js"></script>
+        <script type="text/javascript" src="/ststic/study/js/bootstrap-datetimepicker.js"></script>
+        <script type="text/javascript" src="/ststic/study/js/menu.js"></script>
+
+        <script type="text/javascript" src="/ststic/study/js/common.js"></script>
+        <script type="text/javascript" src="/vendor/layer/layer.js"></script>
+
+
+   </head>
+<body bgcolor="f1f1f1" >
+	
+        <div class="center">
+        	{include public/left_menus}
+        
+        <div class="classroom_right clearfix " >
+        	<h3 class="t_student t_talk_about">评论管理</h3>
+        	<div class="t_cr_left t_fbcj fl">
+            	<p class="onli">课程安排</p>
+            	<ul class="clearfix div_ul2">
+                    <li {if ACTION == 'lessons'}class="on"{/if}><a href="{F:url('lessons')}" class="kc_pp">课程评论</a></li>
+                    <li {if ACTION == 'bbs'}class="on"{/if}><a href="{F:url('bbs')}" class="lt_pp">论坛评论</a></li>
+                    <li {if ACTION == 'my_article'}class="on"{/if}><a href="{F:url('my_article')}" class="my_pp">我发布的帖子</a></li>                 
+                    <li><button type="button">发帖</button></li>
+                </ul>
+               
+            </div>
+			<div class="t_cr_right pp_t fr navgation ">
+             <div class="width80 clearfix">
+                <div class="com_pp clearfix">
+                	
+                	<div class="comm_title2">
+                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
+                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b class="right_b">”</b></p>
+                        <p class="time_hf"><span class="times">2017/05/20</span><span class="dels">删除</span></p>
+                         
+                    </div>
+                </div>
+                
+                
+                <div class="com_pp clearfix">
+                	
+                	<div class="comm_title2">
+                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
+                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b class="right_b">”</b></p>
+                        <p class="time_hf"><span class="times">2017/05/20</span><span class="dels">删除</span></p>
+                         
+                    </div>
+                </div>
+                <div class="com_pp clearfix">
+                	
+                	<div class="comm_title2">
+                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
+                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b class="right_b">”</b></p>
+                        <p class="time_hf"><span class="times">2017/05/20</span><span class="dels">删除</span></p>
+                         
+                    </div>
+                </div>
+                
+      
+    
+                
+                
+                <div class="page "><p><b>2</b>/6</p><a href="#">上一页</a><a href="#">下一页</a></div>
+       
+			</div>
+        
+        </div>     	
+            
+        
+        </div>
+   </div>
+
+
+         
+</body>
+<script>
+  $(".un_fina").click(function(){
+	  $(".xiugais").slideToggle();
+  })
+  $(".closebox ").click(function(){
+		  $(".xiugais").css("display","none");
+	  })
+
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+    // date time picker
+    if($(".iDate.date").length>0){
+        $(".iDate.date").datetimepicker({
+            locale:"zh-cn",
+            format:"YYYY-MM-DD",
+            dayViewHeaderFormat:"YYYY年 MMMM"
+        });
+    }
+})
+</script>
+  <script>
+    $(document).ready(function(){
+  $(".onli").click(function(){
+  $(".t_cr_left ul").slideToggle();
+  });
+   });
+
+    </script> 
+
+
+</html>

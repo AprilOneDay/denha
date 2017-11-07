@@ -201,9 +201,10 @@ $(function() {
 
     //提交post信息
     $('.btn-ajax-post').click(function(){
-        var tips = $(this).attr('data-tips');
-        var attr = $(this).context.attributes;
-        var url = $(this).attr('data-href');
+        var tips     = $(this).attr('data-tips');   //预先提示文案
+        var attr     = $(this).context.attributes;  //获取执行参数
+        var url      = $(this).attr('data-href');   //执行地址
+        var isReload = $(this).attr('data-reload'); //是否刷新当前页面
         var data = new Object();
         for (var i = 0; i < attr.length; i++) {
             if(attr[i].localName.indexOf('data') !== -1 && attr[i].localName != 'data-href'){
@@ -229,7 +230,11 @@ $(function() {
                 }
 
                 if(result.status){
-               setTimeout(function(){location.reload();},1000);
+                    setTimeout(function(){location.reload();},1000);
+                }
+
+                if(isReload){
+                    location.reload();
                 }
             },"json")
         }

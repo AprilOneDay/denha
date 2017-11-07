@@ -1,17 +1,41 @@
 <div class="bottom clearfix ">
     <div class="bottom-midd width1200">
         <ul>
+            <?php 
+                $map             = array();
+                $map['parentid'] = 5;
+                $map['is_show']  = 1;
+                $columnList = table('Column')->where($map)->field('id,name,bname,jump_url')->find('array');
+            ?>
             <li>
                 <span>About Us</span>
-                <a href="#">学院风采</a><a href="#">学生风采</a><a href="#">教育新闻</a>
+                {loop $columnList $value}
+                <a href="{$value['jump_url']}">{$value['bname']}</a>
+                {/loop}
             </li>
+            <?php 
+                $map             = array();
+                $map['parentid'] = 1;
+                $map['is_show']  = 1;
+                $columnList = table('Column')->where($map)->field('id,name,bname,jump_url')->find('array');
+            ?>
             <li>
-                <span>Business School</span>
-                <a href="#">学员简介</a><a href="#">课程详情</a><a href="#">留学部</a>
+                <span>International Business School</span>
+                {loop $columnList $value}
+                <a href="{$value['jump_url']}">{$value['bname']}</a>
+                {/loop}
             </li>
+            <?php 
+                $map             = array();
+                $map['parentid'] = 2;
+                $map['is_show']  = 1;
+                $columnList = table('Column')->where($map)->field('id,name,bname,jump_url')->find('array');
+            ?>
             <li>
                 <span>High School</span>
-                <a href="#">部门简介</a><a href="#">直播课程</a><a href="#">视频课程</a><a href="#">学霸共享计划</a>
+                {loop $columnList $value}
+                <a href="{$value['jump_url']}">{$value['bname']}</a>
+                {/loop}
             </li>
         </ul>
         <div class="bottom-right">

@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html>
+   <head>
+        <title>学生门户-课程和作业安排</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="charset=utf-8" />
+        <link rel="stylesheet" href="/ststic/study/css/base.css">
+        <link rel="stylesheet" href="/ststic/study/css/center.css">
+        <link rel="stylesheet" href="/ststic/study/css/u_mob.css"> 
+        <script type="text/javascript" src="/ststic/study/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/ststic/study/js/moment.js"></script>
+        <script type="text/javascript" src="/ststic/study/js/bootstrap-datetimepicker.js"></script>
+        <script type="text/javascript" src="/ststic/study/js/menu.js"></script>
+        
+        <script type="text/javascript" src="/ststic/study/js/common.js"></script>
+        <script type="text/javascript" src="/vendor/layer/layer.js"></script>
+
+   </head>
+<body bgcolor="f1f1f1" >
+	
+        <div class="center">
+        	{include public/left_menus}
+        
+        <div class="classroom_right ">
+        		<h3 class="ks_zy" >课程和作业安排</h3>
+        	<div class="t_cr_left t_kczy fl">
+            	<p class="onli">课程安排</p>
+            	<ul class="clearfix div_ul2">
+                	 <li {if ACTION == 'lessons'}class="on"{/if}><a href="{F:url('lessons')}" class="kcap">课程安排</a></li>
+                    <li {if ACTION == 'classwork'}class="on"{/if}><a href="{F:url('classwork')}" class="zyap">作业安排</a></li>
+                    <li {if ACTION == 'my_up_classwork'}class="on"{/if}><a href="{F:url('my_up_classwork')}" class="xzzy">我上传的作业</a></li>
+                </ul>
+            </div>
+  <script>
+    $(document).ready(function(){
+  $(".onli").click(function(){
+  $(".t_cr_left ul").slideToggle();
+  });
+   });
+
+    </script>
+
+     	<div class="t_cr_right fr">
+            	<ul class="kczy">
+                	<li>
+                    	<p class="name"><a href="#">雅思冲刺7.5分课程</a></p>
+                        <p class="zy_cont">本套题针对出国留学的学生准备，其中包括选这题和填空题，最后一页附上答案，请严格答题</p>
+                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
+                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
+                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
+                        <p class="time"><span>时间：2017/08/02<em></em> 上午9点-11点 </span><span>教师：大卫 </span></p>
+                    </li>
+                	<li>
+                    	<p class="name"><a href="#">雅思冲刺7.5分课程</a></p>
+                        <p class="zy_cont">本套题针对出国留学的学生准备，其中包括选这题和填空题，最后一页附上答案，请严格答题</p>
+                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
+                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
+                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
+                        <p class="time"><span>时间：2017/08/02<em></em> 上午9点-11点 </span><span>教师：大卫 </span></p>
+                    </li>
+                	<li>
+                    	<p class="name"><a href="#">雅思冲刺7.5分课程</a></p>
+                        <p class="zy_cont">本套题针对出国留学的学生准备，其中包括选这题和填空题，最后一页附上答案，请严格答题</p>
+                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
+                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
+                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
+                        <p class="time"><span>时间：2017/08/02<em></em> 上午9点-11点 </span><span>教师：大卫 </span></p>
+                    </li>
+                	<li>
+                    	<p class="name"><a href="#">雅思冲刺7.5分课程</a></p>
+                        <p class="zy_cont">本套题针对出国留学的学生准备，其中包括选这题和填空题，最后一页附上答案，请严格答题</p>
+                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
+                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
+                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
+                        <p class="time"><span>时间：2017/08/02<em></em> 上午9点-11点 </span><span>教师：大卫 </span></p>
+                    </li>
+                
+                
+                </ul>
+            
+            </div>
+            
+        
+        </div>
+   </div>
+
+      	<div class="xiugais  clearfix">
+        	<div class="xiugai_box">
+            	<div class="close"><a href="#" class="closebox"></a></div>
+                <b>发布课程安排</b>
+                <p><span>课程名称</span><input type="text"  placeholder="请输入"/></p>
+                <p><span>描述</span><textarea name="" cols="" rows=""></textarea></p>
+            	<p class="iDate date"><span>日期</span><input type="text" placeholder="结束时间"  ><button type="button" class="addOn"></button></p>
+            	<p><span>附件</span> <a href="#" class="btn_sc"><input type="file" />立即上传</a></p>
+                <a class="btn_xg" href="#">立即上传</a>
+            </div>
+        </div>  
+</body>
+<script>
+  $(".btn_fb").click(function(){
+	  $(".xiugais").slideToggle();
+  })
+  $(".closebox ").click(function(){
+		  $(".xiugais").css("display","none");
+	  })
+
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+    // date time picker
+    if($(".iDate.date").length>0){
+        $(".iDate.date").datetimepicker({
+            locale:"zh-cn",
+            format:"YYYY-MM-DD",
+            dayViewHeaderFormat:"YYYY年 MMMM"
+        });
+    }
+})
+</script>
+
+</html>

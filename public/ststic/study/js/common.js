@@ -1,4 +1,102 @@
 $(function() {
+
+    init();
+    //监听product-nav-scene的宽度变化
+    $(".product-nav-scene").bind("DOMNodeInserted",function(e){
+        $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) );
+        return true;
+    })
+    //监听content-main的宽度变化
+    /*$(".content-main").bind("DOMNodeInserted",function(e){
+        $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) - 10);
+        return true;
+    })*/
+    /*$(window).keyup(function(event){
+        //按下F12
+        if(event.keyCode == 123){
+         
+            if($('.product-nav-scene').css('display') == 'block'){
+                $('.content-main').width(($(document).width() - 150 - 150));
+            }else{
+                console.log($(document).width());
+                $('.content-main').width(($(document).width() - 150));
+            }
+        }
+    });*/
+    //监听出现滚动条
+    /*$(window).scroll(function () {
+        $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) );
+        return true;
+    })*/
+    $(window).resize(function(){
+        if($('.product-nav-scene').css('display') == 'block'){
+            $('.content-main').width(($(document).width() - 150 - 150));
+        }else{
+            $('.content-main').width(($(document).width() - 150));
+        }
+    });
+
+   
+
+    //主页容器固定高宽
+    function init(){
+        //一级栏目高度
+        $('.sidebar-inner').height($(document).height() - $('.border-top').height() - 2);
+        //二级栏目高度
+        $('.product-nav-scene').height($(document).height() - $('.border-top').height() - 2)
+        //主体显示高度
+        $('.content-main').height($(document).height() - $('.border-top').height() - 2);
+        //二级栏目如果可见
+        if($('.product-nav-scene').css('display') == 'block'){
+            $('.content-main').width(($(document).width() - 150 - 150));
+        }else{
+            $('.content-main').width(($(document).width() - 150));
+        }
+
+    }
+
+    //收缩一级导航
+    $('.sidebar-fold').click(function() {
+        var width = $(this).width();
+        if (width > 38) {
+            $('.sidebar-inner').width(38);
+        } else {
+            $('.sidebar-inner').width(180);
+        }
+
+    });
+
+    //导航展开下级菜单
+    $('.sidebar-inner ul li').click(function() {
+        //初始化
+        $('.sidebar-inner ul li dl').css('display', 'none');
+        $('.sidebar-inner ul li').each(function() {
+            if ($(this).children().children().eq(0).attr('class') == 'glyphicon glyphicon-triangle-bottom') {
+                $(this).children().children().eq(0).attr('class', 'glyphicon glyphicon-triangle-right');
+            }
+        });
+
+        //展开/收缩
+        var ico = $(this).children().children(':first').attr('class');
+        if (ico == 'glyphicon glyphicon-triangle-right') {
+            $(this).children().children(':first').attr('class', 'glyphicon glyphicon-triangle-bottom');
+            $(this).find('dl').css('display', 'block');
+        } else if (ico == 'glyphicon glyphicon-triangle-bottom') {
+            $(this).children().children(':first').attr('class', 'glyphicon glyphicon-triangle-right');
+            $(this).find('dl').css('display', 'none');
+        }
+
+    })
+
+
+    //一级高亮
+    $('.sidebar-inner dd').click(function() {
+        $('.sidebar-inner dd').each(function() {
+            $(this).find('a').removeClass();
+        })
+        $(this).find('a').addClass('cur');
+    });
+
     //绑定初试信息
     $('select').each(function() {
         var data = $(this).attr('data-selected');
@@ -103,9 +201,10 @@ $(function() {
 
     //提交post信息
     $('.btn-ajax-post').click(function(){
-        var tips = $(this).attr('data-tips');
-        var attr = $(this).context.attributes;
-        var url = $(this).attr('data-href');
+        var tips     = $(this).attr('data-tips');   //预先提示文案
+        var attr     = $(this).context.attributes;  //获取执行参数
+        var url      = $(this).attr('data-href');   //执行地址
+        var isReload = $(this).attr('data-reload'); //是否刷新当前页面
         var data = new Object();
         for (var i = 0; i < attr.length; i++) {
             if(attr[i].localName.indexOf('data') !== -1 && attr[i].localName != 'data-href'){
@@ -131,7 +230,11 @@ $(function() {
                 }
 
                 if(result.status){
-               setTimeout(function(){location.reload();},1000);
+                    setTimeout(function(){location.reload();},1000);
+                }
+
+                if(isReload){
+                    location.reload();
                 }
             },"json")
         }
@@ -366,5 +469,6 @@ $(function() {
             } 
 
         });
+        
     })
 })

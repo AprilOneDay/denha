@@ -34,7 +34,7 @@ class Message
         $data['jump_app'] = $jumpData ? json_encode($jumpData) : '';
 
         //如果存在相同推送内容信息则直接更新时间
-        $map['type']       = $type;
+        $map['type']       = array('!=', 1);
         $map['uid']        = $uid;
         $map['to_uid']     = $toUid;
         $map['content']    = $data['content'];
@@ -97,9 +97,6 @@ class Message
             case 'newComment':
                 $content = '你有新的消息';
                 break;
-            case 'seller_appointment_success':
-                $content = '你有新的预约订单';
-                break;
             case 'user_appointment_success':
                 $content = '商家：[{nickname}]已确认你的预约，准时到达，商家电话：{mobile}';
                 break;
@@ -111,6 +108,9 @@ class Message
                 break;
             case 'user_get_coupon':
                 $content = '你有一张代金券可以免费领取,确认订单即可领取';
+                break;
+            case 'seller_appointment_success':
+                $content = '你有新的预约订单';
                 break;
             case 'seller_appointment_refuse_time':
                 $content = '会员{nickname}，拒绝了你设置的预约时间';

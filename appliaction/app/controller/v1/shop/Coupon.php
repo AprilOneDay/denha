@@ -31,7 +31,7 @@ class Coupon extends \app\app\controller\Init
             $map['status'] = $status;
         }
 
-        $list = table('Coupon')->where($map)->limit($offer, $pageSize)->order('status desc,start_time asc')->find('array');
+        $list = table('Coupon')->where($map)->limit($offer, $pageSize)->order('id desc,status desc,start_time asc')->find('array');
         foreach ($list as $key => $value) {
             $list[$key]['category_copy'] = dao('Category')->getName($value['category']);
         }

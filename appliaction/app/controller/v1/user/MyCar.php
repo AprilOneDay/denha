@@ -83,9 +83,9 @@ class MyCar extends \app\app\controller\Init
             if (!$id) {
                 $is = table('MyCar')->where(array('uid' => $this->uid, 'brand' => $data['brand'], 'style' => $data['style']))->field('id')->find('one');
 
-                if ($is) {
-                    $this->appReturn(array('status' => false, 'msg' => '该车型您已存在,请勿重复添加'));
-                }
+                /*if ($is) {
+                $this->appReturn(array('status' => false, 'msg' => '该车型您已存在,请勿重复添加'));
+                }*/
 
                 $data['created'] = TIME;
                 $data['uid']     = $this->uid;

@@ -74,7 +74,8 @@ class Orders
 
         foreach ($ordersInfo as $key => $value) {
             //发送站内信
-            dao('Message')->send($key, 'seller_appointment_success', array(), array('type' => 2, 'order_sn' => $orderSn));
+            $messageType = $type == 1 ? 2 : 3;
+            dao('Message')->send($key, 'seller_appointment_success', array(), array('type' => $messageType, 'order_sn' => $orderSn));
         }
 
         table('Orders')->commit();

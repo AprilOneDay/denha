@@ -5,8 +5,9 @@ use denha;
 
 class Init extends denha\Controller
 {
-    public $token = '';
-    public $uid   = 0;
+    public $token    = '';
+    public $uid      = 0;
+    public $nickname = '';
     public $version;
     public $group;
     public $lg; //返货提示信息语音版本
@@ -15,21 +16,28 @@ class Init extends denha\Controller
     public function __construct()
     {
 
-        $this->lg = getCookie('lg') ? '_' . getCookie('lg') : '';
+        $this->lg    = getCookie('lg') ? '_' . getCookie('lg') : '';
+        $this->token = getCookie('token') ? getCookie('token') : '';
 
         if ($this->token) {
             $map['token'] = $this->token;
-            $user         = table('User')->where($map)->field('id,type,imei,time_out')->find();
+            $user         = table('User')->where($map)->field('nickname,id,type,imei,time_out,ip')->find();
             if ($user) {
                 if ($user['imei'] != $this->imei && $this->imei) {
-                    $this->appReturn(array('status' => false, 'msg' => '你的账户已在其他手机登录,请重新登录', 'code' => 501));
+                    $this->appReturn(array('status' => false, 'msg' => '你的账户已在其他地方登录,请重新登录', 'code' => 501));
                 }
 
                 //超过token时间 重新登录
-                /*if ($user['time_out'] < TIME) {
-                $this->appReturn(array('status' => false, 'msg' => '登录超时,请重新登录', 'code' => 501));
-                }*/
+                if ($user['time_out'] < TIME) {
+                    $this->appReturn(array('status' => false, 'msg' => '登录超时,请重新登录', 'code' => 501));
+                }
 
+                //更换ip 需要重新登录
+                if ($user['ip'] != getIP()) {
+                    $this->appReturn(array('status' => false, 'msg' => '请重新登录', 'code' => 501));
+                }
+
+                $this->nickname   = $user['nickname'];
                 $this->uid        = $user['id'];
                 $this->group      = $user['type'];
                 $data['time_out'] = TIME + 3600 * 24 * 2;
@@ -38,32 +46,15 @@ class Init extends denha\Controller
         }
     }
 
-    /**
-     * 必须是商户用户登录
-     * @date   2017-09-15T09:32:09+0800
-     * @author ChenMingjiang
-     * @return [type]                   [description]
-     */
-    public function checkShop()
+    public function checkIndividual($group = 1)
     {
         if (!$this->uid) {
+            header('LOCATION:/');
             $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
         }
 
-        if ($this->group != 2) {
+        if ($this->group != $group) {
             $this->appReturn(array('status' => false, 'msg' => '权限不足'));
-        }
-
-    }
-
-    public function checkIndividual()
-    {
-        if (!$this->uid) {
-            $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
-        }
-
-        if ($this->group != 1) {
-            $this->appReturn(array('status' => false, 'msg' => '必须为个人用户'));
         }
     }
 
