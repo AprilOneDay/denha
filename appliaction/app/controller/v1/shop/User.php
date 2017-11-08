@@ -257,6 +257,10 @@ class User extends \app\app\controller\Init
         $password2 = post('password2', 'text', '');
         $isAgree   = post('is_agree', 'intval', 0);
 
+        if (!$data['mobile']) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入手机号'));
+        }
+
         if (!$code) {
             $this->appReturn(array('status' => false, 'msg' => '请输入验证码'));
         }

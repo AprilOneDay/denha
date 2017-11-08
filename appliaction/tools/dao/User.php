@@ -23,24 +23,32 @@ class User
         $password2        = trim(strtolower($password2));
 
         if (!in_array($data['type'], array(1, 2))) {
-            return array('status' => false, 'msg' => '请选择商家/个人注册');
+            return array('status' => false, 'msg' => '注册类型不存在');
         }
 
-        if (!$data['mobile']) {
-            return array('status' => false, 'msg' => '请输入手机号码');
+        /* if (!$data['mobile']) {
+        return array('status' => false, 'msg' => '请输入手机号码');
+        }*/
+
+        if (!$data['username']) {
+            return array('status' => false, 'msg' => '请输入用户名');
+        }
+
+        if (!preg_match("/^[a-zA-Z0-9_]+$/", $data['username'])) {
+            return array('status' => false, 'msg' => '用户名请勿使用特殊字符汉字字符');
         }
 
         if (!$data['password']) {
             return array('status' => false, 'msg' => '请输入密码');
         }
 
+        if (strlen($data['password']) < 6) {
+            return array('status' => false, 'msg' => '密码太过简单了');
+        }
+
         if ($data['password'] !== $password2) {
             return array('status' => false, 'msg' => '两次密码不一致');
         }
-
-        /*if (!preg_match("/^1[34578]{1}\d{9}$/", $data['mobile'])) {
-        return array('status' => false, 'msg' => '请输入正确的电话号码');
-        }*/
 
         if (!$data['type']) {
             return array('status' => false, 'msg' => '请选择注册类型');
@@ -55,17 +63,11 @@ class User
             return array('status' => false, 'msg' => '用户名已注册请更换用户名');
         }
 
-        $isMobile = table('User')->where(array('mobile' => $data['mobile'], 'type' => $data['type']))->field('id')->find('one');
-        if ($isMobile) {
-            return array('status' => false, 'msg' => '手机号已注册');
-        }
-
-        if (!$data['username']) {
-            return array('status' => false, 'msg' => '请输入用户名');
-        }
-
-        if (!preg_match("/^[a-zA-Z0-9_]+$/", $data['username'])) {
-            return array('status' => false, 'msg' => '用户名请勿使用特殊字符汉字字符');
+        if ($data['mobile']) {
+            $isMobile = table('User')->where(array('mobile' => $data['mobile'], 'type' => $data['type']))->field('id')->find('one');
+            if ($isMobile) {
+                return array('status' => false, 'msg' => '手机号已注册');
+            }
         }
 
         //检测验证码

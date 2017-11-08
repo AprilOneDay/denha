@@ -62,9 +62,6 @@ class Car extends \app\admin\controller\Init
         $data['ablum']     = imgUrl($data['ablum'], 'car');
         $data['guarantee'] = $data['guarantee'] ? explode(',', $data['guarantee']) : array();
 
-        //城市地址
-        $data['city_copy'] = (string) dao('Category')->getName($data['city']);
-
         //获取图片介绍
         $data['content'] = '';
         $ablum           = table('GoodsAblum')->where(array('goods_id' => $data['id']))->find('array');
@@ -76,6 +73,11 @@ class Car extends \app\admin\controller\Init
 
         }
 
+        $other = array(
+            'cityCopy' => dao('Category')->getList(34),
+        );
+
+        $this->assign('other', $other);
         $this->assign('data', $data);
 
         $this->show();

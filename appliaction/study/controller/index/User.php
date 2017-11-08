@@ -42,6 +42,13 @@ class User extends \app\study\controller\Init
 
     public function login()
     {
+        //如果存在跳转url 则直接跳转
+        $returnUrl = get('return', 'text', '');
+        if ($returnUrl && $this->uid) {
+            header('LOCATION:' . $returnUrl);
+            exit();
+        }
+
         if ($this->group) {
             switch ($this->group) {
                 case '1':
@@ -57,6 +64,38 @@ class User extends \app\study\controller\Init
         }
 
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+    }
+
+    /**
+     * 注册
+     * @date   2017-11-08T10:29:21+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function registerPost()
+    {
+        $data['username'] = post('username', 'text', '');
+        $data['password'] = post('password', 'trim', '');
+        $data['mobile']   = post('mobile', 'text', '');
+        $data['mail']     = post('mail', 'text', '');
+        $data['type']     = 1;
+
+        if (!$data['mobile']) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入手机号'));
+        }
+
+        if (!$data['mail']) {
+            $this->appReturn(array('status' => true, 'msg' => '请输入邮箱'));
+        }
+
+        $code = post('code', 'text', '');
+
+        $password2 = post('password2', 'text', '');
+        $isAgree   = post('is_agree', 'intval', 1);
+
+        $result = dao('User')->register($data, $password2, $isAgree, $code, $thirdParty);
+
+        $this->appReturn($result);
     }
 
     public function register()

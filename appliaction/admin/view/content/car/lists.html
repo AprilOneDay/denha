@@ -83,13 +83,13 @@
 											<td>{F:date('Y-m-d H:i',$value['created'])}</td>
 											<td>
 												{if $value['status'] == 1}
-													<a href="javascript:;" style="color: green">上架</a>
+													<b style="color: green">上架</b>
 												{elseif $value['status'] == 2}
-													<a href="javascript:;" style="color: red">下架</a>
+													<b style="color: red">下架</b>
 												{/if}
 											</td>
 											<td align='center'>
-												<a data-href="{F:url('edit',array('id'=>$value['id']))}"  data-height="70%" data-width="70%"  data-title="商品详情"  class="btn-open" data-tooltip="{$value['title']}">编辑</a>
+												<a config-href="{F:url('edit',array('id'=>$value['id']))}"  config-height="70%" config-width="70%"  config-title="商品详情"  class="btn-open" config-tooltip="{$value['title']}">编辑</a>
 											</td>
 										</tr>
 										{/loop}

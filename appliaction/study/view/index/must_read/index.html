@@ -33,29 +33,12 @@
             <div class="cont_right  fr">
             	<h5>常见问题</h5>
                 <ul>
+                    {loop $qalist['list'] $value}
                 	<li>
-                    	<div class="que"><span>Q</span>雅思考试时间</div>
-                    	<div class="an"><span>A</span>1月：07、12、14、21；2月：11、16...</div>
+                    	<div class="que"><span>Q</span>{$value['title']}</div>
+                    	<div class="an"><span>A</span>{F:strip_tags($value['content'])}</div>
                     </li>
-                	<li>
-                    	<div class="que"><span>Q</span>雅思考试时间</div>
-                    	<div class="an"><span>A</span>1月：07、12、14、21；2月：11、16...</div>
-                    </li>
-                
-                	<li>
-                    	<div class="que"><span>Q</span>雅思考试时间</div>
-                    	<div class="an"><span>A</span>雅思考试评分工作由经过训练的评分人...</div>
-                    </li>
-                
-                	<li>
-                    	<div class="que"><span>Q</span>雅思考试时间</div>
-                    	<div class="an"><span>A</span>雅思考试评分工作由经过训练的评分人...</div>
-                    </li>
-                	<li>
-                    	<div class="que"><span>Q</span>雅思考试时间</div>
-                    	<div class="an"><span>A</span>雅思考试评分工作由经过训练的评分人...</div>
-                    </li>
-                
+                    {/loop}
                 </ul>
             </div>
         </div>

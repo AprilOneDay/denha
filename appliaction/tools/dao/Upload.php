@@ -22,7 +22,7 @@ class Upload
             $type = $match[2];
             if (!file_exists($path)) {
                 //检查是否有该文件夹，如果没有就创建，并给予最高权限
-                mkdir($path, 0700, true);
+                mkdir($path, 0755, true);
             }
             $fileName = md5(uniqid('', true)) . ".{$type}";
             $newFile  = $path . $fileName;
@@ -34,7 +34,7 @@ class Upload
             }
         }
 
-        return array('status' => false, 'msg' => '参数错误');
+        return array('status' => false, 'msg' => '请上传正确的图片');
     }
 
     /**

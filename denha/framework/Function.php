@@ -87,6 +87,10 @@ function post($name, $type = '', $default = '')
                 break;
             case 'img':
                 $data = stripos($data, 'default') !== false ? $default : $data;
+                if (stripos($data, 'http') !== false) {
+                    $url  = pathinfo($data);
+                    $data = $url['basename'];
+                }
                 break;
             case 'time':
                 if (stripos($data, '-') !== false) {
@@ -313,15 +317,16 @@ function getConfig($path = 'config', $name = '')
  * @param  boolean                  $isGet    [开启伪静态 true关闭 false开启]
  * @return [type]                             [description]
  */
-function url($location = '', $params = array(), $isGet = false)
+function url($location = '', $params = array(), $url = '', $isGet = false)
 {
-    $locationUrl = URL . '/' . MODULE;
+
+    $locationUrl = $url . '/' . MODULE;
     if ($location === '') {
         $locationUrl .= '/' . CONTROLLER . '/' . ACTION;
     } elseif (stripos($location, '/') === false && $location != '') {
         $locationUrl .= '/' . CONTROLLER . '/' . $location;
     } elseif (stripos($location, '/') === 0) {
-        $locationUrl = URL . $location;
+        $locationUrl = $url . $location;
     } else {
         $locationUrl .= '/' . $location;
     }

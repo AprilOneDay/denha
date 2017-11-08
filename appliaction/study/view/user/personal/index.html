@@ -32,12 +32,13 @@
 
      	<div class="t_cr_right  fr">
         	<form class="form_div">
-           		<p><span>头像：</span><div class="img"><a href="#"><img src="images/toux.jpg" /></a></div></p>
-            	<p><span>用户名：</span>Yang</p>
-            	<p><span>姓名：</span>杨洋</p>
-                <p><span>手机号：</span>15213435996</p>
-            	<p><span>电子邮箱：</span>1005336621qq.com</p>
-                <p><span>家庭地址：</span>1005336621qq.com</p>
+           		<p><span>头像：</span><div class="img"><a href="#"><img src="{$data['avatar']}" width="75" height="75" /></a></div></p>
+            	<p><span>用户名：</span>{$data['username']}</p>
+                <p><span>昵称：</span>{$data['nickname']}</p>
+            	<p><span>姓名：</span>{$data['real_name']}</p>
+                <p><span>手机号：</span>{$data['mobile']}</p>
+            	<p><span>电子邮箱：</span>{$data['mail']}</p>
+                <p><span>家庭地址：</span>{$data['address']}</p>
 				<div class="lines"></div>
             	<a class="btn_bc" href="{F:url(edit)}">修改</a>
             </form>

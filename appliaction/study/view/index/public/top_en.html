@@ -3,10 +3,10 @@
         {if !$this->uid}
         <div class="header_left fl"><b>Hello, welcome to Hengding College！</b><a href="{F:url('/index/user/login')}">Sign in<i>|</i></a><a href="{F:url('/index/user/register')}">Registered</a></div>
         {else}
-        <div class="header_left fl"><b>{$this->nickname} Hello, welcome to Hengding College！</b><a href="javascript:;" class="btn-ajax-post" data-id="" data-href="{F:url('/index/user/outlogin')}" data-tips="确定退出登录?">退出登录</a></div>
+        <div class="header_left fl"><b>{$this->nickname} Hello, welcome to Hengding College！</b><a href="javascript:;" class="btn-ajax-post" data-id="" config-href="{F:url('/index/user/outlogin')}" config-tips="确定退出登录?">退出登录</a></div>
         {/if}
         <div class="ch_en" href="javascript:;" >
-        	<a href="javascript:;" class="btn-ajax-post" data-id="" data-href="/common/version/switchlg">中文</a>|
+        	<a href="javascript:;" class="btn-ajax-post" data-id="" config-href="/common/version/switchlg">中文</a>|
         	<a href="javascript:;" class="btn-ajax-post on">English</a>
         </div>
         <div class="header_right fr"><input /><a class="search_ico" href="javascript:;">Search</a><a href="{F:url('/index/user/login')}" class="user_ico"><i></i>Member</a></div>

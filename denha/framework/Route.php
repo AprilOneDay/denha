@@ -55,6 +55,7 @@ class Route
         if (!isset($_GET['module']) && isset($_SERVER['SCRIPT_NAME']) && isset($_SERVER['REQUEST_URI'])) {
             $uri = self::parseUri();
 
+            //var_dump($uri);die;
             $array = explode('/s/', $uri);
 
             //转换路由
@@ -90,7 +91,7 @@ class Route
                 $total      = count($paramArray);
 
                 for ($i = 0; $i < $total;) {
-                    $_GET[$paramArray[$i]] = $paramArray[$i + 1];
+                    $_GET[$paramArray[$i]] = urldecode($paramArray[$i + 1]);
                     $i += 2;
                 }
 
@@ -160,7 +161,9 @@ class Route
     //解析路由
     private static function parseUri()
     {
-        $uri = urldecode($_SERVER['REQUEST_URI']);
+        //去除urldecode转码 转码会导致get参数 带/解析错误
+        // $uri = urldecode($_SERVER['REQUEST_URI']);
+        $uri = $_SERVER['REQUEST_URI'];
 
         if (strpos($uri, $_SERVER['SCRIPT_NAME']) === 0) {
             $uri = substr($uri, strlen($_SERVER['SCRIPT_NAME']));

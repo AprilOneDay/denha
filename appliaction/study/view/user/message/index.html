@@ -38,7 +38,7 @@
                     	<li>
                             <a class="title" href="{F:url('detail',array('id'=>$value['id']))}">{$value['title']}</a>
                             <span class="btn_read"><a href="{F:url('detail',array('id'=>$value['id']))}">阅读更多</a></span>
-                            <span class="del btn-ajax-post" data-tips="确定删除该文章" data-id="{$value['id']}" data-href="{F:url('del')}">删除</span>
+                            <span class="del btn-ajax-post" data-id="{$value['id']}"  config-tips="确定删除该文章" config-href="{F:url('del')}">删除</span>
                             <span class="time">{F:date('Y/m/d',$value['created'])}</span>
                         </li>
                         {/loop}

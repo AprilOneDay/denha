@@ -48,7 +48,7 @@ class Article
         $offer = max(($pageNo - 1), 0) * $pageSize;
         $this->getMapField($nativeMap, $nativeField, $modelId);
         $total = table('Article')->join($this->articleData)->where($this->map)->count();
-        $list  = table('Article')->join($this->articleData)->where($this->map)->field($this->field)->limit($offer, $pageSize)->order("$article.id desc")->find('array');
+        $list  = table('Article')->join($this->articleData)->where($this->map)->field($this->field)->limit($offer, $pageSize)->order($this->article . '.id desc')->find('array');
 
         $data['total'] = $total;
         $data['list']  = $list;

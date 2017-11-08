@@ -1,102 +1,4 @@
 $(function() {
-
-    init();
-    //监听product-nav-scene的宽度变化
-    $(".product-nav-scene").bind("DOMNodeInserted",function(e){
-        $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) );
-        return true;
-    })
-    //监听content-main的宽度变化
-    /*$(".content-main").bind("DOMNodeInserted",function(e){
-        $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) - 10);
-        return true;
-    })*/
-    /*$(window).keyup(function(event){
-        //按下F12
-        if(event.keyCode == 123){
-         
-            if($('.product-nav-scene').css('display') == 'block'){
-                $('.content-main').width(($(document).width() - 150 - 150));
-            }else{
-                console.log($(document).width());
-                $('.content-main').width(($(document).width() - 150));
-            }
-        }
-    });*/
-    //监听出现滚动条
-    /*$(window).scroll(function () {
-        $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) );
-        return true;
-    })*/
-    $(window).resize(function(){
-        if($('.product-nav-scene').css('display') == 'block'){
-            $('.content-main').width(($(document).width() - 150 - 150));
-        }else{
-            $('.content-main').width(($(document).width() - 150));
-        }
-    });
-
-   
-
-    //主页容器固定高宽
-    function init(){
-        //一级栏目高度
-        $('.sidebar-inner').height($(document).height() - $('.border-top').height() - 2);
-        //二级栏目高度
-        $('.product-nav-scene').height($(document).height() - $('.border-top').height() - 2)
-        //主体显示高度
-        $('.content-main').height($(document).height() - $('.border-top').height() - 2);
-        //二级栏目如果可见
-        if($('.product-nav-scene').css('display') == 'block'){
-            $('.content-main').width(($(document).width() - 150 - 150));
-        }else{
-            $('.content-main').width(($(document).width() - 150));
-        }
-
-    }
-
-    //收缩一级导航
-    $('.sidebar-fold').click(function() {
-        var width = $(this).width();
-        if (width > 38) {
-            $('.sidebar-inner').width(38);
-        } else {
-            $('.sidebar-inner').width(180);
-        }
-
-    });
-
-    //导航展开下级菜单
-    $('.sidebar-inner ul li').click(function() {
-        //初始化
-        $('.sidebar-inner ul li dl').css('display', 'none');
-        $('.sidebar-inner ul li').each(function() {
-            if ($(this).children().children().eq(0).attr('class') == 'glyphicon glyphicon-triangle-bottom') {
-                $(this).children().children().eq(0).attr('class', 'glyphicon glyphicon-triangle-right');
-            }
-        });
-
-        //展开/收缩
-        var ico = $(this).children().children(':first').attr('class');
-        if (ico == 'glyphicon glyphicon-triangle-right') {
-            $(this).children().children(':first').attr('class', 'glyphicon glyphicon-triangle-bottom');
-            $(this).find('dl').css('display', 'block');
-        } else if (ico == 'glyphicon glyphicon-triangle-bottom') {
-            $(this).children().children(':first').attr('class', 'glyphicon glyphicon-triangle-right');
-            $(this).find('dl').css('display', 'none');
-        }
-
-    })
-
-
-    //一级高亮
-    $('.sidebar-inner dd').click(function() {
-        $('.sidebar-inner dd').each(function() {
-            $(this).find('a').removeClass();
-        })
-        $(this).find('a').addClass('cur');
-    });
-
     //绑定初试信息
     $('select').each(function() {
         var data = $(this).attr('data-selected');
@@ -116,14 +18,14 @@ $(function() {
     })
 
     //tips提示
-    $('[data-tooltip]').mouseover(function(){
-        var msg = $(this).attr('data-tooltip');
+    $('[config-tooltip]').mouseover(function(){
+        var msg = $(this).attr('config-tooltip');
         layer.tips(msg, this, {
           tips: [1, '#3595CC'],
           time: 10000
         });
     })
-    $('[data-tooltip]').mouseout(function(){
+    $('[config-tooltip]').mouseout(function(){
         layer.closeAll('tips');
     })
 
@@ -142,10 +44,10 @@ $(function() {
 
    //打开弹出
     $('.btn-open').click(function() {
-        var href = $(this).attr('data-href');
-        var title = $(this).attr('data-title');
-        var width = $(this).attr('data-width');
-        var height = $(this).attr('data-height');
+        var href = $(this).attr('config-href');
+        var title = $(this).attr('config-title');
+        var width = $(this).attr('config-width');
+        var height = $(this).attr('config-height');
 
         if (!title) {
             title = $(this).text();
@@ -175,9 +77,11 @@ $(function() {
 
     //提交信息
     $('.btn-comply').click(function(){
-        var form = $(this).parents('.form-horizontal');
-        var data = form.serializeArray();
-        var url  = form.attr('action');
+        var form     = $(this).parents('.form-horizontal');
+        var data     = form.serializeArray();
+        var url      = form.attr('action');
+        var trueUrl  = $(this).attr('config-true-url'); //执行成功跳转地址
+        var falseUrl = $(this).attr('config-false-url'); //执行失败跳转地址
         if(data.length < 1){
             return layer.msg('请上传参数');
         }
@@ -192,8 +96,16 @@ $(function() {
                         parent.location.reload();
                         parent.layer.close(index);
                     }else{
-                        location.reload();   
+                        if(trueUrl){
+                            window.location.href= trueUrl;
+                        }else{
+                            location.reload();   
+                        }
                     }
+                },1000);
+            }else if(!result.status && falseUrl){
+                setTimeout(function(){
+                    window.location.href= falseUrl;
                 },1000);
             }
         },"json")
@@ -201,13 +113,15 @@ $(function() {
 
     //提交post信息
     $('.btn-ajax-post').click(function(){
-        var tips     = $(this).attr('data-tips');   //预先提示文案
         var attr     = $(this).context.attributes;  //获取执行参数
-        var url      = $(this).attr('data-href');   //执行地址
-        var isReload = $(this).attr('data-reload'); //是否刷新当前页面
+        var tips     = $(this).attr('config-tips');   //预先提示文案
+        var url      = $(this).attr('config-href');   //执行地址
+        var isReload = $(this).attr('config-reload'); //是否刷新当前页面
+        var trueUrl  = $(this).attr('config-true-url'); //执行成功跳转地址
+        var falseUrl = $(this).attr('config-false-url'); //执行失败跳转地址
         var data = new Object();
         for (var i = 0; i < attr.length; i++) {
-            if(attr[i].localName.indexOf('data') !== -1 && attr[i].localName != 'data-href'){
+            if(attr[i].localName.indexOf('data') !== -1 ){
                 data[attr[i].localName.substr(5,attr[i].localName.length)] =  attr[i].value;
             }
         }
@@ -219,7 +133,18 @@ $(function() {
                $.post(url,data,function(result){
                     layer.msg(result.msg);
                     if(result.status){
-                   setTimeout(function(){location.reload();},1000);
+                        setTimeout(function(){
+                            if(trueUrl){
+                                window.location.href= trueUrl;
+                            }else{
+                                location.reload();
+                            }
+                        },1000);
+                        
+                    }else if(!result.status && falseUrl){
+                        setTimeout(function(){
+                            window.location.href= falseUrl;
+                        },1000);
                     }
                 },"json")
             }, function(){});
@@ -230,7 +155,17 @@ $(function() {
                 }
 
                 if(result.status){
-                    setTimeout(function(){location.reload();},1000);
+                    setTimeout(function(){
+                        if(trueUrl){
+                            window.location.href= trueUrl;
+                        }else{
+                            location.reload();
+                        }
+                    },1000);
+                }else if(!result.status && falseUrl){
+                    setTimeout(function(){
+                        window.location.href= falseUrl;
+                    },1000);
                 }
 
                 if(isReload){
@@ -243,7 +178,7 @@ $(function() {
 
     //get提交
     $('.btn-ajax-get').click(function(){
-        var url = $(this).attr('data-url');
+        var url = $(this).attr('config-href');
         $.get(url,function(result){
             layer.msg(result.msg);
             if(result.status){
@@ -355,8 +290,6 @@ $(function() {
 
     //渲染时间插件
     $('.data-time').each(function(){
-
-
         var time       = $(this).val() * 1000;                    //int
         var min        = $(this).attr('data-min');         // string int
         var max        = $(this).attr('data-max');         // string int
@@ -469,6 +402,9 @@ $(function() {
             } 
 
         });
+
+        
+  
         
     })
 })
