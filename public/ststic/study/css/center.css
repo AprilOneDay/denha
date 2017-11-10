@@ -897,6 +897,365 @@ textarea.int{ height:auto; padding:10px; line-height:1.7;}
 .pop-name-list>div>ul>li:hover{
     background:#e3e3e3;
 }
+.center .calendar_right .calendar {
+    width:180px;
+    margin: 2% auto;
+    background: url(../images/calendar-icon.png) no-repeat left center;
+    line-height: 50px;
+    height: 50px;
+    font-weight:bold;
+    font-size:30px;
+}
+.score{
+    position:absolute;
+    right:0;
+    top:30px;
+    padding-right:35px;
+}
+.own_calendar_right{
+    position:relative;
+    background:#f9f9f9;
+}
+.score>li:first-child{
+    text-align: left;
+}
+.score>li:first-child>img{
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+.score>li:nth-child(2){
+    width:188px;
+    height:5px;
+    -webkit-border-radius: 2.5px;
+    -moz-border-radius: 2.5px;
+    border-radius: 2.5px;
+    background:#DFDFDF;
+}
+.score>li:nth-child(2)>div{
+    height:5px;
+    background:#E6801C;
+    -webkit-border-radius: 2.5px;
+    -moz-border-radius: 2.5px;
+    border-radius: 2.5px;
+}
+.score>li:nth-child(3)>ul{
+    display:flex;
+    display:-webkit-flex;
+    justify-content:space-between;
+    align-items: center;
+    font-size:12px;
+}
+.score>li:nth-child(3)>ul>li:nth-child(2){
+    color:#E6801C;
+}
+.calendar-list{
+    padding:0 35px;
+}
+.calendar-list>div:first-child{
+    background:#EFEFEF;
+    display:flex;
+    display:-webkit-flex;
+    justify-content: center;
+    align-items:center;
+    height:60px;
+}
+.calendar-list>div:first-child>button{
+    width:90px;
+    background:#f9f9f9;
+    border:1px solid #BFBFBF;
+    line-height:25px;
+    font-size:14px;
+    text-align:left;
+    box-sizing: border-box;
+    cursor:pointer;
+}
+.calendar-list>div:first-child>button>img{
+    margin:0 6px 0 11px;
+    position:relative;
+    top:3px;
+}
+.calendar-list>div:first-child>button:last-child{
+    text-align:right;
+}
+.calendar-list>div:first-child>button:last-child>img{
+    margin:0 11px 0 6px;
+}
+.calendar-list>div:first-child>span{
+    font-size:22px;
+    margin:0 30px;
+}
+.calendar-list>table{
+    width:100%;
+}
+.calendar-list>table>thead td{
+    padding:31px 16px;
+    text-align:center;
+    font-size:16px;
+}
+.calendar-list>table>tbody{
+    border-bottom:1px solid #D7D7D7;
+    border-right:1px solid #D7D7D7;
+}
+.calendar-list>table>tbody td{
+    height:120px;
+    background:#f3f3f3;
+    border-top:1px solid #D7D7D7;
+    border-left:1px solid #D7D7D7;
+    position:relative;
+    /*overflow-y:auto;*/
+}
+.calendar-list>table>tbody td:hover{
+    z-index:999;
+}
+.calendar-list>table>tbody td>ul{
+    position:absolute;
+    top:50%;
+    left:50%;
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    width:85%;
+    line-height:25px;
+    font-size:12px;
+    text-align:center;
+    color:#4F4E4C;
+}
+.calendar-list>table>tbody td>ul>li{
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    position:relative;
+}
+#class-data{
+    position:absolute;
+    box-shadow: 8px 8px 8px #c9c9c9;
+    width:258px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    height:210px;
+    background:#f9f9f9;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border:1px solid #d7d7d7;
+    padding:18px 22px;
+    z-index:999;
+    display:none;
+}
+#class-data.top-div{
+    left:auto;
+    right:0;
+    top:41px;
+}
+#class-data:before{
+    content:"";
+    position:absolute;
+    border:9px solid transparent;
+    border-right-color:#D7D7D7;
+    left:-18px;
+    top:24px;
+}
+#class-data.top-div:before{
+    border:9px solid transparent;
+    border-bottom-color:#D7D7D7;
+    left:auto;
+    right:20px;
+    top:-18px;
+}
+#class-data:after{
+    content:"";
+    position:absolute;
+    border:8px solid transparent;
+    border-right-color:#f9f9f9;
+    left:-16px;
+    top:25px;
+}
+#class-data.top-div:after{
+    border:8px solid transparent;
+    border-bottom-color:#f9f9f9;
+    left:auto;
+    right:21px;
+    top:-16px;
+}
+#class-data>ul{
+    border-bottom:1px solid #DFDFDF;
+}
+#class-data>ul>li{
+    font-size:13px;
+    line-height:13px;
+    margin-bottom:12px;
+    text-align:left;
+}
+#class-data>ul>li:first-child{
+    font-size:15px;
+    line-height:15px;
+    margin-bottom:24px;
+}
+#class-data>button{
+    width:60px;
+    line-height:24px;
+    font-size:13px;
+    color:#fff;
+    border:none;
+    background:#D35B1F;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    display:block;
+    margin-top:12px;
+    cursor:pointer;
+}
+.calendar-list>table>tbody td>span{
+    position:absolute;
+    top:12px;
+    right:5px;
+    font-size:12px;
+}
+.date-none{
+    color:#747474;
+}
+.gray{
+    background:#D3DBE1;
+}
+.blue{
+    background:#CCF3F2;
+}
+.yellow{
+    background:#F7E8D4;
+}
+.calendar-list>table>tbody td>ul>li:not(:first-child){
+    margin-top:8px;
+}
+.calendar-list>table>tbody>tr:first-child td{
+    background:#ECECEC;
+}
+.class-detail{
+    display:none;
+}
+#evaluate-box{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:rgba(0,0,0,.5);
+    z-index:9999;
+    display:none;
+}
+#evaluate-box>div{
+    width:596px;
+    position:relative;
+    top:50%;
+    left:50%;
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+#evaluate-box>div>img{
+    width:100%;
+}
+#evaluate-box>div>form{
+    position:absolute;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    top:0;
+    left:0;
+    width:100%;
+    padding:33px 37px 0;
+}
+#evaluate-box>div>form>p{
+    text-align:left;
+    padding-left:26px;
+    background:url("../images/bj_ico.png") no-repeat 3px center;
+    line-height:17px;
+    font-size:15px;
+}
+#evaluate-box>div>form>textarea{
+    width:100%;
+    height:118px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-top:11px;
+    padding:11px;
+    font-size:12px;
+    line-height:18px;
+    color:#969696;
+}
+#evaluate-box>div>form>ul{
+    margin-top:34px;
+}
+#evaluate-box>div>form>ul>li {
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    font-size:12px;
+}
+#evaluate-box>div>form>ul>li:first-child{
+    margin-bottom:20px;
+}
+#evaluate-box>div>form>ul>li>span{
+    width:60px;
+    text-align:left;
+    white-space: nowrap;
+}
+#evaluate-box>div>form>ul>li>div{
+    width:100px;
+    overflow:hidden;
+    margin-left:81px;
+    margin-right:38px;
+}
+#evaluate-box>div>form>ul>li>div>div:after{
+    content:"";
+    display:block;
+    clear:both;
+}
+#evaluate-box>div>form>ul>li>div>div{
+    width:200px;
+    position:relative;
+}
+#evaluate-box>div>form>ul>li>div>div>img{
+    float:left;
+    margin-right:4px;
+}
+#evaluate-box>div>form>ul>li>div>div>img:last-child{
+    margin-right:0;
+}
+#evaluate-box>div>form>button{
+    width:92px;
+    line-height:32px;
+    background:#1063AD;
+    color:#ffffff;
+    font-size:14px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border:none;
+    margin-top:80px;
+    cursor:pointer;
+}
+#evaluate-box>div>form>button:hover{
+    background:#0F5290;
+}
+#evaluate-box>div>span{
+    position:absolute;
+    width:15px;
+    height:15px;
+    top:15px;
+    right:20px;
+    cursor:pointer;
+    background:url("../images/close.png") no-repeat center center;
+    background-size:cover;
+}
 @media screen and (min-width:1200px){
     .classroom_right .enter-classrrom{
         width:auto;
@@ -974,6 +1333,16 @@ textarea.int{ height:auto; padding:10px; line-height:1.7;}
     .t_kczy ul .btn_fb{
         width:56%;
     }
+    .classroom_right  .download-title{
+        background-image: url(../images/download-icon.png);
+        width:190px
+    }
+    .t_cr_right .kczy li p.download-file{
+        float:left;
+    }
+}
+@media screen and (max-width: 767px) and (min-width: 320px){
+
 }
 
 

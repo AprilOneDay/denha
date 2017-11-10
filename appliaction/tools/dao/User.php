@@ -92,6 +92,7 @@ class User
             }
         }
 
+        $data['uid']      = $this->createUid();
         $data['nickname'] = $data['username'];
         $data['salt']     = rand(10000, 99999);
         $data['password'] = md5($data['password'] . $data['salt']);
@@ -119,6 +120,14 @@ class User
         //增加积分明细
         dao('Integral')->add($reslut, 'user_registered');
         return array('status' => true, 'msg' => '注册成功');
+    }
+
+    //创建uid
+    public function createUid()
+    {
+        $id  = table('User')->order('id desc')->field('id')->find('one');
+        $uid = rand(1000, 9999) . $id + 1;
+        return $uid;
     }
 
     /**

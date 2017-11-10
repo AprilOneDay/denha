@@ -47,9 +47,8 @@ class Article
     {
         $offer = max(($pageNo - 1), 0) * $pageSize;
         $this->getMapField($nativeMap, $nativeField, $modelId);
-        $total = table('Article')->join($this->articleData)->where($this->map)->count();
-        $list  = table('Article')->join($this->articleData)->where($this->map)->field($this->field)->limit($offer, $pageSize)->order($this->article . '.id desc')->find('array');
-
+        $total         = table('Article')->join($this->articleData)->where($this->map)->count();
+        $list          = table('Article')->join($this->articleData)->where($this->map)->field($this->field)->limit($offer, $pageSize)->order($this->article . '.id desc')->find('array');
         $data['total'] = $total;
         $data['list']  = $list;
 
@@ -66,6 +65,7 @@ class Article
      */
     private function getMapField($nativeMap, $nativeField, $modelId)
     {
+
         $modelTable = getVar('model_table', 'admin.article');
 
         $this->dataTable = $modelTable[$modelId];
@@ -75,6 +75,7 @@ class Article
 
         $fieldArray = table('Article')->getField();
 
+        $this->map = '';
         if ($nativeMap) {
             foreach ($nativeMap as $key => $value) {
                 if (in_array($key, $fieldArray)) {

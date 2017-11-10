@@ -166,6 +166,10 @@ class ArticleEdit extends \app\admin\controller\Init
             $data['position']    = post('position', 'text', '');
             $data['position_en'] = post('position_en', 'text', '');
 
+            if (!$data['teacher_uid']) {
+                $this->ajaxReturn(array('status' => false, 'msg' => '请关联老师'));
+            }
+
             //开启事务
             table('Article')->startTrans();
             $dataId = $this->defaults(); //保存主表
@@ -198,6 +202,7 @@ class ArticleEdit extends \app\admin\controller\Init
             $other = array(
                 'tag'            => getVar('tags', 'console.article'),
                 'columnListCopy' => dao('Column', 'admin')->columnList(),
+                'teacherList'    => table('User')->where(array('type' => 2, 'status' => 1))->field('id,real_name')->find('array'),
             );
 
             $this->assign('data', $rs);
@@ -226,7 +231,7 @@ class ArticleEdit extends \app\admin\controller\Init
                 $this->ajaxReturn(array('status' => false, 'msg' => '请输入售卖价格'));
             }
 
-            if (!$data['teacher_id']) {
+            if (!$data['teacher_uid']) {
                 $this->ajaxReturn(array('status' => false, 'msg' => '请关联老师'));
             }
 
@@ -253,20 +258,37 @@ class ArticleEdit extends \app\admin\controller\Init
             }
 
             //保存课程表
-            $schedule['syllabus'] = post('syllabus');
-            $schedule['credit']   = post('credit');
+            $schedule['startSyllabus'] = post('start_syllabus');
+            $schedule['endSyllabus']   = post('end_syllabus');
+            $schedule['credit']        = post('credit');
             if ($schedule) {
                 //删除 课程表
                 table('Article' . self::$dataTable . 'Schedule')->where('id', $dataId)->delete();
 
-                if (count($schedule['syllabus']) != count(array_unique($schedule['syllabus']))) {
-                    $this->ajaxReturn(array('status' => false, 'msg' => '课程时间存在相同时间，请修改'));
+                //检测课程时间是否满足规则
+                if (count($schedule['startSyllabus']) != count(array_unique($schedule['startSyllabus']))) {
+                    $this->ajaxReturn(array('status' => false, 'msg' => '课程开始时间存在相同时间，请修改'));
                 }
 
-                foreach ($schedule['syllabus'] as $key => $value) {
+                if (count($schedule['endSyllabus']) != count(array_unique($schedule['endSyllabus']))) {
+                    $this->ajaxReturn(array('status' => false, 'msg' => '课程结束时间存在相同时间，请修改'));
+                }
+
+                foreach ($schedule['startSyllabus'] as $key => $value) {
+
+                    if (strtotime($value) >= strtotime($schedule['endSyllabus'][$key])) {
+                        $this->ajaxReturn(array('status' => false, 'msg' => '课程时间【' . $value . '】大于等于课程结束时间'));
+                    }
+
+                    if (date('Y-m-d', strtotime($value)) !== date('Y-m-d', strtotime($schedule['endSyllabus'][$key]))) {
+                        $this->ajaxReturn(array('status' => false, 'msg' => '课程时间【' . $value . '】超过一天了'));
+                    }
+                }
+
+                foreach ($schedule['startSyllabus'] as $key => $value) {
                     if ($value) {
                         $data           = array();
-                        $data           = array('id' => $dataId, 'time' => strtotime($value), 'credit' => $schedule['credit'][$key]);
+                        $data           = array('id' => $dataId, 'start_time' => strtotime($value), 'end_time' => strtotime($schedule['endSyllabus'][$key]), 'credit' => $schedule['credit'][$key]);
                         $resultSchedule = table('Article' . self::$dataTable . 'Schedule')->add($data);
                         if (!$resultSchedule) {
                             table('Article')->rollback();
@@ -283,7 +305,7 @@ class ArticleEdit extends \app\admin\controller\Init
             if ($id) {
                 $rs = $this->getEditConent($id);
                 //获取课程信息
-                $schedule = table('Article' . self::$dataTable . 'Schedule')->where('id', $id)->field('time,credit')->find('array');
+                $schedule = table('Article' . self::$dataTable . 'Schedule')->where('id', $id)->field('end_time,start_time,credit')->find('array');
 
             } else {
                 $rs = array(
@@ -305,6 +327,7 @@ class ArticleEdit extends \app\admin\controller\Init
                 'featuredCopy'   => dao('Category')->getList(34),
                 'columnListCopy' => dao('Column', 'admin')->columnList(),
                 'schedule'       => isset($schedule) ? $schedule : array(),
+                'teacherList'    => table('User')->where(array('type' => 2, 'status' => 1))->field('id,real_name')->find('array'),
             );
 
             $this->assign('data', $rs);

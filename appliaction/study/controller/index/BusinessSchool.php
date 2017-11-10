@@ -4,7 +4,7 @@
  */
 namespace app\study\controller\index;
 
-class HightSchool extends \app\study\controller\Init
+class BusinessSchool extends \app\study\controller\Init
 {
     /**
      * 单页模块
@@ -21,7 +21,7 @@ class HightSchool extends \app\study\controller\Init
 
         $this->assign('data', $data);
         $this->assign('columnList', $columnList);
-        $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+        $this->show('hight_school' . '/' . ACTION . $this->lg);
     }
 
     public function lession()
@@ -33,19 +33,19 @@ class HightSchool extends \app\study\controller\Init
 
         $this->assign('list', $list);
         $this->assign('columnList', $columnList);
-        $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+        $this->show('hight_school' . '/' . ACTION . $this->lg);
     }
 
     public function lessionMore()
     {
-        $pageNo   = max(get('pageNo', 'intval', 0), 2);
+        $pageNo   = max(post('pageNo', 'intval', 0), 2);
         $pageSize = 6;
 
         $map['column_id'] = get('cid', 'intval', 0);
         $list             = dao('Article')->getList($map, 'id,thumb,num,class_type,characteristics', 3, $pageSize, $pageNo);
 
         $this->assign('list', $list);
-        $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+        $this->show('hight_school' . '/' . ACTION . $this->lg, false, false);
     }
 
     /**
@@ -63,7 +63,7 @@ class HightSchool extends \app\study\controller\Init
 
         $this->assign('columnList', $columnList);
         $this->assign('list', $list);
-        $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+        $this->show('hight_school' . '/' . ACTION . $this->lg);
     }
 
     /** 老师详情 */
@@ -85,6 +85,6 @@ class HightSchool extends \app\study\controller\Init
         $data['lessionList'] = dao('Article')->getList($map, 'id,title,btitle,thumb,base_orders', 3);
 
         $this->assign('data', $data);
-        $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+        $this->show('hight_school' . '/' . ACTION . $this->lg);
     }
 }

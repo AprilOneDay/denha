@@ -12,12 +12,30 @@ class Init extends denha\Controller
     public $group;
     public $lg; //返货提示信息语音版本
     public $imei;
+    public $thisColumn;
+    public $parentColumn;
+    public $topColumn;
 
     public function __construct()
     {
 
         $this->lg    = getCookie('lg') ? '_' . getCookie('lg') : '';
         $this->token = getCookie('token') ? getCookie('token') : '';
+
+        //获取栏目信息
+        if ($cid = get('cid', 'intval', 0)) {
+            //当前栏目信息
+            $this->thisColumn = table('Column')->where('id', $cid)->find();
+            //上级栏目信息
+            if ($this->thisColumn['parentid'] == 0) {
+                $this->topColumn = $this->parentColumn = $this->thisColumn;
+            } else {
+                $this->parentColumn = table('Column')->where('id', $this->thisColumn['parentid'])->find();
+                if ($this->parentColumn['parentid'] == 0) {
+                    $this->topColumn = $this->parentColumn;
+                }
+            }
+        }
 
         if ($this->token) {
             $map['token'] = $this->token;
@@ -44,6 +62,7 @@ class Init extends denha\Controller
                 $reslut           = table('User')->where(array('id' => $user['id']))->save($data);
             }
         }
+
     }
 
     public function checkIndividual($group = 1)

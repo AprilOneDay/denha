@@ -25,82 +25,29 @@
         <div class="classroom_right">
         		<h3 class="my_news my-object">我的课程</h3>
         	<div class="t_cr_left fl">
-            	<b>老师您好！</b>
+            	<b>同学您好！</b>
                 <span>您报名的课程都在右边列表中，记得准时上课哟~</span>
             </div>
 			<div class="t_cr_right pp_t fr navgation ">
              <div class="width80 clearfix">
+                {loop $list $value}
                 <div class="com_pp clearfix">
-                	<div class="left_img"><img src="/ststic/study/images/kc5.jpg" /></div>
+                	<div class="left_img"><a href="{F:url('/index/course/detail',array('id'=>$value['goods']['goods_id']))}" class="names" target="_blank"><img src="{F:imgUrl($value['goods']['thumb'],'article')}" /></a></div>
                 	<div class="comm_title">
-                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
-                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b>”</b></p>
+                    	<p class="title_pp"><a href="{F:url('/index/course/detail',array('id'=>$value['goods']['goods_id']))}" class="names" target="_blank">{$value['goods']['title']}</a></p>
+                        <p class="comm_cont"><b>“</b>{$value['goods']['recruit']}”<b>”</b></p>
                         
                          
                     </div>
                     
                 </div>
+                {/loop}
                 
-                
-                <div class="com_pp clearfix">
-                	<div class="left_img"><img src="/ststic/study/images/kc5.jpg" /></div>
-                	<div class="comm_title">
-                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
-                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b>”</b></p>
-                        
-                         
-                    </div>
-                    
+                <div class="page ">
+                    <p><b>{$pages['pageNo']}</b>/{$pages['allPage']}</p>
+                    <a href="{$pages['pageUrl']}?pageNo={F:max($pages['pageNo'] - 1,1)}">上一页</a>
+                    <a href="{$pages['pageUrl']}?pageNo={F:min($pages['pageNo'] + 1,$pages['allPage'])}">下一页</a>
                 </div>
-                <div class="com_pp clearfix">
-                	<div class="left_img"><img src="/ststic/study/images/kc5.jpg" /></div>
-                	<div class="comm_title">
-                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
-                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b>”</b></p>
-                        
-                         
-                    </div>
-                    
-                </div>
-                
-                
-                <div class="com_pp clearfix">
-                	<div class="left_img"><img src="/ststic/study/images/kc5.jpg" /></div>
-                	<div class="comm_title">
-                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
-                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b>”</b></p>
-                        
-                         
-                    </div>
-                    
-                </div>
-                <div class="com_pp clearfix">
-                	<div class="left_img"><img src="/ststic/study/images/kc5.jpg" /></div>
-                	<div class="comm_title">
-                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
-                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b>”</b></p>
-                        
-                         
-                    </div>
-                    
-                </div>
-                
-                
-                <div class="com_pp clearfix">
-                	<div class="left_img"><img src="/ststic/study/images/kc5.jpg" /></div>
-                	<div class="comm_title">
-                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
-                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b>”</b></p>
-                        
-                         
-                    </div>
-                    
-                </div>
-    
-                
-                
-                <div class="page "><p><b>2</b>/6</p><a href="#">上一页</a><a href="#">下一页</a></div>
-       
 			</div>
         
         </div>     	

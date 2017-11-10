@@ -170,43 +170,34 @@
 		  $(".xiugais").css("display","none");
     })
 
-    //插入图片
-    $('.insert-img').click(function(){
-        $('input[id=insert-img]').wrap('<form>').closest('form').get(0).reset();
-        $('input[id=insert-img]').trigger('click');
-    })
+//插入图片
+$('.insert-img').click(function(){
+    $('input[id=insert-img]').wrap('<form>').closest('form').get(0).reset();
+    $('input[id=insert-img]').trigger('click');
+})
 
-    $('#insert-img').change(function(e){
-        var files = e.target.files || e.dataTransfer.files;
-        var reader = new FileReader();
-        reader.readAsDataURL(files[0]); 
-        reader.onload = function(e){
-            $.post('/common/upload/up_base64_img',{data:e.target.result,path:'test'},function(result){
-                if(result.status){
-                    $('.textarea').append('<img src="'+result.data+'" width="80%">');
-                }else{
-                    layer.msg(result.msg);
-                }
+$('#insert-img').change(function(e){
+    var files = e.target.files || e.dataTransfer.files;
+    var reader = new FileReader();
+    reader.readAsDataURL(files[0]); 
+    reader.onload = function(e){
+        $.post('/common/upload/up_base64_img',{data:e.target.result,path:'test'},function(result){
+            if(result.status){
+                $('.textarea').append('<img src="'+result.data+'" width="80%">');
+            }else{
+                layer.msg(result.msg);
+            }
 
-                //删除照片
-                $('.btn-del-img').click(function(){
-                    //console.log($(this).parent().html());
-                    $(this).parent().remove();
-                    bindValue();    
-                })
+            //删除照片
+            $('.btn-del-img').click(function(){
+                //console.log($(this).parent().html());
+                $(this).parent().remove();
+                bindValue();    
+            })
 
-            },"json");
-        }
-    });
-
-    function getCookie(name)
-    {
-        var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
-        if(arr=document.cookie.match(reg))
-            return unescape(arr[2]);
-        else
-            return null;
+        },"json");
     }
+});
 </script>
 <script>jQuery(".focusBox").hover(function(){ jQuery(this).find(".prev,.next").stop(true,true).fadeTo("show",0.2) },function(){ jQuery(this).find(".prev,.next").fadeOut() });
 jQuery(".focusBox").slide({ mainCell:".pic",effect:"fold", autoPlay:true, delayTime:600, trigger:"click"});	</script>

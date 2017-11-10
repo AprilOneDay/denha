@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <title>国际商学院High School</title>
+    {include public/global_css}
+    <script src="/ststic/study/js/jquery.min.js"></script>
+    <script src="/ststic/study/js/jquery.SuperSlide.2.1.1.js"></script>
+    <script src="/ststic/study/js/common.js"></script>
+    <script type="text/javascript" src="/vendor/layer/layer.js"></script>
+
+</head>
+
+
+<body>
+
+
+<!-- 弹出框内容-->
+<div class="chilk_box clearfix" style="display:block;">
+    <div class="box_midd width1200">
+        <div class="close"></div>
+        <div class="per_my">
+            <div class="img"><img src="{F:imgUrl($data['thumb'],'article')}"/></div>
+            <div class="cont"><p class="name">{$data['title']}</p>
+                <p>{$data['position']}</p><span></span>
+                <p>{$data['description']}</p></div>
+        </div>
+        <div class="notices" style="margin:0 auto">
+            <div class="tab-hd">
+                <ul class="tab-nav">
+                    <li><a href="javascript:;">热门教程</a></li>
+                    <li class="on"><a href="javascript:;">教师资质</a></li>
+                </ul>
+            </div>
+            <div class="tab-bd clearfix">
+                <div class="tab-pal ">
+                    <ul class="kec">
+                        {loop $data['lessionList']['list'] $value}
+                        <li>
+                            <div class="imgs"><a href="javascript:;" onclick="javascript:top.location.href = '{F:url('detail',array('id'=>$value['id']))}'"><img src="{F:imgUrl($value['thumb'],'article')}"/></a></div>
+                            <div class="name">{$value['title']}</div>
+                            <div class="keshi"><span>255人已购买</span></div>
+                        </li>
+                        {/loop}
+                    </ul>
+                </div>
+                <div class="tab-pal ">
+                    <ul class="kec">
+                        {loop $data['honorList']['list'] $value}
+                         <li>
+                            <div class="imgs"><a href="javascript:;"><img src="/ststic/study/images/zz.jpg"/></a></div>
+                            <div class="name">{$value['title']}</div>
+                        </li>
+                        {/loop}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 弹出框内容-->
+<div class="clearfix"></div>
+</body>
+<script>
+    jQuery(".notice").slide({titCell: ".tab-hd li", mainCell: ".tab-bd", delayTime: 0});
+</script>
+<script>
+    jQuery(".notices").slide({titCell: ".tab-hd li", mainCell: ".tab-bd", delayTime: 0});
+</script>
+<script>
+    $(".team .add").click(function (e) {
+        e.preventDefault();
+        $(".chilk_box").slideToggle();
+    })
+    $(".close_btn ").click(function () {
+        $(".chilk_box").css("display", "none");
+    })
+
+
+</script>
+</html>

@@ -62,13 +62,7 @@ class Start
 
         //待开发 自动生成api接口文档
         //get('api') == false ?: self::apiDoc(Route::$class, $action);
-
         $action = $object->$action();
-
-        if (self::$config['trace']) {
-            Trace::run();
-        }
-
     }
 
     /**

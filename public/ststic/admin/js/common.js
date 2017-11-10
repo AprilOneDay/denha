@@ -422,6 +422,34 @@ $(function() {
         
     })
 
+    //动态加载更多
+    $('.btn-loadmore').on('click',function(){
+        var url   = $(this).attr('config-href');
+        var page  = $(this).attr('config-page');
+        var elem  = $(this).attr('config-elem');
+        var text  = $(this).attr('config-text');
+        var _this = this;
+
+        if(!url){
+            return layer.msg('请绑定需要加载url');
+        }
+
+        if(!elem){
+            return layer.msg('请绑定需要渲染对象');
+        }
+
+        $.post(url,{pageNo:page},function(result){
+            if(result.length > 1){
+                $(_this).attr('config-page',parseInt(page)+1);
+                $(elem).append(result);
+            }else{
+                if(text){
+                    $(_this).html(text);
+                }
+            }
+        },'html')
+    })
+
     //关闭弹窗
     $('#btn-close').on('click',function(){
         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引

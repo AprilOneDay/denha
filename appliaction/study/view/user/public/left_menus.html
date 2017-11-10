@@ -8,8 +8,8 @@
                     <a href="{F:url('/user/message')}">我的消息<b>（5）</b></a>
                 </li>
 
-                <li>
-                    <a href="#">日历</a>
+                <li {if CONTROLLER == 'calendar'}class="on"{/if}>
+                    <a href="{F:url('/user/calendar')}">日历</a>
                 </li>
 
                 <li class="black{if CONTROLLER == 'classroom' && ACTION == 'hall'} on{/if}">

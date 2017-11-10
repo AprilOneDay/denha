@@ -539,7 +539,11 @@
 .xiugais .xiugai_box  p span{ display:block; float:left; width:25%; text-align:right}
 .xiugais .xiugai_box  p .form-control{ background:#fff url(../images/xia.png) no-repeat  center right 10px}
 .xiugais .xiugai_box .btn_xg{ display:block; background:#0a6ab8; color:#fff; margin:5px auto; width:60%; margin-left:28%; line-height:35px; border-radius:5px}
-.xiugais .xiugai_box  p  input{ background:#fff; border:#dcdcdc 1px solid;line-height:20px;padding:5px; color:#3dcdcdc; width:65%  }
+.xiugais .xiugai_box  p  input,.xiugais .xiugai_box  p  select{ background:#fff; border:#dcdcdc 1px solid;line-height:20px;padding:5px; color:#3dcdcdc; width:65%  }
+.xiugais .xiugai_box  p  select{
+    height:32px;
+    padding-left:1px;
+}
 .xiugais .xiugai_box  p  textarea{ width:65%; height:150px; padding:5px; border:#dcdcdc 1px solid;}
 .xiugais .xiugai_box  p .a-upload{ }
 
@@ -841,6 +845,25 @@
         background:url("../images/uploadFile.png") no-repeat;
         background-position:8px center;
     }
+}
+#pop-data{
+    display:none;
+    border:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:999;
+}
+.close_btn_new{
+    position:fixed;
+    width: 20px;
+    height: 20px;
+    background: url(../images/close.png) no-repeat right top;
+    font-size: 0;
+    left:calc(50% + 455px);
+    z-index:1000;
 }
 @media screen and (max-width: 767px) and (min-width: 320px){
     .shequ_left .shequ_detail .title{

@@ -34,7 +34,7 @@ class Controller
     // XXX/XXXX/XXX 以view/modul 开始
     // xxxx   以view/modul/controller 开始
     // ''     如果为空 者为 view/modul/controller/action.html
-    protected function show($viewPath = '', $peg = false)
+    protected function show($viewPath = '', $peg = false, $trace = true)
     {
 
         if (get('all')) {
@@ -74,6 +74,10 @@ class Controller
             $template = new Template($path);
             $template->getContent();
             include $template->loadPath;
+        }
+
+        if (Start::$config['trace'] && $trace) {
+            Trace::run();
         }
     }
 

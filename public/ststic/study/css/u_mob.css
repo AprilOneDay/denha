@@ -249,6 +249,137 @@
 	.pop-name-list>div>ul>li{
 		z-index:9999;
 	}
+	.center .calendar_right .calendar{
+		display:none;
+	}
+	.own_calendar_right{
+		width:100%;
+	}
+	.score{
+		position:static;
+		padding:0 15px;
+	}
+	.score>li:nth-child(2){
+		width:100%;
+	}
+	.calendar-list{
+		margin-top:20px;
+		padding:0 10px;
+	}
+	.calendar-list>div:first-child>span{
+		font-size:16px;
+		margin:0 20px;
+	}
+	.calendar-list>table>thead td{
+		padding:15px;
+	}
+	.calendar-list>table>thead td>span{
+		display:none;
+	}
+	.calendar-list>table>tbody td>span{
+		top:5px;
+	}
+	.calendar-list>table>tbody td>ul{
+		white-space: nowrap;
+		width:auto;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		padding:0 5px;
+		line-height:18px;
+		position:static;
+		-webkit-transform: none;
+		-moz-transform: none;
+		-ms-transform: none;
+		-o-transform: none;
+		transform: none;
+	}
+	.calendar-list>table>tbody td>ul:after{
+		content:"";
+		display:block;
+		clear:both;
+	}
+	.calendar-list>table>tbody td>ul>li{
+		width:30px;
+		overflow:hidden;
+		float:left;
+		text-overflow: ellipsis;
+	}
+	.calendar-list>table>tbody td>ul>li:not(:first-child){
+		margin-top:4px;
+	}
+	.calendar-list>table{
+		width:100%;
+	}
+	.calendar-list>table>tbody td{
+		height:70px;
+	}
+	#class-data {
+		position:static;
+		display:block;
+		width:100%;
+		height:auto;
+	}
+	#class-data:before,#class-data:after{
+		display:none;
+	}
+	#class-data>ul>li{
+		font-size:12px;
+		line-height:12px;
+		margin-bottom:10px;
+	}
+	#class-data>ul>li:first-child{
+		font-size:14px;
+		line-height:14px;
+		margin-bottom:15px;
+	}
+	.own_calendar_right{
+		padding-bottom:10px;
+	}
+	.own-center{
+		height:auto;
+	}
+	.class-detail{
+		display:block;
+		font-size:16px;
+		line-height:16px;
+		margin-bottom:10px;
+	}
+	#evaluate-box>div{
+		width:100%;
+	}
+	#evaluate-box>div>form{
+		padding:15px;
+		height:100%;
+	}
+	#evaluate-box>div>form>textarea{
+		padding:8px;
+	}
+	#evaluate-box>div>form>ul{
+		margin-top:10px;
+	}
+	#evaluate-box>div>form>ul>li:first-child{
+		margin-bottom:10px;
+	}
+	#evaluate-box>div>form>button{
+		position:absolute;
+		margin-top:0;
+		top:10px;
+		right:50px;
+		line-height:28px;
+		font-size:12px;
+		width:50px;
+	}
+	#evaluate-box>div>form>ul>li>div{
+		margin:0;
+	}
+	#evaluate-box>div>form>ul>li{
+		justify-content:space-between;
+	}
+	#evaluate-box>div>span{
+		right:10px;
+		top:10px;
+	}
 }
 	
 	

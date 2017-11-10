@@ -330,6 +330,34 @@ $(function() {
         parent.layer.close(index);
     });
 
+    //动态加载更多
+    $('.btn-loadmore').on('click',function(){
+        var url   = $(this).attr('config-href');
+        var page  = $(this).attr('config-page');
+        var elem  = $(this).attr('config-elem');
+        var text  = $(this).attr('config-text');
+        var _this = this;
+
+        if(!url){
+            return layer.msg('请绑定需要加载url');
+        }
+
+        if(!elem){
+            return layer.msg('请绑定需要渲染对象');
+        }
+
+        $.post(url,{pageNo:page},function(result){
+            if(result.length > 1){
+                $(_this).attr('config-page',parseInt(page)+1);
+                $(elem).append(result);
+            }else{
+                if(text){
+                    $(_this).html(text);
+                }
+            }
+        },'html')
+    })
+
     //上传文件
     $('.btn-files').each(function(){  
         var _this    = this;
@@ -408,3 +436,12 @@ $(function() {
         
     })
 })
+
+function getCookie(name)
+{
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+    if(arr=document.cookie.match(reg))
+        return unescape(arr[2]);
+    else
+        return null;
+}

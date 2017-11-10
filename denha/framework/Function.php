@@ -792,7 +792,14 @@ function getSystem($agent = '')
         $browserplatform = "IRIX";
     } elseif (eregi('FreeBSD', $agent)) {
         $browserplatform = "FreeBSD";
+    } elseif (stripos($agent, 'iphone') || stripos($agent, 'ipad')) {
+        $browserplatform = 'ios';
+    } elseif (stripos($agent, 'android')) {
+        $browserplatform = 'android';
+    } elseif (stripos($agent, 'MicroMessenger')) {
+        $browserplatform = 'MicroMessenger';
     }
+
     if ($browserplatform == '') {$browserplatform = "Unknown";}
     return $browserplatform . ' ';
 }

@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+	<title>订单详情</title>
+	{include public/global_css}
+    <script src="/ststic/study/js/jquery.min.js"></script>
+    <script src="/ststic/study/js/common.js"></script>
+    <script type="text/javascript" src="/vendor/layer/layer.js"></script>
+</head>
+
+
+<body>
+{include public/top}   
+    <div class="kc_conts clearfix">
+    	<div class="cont_boxs width1200 clearfix">
+        	<div class="daohang"><h3>提交订单</h3></div>
+            <div class="cont_left fl form-center">
+                <div class="detail">
+                    <div class="img"><img src="{F:imgUrl($data['thumb'],'article')}" /></div>
+                    <div class="title_cont">
+                        <b>{$data['title']}</b>
+                        {if $data['num']}
+                        <p><span>课程时间:</span>{$data['num']} 课时</p>
+                        {/if}
+                        {if $data['class_time']}
+                        <p><span>上课时间:</span>
+                            {$data['class_time']}
+                        </p>
+                        {/if}
+                        <p class="price"><span>课程价格:</span>
+                        {if $data['dis_price']}{$data['dis_price']}{else}{$data['sale_price']}{/if}元
+                        </p>
+                    </div>
+                </div>
+                <form class="form-horizontal" action="{F:url('save_lession')}">
+                    <input type="hidden" value="{$id}" name="id" />
+                    <div class="lianxi clearfix">
+                    	<h4>联系方式</h4>
+                        <br />
+                        <br />
+                    	<p><span>姓名</span><input type="text" placeholder="请输入姓名" name="nickname" class="input"/></p>
+                        <br />
+                    	<p><span>手机号</span><input type="tel" placeholder="输入手机号码" name="mobile" class="input"/></p><br />
+                        <br />
+
+                    	<h4>支付方式</h4> <br />
+                        <p><input name="paymethod" type="radio" value="1" checked><b>微信支付</b><i>微信安全支付</i></p> 
+                        <p><input name="paymethod" type="radio" value="2" ><b>支付宝支付</b><i>支付宝安全支付</i></p> 
+                        <p><input name="paymethod" type="radio" value="3" ><b>银行卡支付</b><i>银行卡安全支付</i></p> <br />
+                    </div>
+                    <div class="js"><h4>订单结算</h4>
+                    	<p>支付金额：<span>{if $data['dis_price']}{$data['dis_price']}{else}{$data['sale_price']}{/if}元</span></p>
+                            <a class="buy_btn btn-comply" href="javascript:;">立即支付</a>
+                    </div>
+                </form>
+    		</div>
+    	</div>
+    </div>
+    
+    
+    
+<div class="clearfix"></div>
+    {include public/footer}  
+</body>
+</html>

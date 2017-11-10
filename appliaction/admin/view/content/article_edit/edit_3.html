@@ -32,10 +32,14 @@
 						<div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger"></span>
-								<span>关联老师id</span>
+								<span>关联老师</span>
 							</label>
 							<div class="col-sm-8">
-								<input type="text" value="{??$data['teacher_id']}" name="info[teacher_id]" placeholder="老师用户id"  required class="form-control">	
+								<select data-selected="{??$data['teacher_uid']}" name="info[teacher_uid]" class="form-control w160">
+									{loop $other['teacherList'] $key $value}
+	                               		<option value="{$value['id']}">{$value['real_name']}</option>
+	                            	{/loop}
+								</select>
 							</div>
 						</div>
 
@@ -120,7 +124,7 @@
 								<input type="text" value="{??$data['base_orders']}" name="info[base_orders]" placeholder="购买人数基数" class="form-control">	
 							</div>
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger"></span>
 								<span>课程开始时间</span>
@@ -137,7 +141,7 @@
 							<div class="col-sm-8">
 								<input type="text" value="{??$data['end_time']}" name="info[end_time]" class="form-control data-time">		
 							</div>
-						</div>
+						</div> -->
 						<div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger"></span>
@@ -160,6 +164,7 @@
 								<select data-selected="{??$data['class_type']}" name="info[class_type]" class="form-control w160">
                                		<option value="1">一对一</option>
                                		<option value="2">一对多</option>
+                               		<option value="3">视频课件</option>
 								</select>
 							</div>
 						</div>
@@ -173,12 +178,15 @@
 								{loop $other['schedule'] $key $value}
 									<div class="container-fluid time" style="padding-bottom: 10px;">
 										<div class="col-sm-3 pull-left">
-											<input type="text" value="{$value['time']}" name="syllabus[]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" data-type="datetime">	
+											<input type="text" value="{$value['start_time']}" name="start_syllabus[]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" data-type="datetime" >	
+										</div>
+										<div class="col-sm-3 pull-left">
+											<input type="text" value="{$value['end_time']}" name="end_syllabus[]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" data-type="datetime" placeholder="课程结束时间">	
 										</div>
 										<div class="col-sm-2 pull-left">
 											<input type="text" value="{$value['credit']}" name="credit[]"  class="form-control" placeholder="学分">	
 										</div>
-										<div class="col-sm-5">
+										<div class="col-sm-4">
 											<a class="btn btn-primary add-syllabus">添加</a>
 											<a class="btn btn-primary del-add-syllabus">删除</a>
 										</div>
@@ -187,12 +195,15 @@
 							{else}
 								<div class="container-fluid time" style="padding-bottom: 10px;">
 									<div class="col-sm-3 pull-left">
-										<input type="text" value="" name="syllabus[]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" data-type="datetime" data-isnull='1'>	
+										<input type="text" value="" name="start_syllabus[]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" data-type="datetime" data-isnull='1' placeholder="课程开始时间">	
+									</div>
+									<div class="col-sm-3 pull-left">
+										<input type="text" value="" name="end_syllabus[]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" data-type="datetime" data-isnull='1' placeholder="课程结束时间">	
 									</div>
 									<div class="col-sm-2 pull-left">
 										<input type="text" value="0" name="credit[]"  class="form-control" placeholder="学分">	
 									</div>
-									<div class="col-sm-5">
+									<div class="col-sm-4">
 										<a class="btn btn-primary add-syllabus">添加</a>
 										<a class="btn btn-primary del-add-syllabus">删除</a>
 									</div>
@@ -289,37 +300,32 @@
 <script type="text/javascript">
 //增加课程
 $('#course').on('click','.add-syllabus',function(){
-	$(this).parents('.container-fluid').parent().append($(this).parents('.container-fluid').clone());
+	$(this).parents('.container-fluid').parent().append($(this).parents('.container-fluid').clone(true));
 	//渲染时间插件
     $('.data-time').each(function(){
     	//判断标记 根据标记渲染 防止重复渲染
-    	if(laydate.index  <= $('.data-time').index(this) && laydate.index >= 3){
-    		//查看源码后发现lyadata未每一个控件设置了唯一值 
-    		//直接复制的时候会吧lay-key的参数复制过来 我这里需要清除掉
-    		//因为这个问题 会导致他不停的执行关闭操作 是个坑 不知道
-    		//$(this).unbind();
-    		$(this).removeAttr('lay-key',0); 
-    		var time    = 0;                    //int
-	        var min     = $(this).attr('data-min');         // string int
-	        var max     = $(this).attr('data-max');         // string int
-	        var format    = $(this).attr('data-format');
-	        var type    = $(this).attr('data-type');        //year month date time datetime
+    	
+		$(this).removeAttr('lay-key',0); 
+		var time    = 0;                    //int
+        var min     = $(this).attr('data-min');         // string int
+        var max     = $(this).attr('data-max');         // string int
+        var format    = $(this).attr('data-format');
+        var type    = $(this).attr('data-type');        //year month date time datetime
 
-	        if(!format){ format  = 'yyyy-MM-dd'; }
-	        if(!min){ min = '1900-1-1';}
-	        if(!max){ max = '2099-12-31';}
-	        if(!type){ type = 'date';}
-	        if(!time){ time = Date.parse(new Date());}
+        if(!format){ format  = 'yyyy-MM-dd'; }
+        if(!min){ min = '1900-1-1';}
+        if(!max){ max = '2099-12-31';}
+        if(!type){ type = 'date';}
+        if(!time){ time = Date.parse(new Date());}
 
-	        laydate.render({
-	          elem: this, //指定元素
-	          value:new Date(time),
-	          format:format,
-	          type:type,
-	          min:min,
-	          max:max,
-	        });
-    	}
+        laydate.render({
+          elem: this, //指定元素
+          format:format,
+          type:type,
+          min:min,
+          max:max,
+        });
+    	
     })
 })
 

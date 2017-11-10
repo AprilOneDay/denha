@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <title>{$this->parentColumn['name']}</title>
+    {include public/global_css}
+
+	<script src="/ststic/study/js/jquery.min.js"></script>
+    <script src="/ststic/study/js/jquery.SuperSlide.2.1.1.js"></script>
+    <script src="/ststic/study/js/common.js"></script>
+    <script type="text/javascript" src="/vendor/layer/layer.js"></script>
+
+</head>
+
+
+<body>
+	{include public/top}
+    <div class="banner clearfix">
+    	<div class="banner_box">
+        	<img src="/ststic/study/images/banner01.png" />
+        </div>
+    </div>                                                                                                                    
+    
+    <div class="kc_cont clearfix adjust">
+    	<div class="cont_box width1200">
+        	<div class="daohang"><a href="/">首页</a><span>>></span><a href="/">国际商学院</a><span>>></span>SAT基础阶段课程</div>
+            <div class="cont_left fl">
+                <div class="detail clearfix">
+                    <div class="img"><img src="{F:imgUrl($data['thumb'],'article')}" /></div>
+                    <div class="title_cont">
+                        <b>{$data['title']}</b>
+                        <p style="border-bottom:#ccc 1px solid"><span>招生对象:</span><em>{$data['recruit']}</em></p>
+                        {if $data['num']}
+                        <p><span>课程时间:</span>{$data['num']}课时</p>
+                        {/if}
+                        {if $data['class_time']}
+                        <p><span>上课时间:</span>{$data['class_time']}</p>
+                        {/if}
+                        <p class="">
+                            <span>课程价格:</span><span>{$data['sale_price']}元</span>
+                            {if $data['dis_price']}
+                            <span>活动价格：</span><span>{$data['dis_price']}元</span>
+                            {/if}
+                        </p>
+                        <p><span>班级特色:</span><strong>证书颁发</strong><strong >一对一授课</strong></p>
+                        <div class="clearfix"></div>
+                        <a class="buy_btn" href="javascript:;" data-href="{F:url('/index/pay/lession',array('id'=>$data['id']))}">立即购买</a>
+                    </div>
+                </div>
+				<div class="notices clearfix width1200" style="margin:0 auto">
+                <div class="tab-hd">
+                    <ul class="tab-nav">
+                        <li class="on"><a href="#" >课程介绍</a></li>
+                        <li ><a href="#" >学员点评</a></li>
+                    </ul>
+                </div>
+                <div class="tab-bd clearfix conts">
+                    <div class="tab-pal  ">
+                        {$data['content']}
+                    </div>
+                    <div class="tab-pal ">
+                    	<ul class="pl clearfix">
+                        	<li>
+                            	<div class="img_user"><img src="/ststic/study/images/team5.jpg"/></div>
+                            	<div class="pl_cont"><p>陈言言charity<span class="time">发布时间：2017/07/17</span></p>
+                                <p class="cont">老师会根据学生的水平来配课，不会盲目推荐最贵的，前台人也很好～晚上还能在教室自习到九点半。</p>
+                                </div>
+                            </li>
+                        	<li>
+                            	<div class="img_user"><img src="/ststic/study/images/team5.jpg"/></div>
+                            	<div class="pl_cont"><p>陈言言charity<span class="time">发布时间：2017/07/17</span></p>
+                                <p class="cont">在这里学习两周了，收获很大，价格合理，点个赞咯😊老师讲的都很好，性格也很好，6分口语都是外教好期待，老师会
+根据学生的水平来配课，不会盲目推荐最贵的，前台人也很好～晚上还能在教室自习到九点半。</p>
+                                </div>
+                            </li>
+                        	<li>
+                            	<div class="img_user"><img src="/ststic/study/images/team5.jpg"/></div>
+                            	<div class="pl_cont"><p>陈言言charity<span class="time">发布时间：2017/07/17</span></p>
+                                <p class="cont">老师会根据学生的水平来配课，不会盲目推荐最贵的，前台人也很好～晚上还能在教室自习到九点半。</p>
+                                </div>
+                            </li>
+                        	<li>
+                            	<div class="img_user"><img src="/ststic/study/images/team5.jpg"/></div>
+                            	<div class="pl_cont"><p>陈言言charity<span class="time">发布时间：2017/07/17</span></p>
+                                <p class="cont">在这里学习两周了，收获很大，价格合理，点个赞咯😊老师讲的都很好，性格也很好，6分口语都是外教好期待，老师会
+根据学生的水平来配课，不会盲目推荐最贵的，前台人也很好～晚上还能在教室自习到九点半。</p>
+                                </div>
+                            </li>
+                        	<li>
+                            	<div class="img_user"><img src="/ststic/study/images/team5.jpg"/></div>
+                            	<div class="pl_cont"><p>陈言言charity<span class="time">发布时间：2017/07/17</span></p>
+                                <p class="cont">老师会根据学生的水平来配课，不会盲目推荐最贵的，前台人也很好～晚上还能在教室自习到九点半。</p>
+                                </div>
+                            </li>
+                        	<li>
+                            	<div class="img_user"><img src="/ststic/study/images/team5.jpg"/></div>
+                            	<div class="pl_cont"><p>陈言言charity<span class="time">发布时间：2017/07/17</span></p>
+                                <p class="cont">在这里学习两周了，收获很大，价格合理，点个赞咯😊老师讲的都很好，性格也很好，6分口语都是外教好期待，老师会
+根据学生的水平来配课，不会盲目推荐最贵的，前台人也很好～晚上还能在教室自习到九点半。</p>
+                                </div>
+                            </li>
+                        
+                        </ul>
+                    
+                    
+                    </div>
+                </div>
+            </div>                
+                
+         	</div>
+        	<div class="cont_right fr">
+            	<div class="teacher clearfix">
+                	<div class="te_img"><img src="/ststic/study/images/team6.jpg" /></div>
+                    <b>授课老师 : 大卫</b>
+                    <span>ETS官方培训师、British Council（英国教育文化协会）雅思考试年度工作坊特邀嘉宾.</span>
+                	<p><i>好评度<em>85%</em></i><i>课程数<em>25</em></i><i>学生数<em>100人</em></i></p>
+                </div>
+            	<div class="rec clearfix">
+                	<h3>推荐课程</h3>
+                	<ul>
+                        <li>
+                            <div class="imgs"><a href="#"><img src="/ststic/study/images/kc1.jpg" /></a></div>
+                            <div class="name">雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺7.5分课程</div>
+                            <div class="keshi"><span><i></i>证书颁发</span><span><i></i>一对一授课</span></div>
+                        </li>
+                        <li>
+                            <div class="imgs"><a href="#"><img src="/ststic/study/images/kc2.jpg" /></a></div>
+                            <div class="name">雅思冲刺7.5分课程</div>
+                            <div class="keshi"><span><i></i>证书颁发</span><span><i></i>一对一授课</span></div>
+                        </li>
+                        <li>
+                            <div class="imgs"><a href="#"><img src="/ststic/study/images/kc3.jpg" /></a></div>
+                            <div class="name">雅思冲刺7.5分课程</div>
+                            <div class="keshi"><span><i></i>证书颁发</span><span><i></i>一对一授课</span></div>
+                        </li>
+                        <li>
+                            <div class="imgs"><a href="#"><img src="/ststic/study/images/kc4.jpg" /></a></div>
+                            <div class="name">雅思冲刺7.5分课程</div>
+                            <div class="keshi"><span><i></i>证书颁发</span><span><i></i>一对一授课</span></div>
+                        </li>
+                    
+                    </ul>
+                
+                </div>
+            
+            
+            </div>
+        
+        
+        </div>
+    </div>
+    
+    
+    
+    
+<div class="clearfix"></div>
+    {include public/footer}                                                                                                  
+</body>
+<script>
+jQuery(".notices").slide({ titCell:".tab-hd li", mainCell:".tab-bd",delayTime:0 });
+$('.buy_btn').click(function(){
+    var token = getCookie('token');
+    var url = $(this).attr('data-href');
+    if(!token){
+        layer.msg('请登录');
+        setTimeout(function(){
+            window.location.href = '/index/user/login/s/return/'+encodeURIComponent(window.location.href);
+        },1000)
+        return;
+    }else{
+        window.location.href = url;
+    }
+});
+</script>
+
+</html>
