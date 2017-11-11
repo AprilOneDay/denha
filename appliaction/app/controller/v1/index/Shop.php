@@ -49,7 +49,7 @@ class Shop extends \app\app\controller\Init
             }
 
             $list[$key]['price']   = dao('Number')->price($value['price']);
-            $list[$key]['mileage'] = $value['mileage'] . '万公里';
+            $list[$key]['mileage'] = $value['mileage'] . '公里';
             $list[$key]['thumb']   = $this->appImgArray($value['thumb'], 'car');
         }
 

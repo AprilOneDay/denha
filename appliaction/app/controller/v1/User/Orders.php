@@ -55,7 +55,7 @@ class Orders extends \app\app\controller\Init
                     foreach ($goods as $k => $v) {
                         $goods[$k]['price_original'] = dao('Number')->price($v['price_original']);
                         $goods[$k]['price']          = dao('Number')->price($v['price']);
-                        $goods[$k]['mileage']        = $v['mileage'] . '万公里';
+                        $goods[$k]['mileage']        = $v['mileage'] . '公里';
                         $goods[$k]['thumb']          = $this->appImg($v['thumb'], 'car');
                         $goods[$k]['produce_time']   = $v['produce_time'] . '年';
                         $goods[$k]['time']           = date('Y-m-d H:i', $v['start_time']) . '-' . date('H:i', $v['end_time']);
@@ -66,7 +66,7 @@ class Orders extends \app\app\controller\Init
                     foreach ($goods as $k => $v) {
                         $goods[$k]['price_original'] = dao('Number')->price($v['price_original']);
                         $goods[$k]['price']          = dao('Number')->price($v['price']);
-                        $goods[$k]['mileage']        = $v['mileage'] . '万公里';
+                        $goods[$k]['mileage']        = $v['mileage'] . '公里';
                         $goods[$k]['thumb']          = $this->appImg($v['thumb'], 'car');
                         $goods[$k]['produce_time']   = $v['produce_time'] . '年';
                         $goods[$k]['time']           = date('Y-m-d H:i', $v['start_time']) . '-' . date('H:i', $v['end_time']);

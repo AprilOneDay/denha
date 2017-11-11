@@ -106,7 +106,7 @@ class Car extends \app\app\controller\Init
             }
 
             $list[$key]['price']   = dao('Number')->price($value['price']);
-            $list[$key]['mileage'] = $value['mileage'] . '万公里';
+            $list[$key]['mileage'] = $value['mileage'] . '公里';
             $list[$key]['thumb']   = $this->appImg($value['thumb'], 'car');
 
         }
@@ -183,7 +183,7 @@ class Car extends \app\app\controller\Init
 
         $data['brand_copy']    = dao('Category')->getName($data['brand']);
         $data['price']         = dao('Number')->price($data['price']);
-        $data['mileage']       = $data['mileage'] . '万公里';
+        $data['mileage']       = $data['mileage'] . '公里';
         $data['thumb']         = $this->appImg($data['thumb'], 'car');
         $data['guarantee']     = $data['guarantee'] ? explode(',', $data['guarantee']) : array();
         $data['is_collection'] = (bool) table('Collection')->where(array('uid' => $this->uid, 'value' => $data['id'], 'type' => 1, 'del_status' => 0))->field('id')->find('one');

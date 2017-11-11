@@ -77,7 +77,7 @@ class MyCar extends \app\app\controller\Init
             }
 
             if (!$data['mileage']) {
-                $this->appReturn(array('status' => false, 'msg' => '请输入里程数(万公里)'));
+                $this->appReturn(array('status' => false, 'msg' => '请输入里程数(公里)'));
             }
 
             if (!$id) {

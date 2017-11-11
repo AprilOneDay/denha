@@ -51,7 +51,7 @@ class Index extends \app\app\controller\Init
             }
 
             $list[$key]['price']   = dao('Number')->price($value['price']);
-            $list[$key]['mileage'] = $value['mileage'] . '万公里';
+            $list[$key]['mileage'] = $value['mileage'] . '公里';
             $list[$key]['thumb']   = $this->appImg($value['thumb'], 'car');
         }
 
@@ -89,7 +89,7 @@ class Index extends \app\app\controller\Init
             }
 
             $value['price']   = dao('Number')->price($value['price']);
-            $value['mileage'] = $value['mileage'] . '万公里';
+            $value['mileage'] = $value['mileage'] . '公里';
             $value['thumb']   = $this->appImg($value['thumb'], 'car');
 
             $listTmp[$time][] = $value;
