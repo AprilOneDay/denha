@@ -1,10 +1,10 @@
 <?php
 /**
- * 老师后台管理
+ * 前台用户管理
  */
-namespace app\study\controller\teacher;
+namespace app\study\controller\user;
 
-class Index extends \app\study\controller\Init
+class Scores extends \app\study\controller\Init
 {
     public function __construct()
     {

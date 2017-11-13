@@ -34,9 +34,9 @@ class User
             return array('status' => false, 'msg' => '请输入用户名');
         }
 
-        if (!preg_match("/^[a-zA-Z0-9_@.]+$/", $data['username'])) {
-            return array('status' => false, 'msg' => '用户名请勿使用特殊字符汉字字符');
-        }
+        /* if (!preg_match("/^[a-zA-Z0-9_@.]+$/", $data['username'])) {
+        return array('status' => false, 'msg' => '用户名请勿使用特殊字符汉字字符');
+        }*/
 
         if (!$data['password']) {
             return array('status' => false, 'msg' => '请输入密码');

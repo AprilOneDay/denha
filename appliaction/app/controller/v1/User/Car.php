@@ -38,7 +38,8 @@ class Car extends \app\app\controller\Init
         $pageSize = get('pageSize', 'intval', 10);
         $offer    = max(($pageNo - 1), 0) * $pageSize;
 
-        $map['uid'] = $this->uid;
+        $map['uid']    = $this->uid;
+        $map['status'] = array('in', '1,2');
 
         $list = table('GoodsCar')->where($map)->order('created desc')->limit($offer, $pageSize)->find('array');
         foreach ($list as $key => $value) {

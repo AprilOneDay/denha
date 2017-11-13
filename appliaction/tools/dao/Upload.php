@@ -71,8 +71,10 @@ class Upload
             }
 
             $ext = ltrim($value['type'], substr($value['type'], 0, stripos($value['type'], '/') + 1));
-
-            //$ext = end(pathinfo($value['tmp_name']));
+            if ($ext == 'et-stream') {
+                $ext = pathinfo($value['name']);
+                $ext = $ext['extension'];
+            }
 
             if (stripos($type, $ext) === false) {
                 return array('status' => false, 'msg' => $ext . '文件禁止上传');

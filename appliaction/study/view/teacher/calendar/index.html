@@ -64,7 +64,7 @@
                                 {if isset($list[$v])}
                                 <ul>
                                     {loop $list[$v] $vv}
-                                     <li class="{F:array_rand($other['background'])}" data-class="{$vv['goods']['title']}" data-time="{$vv['goods']['class_time']}" data-model="{$other['signCopy'][$vv['goods']['sign']]}" data-name="{$vv['teacher']['real_name']}" data-grade="{$vv['credit']}分" data-comment="{$vv['is_comment']}">{$vv['goods']['title']}</li>
+                                     <li class="{F:array_rand($other['background'])}" data-class="{$vv['goods']['title']}" data-time="{$vv['goods']['class_time']}" data-model="{$other['signCopy'][$vv['goods']['sign']]}" data-name="" data-grade="{if $vv['num']}{$vv['num']}课时{/if}">{$vv['goods']['title']}</li>
                                     {/loop}
                                 </ul>
                                 {/if}
@@ -88,7 +88,6 @@
                 <li>方式：<span></span></li>
                 <li>学分：<span></span></li>
             </ul>
-            <button type="button" data-button="evaluate">评价</button>
         </div>
         <div id="evaluate-box">
             <div>
@@ -151,35 +150,30 @@
                                 var classHtml=$this.attr("data-class");
                                 if(classHtml==""){
                                     $dataLists.eq(i).parent("li").remove();
-                                    return;
                                 }
                                 $dataLists.eq(i).html(classHtml);
                             }else if(i===1){
                                 var timeHtml=$this.attr("data-time");
                                 if(timeHtml==""){
                                     $dataLists.eq(i).parent("li").remove();
-                                    return;
                                 }
                                 $dataLists.eq(i).html(timeHtml);
                             }else if(i===2){
                                 var nameHtml=$this.attr("data-name");
                                 if(nameHtml==""){
                                     $dataLists.eq(i).parent("li").remove();
-                                    return;
                                 }
                                 $dataLists.eq(i).html(nameHtml);
                             }else if(i===3){
                                 var modelHtml=$this.attr("data-model");
                                 if(modelHtml==""){
                                     $dataLists.eq(i).parent("li").remove();
-                                    return;
                                 }
                                 $dataLists.eq(i).html(modelHtml);
                             }else if(i===4){
                                 var gradeHtml=$this.attr("data-grade");
                                 if(gradeHtml==""){
                                     $dataLists.eq(i).parent("li").remove();
-                                    return;
                                 }
                                 $dataLists.eq(i).html(gradeHtml);
                             }

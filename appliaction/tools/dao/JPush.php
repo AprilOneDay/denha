@@ -9,8 +9,8 @@ namespace app\tools\dao;
 class JPush
 {
     protected $client;
-    protected $app_key       = 'd9ba6e59c899d284c9101040';
-    protected $master_secret = 'b0e6096103a161c3b371864b';
+    protected $app_key       = '97e1492b5bd9610055adb390';
+    protected $master_secret = '8edf329d1029d6ca8bfa1965';
     public function __construct()
     {
         require_once APP_PATH . 'tools' . DS . 'vendor' . DS . 'JPush' . DS . 'autoload.php';
@@ -102,9 +102,9 @@ class JPush
         try {
             $result = $pusher->send();
         } catch (\JPush\Exceptions\APIConnectionException $e) {
-            print $e;die;
+            //print $e;die;
         } catch (\JPush\Exceptions\APIRequestException $e) {
-            print $e;die;
+            //print $e;die;
         }
         return true;
     }

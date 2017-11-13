@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html>
+   <head>
+    <title>教师中心-评论管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="charset=utf-8" />
+    <link rel="stylesheet" href="/ststic/study/css/base.css">
+    <link rel="stylesheet" href="/ststic/study/css/center.css">
+    <link rel="stylesheet" href="/ststic/study/css/u_mob.css"> 
+    <script type="text/javascript" src="/ststic/study/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/ststic/study/js/moment.js"></script>
+    <script type="text/javascript" src="/ststic/study/js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="/ststic/study/js/menu.js"></script>
+    <script type="text/javascript" src="/ststic/study/js/common.js"></script>
+    <script type="text/javascript" src="/vendor/layer/layer.js"></script>
+
+   </head>
+<body bgcolor="f1f1f1" >
+	
+        <div class="center">
+	        {include public/left_menus}
+            <div class="teacher_right teacher_right_t">
+        	<h3 class="my_news">我的消息</h3>
+            <div class="t_news">
+            	<div class="t_news_left  fl">
+                	<ul class=" clearfix">
+                    	<li {if $sign == 1}class="on"{/if}><a href="{F:url('index',array('sign'=>1))}">未读消息（10）</a></li>
+                        <li {if $sign == 2 || !$sign}class="on"{/if}><a href="{F:url('index',array('sign'=>2))}">所有消息（22）</a></li>
+                        <li {if $sign == 3}class="on"{/if}><a href="{F:url('index',array('sign'=>3))}">重要消息（22）</a></li>
+                        <li {if $sign == 4}class="on"{/if}><a href="{F:url('index',array('sign'=>4))}">发送（2）</a></li>
+                    </ul>
+                    <a class="btn_write clearfix"  href="t_write_news.html">写消息</a>
+                </div>
+                <div class="t_news_right fr demo1">
+                	<div class="t_news_cont">
+                    	<div class="biaoji"><a href="#" class="zhongyao">标记为重要消息</a><a href="#" class="del">删除</a></div>
+                        <div class="fajianren">
+                        	<b>今天作业比较难</b>
+                        	<p>发件人：<span style="color:#0a5fa4">张三</span></p>
+                        	<p>时&nbsp;&nbsp;&nbsp;间：<span>017/07/19（周四）<i>上午9点29</i></span></p>
+                        </div>
+                    	<div class="newx_cont"><!-- 内容-->
+                        	<p>今天的作业比较难，能不能布置简单一点的，或者讲仔细一下</p>
+                        </div>
+                        <div class="fujian"><!-- 附件-->
+                        	<p>附件<span style="color:#0a5fa4">1</span>个</p>
+                            <div class="wenjian"><a href="#">课程安排01.pdf</a></div>
+                            <div class="wenjian"><a href="#">课程安排01.pdf</a></div>
+                            <div class="wenjian"><a href="#">课程安排01.pdf</a></div>
+                        </div>
+                        <div class="t_pp">
+                        	<p class="t_huifu">我：这位同学，很不错，敢于说实话，下次会注意</P>
+                            <p><b>回复</b><a href="#" class="add_f">添加附件</a><textarea name="" cols="" rows="">输入您要回复的内容</textarea></p>
+                            <a href="#" class="btn_huifu">回复</a>
+                        </div>
+                        
+                    </div>
+                
+                </div>
+                
+            </div>
+        </div>
+        </div>
+</body>
+</html>
+

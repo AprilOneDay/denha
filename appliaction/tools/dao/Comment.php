@@ -35,15 +35,19 @@ class Comment
             return array('status' => false, 'msg' => '评论失败');
         }
 
-        //发送站内信
-        $sendData = array(
-            'nickname' => dao('User')->getNickname($uid),
-        );
-        $sendJump = array(
-            'type'     => 1,
-            'goods_id' => $goodsId,
-        );
-        dao('Message')->send($data['to_uid'], 'comment', $sendData, $sendJump, 0, 2);
+        //车友圈 聊天发送站内信
+        if ($type == 1 || $type == 4) {
+            //发送站内信
+            $sendData = array(
+                'nickname' => dao('User')->getNickname($uid),
+            );
+            $sendJump = array(
+                'type'     => 1,
+                'goods_id' => $goodsId,
+            );
+            dao('Message')->send($data['to_uid'], 'comment', $sendData, $sendJump, 0, 2);
+        }
+
         return array('status' => true, 'msg' => '评论成功');
     }
 

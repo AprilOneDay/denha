@@ -1,15 +1,15 @@
 <?php
 /**
- * 老师后台管理
+ * 下载管理
  */
-namespace app\study\controller\teacher;
+namespace app\study\controller\user;
 
-class Index extends \app\study\controller\Init
+class Download extends \app\study\controller\Init
 {
     public function __construct()
     {
         parent::__construct();
-        $this->checkIndividual(2);
+        $this->checkIndividual();
     }
 
     public function index()

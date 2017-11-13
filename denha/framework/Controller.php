@@ -67,7 +67,7 @@ class Controller
         }
 
         $cachePath = DATA_PATH . md5($path) . '.php';
-        if (is_file($cachePath) && filemtime($path) == filemtime($cachePath)) {
+        if (is_file($cachePath) && filemtime($path) == filemtime($cachePath) && !Start::$config['trace']) {
             include $cachePath;
         } else {
             //处理视图模板

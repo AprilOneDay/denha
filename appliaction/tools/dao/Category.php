@@ -20,7 +20,7 @@ class Category
 
         if (!isset($_category[$id])) {
             $map['parentid'] = $id;
-            $list            = table('Category')->where($map)->field('id,name')->find('array');
+            $list            = table('Category')->where($map)->field('id,name')->order('name asc,sort asc')->find('array');
 
             $_category[$id] = null;
 

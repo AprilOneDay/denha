@@ -1,0 +1,126 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+   <head>
+      <title>学生门户-学生成绩</title>
+      <link rel="stylesheet" href="/ststic/study/css/base.css">
+      <link rel="stylesheet" href="/ststic/study/css/center.css">
+      <link rel="stylesheet" href="/ststic/study/css/u_mob.css"> 
+
+      <script type="text/javascript" src="/ststic/study/js/jquery.min.js"></script>
+      <script type="text/javascript" src="/ststic/study/js/menu.js"></script>
+      <script type="text/javascript" src="/ststic/study/js/common.js"></script>
+      <script type="text/javascript" src="/vendor/layer/layer.js"></script>
+
+
+
+   </head>
+<body bgcolor="f1f1f1" >
+	
+        <div class="center">
+        	{include public/left_menus}
+            
+            
+            
+        <div class="classroom_right ">
+        	<h3 class="t_students t-mygrade">我的成绩</h3>
+        	<div class="t_cr_lefts t_fbcj fl">
+            	<ul class="div_ul3 clearfix">
+                	<li><em>姓名：</em>张兵</li>
+                    <li>
+                    	<em>课程：</em>
+                    	<dl class="select">
+                            <dt>a啊沙发上讲故事腐蚀毒粉</dt>
+                            <dd>
+                                <ul class="selects_ul">
+                                    <li><a href="#">12131</a></li>
+                                    <li><a href="#">啊沙发上讲故事腐蚀毒粉2</a></li>
+                                    <li><a href="#">下拉3</a></li>
+                                    <li><a href="#">下拉4</a></li>
+                                    <li><a href="#">下拉5</a></li>
+                                    <li><a href="#">下拉6</a></li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    
+                    </li>
+                	<li><em>证件：</em>154814548</li>
+                	<li><em>学号：</em>4784578</li>
+                </ul>
+            </div>
+
+     	<div class="t_cr_right fr">
+
+            <table class="cj_table" >
+            <thead>
+            	<th>成绩项目</th>
+            	<th>审批时间</th>
+            	<th>分数</th></thead>
+              <tr>
+                <td><span>成绩项目01</span></td>
+                <td>2017/8/7</td>
+                <td><b>88</b><span>/100</span></td>
+              </tr>
+              <tr>
+                <td><span>成绩项目01</span></td>
+                <td>2017/8/7</td>
+                <td><b>88</b><span>/100</span></td>
+              </tr>
+              <tr>
+                <td><span>成绩项目成绩项目成绩项目成绩项目01</span></td>
+                <td>2017/8/7</td>
+                <td><b>88</b><span>/100</span></td>
+              </tr>
+              <tr>
+                <td><span>成绩项目01</span></td>
+                <td>2017/8/7</td>
+                <td><b>88</b><span>/100</span></td>
+              </tr>
+              <tr>
+                <td><span>成绩项目01</span></td>
+                <td>2017/8/7</td>
+                <td><b>88</b><span>/100</span></td>
+              </tr>
+              <tr>
+                <td><span>成绩项目01</span></td>
+                <td>2017/8/7</td>
+                <td><b>88</b><span>/100</span></td>
+              </tr>
+              <tr>
+                <td><span>成绩项目01</span></td>
+                <td>2017/8/7</td>
+                <td><b>88</b><span>/100</span></td>
+              </tr>
+              <tr>
+                <td><span>成绩项目01</span></td>
+                <td>2017/8/7</td>
+                <td><b>88</b><span>/100</span></td>
+              </tr>
+            </table>
+            
+            <p class="wenjian_d"><a href="#">恒鼎学院2017阿三就fish放到.pdf</a></p>
+
+        </div>
+            
+    
+        </div>
+   </div>
+   
+</body>
+
+<script type="text/javascript">
+$(function(){
+	$(".select").each(function(){
+		var s=$(this);
+		var z=parseInt(s.css("z-index"));
+		var dt=$(this).children("dt");
+		var dd=$(this).children("dd");
+		var _show=function(){dd.slideDown(200);dt.addClass("cur");s.css("z-index",z+1);};   //展开效果
+		var _hide=function(){dd.slideUp(200);dt.removeClass("cur");s.css("z-index",z);};    //关闭效果
+		dt.click(function(){dd.is(":hidden")?_show():_hide();});
+		dd.find("a").click(function(){dt.html($(this).html());_hide();});     //选择效果（如需要传值，可自定义参数，在此处返回对应的“value”值 ）
+		$("body").click(function(i){ !$(i.target).parents(".select").first().is(s) ? _hide():"";});
+	})
+})
+</script>
+</html>

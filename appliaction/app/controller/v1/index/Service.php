@@ -22,9 +22,9 @@ class Service extends \app\app\controller\Init
         $pageSize = get('pageSize', 'intval', 10);
         $offer    = max(($pageNo - 1), 0) * $pageSize;
 
-        $map['status']    = 1;
-        $map['is_ide']    = 1;
-        $map['goods_num'] = array('>', 0);
+        $map['status'] = 1;
+        $map['is_ide'] = 1;
+        //$map['goods_num'] = array('>', 0);
 
         $orderby = 'id desc';
         switch ($param['orderby']) {

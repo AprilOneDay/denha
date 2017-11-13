@@ -28,7 +28,8 @@ class Server extends \app\app\controller\Init
         $offer    = max(($pageNo - 1), 0) * $pageSize;
         $status   = get('status', 'text', '');
 
-        $map['uid'] = $this->uid;
+        $map['uid']    = $this->uid;
+        $map['status'] = array('in', '1,2');
 
         if ($status > 2) {
             $this->appReturn(array('status' => false, 'msg' => 'status 参数错误'));
@@ -334,7 +335,8 @@ class Server extends \app\app\controller\Init
 
         $offer = max(($pageNo - 1), 0) * $pageSize;
 
-        $map['uid'] = $this->uid;
+        $map['uid']    = $this->uid;
+        $map['status'] = array('in', '1,2');
 
         if ($status > 2) {
             $this->appReturn(array('status' => false, 'msg' => 'status 参数错误'));

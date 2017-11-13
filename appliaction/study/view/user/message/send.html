@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/ststic/study/css/base.css">
     <link rel="stylesheet" href="/ststic/study/css/center.css">
     <link rel="stylesheet" href="/ststic/study/css/u_mob.css"> 
+
     <script type="text/javascript" src="/ststic/study/js/jquery.min.js"></script>
     <script type="text/javascript" src="/ststic/study/js/moment.js"></script>
     <script type="text/javascript" src="/ststic/study/js/bootstrap-datetimepicker.js"></script>
@@ -35,15 +36,15 @@
                 	<div class="t_news_cont">
                     	<div class="write_news">
                         	<div><span>收件人</span>
-                              <input  type="text" autocomplete="off" class="search-keyword" id="search-keyword" value=""  />
-                              <ul id="hotwords" class="hotwords" style="display:none">
-                                  <li><a href='#'><h1>张三</h1></a></li>
-                                  <li><a href='#'><h1>李四</h1></a></li>
-                                  <li><a href='#'><h1>王二</h1></a></li>
-                                  <li><a href='#'><h1>样</h1></a></li>
-                               </ul>
+                              <input  type="text" autocomplete="off" class="search-keyword" id="search-keyword" value=""  disabled />
+                             <!--  <ul id="hotwords" class="hotwords" style="display:none">
+                                 <li><a href='#'><h1>张三</h1></a></li>
+                                 <li><a href='#'><h1>李四</h1></a></li>
+                                 <li><a href='#'><h1>王二</h1></a></li>
+                                 <li><a href='#'><h1>样</h1></a></li>
+                              </ul> -->
                             </div>
-                            <div><span>标题</span><input type="text" class="input" /></div>
+                            <div><span>标题</span><input type="text" class="input" name="title" /></div>
                             <div><a href="javascript:;" class="a-upload"> <input type="file" name="" id="">添加附件</a>
                             <p class="wenjian"><a href="#">课程安排01.pdf<i>√</i></a></p></div>
                             <div class="textarea"><span>正文</span><textarea name="" cols="" rows="">输入您要回复的内容</textarea></div>
@@ -57,6 +58,12 @@
      </div>   
         
 </body>
-    <script language="javascript" type="text/javascript" src="/ststic/study/js/searchjs.js"></script>
-
+<script type="text/javascript">
+$(function(){
+  $('.search-keyword').click(function(){
+    console.log(11111);
+    $('.hotwords').css('display',''); 
+  })
+});
+</script>
 </html>

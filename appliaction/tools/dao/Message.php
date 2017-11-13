@@ -48,6 +48,9 @@ class Message
             $reslut = table('UserMessage')->add($data);
         }
 
+        //发送推送信息
+        dao('JPush')->sendByRegId($toUid, $data['content'], $data['content'], $jumpData);
+
     }
 
     /**

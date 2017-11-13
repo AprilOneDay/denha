@@ -1,10 +1,10 @@
 <?php
 /**
- * 老师后台管理
+ * 前台用户管理
  */
-namespace app\study\controller\teacher;
+namespace app\study\controller\user;
 
-class Index extends \app\study\controller\Init
+class Reservation extends \app\study\controller\Init
 {
     public function __construct()
     {
@@ -20,4 +20,9 @@ class Index extends \app\study\controller\Init
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
     }
 
+    /** 发起预约 */
+    public function initiated()
+    {
+        $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+    }
 }

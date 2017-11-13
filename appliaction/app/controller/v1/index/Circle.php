@@ -34,6 +34,7 @@ class Circle extends \app\app\controller\Init
             $list[$key]['user']    = $user;
             $comment               = dao('Comment')->getList(1, $value['id']);
             $list[$key]['comment'] = $comment;
+            $list[$key]['is_del']  = $this->uid == $value['uid'] ? true : false;
         }
 
         $data['tot_read_total'] = (int) dao('Comment')->getNotReadTotal($this->uid); //获取未读信息条数

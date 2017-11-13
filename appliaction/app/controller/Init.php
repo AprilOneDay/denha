@@ -82,6 +82,8 @@ class Init extends denha\Controller
             $this->appReturn(array('status' => false, 'msg' => '认证未通过,请在店铺资料修改中修改后重新提交'));
         } elseif ($isIde == 0) {
             $this->appReturn(array('status' => false, 'msg' => '请先申请认证,或等待认证通过后操作'));
+        } elseif ($isIde == 3) {
+            $this->appReturn(array('status' => false, 'msg' => '认证审核中请耐心等待，或联系管理员'));
         }
     }
 
