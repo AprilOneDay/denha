@@ -217,7 +217,7 @@ class Car extends \app\app\controller\Init
 
             $data['user']['avatar']   = $this->appImg($user['avatar'], 'avatar');
             $data['user']['nickname'] = $user['nickname'];
-            $data['user']['address']  = $user['address'];
+            $data['user']['address']  = (string) $user['address'];
             $data['user']['mobile']   = $user['mobile'];
         }
 

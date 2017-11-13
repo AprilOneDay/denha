@@ -37,8 +37,9 @@ class Car extends \app\app\controller\Init
             $data['title']    = "【转lease】" . $data['title'];
         }
 
+        $data['brand_copy']    = dao('Category')->getName($data['brand']);
         $data['price']         = dao('Number')->price($data['price']);
-        $data['mileage']       = $data['mileage'] . '万公里';
+        $data['mileage']       = $data['mileage'] . '公里';
         $data['thumb']         = $this->appImg($data['thumb'], 'car');
         $data['guarantee']     = $data['guarantee'] ? explode(',', $data['guarantee']) : array();
         $data['is_collection'] = (bool) table('Collection')->where(array('uid' => $this->uid, 'value' => $data['id'], 'type' => 1, 'del_status' => 0))->field('id')->find('one');
@@ -73,7 +74,7 @@ class Car extends \app\app\controller\Init
 
             $data['user']['avatar']   = $this->appImg($user['avatar'], 'avatar');
             $data['user']['nickname'] = $user['nickname'];
-            $data['user']['address']  = $data['address'];
+            $data['user']['address']  = (string) $data['address'];
             $data['user']['mobile']   = $data['mobile'];
         }
 

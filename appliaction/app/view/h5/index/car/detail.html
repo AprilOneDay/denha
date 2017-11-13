@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
     <title>{$data['title']}</title>
-    <link rel="stylesheet" href="/ststic/kdqc/css/style.css">
+    <link rel="stylesheet" href="/ststic/kdqc/css/style2.css">
     <script type="text/javascript" src="/ststic/kdqc/js/flexible.js"></script>
     <script src="/ststic/kdqc/js/zepto.min.js"></script>
     <script src="/ststic/kdqc/js/zepto.fx.js"></script>
@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="i-banner">
-        {if $data['banner']}
+       {if $data['banner']}
         <div class="i-banner-box">
             <ul data-type="img">
                 {loop $data['banner'] $value}
@@ -45,29 +45,106 @@
         {/if}
         <div class="i-car-data">
             <p>{$data['title']}</p>
+            {if $data['type'] == 2}
+            <div>
+                <span>评价</span>
+                <div>
+                    <div style="width:{$data['shop']['credit_level']['star']}%">
+                        <img src="/ststic/kdqc/images/i-star.png">
+                        <img src="/ststic/kdqc/images/i-star.png">
+                        <img src="/ststic/kdqc/images/i-star.png">
+                        <img src="/ststic/kdqc/images/i-star.png">
+                        <img src="/ststic/kdqc/images/i-star.png">
+                    </div>
+                </div>
+                <span>{$data['shop']['credit_level']['value']}分</span>
+            </div>
+            {/if}
             <p>{$data['price']}</p>
         </div>
         <div class="i-car-list">
-            <ul>
-                <li>
-                    <p>车龄</p>
-                    <p>{$data['car_age']}</p>
-                </li>
-                <li>
-                    <p>里程</p>
-                    <p>{$data['mileage']}</p>
-                </li>
-                <li>
-                    <p>变速箱</p>
-                    <p>{$data['gearbox']}</p>
-                </li>
-                <li>
-                    <p>所在地</p>
-                    <p>{$data['city_copy']}</p>
-                </li>
-            </ul>
-            {if $data['guarantee']}
-            <div class="i-hr"></div>
+            <div class="car-data">
+                <p>
+                    <img src="/ststic/kdqc/images/i-data-icon.png">
+                    <span>基本信息</span>
+                </p>
+                <ul>
+            
+                    <li>品牌：
+                        <span>{$data['brand_copy']}</span>
+                    </li>
+            
+                    <li>型号：
+                        <span>{$data['style']}</span>
+                    </li>
+              
+                    <li>生产：
+                        <span>{if $data['buy_time']}{$data['produce_time']}{/if}</span>
+                    </li>
+
+                    <li>车型：
+                        <span>{$data['model']}</span>
+                    </li>
+                 
+                    <li>时间：
+                        <span>{if $data['buy_time'] > 0}{F:date('Y-m',$data['buy_time'])}{else} {/if}</span>
+                    </li>
+          
+           
+                    <li>里程：
+                        <span>{$data['mileage']}</span>
+                    </li>
+       
+            
+                    <li>城市：
+                        <span>{$data['city_copy']}</span>
+                    </li>
+        
+                    <li>月供：
+                        <span>{if $data['gearbox']}${$data['gearbox']}{/if}</span>
+                    </li>
+           
+
+                    <li>尾款：
+                        <span>{if $data['displacement']}${$data['displacement']}{/if}</span>
+                    </li>
+          
+       
+                    <li>报价：
+                        <span>${$data['price']}</span>
+                    </li>
+        
+
+                    <li>备注：
+                        <span>{$data['model_remark']}</span>
+                    </li>
+            
+
+                    <li>VIN：
+                        <span>{$data['vin']}</span>
+                    </li>
+         
+                </ul>
+            </div>
+            <div class="car-data data-call">
+                <p>
+                    <img src="/ststic/kdqc/images/i-chat-icon.png">
+                    <span>联系方式</span>
+                </p>
+                <ul>
+                    <li>电话：
+                        <span>{$data['mobile']}</span>
+                    </li>
+           
+                    <li>微信：
+                        <span>{$data['weixin']}</span>
+                    </li>
+      
+                    <li>Q Q:
+                        <span>{$data['qq']}</span>
+                    </li>
+                </ul>
+            </div>
             <ul class="i-label">
                 <li>服务保障<span>（多重保障 放心购车）</span></li>
                 <li>
@@ -82,7 +159,6 @@
                     {/if}
                 </li>
             </ul>
-            {/if}
         </div>
     </div>
     <div class="i-car-intro">
@@ -91,7 +167,7 @@
             {if $data['type'] == 1}
             <ul>
                 <li>{$data['user']['nickname']}</li>
-                <li><img src="/ststic/kdqc/images/i-sj.png">个人<img src="/ststic/kdqc/images/i-address.png">地址:{$data['user']['address']}</li>
+                <li><img src="/ststic/kdqc/images/i-sj.png">个人<img src="/ststic/kdqc/images/i-address.png"></li>
             </ul>
             {else}
             <ul>
@@ -100,47 +176,54 @@
             </ul>
             {/if}
         </div>
-        {if $data['description']}
         <div class="i-intro-txt">
             <p>{$data['description']}</p>
             <img src="/ststic/kdqc/images/i-yihao1.png" class="yh-left">
             <img src="/ststic/kdqc/images/i-yihao2.png" class="yh-right">
         </div>
-        {/if}
     </div>
     <ul class="i-intro-img" style="font-size: 0.5rem; padding-left: 20px;">
         {$data['content']}
     </ul>
-    <div class="i-evaluate">
-        <div>
-            <span>评价</span>
-            <img src="/ststic/kdqc/images/i-star.png">
-            <img src="/ststic/kdqc/images/i-star.png">
-            <img src="/ststic/kdqc/images/i-star.png">
-            <img src="/ststic/kdqc/images/i-star.png">
-            <img src="/ststic/kdqc/images/i-star.png">
-            <span>{$data['shop']['credit_level']['value']}分</span>
-            <a href="javascript:;" onclick="openApp()">
-                <img src="/ststic/kdqc/images/i-right2.png">
-            </a>
-        </div>
-        <p></p>
-        {if $data['coment']}
-        <ul>
-            {loop $data['coment'] $value}
-            <li>
-                <div>
-                    <img src="{$value['user']['avatar']}">
-                </div>
-                <ul>
-                    <li>{$value['content']}</li>
-                    <li>{F:date('Y/m/d',$value['created'])}</li>
-                </ul>
-            </li>
-            {/loop}
-        </ul>
-        {/if}
-    </div>
+    <!--<div class="i-evaluate">-->
+        <!--<div>-->
+            <!--<span>评价</span>-->
+            <!--<div>-->
+                <!--<div style="width:71%">-->
+                    <!--<img src="images/i-star.png">-->
+                    <!--<img src="images/i-star.png">-->
+                    <!--<img src="images/i-star.png">-->
+                    <!--<img src="images/i-star.png">-->
+                    <!--<img src="images/i-star.png">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<span>4.9分</span>-->
+            <!--<a href="javascript:;">-->
+                <!--<img src="images/i-right2.png">-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<p></p>-->
+        <!--<ul>-->
+            <!--<li>-->
+                <!--<div>-->
+                    <!--<img src="images/i-head.png">-->
+                <!--</div>-->
+                <!--<ul>-->
+                    <!--<li>卖家服务态度很好，车也和描述很相符，车非常满意</li>-->
+                    <!--<li>2014/08/24</li>-->
+                <!--</ul>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div>-->
+                    <!--<img src="images/i-head2.png">-->
+                <!--</div>-->
+                <!--<ul>-->
+                    <!--<li>卖家服务态度很好，车也和描述很相符，车非常满意</li>-->
+                    <!--<li>2014/08/24</li>-->
+                <!--</ul>-->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</div>-->
     <div class="i-footer">
         <ul>
             <li>

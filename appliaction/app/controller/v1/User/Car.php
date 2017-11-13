@@ -208,7 +208,7 @@ class Car extends \app\app\controller\Init
                 $data['city_copy']  = (string) dao('Category')->getName($data['city']);
                 $data['brand_copy'] = dao('Category')->getName($data['brand']);
                 //获取相册信息
-                $ablum = table('GoodsAblum')->where(array('goods_id' => $data['id']))->field('path,description')->find('array');
+                $ablum = table('GoodsAblum')->where(array('goods_id' => $id))->field('path,description')->find('array');
                 foreach ($ablum as $key => $value) {
                     $ablum[$key]['path'] = $this->appImg($value['path'], 'car');
                 }

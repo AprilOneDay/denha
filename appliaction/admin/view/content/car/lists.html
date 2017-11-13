@@ -85,7 +85,9 @@
 												{if $value['status'] == 1}
 													<b style="color: green">上架</b>
 												{elseif $value['status'] == 2}
-													<b style="color: red">下架</b>
+													<b style="color: green">下架</b>
+												{elseif $value['status'] == 4}
+													<b style="color: red">用户已删除</b>
 												{/if}
 											</td>
 											<td align='center'>

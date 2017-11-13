@@ -36,8 +36,9 @@ class Shop extends \app\admin\controller\Init
             denha\Log::error('参数错误');
         }
 
-        $data['is_ide'] = post('is_ide', 'intval', 0);
-        $data['status'] = post('status', 'intval', 0);
+        $data['is_ide']       = post('is_ide', 'intval', 0);
+        $data['status']       = post('status', 'intval', 0);
+        $data['is_recommend'] = post('is_recommend', 'intval', 0);
 
         $shop = table('UserShop')->where('id', $id)->field('uid,status')->find();
 
