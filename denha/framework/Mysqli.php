@@ -155,6 +155,11 @@ class Mysqli
                 if (is_array($where)) {
                     $newWhere = '';
                     foreach ($where as $k => $v) {
+
+                        if (strripos($k, '`') === false && $k != '_string') {
+                            $k = strripos($k, '.') !== false ? str_replace('.', '.`', $k) . '`' : '`' . $k . '`';
+                        }
+
                         if (is_array($v)) {
                             if ($v[0] == '>' || $v[0] == '<' || $v[0] == '>=' || $v[0] == '<=' || $v[0] == '!=' || $v[0] == 'like') {
                                 $newWhere .= $k . '  ' . $v[0] . ' \'' . $v[1] . '\' AND ';
@@ -166,7 +171,7 @@ class Mysqli
                                     $newWhere .= $k . '  ' . $v[0] . ' (' . $v[1] . ') AND ';
                                 }
                             } elseif ($v[0] == 'instr') {
-                                $newWhere .= $v[0] . '(`' . $k . '`,\'' . $v[1] . '\') AND ';
+                                $newWhere .= $v[0] . '(' . $k . ',\'' . $v[1] . '\') AND ';
                             } elseif ($v[0] == 'between') {
                                 $newWhere .= $k . '  ' . $v[0] . ' \'' . $v[1] . '\' AND \'' . $v[2] . '\' AND ';
                             } elseif ($v[0] == 'or') {

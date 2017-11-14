@@ -261,6 +261,7 @@ class ArticleEdit extends \app\admin\controller\Init
             $schedule['startSyllabus'] = post('start_syllabus');
             $schedule['endSyllabus']   = post('end_syllabus');
             $schedule['credit']        = post('credit');
+            $schedule['teacher_hour']  = post('teacher_hour');
             if ($schedule) {
                 //删除 课程表
                 table('Article' . self::$dataTable . 'Schedule')->where('id', $dataId)->delete();
@@ -287,8 +288,14 @@ class ArticleEdit extends \app\admin\controller\Init
 
                 foreach ($schedule['startSyllabus'] as $key => $value) {
                     if ($value) {
-                        $data           = array();
-                        $data           = array('id' => $dataId, 'start_time' => strtotime($value), 'end_time' => strtotime($schedule['endSyllabus'][$key]), 'credit' => $schedule['credit'][$key]);
+                        $data = array();
+                        $data = array(
+                            'id'           => $dataId,
+                            'start_time'   => strtotime($value),
+                            'end_time'     => strtotime($schedule['endSyllabus'][$key]),
+                            'credit'       => $schedule['credit'][$key],
+                            'teacher_hour' => $schedule['teacher_hour'][$key],
+                        );
                         $resultSchedule = table('Article' . self::$dataTable . 'Schedule')->add($data);
                         if (!$resultSchedule) {
                             table('Article')->rollback();
@@ -305,7 +312,7 @@ class ArticleEdit extends \app\admin\controller\Init
             if ($id) {
                 $rs = $this->getEditConent($id);
                 //获取课程信息
-                $schedule = table('Article' . self::$dataTable . 'Schedule')->where('id', $id)->field('end_time,start_time,credit')->find('array');
+                $schedule = table('Article' . self::$dataTable . 'Schedule')->where('id', $id)->order('start_time asc')->find('array');
 
             } else {
                 $rs = array(
@@ -324,10 +331,11 @@ class ArticleEdit extends \app\admin\controller\Init
             }
 
             $other = array(
-                'featuredCopy'   => dao('Category')->getList(34),
-                'columnListCopy' => dao('Column', 'admin')->columnList(),
-                'schedule'       => isset($schedule) ? $schedule : array(),
-                'teacherList'    => table('User')->where(array('type' => 2, 'status' => 1))->field('id,real_name')->find('array'),
+                'teacherHourType' => dao('Category')->getList(74),
+                'featuredCopy'    => dao('Category')->getList(34),
+                'columnListCopy'  => dao('Column', 'admin')->columnList(),
+                'schedule'        => isset($schedule) ? $schedule : array(),
+                'teacherList'     => table('User')->where(array('type' => 2, 'status' => 1))->field('id,real_name')->find('array'),
             );
 
             $this->assign('data', $rs);

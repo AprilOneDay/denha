@@ -361,6 +361,12 @@ class Orders extends \app\app\controller\Init
             table('GoodsService')->where('id', $ordersData['goods_id'])->save(array('orders' => array('add', 1)));
             //增加店铺销售数量
             table('UserShop')->where('uid', $this->uid)->save(array('orders_service' => array('add', 1)));
+        } else {
+            //增加佣金财务记录
+            $money = dao('Percentage')->getOnePercentage($orderSn);
+            if ($money) {
+                dao('Finance')->add(1, $money, $orderSn, 0);
+            }
         }
 
         //赠送积分

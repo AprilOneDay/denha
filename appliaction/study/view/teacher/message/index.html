@@ -25,10 +25,10 @@
             <div class="t_news">
             	<div class="t_news_left  fl">
                 	<ul class=" clearfix">
-                    	<li {if $sign == 1}class="on"{/if}><a href="{F:url('index',array('sign'=>1))}">未读消息（10）</a></li>
-                        <li {if $sign == 2 || !$sign}class="on"{/if}><a href="{F:url('index',array('sign'=>2))}">所有消息（22）</a></li>
-                        <li {if $sign == 3}class="on"{/if}><a href="{F:url('index',array('sign'=>3))}">重要消息（22）</a></li>
-                        <li {if $sign == 4}class="on"{/if}><a href="{F:url('index',array('sign'=>4))}">发送（2）</a></li>
+                    	<li {if $sign == 1}class="on"{/if}><a href="{F:url('index',array('sign'=>1))}">未读消息（{$total['not_reader_total']}）</a></li>
+                        <li {if $sign == 2 || !$sign}class="on"{/if}><a href="{F:url('index',array('sign'=>2))}">所有消息（{$total['total']}）</a></li>
+                        <li {if $sign == 3}class="on"{/if}><a href="{F:url('index',array('sign'=>3))}">重要消息（{$total['important_total']}）</a></li>
+                        <li {if $sign == 4}class="on"{/if}><a href="{F:url('index',array('sign'=>4))}">发送（{$total['send_total']}）</a></li>
                     </ul>
                     <a class="btn_write clearfix"  href="{F:url('send')}">写消息</a>
                 </div>
@@ -36,13 +36,20 @@
                 	<ul class="newsul">
                         {loop $list $value}
                     	<li>
-                            <a class="title" href="{F:url('detail',array('id'=>$value['id']))}">{$value['title']}</a>
+                            <a class="title {if $value['to_uid_important'] == 1 && $this->uid == $value['to_uid']}zhongyao{/if}" href="{F:url('detail',array('id'=>$value['id']))}">{$value['title']}</a>
                             <span class="btn_read"><a href="{F:url('detail',array('id'=>$value['id']))}">阅读更多</a></span>
-                            <span class="del btn-ajax-post" data-id="{$value['id']}"  config-tips="确定删除该文章" config-href="{F:url('del')}">删除</span>
+                            <span class="del btn-ajax-post" data-id="{$value['id']}" config-tips="确定删除该邮件" config-href="{F:url('del')}" config-reload="1">删除</span>
                             <span class="time">{F:date('Y/m/d',$value['created'])}</span>
                         </li>
                         {/loop}
-                    	<div class="page"><p><b>2</b>/6</p><a href="#">上一页</a><a href="#">下一页</a></div>
+
+                        {if $pages}
+                	    <div class="page ">
+                            <p><b>{$pages['pageNo']}</b>/{$pages['allPage']}</p>
+                            <a href="{$pages['pageUrl']}?pageNo={F:max($pages['pageNo'] - 1,1)}">上一页</a>
+                            <a href="{$pages['pageUrl']}?pageNo={F:min($pages['pageNo'] + 1,$pages['allPage'])}">下一页</a>
+                        </div>
+                        {/if}
                     </ul>
                 
                 </div>
@@ -50,20 +57,9 @@
             </div>
         </div>
         </div>
-        <div class="pop">
-            <div class="popMain">
-                <div class="popTop"></div>
-                <div class="popMiddle">
-                    <p>是否确认删除？</p>
-                </div>
-                <div class="popBottom">
-                    <span class="confirm">确认</span>
-                    <span class="cancel">取消</span>
-                </div>
-            </div>
-        </div>
         
         
+    
 </body>
 <script type="text/javascript">
 $(function(){
@@ -73,17 +69,6 @@ $(function(){
 			event.preventDefault();
 			num = $(this).index();
 			$(".pop").fadeIn('fast');
-		});
-		$(".popBottom").on('click', 'span', function(event) {
-			event.preventDefault();
-			if($(this).hasClass('confirm')){
-				$(".demo1 ul li").eq(num).remove();
-				num = "";
-				$(".pop").fadeOut();
-			}else{
-				$(".pop").fadeOut();
-				num = "";
-			}
 		});
 	})();
 	

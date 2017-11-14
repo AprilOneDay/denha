@@ -146,6 +146,11 @@ $(function() {
                             window.location.href= falseUrl;
                         },1000);
                     }
+                     if(isReload){
+                    setTimeout(function(){
+                        location.reload();
+                    },1000);
+                }
                 },"json")
             }, function(){});
         }else{
@@ -168,8 +173,10 @@ $(function() {
                     },1000);
                 }
 
-                if(isReload){
-                    location.reload();
+                 if(isReload){
+                    setTimeout(function(){
+                        location.reload();
+                    },1000);
                 }
             },"json")
         }

@@ -128,6 +128,7 @@ class Car extends \app\app\controller\Init
     public function brandList()
     {
         $list = table('Category')->where(array('parentid' => 1))->field('id,name,thumb')->order('name asc')->find('array');
+
         $data = array();
         foreach ($list as $key => $value) {
             $chart          = getFirstCharter($value['name']);

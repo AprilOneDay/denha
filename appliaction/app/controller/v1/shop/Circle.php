@@ -24,7 +24,7 @@ class Circle extends \app\app\controller\Init
         $map['del_status'] = 0;
         $map['uid']        = $this->uid;
 
-        $list = table('Circle')->where($map)->field('id,ablum,description,uid,created')->limit($offer, $pageSize)->find('array');
+        $list = table('Circle')->where($map)->field('id,ablum,description,uid,created')->limit($offer, $pageSize)->order('id desc')->find('array');
         foreach ($list as $key => $value) {
             $list[$key]['like']    = (int) table('Enjoy')->where(array('type' => 1, 'value' => $value['id']))->count();
             $list[$key]['ablum']   = $this->appImgArray($value['ablum'], 'circle');

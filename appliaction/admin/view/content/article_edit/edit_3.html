@@ -158,6 +158,20 @@
 						<div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger"></span>
+								<span>老师课时类型</span>
+							</label>
+							<div class="col-sm-8">
+								<select data-selected="{??$data['teacher_hour_type']}" name="info[teacher_hour_type]" class="form-control w160">
+									<option value="">选择课时类型</option>
+									{loop $other['teacherHourType'] $key $value}
+                               			<option value="{$key}">{$value}</option>
+                               		{/loop}
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger"></span>
 								<span>课程类型</span>
 							</label>
 							<div class="col-sm-8">
@@ -183,10 +197,14 @@
 										<div class="col-sm-3 pull-left">
 											<input type="text" value="{$value['end_time']}" name="end_syllabus[]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" data-type="datetime" placeholder="课程结束时间">	
 										</div>
-										<div class="col-sm-2 pull-left">
+										<div class="col-sm-1 pull-left">
 											<input type="text" value="{$value['credit']}" name="credit[]"  class="form-control" placeholder="学分">	
 										</div>
-										<div class="col-sm-4">
+
+										<div class="col-sm-2 pull-left">
+											<input type="text" value="{$value['teacher_hour']}" name="teacher_hour[]"  class="form-control" placeholder="老师可得课时">
+										</div>
+										<div class="col-sm-3">
 											<a class="btn btn-primary add-syllabus">添加</a>
 											<a class="btn btn-primary del-add-syllabus">删除</a>
 										</div>
@@ -200,10 +218,16 @@
 									<div class="col-sm-3 pull-left">
 										<input type="text" value="" name="end_syllabus[]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" data-type="datetime" data-isnull='1' placeholder="课程结束时间">	
 									</div>
-									<div class="col-sm-2 pull-left">
+
+									<div class="col-sm-1 pull-left">
 										<input type="text" value="0" name="credit[]"  class="form-control" placeholder="学分">	
 									</div>
-									<div class="col-sm-4">
+
+									<div class="col-sm-2 pull-left">
+										<input type="text" value="" name="teacher_hour[]"  class="form-control" placeholder="老师可得课时">
+									</div>
+									
+									<div class="col-sm-3">
 										<a class="btn btn-primary add-syllabus">添加</a>
 										<a class="btn btn-primary del-add-syllabus">删除</a>
 									</div>

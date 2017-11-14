@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
    <head>
-        <title>学生门户-课程和作业安排</title>
+        <title>学生门户-我上传的作业</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="Content-Type" content="charset=utf-8" />
         <link rel="stylesheet" href="/ststic/study/css/base.css">
@@ -23,12 +23,12 @@
         	{include public/left_menus}
         
         <div class="classroom_right ">
-        		<h3 class="ks_zy t-class-title" >课程和作业安排</h3>
+        		<h3 class="ks_zy t-class-title" >我上传的作业</h3>
         	<div class="t_cr_left t_kczy fl">
             	<p class="onli">课程安排</p>
             	<ul class="clearfix div_ul2">
-                	  <li {if ACTION == 'lessons'}class="on"{/if}><a href="{F:url('lessons')}" class="kcap">课程安排</a></li>
-                    <li {if ACTION == 'classwork'}class="on"{/if}><a href="{F:url('classwork')}" class="zyap">作业安排</a></li>
+                	  <li {if $type == 1}class="on"{/if}><a href="{F:url('lessons',array('type'=>1))}" class="kcap">课程安排</a></li>
+                    <li {if $type == 2}class="on"{/if}><a href="{F:url('lessons',array('type'=>2))}" class="zyap">作业安排</a></li>
                     <li {if ACTION == 'my_up_classwork'}class="on"{/if}><a href="{F:url('my_up_classwork')}" class="xzzy">我上传的作业</a></li>
                  
                 </ul>
@@ -36,37 +36,14 @@
 
      	<div class="t_cr_right fr">
             	<ul class="kczy">
+                  {loop $list $value}
                 	<li>	
-                    	<p class="names"><a href="#">雅思冲刺7.5分课程</a></p>
-                        <p class="times">2017/05/25</p>
-                         <p class="dels">删除</p>
- 
-                    </li>
-                	<li>	
-                    	<p class="names"><a href="#">雅思冲刺7.5分课程</a></p>
-                        <p class="times">2017/05/25</p>
-                         <p class="dels">删除</p>
- 
-                    </li>
-                	<li>	
-                    	<p class="names"><a href="#">雅思冲刺7.5分课程</a></p>
-                        <p class="times">2017/05/25</p>
-                         <p class="dels">删除</p>
- 
-                    </li>
-                	<li>	
-                    	<p class="names"><a href="#">雅思冲刺7.5分课程</a></p>
-                        <p class="times">2017/05/25</p>
-                         <p class="dels">删除</p>
- 
-                    </li>
-                	<li>	
-                    	<p class="names"><a href="#">雅思冲刺7.5分课程</a></p>
-                        <p class="times">2017/05/25</p>
-                         <p class="dels">删除</p>
- 
-                    </li>
-                	
+                  	<p class="names"><a href="#">{$value['goods']['title']}</a></p>
+                      <p class="times">{F:date('Y/m/d H:i:s',$value['created'])}</p>
+                       <p class="dels">删除</p>
+
+                  </li>
+                  {/loop}
                 </ul>
             
             </div>

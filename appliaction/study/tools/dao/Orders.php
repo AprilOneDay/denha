@@ -61,4 +61,28 @@ class Orders
         return array('status' => true, 'msg' => '保存成功');
     }
 
+    /**
+     * 获取用户购买的课程id
+     * @date   2017-11-14T17:09:01+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $uid [description]
+     * @return [type]                        [description]
+     */
+    public function getPayGoodsId($uid)
+    {
+
+        $ot = table('Orders')->tableName();
+        $ct = table('OrdersCourse')->tableName();
+
+        $map[$ot . '.uid']    = $uid;
+        $map[$ot . '.type']   = 3;
+        $map[$ot . '.is_pay'] = 1;
+
+        $field = "distinct $ct.goods_id";
+
+        $list = table('Orders')->join($ct, "$ct.order_sn = $ot.order_sn")->where($map)->field($field)->find('one', true);
+
+        return $list;
+    }
+
 }

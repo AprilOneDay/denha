@@ -43,11 +43,13 @@
                 </div>
                 {/loop}
                 
+                {if $pages}
                 <div class="page ">
                     <p><b>{$pages['pageNo']}</b>/{$pages['allPage']}</p>
                     <a href="{$pages['pageUrl']}?pageNo={F:max($pages['pageNo'] - 1,1)}">上一页</a>
                     <a href="{$pages['pageUrl']}?pageNo={F:min($pages['pageNo'] + 1,$pages['allPage'])}">下一页</a>
                 </div>
+                {/if}
 			</div>
         
         </div>     	

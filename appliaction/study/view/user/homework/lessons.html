@@ -27,8 +27,8 @@
         	<div class="t_cr_left t_kczy fl">
             	<p class="onli">课程安排</p>
             	<ul class="clearfix div_ul2">
-                	 <li {if ACTION == 'lessons'}class="on"{/if}><a href="{F:url('lessons')}" class="kcap">课程安排</a></li>
-                    <li {if ACTION == 'classwork'}class="on"{/if}><a href="{F:url('classwork')}" class="zyap">作业安排</a></li>
+                	<li {if $type == 1}class="on"{/if}><a href="{F:url('lessons',array('type'=>1))}" class="kcap">课程安排</a></li>
+                    <li {if $type == 2}class="on"{/if}><a href="{F:url('lessons',array('type'=>2))}" class="zyap">作业安排</a></li>
                     <li {if ACTION == 'my_up_classwork'}class="on"{/if}><a href="{F:url('my_up_classwork')}" class="xzzy">我上传的作业</a></li>
                 </ul>
             </div>
@@ -43,67 +43,100 @@
 
      	<div class="t_cr_right fr">
             	<ul class="kczy">
-                	<li>
-                    	<p class="name"><a href="#">雅思冲刺7.5分课程</a></p>
-                        <p class="zy_cont">本套题针对出国留学的学生准备，其中包括选这题和填空题，最后一页附上答案，请严格答题</p>
-                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
-                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
-                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
-                        <p class="time"><span>时间：2017/08/02<em></em> 上午9点-11点 </span><span>教师：大卫 </span></p>
-                    </li>
-                	<li>
-                    	<p class="name"><a href="#">雅思冲刺7.5分课程</a></p>
-                        <p class="zy_cont">本套题针对出国留学的学生准备，其中包括选这题和填空题，最后一页附上答案，请严格答题</p>
-                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
-                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
-                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
-                        <p class="time"><span>时间：2017/08/02<em></em> 上午9点-11点 </span><span>教师：大卫 </span></p>
-                    </li>
-                	<li>
-                    	<p class="name"><a href="#">雅思冲刺7.5分课程</a></p>
-                        <p class="zy_cont">本套题针对出国留学的学生准备，其中包括选这题和填空题，最后一页附上答案，请严格答题</p>
-                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
-                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
-                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
-                        <p class="time"><span>时间：2017/08/02<em></em> 上午9点-11点 </span><span>教师：大卫 </span></p>
-                    </li>
-                	<li>
-                    	<p class="name"><a href="#">雅思冲刺7.5分课程</a></p>
-                        <p class="zy_cont">本套题针对出国留学的学生准备，其中包括选这题和填空题，最后一页附上答案，请严格答题</p>
-                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
-                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
-                        <p class="wenjian"><a href="#">课程安排01.pdf</a></p>
-                        <p class="time"><span>时间：2017/08/02<em></em> 上午9点-11点 </span><span>教师：大卫 </span></p>
-                    </li>
-                
-                
+                    {if $type == 1}
+                    	{loop $list $value}
+                            <li>
+                                <p class="name"><a href="javascript:;">{$value['goods']['title']}</a></p>
+                                <p class="zy_cont">{$value['content']}</p>
+                                {loop $value['annex'] $v}
+                                <p class="wenjian"><a href="{$v['url']}" target="_blank">{$v['name']}</a></p>
+                                {/loop}
+                                <p class="time"><span>时间：{F:date('Y/m/d H:i:s',$value['created'])}</span><span>教师：{$value['teacher']['real_name']} </span></p>
+                            </li>
+                        {/loop}
+                    {else}
+                        {loop $list $value}
+                            <li> 
+                                <div class="left_kczy">
+                                <p class="name"><a href="javascript:;">{$value['goods']['title']}</a></p>
+                                <p class="zy_cont">{$value['content']}</p>
+                                {loop $value['annex'] $v}
+                                <p class="wenjian"><a href="{$v['url']}" target="_blank">{$v['name']}</a></p>
+                                {/loop}
+                                </div>
+                                <div class="right_kczy"><a class="un_fina" data-id="{$value['id']}">上传作业</a></div>
+                            </li>
+                        {/loop}
+                    {/if}
                 </ul>
             
             </div>
-            
-        
         </div>
    </div>
 
       	<div class="xiugais  clearfix">
-        	<div class="xiugai_box">
-            	<div class="close"><a href="#" class="closebox"></a></div>
-                <b>发布课程安排</b>
-                <p><span>课程名称</span><input type="text"  placeholder="请输入"/></p>
-                <p><span>描述</span><textarea name="" cols="" rows=""></textarea></p>
-            	<p class="iDate date"><span>日期</span><input type="text" placeholder="结束时间"  ><button type="button" class="addOn"></button></p>
-            	<p><span>附件</span> <a href="#" class="btn_sc"><input type="file" />立即上传</a></p>
-                <a class="btn_xg" href="#">立即上传</a>
-            </div>
-        </div>  
+            <form class="form-horizontal" action="{F:url('up_classwork')}">
+                <input  type="hidden" value="" name="annex" />
+                <input  type="hidden" value="" name="work_id" />
+                <div class="xiugai_box">
+                    <div class="close"><a href="javascript:;" class="closebox"></a></div>
+                    <b class="title">上传作业——雅思冲刺7.5分课程</b>
+                    <p class="wenjian">附件个数：<label>0</label></p>
+                    <p><span>上传：</span> <a  class="btn_sc"><input type="file" name="tmp_annex"  placeholder="上传作业文件" style="width: 100%;" />上传作业文件</a></p>
+                    <a class="btn_xg btn-comply" href="javascript:;">立即上传</a>
+                </div>
+            </form>
+        </div> 
 </body>
 <script>
-  $(".btn_fb").click(function(){
-	  $(".xiugais").slideToggle();
-  })
-  $(".closebox ").click(function(){
-		  $(".xiugais").css("display","none");
-	  })
+$(".un_fina").click(function(){
+    var title = $(this).parents('li').find('.name a').text();
+    var work_id = $(this).attr('data-id');
+    $('.xiugai_box .title').text(title);
+    $('input[name=work_id]').val(work_id);
+    $(".xiugais").slideToggle();
+
+})
+$(".closebox ").click(function(){
+    $(".xiugais").css("display","none");
+})
+
+/** 上传附件 */
+$("input[name='tmp_annex']").change(function(e){
+  var _this = this;
+  var files = e.target.files || e.dataTransfer.files;
+  var filesNum = Math.max(parseInt($('.wenjian').find('label').text()),0) + 1;
+  var formData = new FormData();
+  formData.append('file', files[0]);
+  formData.append('path', 'test');
+
+  //ajax异步上传  
+  $.ajax({  
+      url: '/common/upload/up_file',  
+      type: 'POST',  
+      data: formData,
+      dataType: 'json',  
+      contentType: false, //必须false才会自动加上正确的Content-Type  
+      processData: false,  //必须false才会避开jQuery对 formdata 的默认处理  
+      success: function(result){
+          if(!result.status){
+          }else{
+           
+            $('.wenjian').find('label').text(filesNum);
+            var val = $('input[name="annex"]').val();
+            if(val){
+               val =val+','+result.data.name[0]+':::'+files[0]['name'];
+            }else{
+               val = result.data.name[0]+':::'+files[0]['name'];
+            }
+           
+            $('input[name="annex"]').val(val);
+          }
+          return layer.msg(result.msg);               
+      },  
+  });  
+
+})
 
 </script>
 <script type="text/javascript">
@@ -118,5 +151,13 @@ $(document).ready(function(){
     }
 })
 </script>
+<script>
+$(document).ready(function(){
+  $(".onli").click(function(){
+        $(".t_cr_left ul").slideToggle();
+  });
+});
+</script> 
+
 
 </html>
