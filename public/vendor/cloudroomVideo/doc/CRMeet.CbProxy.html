@@ -1,0 +1,7432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: CbProxy</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: CbProxy</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="global.html#CRMeet">CRMeet</a>.</span>CbProxy</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="CbProxy"><span class="type-signature"></span>new CbProxy<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="init.js.html">init.js</a>, <a href="init.js.html#line33">line 33</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_AcceptCallFail"><span class="type-signature"></span>CRMeet_AcceptCallFail<span class="signature">(callID, sdkErr, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    接受他人呼叫操作失败响应
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">呼叫全局标识</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sdkErr</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">操作失败代码,定义见cr/error</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line60">line 60</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_AcceptCallSuccess"><span class="type-signature"></span>CRMeet_AcceptCallSuccess<span class="signature">(callID, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    接受他人呼叫操作成功响应
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">呼叫全局标识</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line53">line 53</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_AudioDevChanged"><span class="type-signature"></span>CRMeet_AudioDevChanged<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    SDK通知本地音频设备有变化
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line249">line 249</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_AudioStatusChanged"><span class="type-signature"></span>CRMeet_AudioStatusChanged<span class="signature">(userID, oldStatus, newStatus)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    SDK通知打开本地音频状态变化
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">会话中设备的所有者</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>oldStatus</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#CRMeet_ASTATUS">CRMeet_ASTATUS</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">oldStatus 旧状态</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>newStatus</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#CRMeet_ASTATUS">CRMeet_ASTATUS</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">newStatus 新状态</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line254">line 254</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_AutoAssignUser"><span class="type-signature"></span>CRMeet_AutoAssignUser<span class="signature">(usrinfo)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    系统自动安排客户
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>usrinfo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">CRMeet_AssignUserInfo</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">安排的用户信息
+如果想停止系统的自动分配，请通setDNDStatus设置免打扰功能；</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line180">line 180</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_CallFail"><span class="type-signature"></span>CRMeet_CallFail<span class="signature">(callID, sdkErr, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    呼叫他人操作失败响应
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">呼叫id</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sdkErr</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">操作失败代码,定义见cr/error</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line212">line 212</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_CallSuccess"><span class="type-signature"></span>CRMeet_CallSuccess<span class="signature">(callID, meetID, meetPswd, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    呼叫他人操作成功响应
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">呼叫id</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>meetID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">会议id</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>meetPswd</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">会议密码</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line203">line 203</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_CancelAssignUser"><span class="type-signature"></span>CRMeet_CancelAssignUser<span class="signature">(queID, usrID)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    系统取消自动安排客户
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>queID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">服务的队列</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>usrID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">用户id</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line196">line 196</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_CreateMeetingFail"><span class="type-signature"></span>CRMeet_CreateMeetingFail<span class="signature">(sdkErr, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    创建会议失败响应
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sdkErr</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">操作失败代码,定义见cr/error</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line112">line 112</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_CreateMeetingSuccess"><span class="type-signature"></span>CRMeet_CreateMeetingSuccess<span class="signature">(meetID, psw, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    创建会议成功响应
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>meetID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">系统自动分配的会议ID</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>psw</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">系统自动分配的会议密码，可为空</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line104">line 104</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_DefVideoChanged"><span class="type-signature"></span>CRMeet_DefVideoChanged<span class="signature">(userID, videoID)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    通知用户的视频默认设备有变化
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">设备变化的用户ID</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>videoID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">默认设备id</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line346">line 346</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_EnterMeetingRslt"><span class="type-signature"></span>CRMeet_EnterMeetingRslt<span class="signature">(sdkErr)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    进入会议完成响应
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sdkErr</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">操作失败代码,定义见cr/error</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line125">line 125</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_HangupCallFail"><span class="type-signature"></span>CRMeet_HangupCallFail<span class="signature">(callID, sdkErr, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    挂断呼叫操作失败响应
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">呼叫全局标识</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sdkErr</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">操作失败代码,定义见cr/error</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line90">line 90</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_HangupCallSuccess"><span class="type-signature"></span>CRMeet_HangupCallSuccess<span class="signature">(callID, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    挂断呼叫操作成功响应
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">呼叫全局标识</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line83">line 83</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_InitQueueDatRslt"><span class="type-signature"></span>CRMeet_InitQueueDatRslt<span class="signature">(errCode, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    队列初始化操作结果
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>errCode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">操作结果代码,定义见cr/error</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_LineOff"><span class="type-signature"></span>CRMeet_LineOff<span class="signature">(sdkErr)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    SDK通知自己掉线
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sdkErr</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">操作失败代码,定义见cr/error</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_LoginFail"><span class="type-signature"></span>CRMeet_LoginFail<span class="signature">(sdkErr, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    登录失败响应
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sdkErr</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">操作失败代码,定义见cr/error</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line14">line 14</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_LoginSuccess"><span class="type-signature"></span>CRMeet_LoginSuccess<span class="signature">(usrID, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    登录成功响应
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>usrID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">用户账户</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_MeetingDropped"><span class="type-signature"></span>CRMeet_MeetingDropped<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    会议掉线通知
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line131">line 131</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_MicEnergyUpdate"><span class="type-signature"></span>CRMeet_MicEnergyUpdate<span class="signature">(userID, oldLevel, newLevel)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    SDK通知用户的说话声音强度更新
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">用户标识ID</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>oldLevel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">原来的说话声音强度</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>newLevel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">现在的说话声音强度</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line241">line 241</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_NetStateChanged"><span class="type-signature"></span>CRMeet_NetStateChanged<span class="signature">(level)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    SDK通知我的网络变化
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">网络状况等级(0~10，10分为最佳网络)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line235">line 235</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_NotifyBeKickout"><span class="type-signature"></span>CRMeet_NotifyBeKickout<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    SDK通知自己被踢下线
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line34">line 34</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_NotifyCallAccepted"><span class="type-signature"></span>CRMeet_NotifyCallAccepted<span class="signature">(callID, meetID, meetPswd)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    SDK通知自己视频呼叫被对方接受
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">呼叫id</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>meetID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">会议id</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>meetPswd</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">会议密码</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line220">line 220</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_NotifyCallHungup"><span class="type-signature"></span>CRMeet_NotifyCallHungup<span class="signature">(callID)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    SDK通知自己呼叫被挂断
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">呼叫全局标识</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line98">line 98</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_NotifyCallRejected"><span class="type-signature"></span>CRMeet_NotifyCallRejected<span class="signature">(callID, sdkErr)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    SDK通知自己呼叫被对方拒绝
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">呼叫id</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sdkErr</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">呼叫被对方拒绝的原因代码,定义见cr/error</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line228">line 228</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_NotifyCmdData"><span class="type-signature"></span>CRMeet_NotifyCmdData<span class="signature">(sourceUserId, data)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    通知接收到命令
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sourceUserId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">数据来源</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line298">line 298</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_NotifyMediaOpened"><span class="type-signature"></span>CRMeet_NotifyMediaOpened<span class="signature">(totalTime, width, height)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    SDK通知影音文件打开
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>totalTime</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">影音时长(秒)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">宽度</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">高度</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line354">line 354</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_NotifyMediaPause"><span class="type-signature"></span>CRMeet_NotifyMediaPause<span class="signature">(userid, pause)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    通知影音媒体暂停
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">用户id</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pause</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">用户id</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line318">line 318</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_NotifyMediaStart"><span class="type-signature"></span>CRMeet_NotifyMediaStart<span class="signature">(userid)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    通知影音媒体开始
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">用户id</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line312">line 312</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_NotifyMediaStop"><span class="type-signature"></span>CRMeet_NotifyMediaStop<span class="signature">(userid, reason)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    通知影音媒体暂停
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">用户id</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>reason</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line305">line 305</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_NotifyRecordFileStateChanged"><span class="type-signature"></span>CRMeet_NotifyRecordFileStateChanged<span class="signature">(fileName, state)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    通知上传录制文件状态
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fileName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">文件名</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>state</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">文件状态</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line325">line 325</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_NotifyRecordFileUploadProgress"><span class="type-signature"></span>CRMeet_NotifyRecordFileUploadProgress<span class="signature">(fileName, percent)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    通知上传录制文件进度
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fileName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">文件名</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>percent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">进度</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line332">line 332</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_QueueStatusChanged"><span class="type-signature"></span>CRMeet_QueueStatusChanged<span class="signature">(queStatus)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    队列状态变化通知
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>queStatus</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">CRMeet_QueueStatusInfo</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">新的队列状态，数据结构定义见</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line150">line 150</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_RejectCallFail"><span class="type-signature"></span>CRMeet_RejectCallFail<span class="signature">(callID, sdkErr, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    拒绝他人的呼叫失败响应
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">呼叫全局标识</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sdkErr</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">操作失败代码,定义见cr/error</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line75">line 75</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_RejectCallSuccess"><span class="type-signature"></span>CRMeet_RejectCallSuccess<span class="signature">(callID, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    拒绝他人的呼叫成功响应
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">呼叫全局标识</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line68">line 68</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_ReqAssignUserRslt"><span class="type-signature"></span>CRMeet_ReqAssignUserRslt<span class="signature">(errCode, usrinfo, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    请求分配客户操作结果
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>errCode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">操作失败代码,定义见cr/error</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>usrinfo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">CRMeet_AssignUserInfo</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">分配的用户信息</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line187">line 187</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_SendCmdRlst"><span class="type-signature"></span>CRMeet_SendCmdRlst<span class="signature">(taskID, errCode, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    发送命令响应
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>taskID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">发送任务id</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>errCode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">操作失败代码,定义见cr/error</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line290">line 290</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_SetDNDStatusFail"><span class="type-signature"></span>CRMeet_SetDNDStatusFail<span class="signature">(sdkErr, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    客户端设置免打扰状态操作失败响应
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sdkErr</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">操作失败代码,定义见cr/error</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line46">line 46</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_SetDNDStatusSuccess"><span class="type-signature"></span>CRMeet_SetDNDStatusSuccess<span class="signature">(cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    客户端设置免打扰状态操作成功响应
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_StartQueuingRslt"><span class="type-signature"></span>CRMeet_StartQueuingRslt<span class="signature">(errCode, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    开始服务队列操作结果
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>errCode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">操作失败代码,定义见cr/error</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line276">line 276</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_StartServiceRslt"><span class="type-signature"></span>CRMeet_StartServiceRslt<span class="signature">(queID, errCode, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    开始服务队列操作结果
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>queID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">服务的队列</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>errCode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">操作失败代码,定义见cr/error</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line157">line 157</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_StopQueuingRslt"><span class="type-signature"></span>CRMeet_StopQueuingRslt<span class="signature">(errCode, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    停止排队操作结果
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>errCode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">操作失败代码,定义见cr/error</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line283">line 283</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_StopServiceRslt"><span class="type-signature"></span>CRMeet_StopServiceRslt<span class="signature">(queID, errCode, cookie)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    停止服务队列操作结果
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>queID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">服务的队列</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>errCode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">操作失败代码,定义见cr/error</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">自定义用户数据</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line165">line 165</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_UploadRecordFileFail"><span class="type-signature"></span>CRMeet_UploadRecordFileFail<span class="signature">(err)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    通知影音媒体暂停
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>err</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">错误码</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line339">line 339</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_UserEnterMeeting"><span class="type-signature"></span>CRMeet_UserEnterMeeting<span class="signature">(usrID)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    用户进入会议通知
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>usrID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">用户id</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line136">line 136</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_UserLeftMeeting"><span class="type-signature"></span>CRMeet_UserLeftMeeting<span class="signature">(id)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    某用户离开了会议
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">离开会议的用户</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line119">line 119</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_VideoDevChanged"><span class="type-signature"></span>CRMeet_VideoDevChanged<span class="signature">(userID)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    SDK通知本地视频设备有变化
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">会话中设备的所有者</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line270">line 270</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="~CRMeet_VideoStatusChanged"><span class="type-signature"></span>CRMeet_VideoStatusChanged<span class="signature">(userID, oldStatus, newStatus)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    SDK通知打开本地视频状态变化
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">会话中设备的所有者</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>oldStatus</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#CRMeet_VSTATUS">CRMeet_VSTATUS</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">oldStatus 旧状态</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>newStatus</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#CRMeet_VSTATUS">CRMeet_VSTATUS</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">newStatus 新状态</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="callback.js.html">callback.js</a>, <a href="callback.js.html#line262">line 262</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cr_callback.html">cr/callback</a></li><li><a href="module-cr_error.html">cr/error</a></li></ul><h3>Classes</h3><ul><li><a href="CRMeet.CbProxy.html">CbProxy</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CRMeet">CRMeet</a></li><li><a href="global.html#CRMeet_AcceptAssignUser">CRMeet_AcceptAssignUser</a></li><li><a href="global.html#CRMeet_AcceptCall">CRMeet_AcceptCall</a></li><li><a href="global.html#CRMeet_ASTATUS">CRMeet_ASTATUS</a></li><li><a href="global.html#CRMeet_Call">CRMeet_Call</a></li><li><a href="global.html#CRMeet_CancelUploadRecordFile">CRMeet_CancelUploadRecordFile</a></li><li><a href="global.html#CRMeet_CloseMic">CRMeet_CloseMic</a></li><li><a href="global.html#CRMeet_CloseVideo">CRMeet_CloseVideo</a></li><li><a href="global.html#CRMeet_CreateMeeting">CRMeet_CreateMeeting</a></li><li><a href="global.html#CRMeet_CreatMediaObj">CRMeet_CreatMediaObj</a></li><li><a href="global.html#CRMeet_CreatVideoObj">CRMeet_CreatVideoObj</a></li><li><a href="global.html#CRMeet_EnterMeeting">CRMeet_EnterMeeting</a></li><li><a href="global.html#CRMeet_ExitMeeting">CRMeet_ExitMeeting</a></li><li><a href="global.html#CRMeet_GetAllFilesInMediaPath">CRMeet_GetAllFilesInMediaPath</a></li><li><a href="global.html#CRMeet_GetAllMembers">CRMeet_GetAllMembers</a></li><li><a href="global.html#CRMeet_GetAllQueueInfo">CRMeet_GetAllQueueInfo</a></li><li><a href="global.html#CRMeet_GetAllRecordFiles">CRMeet_GetAllRecordFiles</a></li><li><a href="global.html#CRMeet_GetAudioCfg">CRMeet_GetAudioCfg</a></li><li><a href="global.html#CRMeet_GetAudioMicNames">CRMeet_GetAudioMicNames</a></li><li><a href="global.html#CRMeet_GetAudioSpkNames">CRMeet_GetAudioSpkNames</a></li><li><a href="global.html#CRMeet_GetAudioStatus">CRMeet_GetAudioStatus</a></li><li><a href="global.html#CRMeet_GetCurVideoSize">CRMeet_GetCurVideoSize</a></li><li><a href="global.html#CRMeet_GetDefaultVideo">CRMeet_GetDefaultVideo</a></li><li><a href="global.html#CRMeet_GetEnableMutiVideo">CRMeet_GetEnableMutiVideo</a></li><li><a href="global.html#CRMeet_GetLoginServerAddr">CRMeet_GetLoginServerAddr</a></li><li><a href="global.html#CRMeet_GetMemberInfo">CRMeet_GetMemberInfo</a></li><li><a href="global.html#CRMeet_GetMemberNickName">CRMeet_GetMemberNickName</a></li><li><a href="global.html#CRMeet_GetMicEnergy">CRMeet_GetMicEnergy</a></li><li><a href="global.html#CRMeet_GetMicVolume">CRMeet_GetMicVolume</a></li><li><a href="global.html#CRMeet_GetQueueStatus">CRMeet_GetQueueStatus</a></li><li><a href="global.html#CRMeet_GetQueuingInfo">CRMeet_GetQueuingInfo</a></li><li><a href="global.html#CRMeet_GetRecDuration">CRMeet_GetRecDuration</a></li><li><a href="global.html#CRMeet_GetRecFileSize">CRMeet_GetRecFileSize</a></li><li><a href="global.html#CRMeet_GetServingQueues">CRMeet_GetServingQueues</a></li><li><a href="global.html#CRMeet_GetSessionInfo">CRMeet_GetSessionInfo</a></li><li><a href="global.html#CRMeet_GetSpeakerVolume">CRMeet_GetSpeakerVolume</a></li><li><a href="global.html#CRMeet_GetVideoBitrate">CRMeet_GetVideoBitrate</a></li><li><a href="global.html#CRMeet_GetVideoDevices">CRMeet_GetVideoDevices</a></li><li><a href="global.html#CRMeet_GetVideoFormat">CRMeet_GetVideoFormat</a></li><li><a href="global.html#CRMeet_GetVideoFPS">CRMeet_GetVideoFPS</a></li><li><a href="global.html#CRMeet_GetVideoImg">CRMeet_GetVideoImg</a></li><li><a href="global.html#CRMeet_GetVideoStatus">CRMeet_GetVideoStatus</a></li><li><a href="global.html#CRMeet_GetWatchableVideos">CRMeet_GetWatchableVideos</a></li><li><a href="global.html#CRMeet_HungupCall">CRMeet_HungupCall</a></li><li><a href="global.html#CRMeet_Init">CRMeet_Init</a></li><li><a href="global.html#CRMeet_InitQueueDat">CRMeet_InitQueueDat</a></li><li><a href="global.html#CRMeet_IsUserInMeeting">CRMeet_IsUserInMeeting</a></li><li><a href="global.html#CRMeet_Login">CRMeet_Login</a></li><li><a href="global.html#CRMeet_Logout">CRMeet_Logout</a></li><li><a href="global.html#CRMeet_OpenMic">CRMeet_OpenMic</a></li><li><a href="global.html#CRMeet_OpenVideo">CRMeet_OpenVideo</a></li><li><a href="global.html#CRMeet_PausePlayMedia">CRMeet_PausePlayMedia</a></li><li><a href="global.html#CRMeet_PlaybackRecordFile">CRMeet_PlaybackRecordFile</a></li><li><a href="global.html#CRMeet_PluginVersion">CRMeet_PluginVersion</a></li><li><a href="global.html#CRMeet_REC_DATATYPE">CRMeet_REC_DATATYPE</a></li><li><a href="global.html#CRMeet_REC_VCONTENT_TYPE">CRMeet_REC_VCONTENT_TYPE</a></li><li><a href="global.html#CRMeet_RECORD_AUDIO_TYPE">CRMeet_RECORD_AUDIO_TYPE</a></li><li><a href="global.html#CRMeet_RECORD_VIDEO_TYPE">CRMeet_RECORD_VIDEO_TYPE</a></li><li><a href="global.html#CRMeet_RECORD_VLAYOUT">CRMeet_RECORD_VLAYOUT</a></li><li><a href="global.html#CRMeet_RefreshAllQueueStatus">CRMeet_RefreshAllQueueStatus</a></li><li><a href="global.html#CRMeet_RejectAssignUser">CRMeet_RejectAssignUser</a></li><li><a href="global.html#CRMeet_RejectCall">CRMeet_RejectCall</a></li><li><a href="global.html#CRMeet_RemoveFromFileMgr">CRMeet_RemoveFromFileMgr</a></li><li><a href="global.html#CRMeet_ReqAssignUser">CRMeet_ReqAssignUser</a></li><li><a href="global.html#CRMeet_SendCmd">CRMeet_SendCmd</a></li><li><a href="global.html#CRMeet_SetAllAudioClose">CRMeet_SetAllAudioClose</a></li><li><a href="global.html#CRMeet_SetAudioCfg">CRMeet_SetAudioCfg</a></li><li><a href="global.html#CRMeet_SetCurVideoSize">CRMeet_SetCurVideoSize</a></li><li><a href="global.html#CRMeet_SetDefaultVideo">CRMeet_SetDefaultVideo</a></li><li><a href="global.html#CRMeet_SetDNDStatus">CRMeet_SetDNDStatus</a></li><li><a href="global.html#CRMeet_SetEnableMutiVideo">CRMeet_SetEnableMutiVideo</a></li><li><a href="global.html#CRMeet_SetFileUploadRate">CRMeet_SetFileUploadRate</a></li><li><a href="global.html#CRMeet_SetLoginServerAddr">CRMeet_SetLoginServerAddr</a></li><li><a href="global.html#CRMeet_SetMicVolume">CRMeet_SetMicVolume</a></li><li><a href="global.html#CRMeet_SetOverlayLogoFile">CRMeet_SetOverlayLogoFile</a></li><li><a href="global.html#CRMeet_SetOverlayLogoFileDat">CRMeet_SetOverlayLogoFileDat</a></li><li><a href="global.html#CRMeet_SetOverlayLogoRgbDat">CRMeet_SetOverlayLogoRgbDat</a></li><li><a href="global.html#CRMeet_SetPlayPos">CRMeet_SetPlayPos</a></li><li><a href="global.html#CRMeet_SetRecordFileEncrypt">CRMeet_SetRecordFileEncrypt</a></li><li><a href="global.html#CRMeet_SetRecordVideos">CRMeet_SetRecordVideos</a></li><li><a href="global.html#CRMeet_SetSpeakerVolume">CRMeet_SetSpeakerVolume</a></li><li><a href="global.html#CRMeet_SetVideoBitrate">CRMeet_SetVideoBitrate</a></li><li><a href="global.html#CRMeet_SetVideoFormat">CRMeet_SetVideoFormat</a></li><li><a href="global.html#CRMeet_SetVideoFPS">CRMeet_SetVideoFPS</a></li><li><a href="global.html#CRMeet_StartPlayMedia">CRMeet_StartPlayMedia</a></li><li><a href="global.html#CRMeet_StartPlayMediaFromLoc">CRMeet_StartPlayMediaFromLoc</a></li><li><a href="global.html#CRMeet_StartQueuing">CRMeet_StartQueuing</a></li><li><a href="global.html#CRMeet_StartRecord">CRMeet_StartRecord</a></li><li><a href="global.html#CRMeet_StartService">CRMeet_StartService</a></li><li><a href="global.html#CRMeet_StopMeeting">CRMeet_StopMeeting</a></li><li><a href="global.html#CRMeet_StopPlayMedia">CRMeet_StopPlayMedia</a></li><li><a href="global.html#CRMeet_StopQueuing">CRMeet_StopQueuing</a></li><li><a href="global.html#CRMeet_StopRecord">CRMeet_StopRecord</a></li><li><a href="global.html#CRMeet_StopService">CRMeet_StopService</a></li><li><a href="global.html#CRMeet_Uninit">CRMeet_Uninit</a></li><li><a href="global.html#CRMeet_UploadRecordFile">CRMeet_UploadRecordFile</a></li><li><a href="global.html#CRMeet_VIDEO_FORMAT">CRMeet_VIDEO_FORMAT</a></li><li><a href="global.html#CRMeet_VIDEO_SHOW_SIZE">CRMeet_VIDEO_SHOW_SIZE</a></li><li><a href="global.html#CRMeet_VSTATUS">CRMeet_VSTATUS</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu May 04 2017 18:57:16 GMT+0800 (中国标准时间)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

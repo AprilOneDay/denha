@@ -22,6 +22,12 @@ class Pay extends \app\study\controller\Init
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
     }
 
+    /**
+     * 保存购买订单
+     * @date   2017-11-17T15:52:41+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
     public function saveLession()
     {
         if (!$this->uid) {
@@ -49,7 +55,7 @@ class Pay extends \app\study\controller\Init
         $this->appReturn($result);
     }
 
-    /** 购买成功后导入课程表 */
+    /** 购买成功后批量导入课程表 */
     public function getLession()
     {
         $orderSn = get('order_sn', 'text', '');
@@ -81,6 +87,7 @@ class Pay extends \app\study\controller\Init
                 $data['start_time']  = $value['start_time'];
                 $data['end_time']    = $value['end_time'];
                 $data['goods_id']    = $ordersData['goods_id'];
+                $data['sgin']        = $$ordersData['sgin'];
 
                 table('UserCourseLog')->add($data);
             }

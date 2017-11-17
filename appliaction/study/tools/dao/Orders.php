@@ -85,4 +85,31 @@ class Orders
         return $list;
     }
 
+    /**
+     * 获取用户购买该课程的用户
+     * @date   2017-11-14T17:09:01+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $uid [description]
+     * @return [type]                        [description]
+     */
+    public function getPayGoodsUser($goodsId = array())
+    {
+
+        $ot = table('Orders')->tableName();
+        $ct = table('OrdersCourse')->tableName();
+
+        $map[$ct . '.goods_id'] = array('in', $goodsId);
+        $map[$ot . '.type']     = 3;
+        $map[$ot . '.is_pay']   = 1;
+
+        $field = "distinct $ot.uid";
+
+        $list = table('Orders')->join($ct, "$ct.order_sn = $ot.order_sn")->where($map)->field($field)->find('array');
+        foreach ($list as $key => $value) {
+            $list[$key]['real_name'] = dao('User')->getInfo($value['uid'], 'real_name');
+        }
+
+        return $list;
+    }
+
 }

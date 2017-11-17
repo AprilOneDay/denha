@@ -30,15 +30,8 @@ class Homework extends \app\study\controller\Init
         foreach ($list as $key => $value) {
             $list[$key]['teacher'] = dao('User')->getInfo($value['teacher_uid'], 'real_name,nickname');
             $list[$key]['goods']   = table('article')->where('id', $value['goods_id'])->field('title,btitle')->find();
+            $list[$key]['annex']   = $this->annex($value['annex']);
 
-            $value['annex']       = $value['annex'] ? explode(',', $value['annex']) : array();
-            $value['annex_total'] = count($value['annex']);
-            $list[$key]['annex']  = array();
-            foreach ($value['annex'] as $k => $v) {
-                $pathinfo                        = explode(':::', $v);
-                $list[$key]['annex'][$k]['url']  = $pathinfo[0];
-                $list[$key]['annex'][$k]['name'] = $pathinfo[1];
-            }
         }
 
         $map                = array();
@@ -56,13 +49,32 @@ class Homework extends \app\study\controller\Init
         $map['uid']        = $this->uid;
         $map['del_status'] = 0;
 
-        $list = table('UserUpWork')->find('array');
+        $list = table('UserUpWork')->where($map)->order('id desc')->find('array');
         foreach ($list as $key => $value) {
             $list[$key]['goods'] = table('article')->where('id', $value['goods_id'])->field('title,btitle')->find();
         }
 
         $this->assign('list', $list);
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+    }
+
+    /** 删除我上传的作业 */
+    public function delUpClasswork()
+    {
+        $id = post('id', 'intval', 0);
+        if (!$id) {
+            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
+        }
+
+        $map['uid'] = $this->uid;
+        $map['id']  = $id;
+
+        $result = table('UserUpWork')->where($map)->save('del_status', 1);
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '删除失败，请重新尝试'));
+        }
+
+        $this->appReturn(array('status' => true, 'msg' => '删除成功'));
     }
 
     /** 上传我的作业 */

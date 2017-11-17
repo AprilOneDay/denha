@@ -122,6 +122,83 @@ class User
         return array('status' => true, 'msg' => '注册成功');
     }
 
+    /**
+     * 修改密码
+     * @date   2017-09-25T10:47:02+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $uid       [description]
+     * @param  [type]                   $password  [description]
+     * @param  [type]                   $password2 [description]
+     * @param  [type]                   $code      [description]
+     * @return [type]                              [description]
+     */
+    public function findPassword($uid, $password, $password2, $code = '')
+    {
+        if (!$uid) {
+            return array('status' => false, 'msg' => '参数错误');
+        }
+
+        if (!$password) {
+            return array('status' => false, 'msg' => '请输入修改密码');
+        }
+
+        if (!$password2) {
+            return array('status' => false, 'msg' => '请再次输入密码');
+        }
+
+        $password = trim(strtolower($password));
+
+        if ($password !== $password2) {
+            return array('status' => false, 'msg' => '两次密码不一致');
+        }
+
+        //检测验证码
+        if ($code) {
+            $reslutCode = dao('Sms')->checkVerification($data['mobile'], $code);
+            if (!$reslutCode['status']) {
+                return $reslutCode;
+            }
+        }
+
+        $salt = table('User')->where('id', $uid)->field('salt')->find('one');
+        if (!$salt) {
+            return array('status' => false, 'msg' => '信息有误');
+        }
+
+        $data['password'] = md5($password . $salt);
+        $data['token']    = '';
+        $reslut           = table('User')->where('id', $uid)->save($data);
+
+        if (!$reslut) {
+            return array('status' => false, 'msg' => '修改密码失败');
+        }
+
+        return array('status' => true, 'msg' => '修改密码成功');
+
+    }
+
+    /**
+     * 检测用户密码是否正确
+     * @date   2017-11-16T10:43:55+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $uid [description]
+     * @return [type]                        [description]
+     */
+    public function checkUserPassword($uid = 0, $password = '')
+    {
+        if (!$uid || !$password) {
+            return false;
+        }
+
+        $user = dao('User')->getInfo($uid, 'salt,password');
+
+        if (md5(trim(strtolower($password)) . $user['salt']) !== $user['password']) {
+            return false;
+        }
+
+        return ture;
+    }
+
     //创建uid
     public function createUid()
     {
@@ -211,49 +288,6 @@ class User
         cookie('token', $data['token'], $data['time_out']);
 
         return array('status' => true, 'msg' => '登录成功', 'data' => $data);
-    }
-
-    /**
-     * 修改密码
-     * @date   2017-09-25T10:47:02+0800
-     * @author ChenMingjiang
-     * @param  [type]                   $uid       [description]
-     * @param  [type]                   $password  [description]
-     * @param  [type]                   $password2 [description]
-     * @param  [type]                   $code      [description]
-     * @return [type]                              [description]
-     */
-    public function findPassword($uid, $password, $password2, $code)
-    {
-        if (!$uid) {
-            return array('status' => false, 'msg' => '参数错误');
-        }
-
-        if (!$password) {
-            return array('status' => false, 'msg' => '请输入修改密码');
-        }
-
-        $password = trim(strtolower($password));
-
-        if ($password !== $password2) {
-            return array('status' => false, 'msg' => '两次密码不一致');
-        }
-
-        $salt = table('User')->where('id', $uid)->field('salt')->find('one');
-        if (!$salt) {
-            return array('status' => false, 'msg' => '信息有误');
-        }
-
-        $data['password'] = md5($password . $salt);
-        $data['token']    = '';
-        $reslut           = table('User')->where('id', $uid)->save($data);
-
-        if (!$reslut) {
-            return array('status' => false, 'msg' => '修改密码失败');
-        }
-
-        return array('status' => true, 'msg' => '修改密码成功');
-
     }
 
     /**

@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html>
+   <head>
+    <title>教师中心-学生信息详情</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/ststic/study/css/base.css">
+    <link rel="stylesheet" href="/ststic/study/css/center.css">
+    <link rel="stylesheet" href="/ststic/study/css/u_mob.css">
+
+    <script type="text/javascript" src="/ststic/study/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/ststic/study/js/moment.js"></script>
+    <script type="text/javascript" src="/ststic/study/js/menu.js"></script>
+    <script type="text/javascript" src="/ststic/study/js/bootstrap-datetimepicker.js"></script>
+
+    <script type="text/javascript" src="/ststic/study/js/common.js"></script>
+    <script type="text/javascript" src="/vendor/layer/layer.js"></script>
+
+
+   </head>
+<body bgcolor="f1f1f1" >
+	
+        <div class="center">
+        	<div id="navbar"><span><i class="ico2"></i>教师中心-学生信息详情</span><a href="javascript:;" class="menubtn"></a>
+            {include public/left_menus}
+        </div>
+        
+        <div class="classroom_right ">
+        	<h3 class="t_student">添加学生信息</h3>
+        	<div class="t_cr_left t_fbcjs fl">
+             <p class="onli">课程分类</p>
+            	<ul class="clearfix div_ul2">
+              	 {loop $courseList $key $value}
+                    <li {if $goodsid == $value['id']}class="on"{/if}><a href="{F:url('index',array('goodsid'=>$value['id']))}" >{$value['title']}</a></li>
+                  {/loop}
+                </ul>
+            </div>
+    </script>
+
+     	<div class="t_cr_right fr ">
+        	<div class="xy_inf">
+            	<p class="name">姓名：{$user['real_name']}</p>
+            	<p class="name">学号：{F:sprintf('%08d',$user['uid'])}</p>
+            	<p class="name">科目：{$user['goods']['title']}</p>
+                <a class="add_inf" href="javascript:;">添加学习情况</a>
+            </div>
+        	<table class="t_s_info">
+            	<thead>
+                    <th width="25%">日期</th>
+                    <th width="75%">学习情况</th>
+                </thead>
+                {loop $list $value}
+                  <tr>
+                    <td>{F:date('Y/m/d',$value['time'])}</td>
+                    <td><p>{$value['content']}</p></td>
+                  </tr>
+                {/loop}
+            </table>
+
+
+
+        
+        </div>
+            
+        
+        </div>
+   </div>
+      	<div class="xiugais  clearfix">
+          <form class="form-horizontal" action="{F:url('add')}">
+          	<input type="hidden" value="{$goodsid}" name="goods_id">
+            <input type="hidden" value="{$uid}" name="uid">
+            <div class="xiugai_box">
+              	<div class="close"><a href="javascript:;" class="closebox"></a></div>
+                  <b>添加学习情况</b><br /><br />
+              	<p  class="iDate date"> <span>时间</span> <input type="text" name="time"><button type="button" class="addOn"></button></p><br />
+                  <p><span>学习情况</span><textarea name="content" cols="" rows=""></textarea></p>
+                  <a class="btn_xg btn-comply" href="javascript:;">立即添加</a>
+            </div>
+          </form>
+        </div>  
+        
+</body>
+<script>
+$(document).ready(function(){
+  $(".onli").click(function(){
+    $(".t_cr_left ul").slideToggle();
+  });
+
+  if($(".iDate.date").length>0){
+        $(".iDate.date").datetimepicker({
+            locale:"zh-cn",
+            format:"YYYY-MM-DD",
+            dayViewHeaderFormat:"YYYY年 MMMM"
+        });
+    }
+ });
+ </script>
+<script>
+  $(".add_inf").click(function(){
+	  $(".xiugais").slideToggle();
+  })
+  $(".closebox ").click(function(){
+		  $(".xiugais").css("display","none");
+	  })
+
+</script>
+
+<script type="text/javascript">
+$(function (){
+	$("#datetimepicker1").on("click",function(e){
+		e.stopPropagation();
+		$(this).lqdatetimepicker({
+			css : 'datetime-hour'
+		});
+
+	});
+
+
+	$("#datetimepicker2").on("click",function(e){
+		e.stopPropagation();
+		$(this).lqdatetimepicker({
+			css : 'datetime-hour'
+		});
+
+	});
+
+	$("#datetimepicker3").on("click",function(e){
+		e.stopPropagation();
+		$(this).lqdatetimepicker({
+			css : 'datetime-day',
+			dateType : 'D',
+			selectback : function(){
+
+			}
+		});
+
+	});
+});
+</script>
+
+</html>

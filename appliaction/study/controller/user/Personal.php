@@ -12,19 +12,6 @@ class Personal extends \app\study\controller\Init
         $this->checkIndividual();
     }
 
-    public function editPassword()
-    {
-        $map['id'] = $this->uid;
-        $data      = table('User')->where($map)->find();
-        $this->assign('data', $data);
-        $this->show(CONTROLLER . '/' . ACTION . $this->lg);
-    }
-
-    public function editPasswordPost()
-    {
-
-    }
-
     /** 个人信息 */
     public function index()
     {
@@ -47,7 +34,7 @@ class Personal extends \app\study\controller\Init
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
     }
 
-    /** 编辑个人资料 */
+    /** 编辑个人资料操作 */
     public function editPost()
     {
         $data['nickname']  = post('nickname', 'text', '');
@@ -70,5 +57,29 @@ class Personal extends \app\study\controller\Init
         }
 
         $this->appReturn(array('msg' => '更新成功'));
+    }
+
+    /** 修改密码页面 */
+    public function editPassword()
+    {
+        $map['id'] = $this->uid;
+        $data      = table('User')->where($map)->find();
+        $this->assign('data', $data);
+        $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+    }
+
+    /** 修改密码操作 */
+    public function editPasswordPost()
+    {
+        $oldPassword = post('old_password', 'text', '');
+        $password    = post('password', 'text', '');
+        $password2   = post('password2', 'text', '');
+
+        if (!dao('User')->checkUserPassword($this->uid, $oldPassword)) {
+            $this->appReturn(array('status' => false, 'msg' => '原密码错误'));
+        }
+
+        $result = dao('User')->findPassword($this->uid, $password, $password2);
+        $this->appReturn($result);
     }
 }

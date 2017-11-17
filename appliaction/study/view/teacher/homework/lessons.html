@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
    <head>
-        <title>学生门户-课程和作业安排</title>
+        <title>教师中心-课程和作业安排</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="Content-Type" content="charset=utf-8" />
         <link rel="stylesheet" href="/ststic/study/css/base.css">
@@ -22,16 +22,27 @@
 <body bgcolor="f1f1f1" >
     
         <div class="center">
-            {include public/left_menus}
+            <div id="navbar"><span><i class="ico2"></i>教师中心-评论管理</span><a href="#" class="menubtn"></a>
+        {include public/left_menus}
+    </div>
         
         <div class="classroom_right teacher_right_t">
                 <h3 class="ks_zy" >课程和作业安排</h3>
             <div class="t_cr_left t_kczy fl">
                 <p class="onli">课程安排</p>
                 <ul class="clearfix div_ul2">
-                    <li {if !$type || $type == 1}class="on"{/if}><a href="{F:url('lessons',array('type'=>1))}" class="kcap">课程安排</a></li>
-                    <li {if $type == 2}class="on"{/if}><a href="{F:url('lessons',array('type'=>2))}" class="zyap">作业安排</a></li>
-                    <li><a href="t_zxzy.html" class="xzzy">下载作业</a></li>
+                 <li {if !$type || $type == 1}class="on"{/if}>
+                    <a href="{F:url('lessons',array('type'=>1))}" class="kcap">课程安排</a>
+                  </li>
+
+                  <li {if $type == 2}class="on"{/if}>
+                    <a href="{F:url('lessons',array('type'=>2))}" class="zyap">作业安排</a>
+                  </li>
+
+                  <li {if ACTION == 'down_user_classwork'}class="on"{/if}>
+                    <a href="{F:url('down_user_classwork')}" class="xzzy">下载作业</a>
+                  </li>
+
                     <a href="javascript:;" class="btn_fb" style="color:#fff">发布安排</a>
                 </ul>
             </div>
@@ -92,7 +103,7 @@ $(".btn_fb").click(function(){
 })
 $(".closebox ").click(function(){
       $(".xiugais").css("display","none");
-  })
+})
 
 $(document).ready(function(){
     // date time picker

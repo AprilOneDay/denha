@@ -16,6 +16,11 @@ class Time
      */
     public function hdStatus($startTime = 0, $endTime = 0)
     {
+        //交换时间
+        if ($startTime > $endTime) {
+            list($startTime, $endTime) = array($endTime, $startTime);
+        }
+
         //未开始
         $status = 1;
         //进行中
@@ -28,6 +33,72 @@ class Time
         }
 
         return $status;
+    }
+
+    /**
+     * 计算相隔时间
+     * @date   2017-11-16T16:51:58+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $startTime [description]
+     * @param  [type]                   $endTime [description]
+     * @return [type]                          [description]
+     */
+    public function diffDate($startTime = 0, $endTime = 0)
+    {
+
+        //交换时间
+        if ($startTime > $endTime) {
+            list($startTime, $endTime) = array($endTime, $startTime);
+        }
+
+        list($Y1, $m1, $d1) = explode('-', date('Y-m-d', $startTime));
+        list($Y2, $m2, $d2) = explode('-', date('Y-m-d', $endTime));
+
+        $year  = $Y2 - $Y1;
+        $month = $m2 - $m1;
+        $day   = $d2 - $d1;
+
+        $timeDiff = $endTime - $startTime;
+        $days     = intval($timeDiff / 86400);
+        $remain   = $timeDiff % 86400;
+
+        $hours  = intval($remain / 3600);
+        $remain = $remain % 3600;
+        $mins   = intval($remain / 60);
+        $secs   = $remain % 60;
+
+        if ($day < 0) {
+            $day += (int) date('t', strtotime("-1 month $endTime"));
+            $month--;
+        }
+
+        if ($month < 0) {
+            $month += 12;
+            $year--;
+        }
+
+        $data = array(
+            'year'  => $year,
+            'month' => $month,
+            'day'   => $day,
+            'hours' => $hours,
+            'mins'  => $mins,
+            'secs'  => $secs,
+        );
+
+        //最合适的值放第一个
+        foreach ($data as $key => $value) {
+            if ($value) {
+                unset($data[$key]);
+                $data       = array_reverse($data);
+                $data[$key] = $value;
+                $data       = array_reverse($data);
+
+                break;
+            }
+        }
+
+        return $data;
     }
 
     /**

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <title>{$this->parentColumn['name']}</title>
+    <link rel="stylesheet" href="/ststic/study/css/base.css">
+    <link rel="stylesheet" href="/ststic/study/css/comm.css">
+    <link rel="stylesheet" href="/ststic/study/css/mob.css">
+
+    <script src="/ststic/study/js/jquery.min.js"></script>
+    <script src="/ststic/study/js/jquery.SuperSlide.2.1.1.js"></script>
+
+    <script src="/ststic/study/js/common.js"></script>
+    <script type="text/javascript" src="/vendor/layer/layer.js"></script>
+
+</head>
+
+
+<body>
+	{include public/top}
+    <div class="banner clearfix">
+    	<div class="banner_box">
+        	<img src="/ststic/study/images/banner01.png" />
+        </div>
+    </div>                                                                                                                    
+    <div class="shequ clearfix adjust">
+    	<div class="shequ_box width1200">
+        	<div class="shequ_left">
+            	<div class="daohang"><a href="/">首页</a><span>>></span><a href="/index/bbs/s/cid/23">恒鼎社区</a><span>>></span>{$data['title']}</div>
+            	<div class="shequ_detail">
+                	<h4 class="title">{$data['title']}</h4>
+                    <p class="time"><span>发布时间：{F:date('Y/m/d',$data['publish_time'])}</span><span>浏览（{$data['hot']}）</span><span>回复（{$data['comment_num']}）</span></p>
+                	<div class="cont">
+                    	{$data['content']}
+                    </div>
+                    <div class="dz"><a class="zhan btn-ajax-post"  href="javascript:;" config-href="{F:url('like')}" data-id="{$data['id']}" data-type="2"><i class="sprite-praise"></i>赞(<span>{$data['enjoy_num']}</span>)</a></div>
+                </div>
+            	<div class="liuyan_pj clearfix"><!-- 留言评价-->
+                    <form class="form-horizontal" action="{F:url('comment')}">
+                        <input type="hidden" value="{$data['id']}" name="goods_id"></input>
+                    	<h5>我要留言</h5>
+                    	<textarea name="content" cols="" rows="" placeholder="把您想说的写在这里哟~"></textarea>
+                        <a class="btn_fb btn-comply" href="javascript:;">立即发布</a>
+                    </form>
+                </div>
+                <div class="ly_list">
+                	<h6><span>留言板（{F:count($data['comment'])}）</span></h6>
+
+                    	<ul class="pl clearfix navgation">
+                            {loop $data['comment'] $value}
+                        	<li>
+                            	<div class="img_user"><img src="{$value['user']['avatar']}"/></div>
+                            	<div class="pl_cont"><p>{$value['user']['nickname']}<span class="time">发布时间：{F:date('Y/m/d',$value['created'])}</span></p>
+                                <p class="cont">{$value['content']}</p>
+                                </div>
+                                <div class="dz_hf">
+                                  <p><input type="button" id="button" value="评论" /><a class="zhan btn-ajax-post" config-href="{F:url('like')}" data-id="{$value['id']}" data-type="3" href="javascript:;"><i class="sprite-praise"></i>赞(<span>{$value['enjoy_num']}</span>)</a>
+                                  </p>
+                                    <div class="div">
+                                      <form class="form-horizontal" action="{F:url('relpy_comment')}">
+                                        <input type="hidden" value="{$value['id']}" name="comment_id"></input>
+                                        <input type="hidden" value="{$value['uid']}" name="to_uid"></input>
+                                        <span class="sj"></span>
+                                        <textarea name="content" cols="" rows=""></textarea>
+                                        <a href="javascript:;"  class="hf_btn btn-comply">回复</a>
+                                      </form>
+                                    </div>
+                                </div>
+                                {if $value['child']}
+                                <div class="hufu_li">
+                                    {loop $value['child'] $v}
+                                    <div class="hf_one"><div class="img_uu"><img src="{$v['user']['avatar']}"/></div><p><span>{if $v['uid'] == $value['uid']}我{else}{$v['user']['nickname']}{/if}：</span><i>{$v['content']}</i></p></div>
+                                    {/loop}
+                                </div>
+                                {/if}
+                            </li>
+                            {/loop}
+                        </ul>
+                
+                </div>
+            </div>
+        	<div class="shequ_right fr">
+            	
+                <div class="rec rec_ht">
+                	<h3>热门话题</h3>
+                    <ul>
+                    	<li><a href="javascript:;">【留学指南】北京一名房东签卖房合同后反悔 被法院强制过户</a></li>
+                    	<li><a href="javascript:;">【留学指南】北京一名房东签卖房合同后反悔 被法院强制过户</a></li>
+                    	<li><a href="javascript:;">【留学指南】北京一名房东签卖房合同后反悔 被法院强制过户</a></li>
+                    	<li><a href="javascript:;">【留学指南】北京一名房东签卖房合同后反悔 被法院强制过户</a></li>
+                    	<li><a href="javascript:;">【留学指南】北京一名房东签卖房合同后反悔 被法院强制过户</a></li>
+                    	<li><a href="javascript:;">【留学指南】北京一名房东签卖房合同后反悔 被法院强制过户</a></li>
+                    </ul>
+                
+                </div>
+               
+            	<div class="rec clearfix">
+                	<h3>推荐课程</h3>
+                	<ul class="kc_rec">
+                        <li>
+                            <div class="imgs"><a href="javascript:;"><img src="/ststic/study/images/kc1.jpg" /></a></div>
+                            <div class="name">雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺7.5分课程</div>
+                            <div class="keshi"><span><i></i>证书颁发</span><span><i></i>一对一授课</span></div>
+                        </li>
+                        <li>
+                            <div class="imgs"><a href="javascript:;"><img src="/ststic/study/images/kc2.jpg" /></a></div>
+                            <div class="name">雅思冲刺7.5分课程</div>
+                            <div class="keshi"><span><i></i>证书颁发</span><span><i></i>一对一授课</span></div>
+                        </li>
+                    
+                    </ul>
+                
+                </div>
+            
+				<!-- <div class="focusBox rec" >
+                                      <h3>学员风采</h3>
+                                      <ul class="pic" >
+                                          <li ><a href="javascript:;" target="_blank"><img src="/ststic/study/images/team1.jpg"></a><span>张散散——雅思培训</span></li>
+                                          <li ><a href="javascript:;" target="_blank"><img src="/ststic/study/images/team2.jpg"></a><span>张散散——雅思培训</span></li>
+                                          <li ><a href="javascript:;" target="_blank"><img src="/ststic/study/images/team3.jpg"></a><span>张散散——雅思培训</span></li>
+                                          <li ><a href="javascript:;" target="_blank"><img src="/ststic/study/images/team4.jpg"></a><span>张散散——雅思培训</span></li>
+                                          <li ><a href="javascript:;" target="_blank"><img src="/ststic/study/images/team5.jpg"></a><span>张散散——雅思培训</span></li>
+                                      </ul>
+                                      <a class="prev" href="javascript:void(0)" style="opacity: 0.2; display: none;"></a>
+                                      <a class="next" href="javascript:void(0)" style="opacity: 0.2; display: none;"></a>
+                                      <ul class="hd">
+                                          <li class=""></li>
+                                          <li class=""></li>
+                                          <li class="on"></li>
+                                          <li></li>
+                                          <li></li>
+                      </ul>
+                                  </div>           -->  
+            </div>
+        
+        
+        </div>
+    </div>
+    
+<div class="clearfix"></div>
+    {include public/footer}
+</body>
+<script>jQuery(".focusBox").hover(function(){ jQuery(this).find(".prev,.next").stop(true,true).fadeTo("show",0.2) },function(){ jQuery(this).find(".prev,.next").fadeOut() });
+jQuery(".focusBox").slide({ mainCell:".pic",effect:"fold", autoPlay:true, delayTime:600, trigger:"click"});	</script>
+
+<script type="text/javascript">
+ <!--
+  $(document).ready(function(e) {
+    $('a.zhan').click(function(){
+  var left = parseInt($(this).offset().left)+10, top =  parseInt($(this).offset().top)-10, obj=$(this);
+  $(this).append('<div id="zhan"><b>+1<\/b></\div>');
+  $('#zhan').css({'position':'absolute','z-index':'1', 'color':'#C30','left':left+'px','top':top+'px'}).animate({top:top-10,left:left+10},function(){
+   $(this).fadeIn('fast').remove();
+   var Num = parseInt(obj.find('span').text());
+       Num++;
+    obj.find('span').text(Num);
+  });
+   
+   
+  return false;
+ });
+ });
+ //-->
+</script>
+	<script type="text/javascript">
+        $(document).ready(function () {
+            $(".navgation input").each(function () {
+                var this_div = $(".navgation .div");
+                var _inx = $(".navgation input").index(this);
+                $(this).click(
+                function () { this_div.eq(_inx).slideToggle(); },
+                function () { this_div.eq(_inx).slideToggle(); }
+           );
+            });
+        });
+    </script>
+
+</html>

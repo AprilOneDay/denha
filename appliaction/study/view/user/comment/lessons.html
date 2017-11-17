@@ -23,17 +23,25 @@
 <body bgcolor="f1f1f1" >
 	
         <div class="center">
-        	{include public/left_menus}
+        	<div id="navbar"><span><i class="ico2"></i>教师中心-课程评论</span><a href="#" class="menubtn"></a>
+        {include public/left_menus}
+    </div>
 
         <div class="classroom_right clearfix " >
-        	<h3 class="t_student t_talk_about">评论管理</h3>
+        	<h3 class="t_student t_talk_about">课程评论</h3>
         	<div class="t_cr_left t_fbcj fl">
-            	<p class="onli">课程评论</p>
+            	<p class="onli">{if ACTION == 'lessons'}
+                  课程评论
+                {elseif ACTION == 'bbs'}
+                  论坛评论
+                {else}
+                  我发布的帖子
+                {/if}</p>
             	<ul class="clearfix div_ul2">
                     <li {if ACTION == 'lessons'}class="on"{/if}><a href="{F:url('lessons')}" class="kc_pp">课程评论</a></li>
                     <li {if ACTION == 'bbs'}class="on"{/if}><a href="{F:url('bbs')}" class="lt_pp">论坛评论</a></li>
                     <li {if ACTION == 'my_article'}class="on"{/if}><a href="{F:url('my_article')}" class="my_pp">我发布的帖子</a></li>                 
-                    <li><button type="button">发帖</button></li>
+                   <!--  <li><button type="button">发帖</button></li> -->
                 </ul>
                
             </div>

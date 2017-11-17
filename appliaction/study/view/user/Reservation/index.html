@@ -8,9 +8,8 @@
     	<link rel="stylesheet" href="/ststic/study/css/center.css">
         <link rel="stylesheet" href="/ststic/study/css/u_mob.css"> 
 
-    	<script src="js/jquery.min.js"></script>
+        <script src="/ststic/study/js/jquery.min.js"></script>
     	<script type="text/javascript" src="/ststic/study/js/moment.js"></script>
-        <script type="text/javascript" src="/ststic/study/js/bootstrap-datetimepicker.js"></script>
         <script type="text/javascript" src="/ststic/study/js/menu.js"></script>
         <script type="text/javascript" src="/ststic/study/js/common.js"></script>
         <script type="text/javascript" src="/vendor/layer/layer.js"></script>
@@ -18,51 +17,56 @@
 <body bgcolor="f1f1f1" >
 	
         <div class="center">
-        	{include public/left_menus}
+        	<div id="navbar"><span><i class="ico2"></i>学生门户-预约一对一辅导</span><a href="#" class="menubtn"></a>
+                {include public/left_menus}
+            </div>
         <div class="classroom_right">
         		<h3 class=" t_students t_coach">预约一对一辅导</h3>
         	<div class="t_cr_left fl">
             	<b class="class_b">同学您好！</b>
-                <span class="class_s">本套试题包括选择题和问答题，倒计时考试，时间到会立即关闭考试系统，自动保存到老师后台！</span>
+                <span class="class_s">提交预约后请耐心等待,预约结果显示在预约列表中</span>
                        <a class="begain_ans clearfix"  href="{F:url('initiated')}">立即预约</a>
             </div>
         	<div class="t_cr_right fr yy_pp navgation">
                 <ul class="fudao_ul clearfix">
+                    {loop $list $value}
                 	<li class="clearfix">
                     	<div class="li_left">
-                    	<p class="title_names"><a href="#" class="name">雅思7.5分精品课程 </a></p>
-                    	<p class="n_t_t"><b>【王冰冰】</b><span>2017/08/11<i></i>10:00-10:30</span><span>电话：15213435886</span></p>
-                        <p class="yuyue_c">"您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧！”</p>                        </div>
-                        <div class="right_li"><a class="xg_time" href="#">预约中</a></div>
-                    </li>
-                	<li class="clearfix">
-                    	<div class="li_left">
-                    	<p class="title_names"><a href="#" class="name">雅思7.5分精品课程 </a></p>
-                    	<p class="n_t_t"><b>【王冰冰】</b><span>2017/08/11<i></i>10:00-10:30</span><span>电话：15213435886</span></p>
-                        <p class="yuyue_c">"您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧！”</p>                        </div>
-                        <div class="right_li"><a class="yy_su" href="#">已预约成功</a></div>
-                    </li>
-                
-                	<li class="clearfix">
-                    	<div class="li_left">
-                    	<p class="title_names"><a href="#" class="name">雅思7.5分精品课程 </a></p>
-                    	<p class="n_t_t"><b>【王冰冰】</b><span>2017/08/11<i></i>10:00-10:30</span><span>电话：15213435886</span></p>
-                        <p class="yuyue_c">"您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧！”</p>                        </div>
-                        <div class="right_li"><a class="xg_time" href="#">预约中</a></div>
-                    </li>
-                	<li class="clearfix">
-                    	<div class="li_left">
-                    	<p class="title_names"><a href="#" class="name">雅思7.5分精品课程 </a></p>
-                    	<p class="n_t_t"><b>【王冰冰】</b><span>2017/08/11<i></i>10:00-10:30</span><span>电话：15213435886</span></p>
-                        <p class="yuyue_c">"您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧！”</p>
+                    	<p class="title_names">
+                            <a href="javascript:;" class="name">[{$value['teacher']['real_name']}] {$value['goods']['title']} </a>
+                        </p>
+                    	<p class="n_t_t"><!-- <b>【王冰冰】</b> -->
+                            <span>{F:date('Y-m-d',$value['start_time'])}<i></i>{F:date('H:i',$value['start_time'])}-{F:date('H:i',$value['end_time'])}</span>
+                            {if $value['mobile']}
+                            <span>电话：{$value['mobile']}</span>
+                            {/if}
+                        </p>
+                        {if $value['user_msg']}
+                        <p class="yuyue_c">{$value['user_msg']}</p>
+                        {/if}
                         </div>
-                        <div class="right_li"><a class="yy_su" href="#">已预约成功</a></div>
+                        {if $value['status'] == 0}
+                        <div class="right_li"><a class="xg_time" href="javascript:;">预约中</a></div>
+                        {elseif $value['status'] == 1}
+                        <div class="right_li"><a class="yy_su" href="javascript:;">已预约成功</a></div>
+                        {else}
+                        <div class="right_li"><a class="xg_time" href="javascript:;">老师拒绝</a></div>
+                        {/if}
+                        
+                        {if $value['teahcer_msg']}
                         <div class="hf_te">
-                        	<p><span>张老师</span><b>回复</b>“认真学习DHA斯蒂芬哈苏fish官方反倒是被对手反倒能说服”</p>
+                            <p><span>{$value['teacher']['real_name']}</span><b>回复</b> {$value['teacher_msg']}</p>
                         </div>
-			                       
+                        {/if}
                     </li>
-                
+                    {/loop}
+                    {if $pages}
+                    <div class="page ">
+                        <p><b>{$pages['pageNo']}</b>/{$pages['allPage']}</p>
+                        <a href="{$pages['pageUrl']}?pageNo={F:max($pages['pageNo'] - 1,1)}">上一页</a>
+                        <a href="{$pages['pageUrl']}?pageNo={F:min($pages['pageNo'] + 1,$pages['allPage'])}">下一页</a>
+                    </div>
+                    {/if}
                 </ul>
                 
                 

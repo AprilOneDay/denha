@@ -22,4 +22,19 @@ class Number
 
         return $price;
     }
+
+    /**
+     * 数字转换为万计数 如果超过万
+     * @date   2017-11-17T11:34:55+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function million($value)
+    {
+        if ($value > 10000) {
+            $value = sprintf('%.2f', ($value / 10000)) . '万';
+        }
+
+        return (float) $value;
+    }
 }

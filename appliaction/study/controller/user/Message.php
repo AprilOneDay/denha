@@ -59,19 +59,20 @@ class Message extends \app\study\controller\Init
         $ot = table('Orders')->tableName();
         $ct = table('OrdersCourse')->tableName();
 
-        $map[$ct . '.teacher_uid'] = $this->uid;
-        $map[$ot . '.is_pay']      = 1;
+        $map[$ot . '.uid']    = $this->uid;
+        $map[$ot . '.is_pay'] = 1;
 
-        $field = "DISTINCT $ot.uid";
+        $field = "DISTINCT $ct.teacher_uid";
 
         $list = table('Orders')->join($ct, "$ot.order_sn = $ct.order_sn")->where($map)->field($field)->find('array');
         foreach ($list as $key => $value) {
-            $userList[$key] = dao('User')->getInfo($value['uid'], 'id,nickname,real_name');
+            $userList[$key] = dao('User')->getInfo($value['teacher_uid'], 'id,nickname,real_name');
         }
 
         $this->assign('userList', $userList);
         $this->assign('total', $this->mailTotal());
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+
     }
 
     /** 发信息 */

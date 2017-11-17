@@ -41,19 +41,19 @@ class Init extends denha\Controller
             $map['token'] = $this->token;
             $user         = table('User')->where($map)->field('nickname,id,type,imei,time_out,ip')->find();
             if ($user) {
-                if ($user['imei'] != $this->imei && $this->imei) {
-                    $this->appReturn(array('status' => false, 'msg' => '你的账户已在其他地方登录,请重新登录', 'code' => 501));
+                /*if ($user['imei'] != $this->imei && $this->imei) {
+                $this->appReturn(array('status' => false, 'msg' => '你的账户已在其他地方登录,请重新登录', 'code' => 501));
                 }
 
                 //超过token时间 重新登录
                 if ($user['time_out'] < TIME) {
-                    $this->appReturn(array('status' => false, 'msg' => '登录超时,请重新登录', 'code' => 501));
+                $this->appReturn(array('status' => false, 'msg' => '登录超时,请重新登录', 'code' => 501));
                 }
 
                 //更换ip 需要重新登录
                 if ($user['ip'] != getIP()) {
-                    $this->appReturn(array('status' => false, 'msg' => '请重新登录', 'code' => 501));
-                }
+                $this->appReturn(array('status' => false, 'msg' => '请重新登录', 'code' => 501));
+                }*/
 
                 $this->nickname   = $user['nickname'];
                 $this->uid        = $user['id'];
@@ -108,6 +108,20 @@ class Init extends denha\Controller
             $value['msg'] = dao('BaiduTrans')->baiduTrans($value['msg'], $this->lg);
         }
         exit(json_encode($value));
+    }
+
+    /** 处理带名称附件 */
+    protected function annex($files)
+    {
+        $tmpFiles = $files ? explode(',', $files) : array();
+        $annex    = array();
+        foreach ($tmpFiles as $key => $value) {
+            $pathinfo            = explode(':::', $value);
+            $annex[$key]['url']  = $pathinfo[0];
+            $annex[$key]['name'] = $pathinfo[1];
+        }
+
+        return $annex;
     }
 
     /**

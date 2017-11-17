@@ -30,7 +30,7 @@ class Download extends \app\app\controller\Init
         if (stripos($agent, 'iphone') || stripos($agent, 'ipad')) {
             $src = 'https://itunes.apple.com/us/app/pocket-auto-ca/id1309482351?l=zh&ls=1&mt=8';
         } else {
-            $src = URL . '/uploadfile/app/app1_0.apk';
+            $src = URL . '/uploadfile/app/app.apk';
         }
         if (stripos($agent, 'MicroMessenger')) {
             //header("Content-Type:image/png");

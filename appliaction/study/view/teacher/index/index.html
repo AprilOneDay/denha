@@ -19,14 +19,16 @@
 <body bgcolor="f1f1f1" >
 	
         <div class="center">
-        	{include public/left_menus}
+        	<div id="navbar"><span><i class="ico2"></i>教师中心-评论管理</span><a href="#" class="menubtn"></a>
+        {include public/left_menus}
+    </div>
 
         <div class="center_right">
         	<div class="qiaoxi">
             	<div class="border">
             	<div class="title"><h4>您好，{$this->nickname}</h4></div>
             	<div class="pp">欢迎来到澳大利亚教学视频之家，在这里即将开启你的旅程祝您旅程愉快！<a href="{F:url('/user/message')}"><阅读更多></a></div>
-                <a class="btn_next" href="#">下一个未读</a>
+               <!--  <a class="btn_next" href="#">下一个未读</a> -->
                 </div>
                 <!-- <div class="bottom_img"><img src="/ststic/study/images/bgcenter.png" /></div> -->
             </div>

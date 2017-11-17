@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>教师中心-课程和作业安排</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="Content-Type" content="charset=utf-8" />
+      <link rel="stylesheet" href="/ststic/study/css/base.css">
+      <link rel="stylesheet" href="/ststic/study/css/center.css">
+      <link rel="stylesheet" href="/ststic/study/css/u_mob.css"> 
+      
+      <script type="text/javascript" src="/ststic/study/js/jquery.min.js"></script>
+      <script type="text/javascript" src="/ststic/study/js/jquery.tableCheckbox.js"></script> 
+      <script type="text/javascript" src="/ststic/study/js/moment.js"></script>
+      <script type="text/javascript" src="/ststic/study/js/bootstrap-datetimepicker.js"></script>
+      <script type="text/javascript" src="/ststic/study/js/menu.js"></script>
+
+      <script type="text/javascript" src="/ststic/study/js/common.js"></script>
+      <script type="text/javascript" src="/vendor/layer/layer.js"></script>
+
+
+   </head>
+<body bgcolor="f1f1f1" >
+  
+        <div class="center">
+          <div id="navbar"><span><i class="ico2"></i>教师中心-评论管理</span><a href="#" class="menubtn"></a>
+        {include public/left_menus}
+    </div>
+        
+        <div class="classroom_right teacher_right_t">
+            <h3 class="ks_zy" >课程和作业安排</h3>
+          <div class="t_cr_left t_kczy fl">
+              <p class="onli">下载作业</p>
+              <ul class="clearfix div_ul2">
+                  
+                  <li {if !$type || $type == 1}class="on"{/if}>
+                    <a href="{F:url('lessons',array('type'=>1))}" class="kcap">课程安排</a>
+                  </li>
+
+                  <li {if $type == 2}class="on"{/if}>
+                    <a href="{F:url('lessons',array('type'=>2))}" class="zyap">作业安排</a>
+                  </li>
+
+                  <li {if ACTION == 'down_user_classwork'}class="on"{/if}>
+                    <a href="{F:url('down_user_classwork')}" class="xzzy">下载作业</a>
+                  </li>
+                  
+                  {loop $courseList $value}
+                  <em><a href="{F:url('down_user_classwork',array('course_id'=>$value['id']))}" class="xz_zy {if $course_id == $value['id']}on{/if}">{$value['title']}</a></em>
+                  {/loop}
+                   
+                </ul>
+            </div>
+
+      <div class="t_cr_right fr">
+        <div class="over_div">
+          <table class="table table-bordered table-striped" >
+            <tbody>
+              {loop $list $value}
+              <tr>
+                <td><label><input type="checkbox" value="{$value['id']}" name="id[]"><i>√</i></label></td>
+                <td><p>【{$value['user']['real_name']}】{$value['goods']['title']}</p></td>
+                <td><span>{F:date('Y/m/d',$value['created'])}</span></td>
+                {if !$value['is_reader']}
+                  <td><a href="javascript:;" class="xz btn-xz" data-id="{$value['id']}">下载</a></td>
+                {else}
+                  <td><a href="javascript:;" class="xz_f btn-xz" data-id="{$value['id']}">已下载</a></td>
+                {/if}
+              </tr>
+              {/loop}
+              
+               <th style="width:5%;"><label><input type="checkbox"><i>√</i></label></th>
+              <th style="width:40%"><a href="javascript:;" style="color:#0b5fa5">批量下载</a></th>
+              <th style="width:20%"></th><th style="width:20%">
+                {if $pages}
+                <div class="page ">
+                    <p><b>{$pages['pageNo']}</b>/{$pages['allPage']}</p>
+                    <a href="{$pages['pageUrl']}?pageNo={F:max($pages['pageNo'] - 1,1)}">上一页</a>
+                    <a href="{$pages['pageUrl']}?pageNo={F:min($pages['pageNo'] + 1,$pages['allPage'])}">下一页</a>
+                </div>
+                {/if}
+              </th>
+
+            </tbody>
+          </table></div>
+            </div>
+            
+        
+        </div>
+   </div>
+
+</body>
+  <script>
+    $(document).ready(function(){
+    $(".onli").click(function(){
+      $(".t_cr_left ul").slideToggle();
+      });
+   });
+
+    </script>
+<script type="text/javascript">
+$('table').tableCheckbox({  });
+$('.btn-xz').click(function(){
+  var id = $(this).attr('data-id');
+  $.post('{F:url('down_annex')}',{id:id},function(reslut){
+     if(reslut.status){
+        window.location.href = reslut.data;
+     }
+  },"json")
+})
+</script>
+</html>

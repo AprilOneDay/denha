@@ -1,51 +1,50 @@
-<header>
-    <div id="navbar"><span><i class="ico2"></i>教师中心-评论管理</span><a href="#" class="menubtn"></a>
-        <nav id="hamburgermenu">
-            <div class="logo"><img src="/ststic/study/images/logo.png" /></div>
-            <h3>教师中心</h3>
-            <ul>
-                <li {if CONTROLLER == 'message'}class="on"{/if}>
-                    <a href="{F:url('/teacher/message')}">我的消息<b>（5）</b></a>
-                </li>
+<nav id="hamburgermenu">
+    <div class="logo"><img src="/ststic/study/images/logo.png" /></div>
+    <h3>教师中心</h3>
+    <ul>
+        <li {if CONTROLLER == 'message'}class="on"{/if}>
+            <a href="{F:url('/teacher/message')}">我的消息<b>（5）</b></a>
+        </li>
 
-                <li {if CONTROLLER == 'calendar'}class="on"{/if}>
-                    <a href="{F:url('/teacher/calendar')}">日历</a>
-                </li>
+        <li {if CONTROLLER == 'calendar'}class="on"{/if}>
+            <a href="{F:url('/teacher/calendar')}">日历</a>
+        </li>
 
-                <li class="black{if CONTROLLER == 'classroom' && ACTION == 'hall'} on{/if}">
-                    <a href="{F:url('/teacher/classroom/hall')}">进入教室</a>
-                </li>
+        <li class="black{if CONTROLLER == 'classroom' && ACTION == 'hall'} on{/if}">
+            <a href="{F:url('/teacher/classroom/hall')}">进入教室</a>
+        </li>
 
-                <li class="black{if CONTROLLER == 'classroom' && ACTION == 'vip'} on{/if}">
-                    <a href="{F:url('/teacher/classroom/vip')}">进入一对一教师</a>
-                </li>
+        <li class="black{if CONTROLLER == 'classroom' && ACTION == 'vip'} on{/if}">
+            <a href="{F:url('/teacher/classroom/vip')}">进入一对一教师</a>
+        </li>
 
-                <li class="black{if CONTROLLER == 'reservation'} on{/if}">
-                    <a href="{F:url('/teacher/reservation')}">预约一对一辅导</a>
-                </li>
-                    
-                 <li class="black{if CONTROLLER == 'lessons'} on{/if}">
-                    <a href="{F:url('/teacher/lessons')}">课时管理</a>
-                </li>
+        <li class="black{if CONTROLLER == 'reservation'} on{/if}">
+            <a href="{F:url('/teacher/reservation')}">预约一对一辅导</a>
+        </li>
+            
+         <li class="black{if CONTROLLER == 'lessons'} on{/if}">
+            <a href="{F:url('/teacher/lessons')}">课时管理</a>
+        </li>
 
-                <li class="black{if CONTROLLER == 'homework'} on{/if}">
-                    <a href="{F:url('/teacher/homework/lessons')}">课程和作业安排</a>
-                </li>
-                
-                <li class="black{if CONTROLLER == 'scores'} on{/if}">
-                    <a href="{F:url('/teacher/scores')}">发布成绩</a>
-                </li>
-    
-               <!--  <li><a href="#">添加学生信息</a></li> -->
-                <li {if CONTROLLER == 'comment'}class="on"{/if}><a href="{F:url('/teacher/comment/lessons')}">评论管理</a></li>
-              
+        <li class="black{if CONTROLLER == 'homework'} on{/if}">
+            <a href="{F:url('/teacher/homework/lessons')}">课程和作业安排</a>
+        </li>
+        
+        <li class="black{if CONTROLLER == 'scores'} on{/if}">
+            <a href="{F:url('/teacher/scores')}">发布成绩</a>
+        </li>
 
-                 <li {if CONTROLLER == 'personal'}class="on"{/if}>
-                    <a href="{F:url('/teacher/personal/index')}">资料管理</a>
-                </li>
+        <li {if CONTROLLER == 'student'}class="on"{/if}>
+            <a href="{F:url('/teacher/student')}">学生信息</a>
+        </li>
 
-                <div class="bottom_c_e"><a class="q_h">中文</a>|<a href="javascript:;" class="btn-ajax-post" data-id="" config-href="/common/version/switchlg">English</a></div>
-            </ul>
-        </nav>
-    </div>
-</header>
+        <li {if CONTROLLER == 'comment'}class="on"{/if}><a href="{F:url('/teacher/comment/lessons')}">评论管理</a></li>
+      
+
+         <li {if CONTROLLER == 'personal'}class="on"{/if}>
+            <a href="{F:url('/teacher/personal/index')}">资料管理</a>
+        </li>
+
+        <div class="bottom_c_e"><a class="q_h">中文</a>|<a href="javascript:;" class="btn-ajax-post" data-id="" config-href="/common/version/switchlg">English</a></div>
+    </ul>
+</nav>

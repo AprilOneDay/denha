@@ -164,6 +164,10 @@ class Circle extends \app\app\controller\Init
         $goodsId = post('goods_id', 'intval', 0);
         $content = post('content', 'text', '');
 
+        if (!$content) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入内容'));
+        }
+
         $reslut = dao('Comment')->add($this->uid, 1, $goodsId, $content);
         $this->appReturn($reslut);
     }
@@ -179,6 +183,10 @@ class Circle extends \app\app\controller\Init
         $content  = post('content', 'text', '');
         $parentId = post('comment_id', 'intval', 0);
         $toUid    = post('to_uid', 'intval', 0);
+
+        if (!$content) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入内容'));
+        }
 
         $reslut = dao('Comment')->reply($this->uid, 1, $content, $parentId, $toUid);
         $this->appReturn($reslut);

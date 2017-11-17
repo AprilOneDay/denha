@@ -27,15 +27,7 @@ class Homework extends \app\study\controller\Init
         foreach ($list as $key => $value) {
             $list[$key]['teacher'] = dao('User')->getInfo($value['teacher_uid'], 'real_name,nickname');
             $list[$key]['goods']   = table('article')->where('id', $value['goods_id'])->field('title,btitle')->find();
-
-            $value['annex']       = $value['annex'] ? explode(',', $value['annex']) : array();
-            $value['annex_total'] = count($value['annex']);
-            $list[$key]['annex']  = array();
-            foreach ($value['annex'] as $k => $v) {
-                $pathinfo                        = explode(':::', $v);
-                $list[$key]['annex'][$k]['url']  = $pathinfo[0];
-                $list[$key]['annex'][$k]['name'] = $pathinfo[1];
-            }
+            $list[$key]['annex']   = $this->annex($value['annex']);
         }
 
         $map                = array();
@@ -87,16 +79,68 @@ class Homework extends \app\study\controller\Init
         $this->appReturn(array('msg' => '发布成功了'));
     }
 
-    /** 作业列表 */
-    public function classwork()
+    /** 下载学生作业 */
+    public function downUserClasswork()
     {
+        $pageNo   = get('pageNo', 'intval', 1);
+        $pageSize = get('pageSize', 'intval', 10);
+        $courseId = get('course_id', 'intval', 0);
+
+        $offer = max(($pageNo - 1), 0) * $pageSize;
+        if ($courseId) {
+            $map['goods_id'] = $courseId;
+        }
+
+        $list = table('UserUpWork')->where($map)->order('id desc')->limit($offer, $pageSize)->find('array');
+        foreach ($list as $key => $value) {
+            $list[$key]['goods'] = table('article')->where('id', $value['goods_id'])->field('title,btitle')->find();
+            $list[$key]['user']  = dao('User')->getInfo($value['uid'], 'nickname,real_name');
+        }
+
+        $total = table('UserUpWork')->where($map)->count();
+        $page  = new \denha\Pages($total, $pageNo, $pageSize, url('', array('course_id' => $courseId)));
+
+        $map                = array();
+        $map['teacher_uid'] = $this->uid;
+        $courseList         = dao('Article')->getList($map, 'title,btitle,id', 3);
+
+        $this->assign('list', $list);
+        $this->assign('courseList', $courseList['list']);
+        $this->assign('pages', $page->pages());
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
     }
 
-    /** 我上传的作业 */
-    public function myUpClasswork()
+    /** 下载附件 */
+    public function downAnnex()
     {
+        $id = post('id', 'intval', 0);
+        if (!$id) {
+            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
+        }
 
-        $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+        $map['id']          = $id;
+        $map['teacher_uid'] = $this->uid;
+
+        $data = table('UserUpWork')->where($map)->find();
+        if (!$data) {
+            $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
+        }
+
+        $data['annex'] = $this->annex($data['annex']);
+
+        foreach ($data['annex'] as $key => $value) {
+            $files[] = $value['url'];
+        }
+
+        $zipName = dao('User')->getInfo($data['uid'], 'real_name') . '_' . date('Y_m_d', $data['created']) . '_' . $data['id'];
+
+        $reslut = dao('File')->zip($files, 'tmp', $zipName);
+
+        if ($reslut['status'] && !$data['is_reader']) {
+            table('UserUpWork')->where($map)->save('is_reader', 1);
+        }
+
+        $this->appReturn($reslut);
+
     }
 }

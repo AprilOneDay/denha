@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: init.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: init.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+if(window["000a0180686911e78dd0a45d36bb8c5c"] === undefined)
+{
+    /**
+	 * 录制布局
+	 * @enum { number }
+	 */
+	CRVideo_ToolBarUI = 
+	{
+		/**暂停播放按钮*/
+		BTN_Pause:0,
+		/**停止播放按钮*/
+		BTN_STOP:1
+	}
+
+	/**
+	 * 云屋web直播sdk
+	 * @version 1.3.0
+	 */
+	var CRVideo = function () 
+		{
+			var win = window,
+				doc = document,
+				nav = navigator,
+
+				w3cdom = typeof doc.getElementById !== "undefined" &amp;&amp; typeof doc.getElementsByTagName !== "undefined" &amp;&amp; typeof doc.createElement !== "undefined",
+				u = nav.userAgent.toLowerCase(),
+				p = nav.platform.toLowerCase(),
+				windows = p ? /win/.test(p) : /win/.test(u),
+				mac = p ? /mac/.test(p) : /mac/.test(u),
+				webkit = /webkit/.test(u) ? parseFloat(u.replace(/^.*webkit\/(\d+(\.\d+)?).*$/, "$1")) : false, // returns either the webkit version or false if not webkit
+				ff =u.indexOf("firefox")>-1?true:false;//是否是火狐
+				ie = nav.appName === "Microsoft Internet Explorer";
+
+				var agent = navigator.userAgent.toLowerCase();
+				var regStr_ie = /msie ([\d.])+/gi;
+				if(ie)
+				{
+						var vArrStr = agent.match(regStr_ie)[0];
+						var v = vArrStr.split(' ')[1]
+				}
+			return {"w3": w3cdom, "wk": webkit, "ie": ie,"ff":ff, "win": windows, "mac": mac,"v":v};
+		}()
+	CRVideo.addEventListener = function(target,name,fun)
+	{
+		if (target.addEventListener) {                    //所有主流浏览器，除了 IE 8 及更早 IE版本
+		    target.addEventListener(name, fun);
+		} else if (target.attachEvent) {                  // IE 8 及更早 IE 版本
+		    target.attachEvent("on"+name, fun);
+		};
+	}
+	CRVideo.scroll = function()
+	{
+		var timeOutHandler = -1
+		CRVideo.addEventListener(window,"scroll",function(){
+				clearTimeout(timeOutHandler)
+			   timeOutHandler = setTimeout(function()
+			   {
+					var div = document.createElement('div')
+					var objects=document.getElementsByTagName("object");
+					for(var i in CRVideo._containerList)
+					{
+						var container = CRVideo._containerList[i]
+						var node = container.handler()
+						if(node &amp;&amp; node.parentNode)
+						{
+							var parent = node.parentNode
+							if(parent.lastChild == node)
+							{
+								parent.removeChild(node)
+								parent.appendChild(node)	
+							}else
+							{
+								var index = Array.from(parent.childNodes).indexOf(node)
+								parent.removeChild(node)
+								parent.insertBefore(node,parent.childNodes[index])
+							}
+						}
+						if(container instanceof  CRVideo.VideoContainer)
+						{
+							if(typeof(node.setVideo) == "function")
+							{
+								node.setVideo(container._usrID,container._videoID);
+							}
+							if(typeof(node.setVisibleNickName) == "function")
+							{
+								node.setVisibleNickName(container._visibleNickName);
+							}
+						}
+					}
+
+			   },200)
+            }) 
+		return 0
+	}()
+	/**
+	 * @class
+	 */
+	CRVideo.CbProxy = function(name)
+	{
+		this.name = name;
+		this.callback = null;
+	}
+    /** 
+    * 显示容器的基类 
+    * @class
+    */
+	CRVideo.Container = function()
+	{
+		
+	}
+
+    /**
+	 * object对象
+	 */	
+	CRVideo.Container.prototype.handler = function(value)
+	{
+		if(value === undefined)
+		{
+			return this._handler;
+		}else
+		{
+			this._handler = value;
+		}
+	}
+     /**
+	 * id
+	 */	
+	CRVideo.Container.prototype.id = function(value)
+	{
+		if(value === undefined)
+		{
+			return this._handler.id;
+			this.__addCallBack();
+		}else
+		{
+			this._handler.id = value;
+		}
+		
+	}
+
+	CRVideo.Container.prototype.__addCallBack = function()
+	{
+
+	}
+     /**
+	 * 容器的宽度
+	 */	
+	CRVideo.Container.prototype.width = function(value)
+	{
+		if(value === undefined)
+		{
+			return parseint(this._handler.style.width);
+		}else
+		{
+			this._handler.style.width = value+"px";
+		}
+		
+	}
+     /**
+	 * 容器的高度
+	 */	
+	CRVideo.Container.prototype.height = function(value)
+	{
+		if(value === undefined)
+		{
+			return parseint(this._handler.style.height);
+		}else
+		{
+			this._handler.style.height = value+"px";
+		}
+		
+	}
+     /**
+	 * 容器的样式
+	 */	
+	CRVideo.Container.prototype.style = function(key,value)
+	{
+		this._handler.style.display = "none";
+		if(key === undefined)
+		{
+			return this._handler.style;
+		}else
+		{
+			if(value === undefined)
+			{
+				return this._handler.style[key];
+			}else
+			{
+				this._handler.style[key] = value;
+			}
+		}
+	}
+	CRVideo._containerList = [];
+    /**
+     * 影音播放的呈现容器
+     * @class
+     * @extends CRVideo.Container
+     */
+	CRVideo.MediaContainer = function()
+	{
+		CRVideo._containerList.push(this)
+	}
+	CRVideo.MediaContainer.prototype = new CRVideo.Container()
+
+	CRVideo.MediaContainer.prototype.__addCallBack = function()
+	{
+
+	}
+     /**
+	 * 工具条是否可用
+     * @param {number} bDisable -  0:可用; 非0:不可用;
+	 */	
+	CRVideo.MediaContainer.prototype.disableToolBar  = function(disable)
+	{
+		this._handler.disableToolBar(disable);
+	}
+     /**
+	 * 保存播放影音画面到图片文件
+     * @param {string} pathFileName - 本地绝对路径文件名(支持格式：bmp, png, gif, jpg, jpeg)
+     * @return {number} 0成功，非0失败
+	 */	
+	CRVideo.MediaContainer.prototype.savePicToFile = function(pathFileName)
+	{
+		return this._handler.savePicToFile(pathFileName);
+	}
+    /**
+	 * 保存播放影音画面到图片文件
+     * @param {string} format - 支持格式:bmp, png, gif, jpg, jpeg
+     * @return {string} Base64字符串
+	 */	
+	CRVideo.MediaContainer.prototype.savePicToBase64 = function(format)
+	{
+		return this._handler.savePicToBase64(format);
+	}
+     /**
+	 * 绘制模式，是否拉伸绘制
+     * @param {bool} value - 是否拉伸
+	 */	
+    CRVideo.MediaContainer.prototype.keepAspectRatio = function(value)
+	{
+        if(value === undefined)
+        {
+            return this._handler.keepAspectRatio;
+        }else
+        {
+            this._handler.keepAspectRatio = value;
+        }
+	}
+    /**
+	 * 显示隐藏播放工具条上的界面元素
+	 * @access public
+	 * @param {CRVideo_ToolBarUI} UIElement  -  界面元素
+     * @param {bool } isVisible   -  是否可见
+	 */	
+    CRVideo.MediaContainer.prototype.setToolBarUIElementVisible = function(UIElement,isVisible)
+	{
+        this._handler.setToolBarUIElementVisible(UIElement,isVisible);
+	}    
+
+    /**
+     * 视频的呈现容器
+     * @class
+     * @extends CRVideo.Container
+     */
+	CRVideo.VideoContainer = function()
+	{
+		this._videoID = -1;
+		this._usrID = "";
+		this._visibleNickName = true;
+		CRVideo._containerList.push(this)
+	}
+	CRVideo.VideoContainer.prototype = new CRVideo.Container()
+    /**
+	 * 设置显示的目标用户视频
+	 * @access public
+	 * @param {string} userID - 目标用户ID
+     * @param {number } videoID - 用户的指定视频设备（-1，代表用户的默认视频设备）
+	 */	
+	CRVideo.VideoContainer.prototype.setVideo = function(usrID,videoID)
+	{
+		if(videoID == undefined)
+		{
+			videoID = -1
+		}
+		this._usrID = usrID;
+		this._videoID = videoID;
+		this._handler.setVideo(usrID,videoID);
+	}
+    /**
+	 * 获取当前显示的用户的视频设备
+	 * @access public
+	 * @return {string} 视频ID
+	 */	
+	CRVideo.VideoContainer.prototype.getVideoID = function()
+	{
+		return this._handler.getVideoID();
+	}
+    /**
+	 * 清理当前图像
+	 * @access public
+	 */	
+	CRVideo.VideoContainer.prototype.clear = function()
+	{
+		return this._handler.clear();
+	}
+     /**
+	 * 设置是否显示昵称
+	 * @access public
+     * @param {bool} value - 否显示昵称
+	 */	
+	CRVideo.VideoContainer.prototype.setVisibleNickName = function(value)
+	{
+		this._visibleNickName = value
+		this._handler.visibleNickName = value;
+	}
+    /**
+	 * 获取是否显示昵称
+	 * @access public
+     * @return {bool} 否显示昵称
+	 */	
+	CRVideo.VideoContainer.prototype.getVisibleNickName = function()
+	{
+		return this._handler.visibleNickName;
+	}
+    /**
+	 * 拍照
+	 * @access public
+     * @param {string} pathFileName - 本地绝对路径文件名(支持格式：bmp, png, gif, jpg, jpeg)
+     * @return {bool} 0:成功； 非0：保存遇到的错误码；
+	 */	
+	CRVideo.VideoContainer.prototype.savePic = function(pathFileName)
+	{
+		return this._handler.savePic(pathFileName);
+	}
+     /**
+	 * 检查图像是否为空
+     * @return {bool} 图像是否为空
+	 */	
+	CRVideo.VideoContainer.prototype.isPicEmpty = function()
+	{
+		return this._handler.isPicEmpty;
+	}
+     /**
+	 * 绘制模式，是否拉伸绘制
+     * @param {bool} value - 是否拉伸
+	 */	
+     CRVideo.VideoContainer.prototype.keepAspectRatio = function(value)
+	{
+        if(value === undefined)
+        {
+            return this._handler.keepAspectRatio;
+        }else
+        {
+            this._handler.keepAspectRatio = value;
+        }
+	}    
+		
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cr_callback.html">cr/callback</a></li><li><a href="module-cr_error.html">cr/error</a></li></ul><h3>Classes</h3><ul><li><a href="CRVideo.CbProxy.html">CbProxy</a></li><li><a href="CRVideo.Container.html">Container</a></li><li><a href="CRVideo.MediaContainer.html">MediaContainer</a></li><li><a href="CRVideo.VideoContainer.html">VideoContainer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CRVideo">CRVideo</a></li><li><a href="global.html#CRVideo_AcceptAssignUser">CRVideo_AcceptAssignUser</a></li><li><a href="global.html#CRVideo_AcceptCall">CRVideo_AcceptCall</a></li><li><a href="global.html#CRVideo_Addboardelement">CRVideo_Addboardelement</a></li><li><a href="global.html#CRVideo_ASTATUS">CRVideo_ASTATUS</a></li><li><a href="global.html#CRVideo_Call">CRVideo_Call</a></li><li><a href="global.html#CRVideo_CancelFileTransfer">CRVideo_CancelFileTransfer</a></li><li><a href="global.html#CRVideo_CancelSend">CRVideo_CancelSend</a></li><li><a href="global.html#CRVideo_CancelUploadRecordFile">CRVideo_CancelUploadRecordFile</a></li><li><a href="global.html#CRVideo_Canclenetdiskfile">CRVideo_Canclenetdiskfile</a></li><li><a href="global.html#CRVideo_ClientCancelInvite">CRVideo_ClientCancelInvite</a></li><li><a href="global.html#CRVideo_ClientInvite">CRVideo_ClientInvite</a></li><li><a href="global.html#CRVideo_Closeboard">CRVideo_Closeboard</a></li><li><a href="global.html#CRVideo_CloseMic">CRVideo_CloseMic</a></li><li><a href="global.html#CRVideo_CloseVideo">CRVideo_CloseVideo</a></li><li><a href="global.html#CRVideo_Createboard">CRVideo_Createboard</a></li><li><a href="global.html#CRVideo_CreateMeeting">CRVideo_CreateMeeting</a></li><li><a href="global.html#CRVideo_CreatMediaObj">CRVideo_CreatMediaObj</a></li><li><a href="global.html#CRVideo_CreatVideoObj">CRVideo_CreatVideoObj</a></li><li><a href="global.html#CRVideo_Delboardelement">CRVideo_Delboardelement</a></li><li><a href="global.html#CRVideo_Deletenetdiskfile">CRVideo_Deletenetdiskfile</a></li><li><a href="global.html#CRVideo_Downloadnetdiskfile">CRVideo_Downloadnetdiskfile</a></li><li><a href="global.html#CRVideo_ENCODE_TYPE">CRVideo_ENCODE_TYPE</a></li><li><a href="global.html#CRVideo_EnterMeeting">CRVideo_EnterMeeting</a></li><li><a href="global.html#CRVideo_ExitMeeting">CRVideo_ExitMeeting</a></li><li><a href="global.html#CRVideo_GetAllFilesInMediaPath">CRVideo_GetAllFilesInMediaPath</a></li><li><a href="global.html#CRVideo_GetAllMembers">CRVideo_GetAllMembers</a></li><li><a href="global.html#CRVideo_GetAllQueueInfo">CRVideo_GetAllQueueInfo</a></li><li><a href="global.html#CRVideo_GetAllRecordFiles">CRVideo_GetAllRecordFiles</a></li><li><a href="global.html#CRVideo_GetAllTransferInfos">CRVideo_GetAllTransferInfos</a></li><li><a href="global.html#CRVideo_GetAllVideoInfo">CRVideo_GetAllVideoInfo</a></li><li><a href="global.html#CRVideo_GetAudioCfg">CRVideo_GetAudioCfg</a></li><li><a href="global.html#CRVideo_GetAudioMicNames">CRVideo_GetAudioMicNames</a></li><li><a href="global.html#CRVideo_GetAudioSpkNames">CRVideo_GetAudioSpkNames</a></li><li><a href="global.html#CRVideo_GetAudioStatus">CRVideo_GetAudioStatus</a></li><li><a href="global.html#CRVideo_Getcurrentmainpage">CRVideo_Getcurrentmainpage</a></li><li><a href="global.html#CRVideo_Getcurrentsubpage">CRVideo_Getcurrentsubpage</a></li><li><a href="global.html#CRVideo_GetDefaultVideo">CRVideo_GetDefaultVideo</a></li><li><a href="global.html#CRVideo_GetEnableMutiVideo">CRVideo_GetEnableMutiVideo</a></li><li><a href="global.html#CRVideo_GetMediacfg">CRVideo_GetMediacfg</a></li><li><a href="global.html#CRVideo_Getmediaimg">CRVideo_Getmediaimg</a></li><li><a href="global.html#CRVideo_Getmediainfo">CRVideo_Getmediainfo</a></li><li><a href="global.html#CRVideo_GetMeetings">CRVideo_GetMeetings</a></li><li><a href="global.html#CRVideo_GetMemberInfo">CRVideo_GetMemberInfo</a></li><li><a href="global.html#CRVideo_GetMemberNickName">CRVideo_GetMemberNickName</a></li><li><a href="global.html#CRVideo_GetMicEnergy">CRVideo_GetMicEnergy</a></li><li><a href="global.html#CRVideo_GetMicVolume">CRVideo_GetMicVolume</a></li><li><a href="global.html#CRVideo_GetQueueStatus">CRVideo_GetQueueStatus</a></li><li><a href="global.html#CRVideo_GetQueuingInfo">CRVideo_GetQueuingInfo</a></li><li><a href="global.html#CRVideo_GetRecDuration">CRVideo_GetRecDuration</a></li><li><a href="global.html#CRVideo_GetRecFileSize">CRVideo_GetRecFileSize</a></li><li><a href="global.html#CRVideo_GetScreenShareCfg">CRVideo_GetScreenShareCfg</a></li><li><a href="global.html#CRVideo_GetServerAddr">CRVideo_GetServerAddr</a></li><li><a href="global.html#CRVideo_GetServingQueues">CRVideo_GetServingQueues</a></li><li><a href="global.html#CRVideo_GetSessionInfo">CRVideo_GetSessionInfo</a></li><li><a href="global.html#CRVideo_GetShareScreenDecodeImg">CRVideo_GetShareScreenDecodeImg</a></li><li><a href="global.html#CRVideo_GetSpeakerVolume">CRVideo_GetSpeakerVolume</a></li><li><a href="global.html#CRVideo_GetTransferInfo">CRVideo_GetTransferInfo</a></li><li><a href="global.html#CRVideo_GetVideoCfg">CRVideo_GetVideoCfg</a></li><li><a href="global.html#CRVideo_GetVideoImg">CRVideo_GetVideoImg</a></li><li><a href="global.html#CRVideo_GetVideoStatus">CRVideo_GetVideoStatus</a></li><li><a href="global.html#CRVideo_GetWatchableVideos">CRVideo_GetWatchableVideos</a></li><li><a href="global.html#CRVideo_GiveCtrlRight">CRVideo_GiveCtrlRight</a></li><li><a href="global.html#CRVideo_HTTP_TRANSFER_RESULT">CRVideo_HTTP_TRANSFER_RESULT</a></li><li><a href="global.html#CRVideo_HTTP_TRANSFER_STAT">CRVideo_HTTP_TRANSFER_STAT</a></li><li><a href="global.html#CRVideo_HungupCall">CRVideo_HungupCall</a></li><li><a href="global.html#CRVideo_Init">CRVideo_Init</a></li><li><a href="global.html#CRVideo_InitQueueDat">CRVideo_InitQueueDat</a></li><li><a href="global.html#CRVideo_IsUserInMeeting">CRVideo_IsUserInMeeting</a></li><li><a href="global.html#CRVideo_KEY_MSG_TYPE">CRVideo_KEY_MSG_TYPE</a></li><li><a href="global.html#CRVideo_Login">CRVideo_Login</a></li><li><a href="global.html#CRVideo_Logout">CRVideo_Logout</a></li><li><a href="global.html#CRVideo_MAIN_PAGE_TYPE">CRVideo_MAIN_PAGE_TYPE</a></li><li><a href="global.html#CRVideo_MOUSE_KEY_TYPE">CRVideo_MOUSE_KEY_TYPE</a></li><li><a href="global.html#CRVideo_MOUSE_MSG_TYPE">CRVideo_MOUSE_MSG_TYPE</a></li><li><a href="global.html#CRVideo_OpenMic">CRVideo_OpenMic</a></li><li><a href="global.html#CRVideo_OpenVideo">CRVideo_OpenVideo</a></li><li><a href="global.html#CRVideo_PausePlayMedia">CRVideo_PausePlayMedia</a></li><li><a href="global.html#CRVideo_PlaybackRecordFile">CRVideo_PlaybackRecordFile</a></li><li><a href="global.html#CRVideo_PluginVersion">CRVideo_PluginVersion</a></li><li><a href="global.html#CRVideo_REC_DATATYPE">CRVideo_REC_DATATYPE</a></li><li><a href="global.html#CRVideo_REC_VCONTENT_TYPE">CRVideo_REC_VCONTENT_TYPE</a></li><li><a href="global.html#CRVideo_RECORD_AUDIO_TYPE">CRVideo_RECORD_AUDIO_TYPE</a></li><li><a href="global.html#CRVideo_RECORD_STATE">CRVideo_RECORD_STATE</a></li><li><a href="global.html#CRVideo_RECORD_VIDEO_TYPE">CRVideo_RECORD_VIDEO_TYPE</a></li><li><a href="global.html#CRVideo_RECORD_VLAYOUT">CRVideo_RECORD_VLAYOUT</a></li><li><a href="global.html#CRVideo_RefreshAllQueueStatus">CRVideo_RefreshAllQueueStatus</a></li><li><a href="global.html#CRVideo_RejectAssignUser">CRVideo_RejectAssignUser</a></li><li><a href="global.html#CRVideo_RejectCall">CRVideo_RejectCall</a></li><li><a href="global.html#CRVideo_ReleaseCtrlRight">CRVideo_ReleaseCtrlRight</a></li><li><a href="global.html#CRVideo_RemoveFromFileMgr">CRVideo_RemoveFromFileMgr</a></li><li><a href="global.html#CRVideo_ReqAssignUser">CRVideo_ReqAssignUser</a></li><li><a href="global.html#CRVideo_RmTransferInfo">CRVideo_RmTransferInfo</a></li><li><a href="global.html#CRVideo_SdkPath">CRVideo_SdkPath</a></li><li><a href="global.html#CRVideo_SendBuffer">CRVideo_SendBuffer</a></li><li><a href="global.html#CRVideo_SendCmd">CRVideo_SendCmd</a></li><li><a href="global.html#CRVideo_SendFile">CRVideo_SendFile</a></li><li><a href="global.html#CRVideo_SendIMmsg">CRVideo_SendIMmsg</a></li><li><a href="global.html#CRVideo_SendKeyCtrlMsg">CRVideo_SendKeyCtrlMsg</a></li><li><a href="global.html#CRVideo_SendMouseCtrlMsg">CRVideo_SendMouseCtrlMsg</a></li><li><a href="global.html#CRVideo_SetAllAudioClose">CRVideo_SetAllAudioClose</a></li><li><a href="global.html#CRVideo_SetAudioCfg">CRVideo_SetAudioCfg</a></li><li><a href="global.html#CRVideo_SetCustomizeScreenImg">CRVideo_SetCustomizeScreenImg</a></li><li><a href="global.html#CRVideo_SetDefaultVideo">CRVideo_SetDefaultVideo</a></li><li><a href="global.html#CRVideo_SetDNDStatus">CRVideo_SetDNDStatus</a></li><li><a href="global.html#CRVideo_SetEnableMutiVideo">CRVideo_SetEnableMutiVideo</a></li><li><a href="global.html#CRVideo_SetFileUploadRate">CRVideo_SetFileUploadRate</a></li><li><a href="global.html#CRVideo_SetMediacfg">CRVideo_SetMediacfg</a></li><li><a href="global.html#CRVideo_SetMediaplaypos">CRVideo_SetMediaplaypos</a></li><li><a href="global.html#CRVideo_SetMicVolume">CRVideo_SetMicVolume</a></li><li><a href="global.html#CRVideo_Setmousehotspot">CRVideo_Setmousehotspot</a></li><li><a href="global.html#CRVideo_SetPicResource">CRVideo_SetPicResource</a></li><li><a href="global.html#CRVideo_SetRecordFileEncrypt">CRVideo_SetRecordFileEncrypt</a></li><li><a href="global.html#CRVideo_SetRecordUploadCfg">CRVideo_SetRecordUploadCfg</a></li><li><a href="global.html#CRVideo_SetRecordVideos">CRVideo_SetRecordVideos</a></li><li><a href="global.html#CRVideo_SetScreenShareCfg">CRVideo_SetScreenShareCfg</a></li><li><a href="global.html#CRVideo_SetServerAddr">CRVideo_SetServerAddr</a></li><li><a href="global.html#CRVideo_SetSpeakerVolume">CRVideo_SetSpeakerVolume</a></li><li><a href="global.html#CRVideo_SetVideoCfg">CRVideo_SetVideoCfg</a></li><li><a href="global.html#CRVideo_Setvideowallmode">CRVideo_Setvideowallmode</a></li><li><a href="global.html#CRVideo_StartPcmRecord">CRVideo_StartPcmRecord</a></li><li><a href="global.html#CRVideo_StartPlayMedia">CRVideo_StartPlayMedia</a></li><li><a href="global.html#CRVideo_StartQueuing">CRVideo_StartQueuing</a></li><li><a href="global.html#CRVideo_StartRecordIng">CRVideo_StartRecordIng</a></li><li><a href="global.html#CRVideo_StartScreenShare">CRVideo_StartScreenShare</a></li><li><a href="global.html#CRVideo_StartService">CRVideo_StartService</a></li><li><a href="global.html#CRVideo_StartTransferFile">CRVideo_StartTransferFile</a></li><li><a href="global.html#CRVideo_STOP_REASON">CRVideo_STOP_REASON</a></li><li><a href="global.html#CRVideo_StopMeeting">CRVideo_StopMeeting</a></li><li><a href="global.html#CRVideo_StopPcmRecord">CRVideo_StopPcmRecord</a></li><li><a href="global.html#CRVideo_StopPlayMedia">CRVideo_StopPlayMedia</a></li><li><a href="global.html#CRVideo_StopQueuing">CRVideo_StopQueuing</a></li><li><a href="global.html#CRVideo_StopRecord">CRVideo_StopRecord</a></li><li><a href="global.html#CRVideo_StopScreenShare">CRVideo_StopScreenShare</a></li><li><a href="global.html#CRVideo_StopService">CRVideo_StopService</a></li><li><a href="global.html#CRVideo_Switchtopage">CRVideo_Switchtopage</a></li><li><a href="global.html#CRVideo_ToolBarUI">CRVideo_ToolBarUI</a></li><li><a href="global.html#CRVideo_Uninit">CRVideo_Uninit</a></li><li><a href="global.html#CRVideo_Uploadnetdiskfile">CRVideo_Uploadnetdiskfile</a></li><li><a href="global.html#CRVideo_UploadRecordFile">CRVideo_UploadRecordFile</a></li><li><a href="global.html#CRVideo_VIDEO_FORMAT">CRVideo_VIDEO_FORMAT</a></li><li><a href="global.html#CRVideo_VIDEO_SHOW_SIZE">CRVideo_VIDEO_SHOW_SIZE</a></li><li><a href="global.html#CRVideo_VIDEO_WH_RATE">CRVideo_VIDEO_WH_RATE</a></li><li><a href="global.html#CRVideo_VIDEOLAYOUTMODE">CRVideo_VIDEOLAYOUTMODE</a></li><li><a href="global.html#CRVideo_VSTATUS">CRVideo_VSTATUS</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Sep 12 2017 18:12:37 GMT+0800 (中国标准时间)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

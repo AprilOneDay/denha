@@ -2,16 +2,17 @@
 <!DOCTYPE html>
 <html>
    <head>
-    <title>教师中心-评论管理</title>
+    <title>教师中心-消息详情</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="charset=utf-8" />
     <link rel="stylesheet" href="/ststic/study/css/base.css">
     <link rel="stylesheet" href="/ststic/study/css/center.css">
     <link rel="stylesheet" href="/ststic/study/css/u_mob.css"> 
+    
     <script type="text/javascript" src="/ststic/study/js/jquery.min.js"></script>
     <script type="text/javascript" src="/ststic/study/js/moment.js"></script>
-    <script type="text/javascript" src="/ststic/study/js/bootstrap-datetimepicker.js"></script>
     <script type="text/javascript" src="/ststic/study/js/menu.js"></script>
+
     <script type="text/javascript" src="/ststic/study/js/common.js"></script>
     <script type="text/javascript" src="/vendor/layer/layer.js"></script>
 
@@ -19,7 +20,9 @@
 <body bgcolor="f1f1f1" >
 	
         <div class="center">
-	        {include public/left_menus}
+	        <div id="navbar"><span><i class="ico2"></i>教师中心-消息详情</span><a href="#" class="menubtn"></a>
+        {include public/left_menus}
+    </div>
             <div class="teacher_right teacher_right_t">
         	<h3 class="my_news">我的消息</h3>
             <div class="t_news">

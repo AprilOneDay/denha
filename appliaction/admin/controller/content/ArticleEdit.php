@@ -65,7 +65,8 @@ class ArticleEdit extends \app\admin\controller\Init
         $data['origin']         = post('origin', 'text', '');
 
         $data['tag']          = max(post('tag', 'intval', 0), 1);
-        $data['is_review']    = post('is_show', 'intval', 1);
+        $data['is_show']      = post('is_show', 'intval', 1);
+        $data['is_review']    = post('is_review', 'intval', 1);
         $data['is_recommend'] = post('is_recommend', 'intval', 1);
         $data['column_id']    = post('column_id', 'intval', 1);
         $data['uid']          = post('uid', 'intval', '');
@@ -94,7 +95,7 @@ class ArticleEdit extends \app\admin\controller\Init
         }
         //添加
         else {
-            $data['created'] = TIME;
+            $data['created'] = $data['publish_time'] = TIME;
             $result          = table('Article')->add($data);
             if ($result) {
                 return $result;
@@ -138,6 +139,7 @@ class ArticleEdit extends \app\admin\controller\Init
         } else {
             if ($id) {
                 $rs = $this->getEditConent($id);
+
             } else {
                 $rs              = array('is_show' => 1, 'is_recommend' => 0, 'created' => date('Y-m-d', TIME), 'model_id' => self::$modelId);
                 $rs['column_id'] = $columnId;
@@ -262,7 +264,7 @@ class ArticleEdit extends \app\admin\controller\Init
             $schedule['endSyllabus']   = post('end_syllabus');
             $schedule['credit']        = post('credit');
             $schedule['teacher_hour']  = post('teacher_hour');
-            if ($schedule) {
+            if (array_filter($schedule['startSyllabus'])) {
                 //删除 课程表
                 table('Article' . self::$dataTable . 'Schedule')->where('id', $dataId)->delete();
 

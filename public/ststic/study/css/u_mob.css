@@ -85,7 +85,7 @@
 	.classroom_right .wenti_hd textarea{ width:90%}
 	.classroom_right .name_divs{ text-align:center; width:95%; margin:0 auto; padding:10px}
 	.classroom_right .name_divs p{ text-align:center; margin:0 auto; width:80%; font-size:12px}
-	.table_div{ width:100%;}
+	.table_div{ width:100%;overflow:auto;}
 	.xiugais .xiugai_box{width:95%; padding-bottom:30px; background:none; }
 	.xiugais .xiugai_box  p  input{ width:80%; float:none; margin:0 auto}
 	.xiugai .xiugai_box{width:90%; padding-bottom:30px}
@@ -379,6 +379,14 @@
 	#evaluate-box>div>span{
 		right:10px;
 		top:10px;
+	}
+	.classroom_right .t_cr_left ul.div_ul2{
+		padding:0 5%;
+		width:100%;
+		box-sizing:border-box;
+	}
+	.classroom_right .t_cr_left ul.div_ul2>li:last-child{
+		float:right;
 	}
 }
 	

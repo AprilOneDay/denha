@@ -22,57 +22,48 @@
 <body bgcolor="f1f1f1" >
 	
         <div class="center">
-        	{include public/left_menus}
+        	<div id="navbar"><span><i class="ico2"></i>教师中心-论坛评论</span><a href="#" class="menubtn"></a>
+        {include public/left_menus}
+    </div>
         
         <div class="classroom_right clearfix " >
-        	<h3 class="t_student t_talk_about">评论管理</h3>
+        	<h3 class="t_student t_talk_about">论坛评论</h3>
         	<div class="t_cr_left t_fbcj fl">
-            	<p class="onli">课程安排</p>
+            	<p class="onli">{if ACTION == 'lessons'}
+                  课程评论
+                {elseif ACTION == 'bbs'}
+                  论坛评论
+                {else}
+                  我发布的帖子
+                {/if}</p>
             	<ul class="clearfix div_ul2">
                     <li {if ACTION == 'lessons'}class="on"{/if}><a href="{F:url('lessons')}" class="kc_pp">课程评论</a></li>
                     <li {if ACTION == 'bbs'}class="on"{/if}><a href="{F:url('bbs')}" class="lt_pp">论坛评论</a></li>
                     <li {if ACTION == 'my_article'}class="on"{/if}><a href="{F:url('my_article')}" class="my_pp">我发布的帖子</a></li>                 
-                    <li><button type="button">发帖</button></li>
+                    <!-- <li><button type="button">发帖</button></li> -->
                 </ul>
                
             </div>
 			<div class="t_cr_right pp_t fr navgation ">
              <div class="width80 clearfix">
+                {loop $list $value}
                 <div class="com_pp clearfix">
-                	
                 	<div class="comm_title2">
-                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
-                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b class="right_b">”</b></p>
-                        <p class="time_hf"><span class="times">2017/05/20</span><span class="dels">删除</span></p>
-                         
+                    	<p class="title_pp"><a href="#" class="names">{$value['goods']['title']} </a></p>
+                        <p class="comm_cont"><b>“</b>{$value['content']}”<b class="right_b">”</b></p>
+                        <p class="time_hf"><span class="times">{F:date('Y/m/d',$value['created'])}</span>
+                        <span class="dels btn-ajax-post" config-tips="删除后评论将不会存在,确定删除?" config-href="{F:url('del_comment')}" data-id="{$value['id']}">删除</span></p> 
                     </div>
                 </div>
+                {/loop}
                 
-                
-                <div class="com_pp clearfix">
-                	
-                	<div class="comm_title2">
-                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
-                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b class="right_b">”</b></p>
-                        <p class="time_hf"><span class="times">2017/05/20</span><span class="dels">删除</span></p>
-                         
-                    </div>
+                {if $pages}
+                <div class="page ">
+                    <p><b>{$pages['pageNo']}</b>/{$pages['allPage']}</p>
+                    <a href="{$pages['pageUrl']}?pageNo={F:max($pages['pageNo'] - 1,1)}">上一页</a>
+                    <a href="{$pages['pageUrl']}?pageNo={F:min($pages['pageNo'] + 1,$pages['allPage'])}">下一页</a>
                 </div>
-                <div class="com_pp clearfix">
-                	
-                	<div class="comm_title2">
-                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
-                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b class="right_b">”</b></p>
-                        <p class="time_hf"><span class="times">2017/05/20</span><span class="dels">删除</span></p>
-                         
-                    </div>
-                </div>
-                
-      
-    
-                
-                
-                <div class="page "><p><b>2</b>/6</p><a href="#">上一页</a><a href="#">下一页</a></div>
+                {/if}
        
 			</div>
         

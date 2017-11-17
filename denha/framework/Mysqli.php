@@ -48,7 +48,7 @@ class Mysqli
         }
 
         $this->link = $this->openMysql();
-        mysqli_query($this->link, 'set names utf8');
+        mysqli_query($this->link, 'set names utf8mb4');
         mysqli_query($this->link, 'SET sql_mode =\'ANSI,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION\'');
     }
 

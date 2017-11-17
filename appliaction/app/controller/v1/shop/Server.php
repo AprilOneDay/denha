@@ -105,6 +105,10 @@ class Server extends \app\app\controller\Init
                 $this->appReturn(array('status' => false, 'msg' => '请输入款号'));
             }
 
+            if (!is_numeric($data['price'])) {
+                $this->appReturn(array('status' => false, 'msg' => '价格请输入数字'));
+            }
+
             /* if (!$data['mileage']) {
             $this->appReturn(array('status' => false, 'msg' => '请输入里程数'));
             }*/
@@ -268,6 +272,10 @@ class Server extends \app\app\controller\Init
 
             if (!$data['price']) {
                 $this->appReturn(array('status' => false, 'msg' => '请输入价格'));
+            }
+
+            if (!is_numeric($data['price'])) {
+                $this->appReturn(array('status' => false, 'msg' => '价格请输入数字'));
             }
 
             //判断是否可用添加卖车信息

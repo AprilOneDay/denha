@@ -611,7 +611,20 @@
 .xiugais .xiugai_box  p.add-input{
     position:relative;
 }
+#textarea{
+    display: inline-block;
+    width: 65%;
+    height: 150px;
+    padding: 5px;
+    border: #dcdcdc 1px solid;
+    background: #ffffff;
+    box-sizing: border-box;
+    position: relative;
+}
 @media screen and (min-width:1200px){
+    #textarea{
+        margin-top:23px;
+    }
     .nav_box{
         width: 100%;
         background:#fff;

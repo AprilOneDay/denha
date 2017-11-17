@@ -1,57 +1,53 @@
-<header>
-    <div id="navbar"><span><i class="ico2"></i>学生门户-学院主页</span><a href="#" class="menubtn"></a>
-        <nav id="hamburgermenu">
-            <div class="logo"><img src="/ststic/study/images/logo.png" /></div>
-            <h3>学生门户</h3>
-            <ul>
-                <li {if CONTROLLER == 'message'}class="on"{/if}>
-                    <a href="{F:url('/user/message')}">我的消息<b>（5）</b></a>
-                </li>
+<nav id="hamburgermenu">
+    <div class="logo"><img src="/ststic/study/images/logo.png" /></div>
+    <h3>学生门户</h3>
+    <ul>
+        <li {if CONTROLLER == 'message'}class="on"{/if}>
+            <a href="{F:url('/user/message')}">我的消息<b>（5）</b></a>
+        </li>
 
-                <li {if CONTROLLER == 'calendar'}class="on"{/if}>
-                    <a href="{F:url('/user/calendar')}">日历</a>
-                </li>
+        <li {if CONTROLLER == 'calendar'}class="on"{/if}>
+            <a href="{F:url('/user/calendar')}">日历</a>
+        </li>
 
-                <li class="black{if CONTROLLER == 'classroom' && ACTION == 'hall'} on{/if}">
-                    <a href="{F:url('/user/classroom/hall')}">进入教室</a>
-                </li>
+        <li class="black{if CONTROLLER == 'classroom' && ACTION == 'hall'} on{/if}">
+            <a href="{F:url('/user/classroom/hall')}">进入教室</a>
+        </li>
 
-                <li class="black{if CONTROLLER == 'classroom' && ACTION == 'vip'} on{/if}">
-                    <a href="{F:url('/user/classroom/vip')}">进入一对一教师</a>
-                </li>
+        <li class="black{if CONTROLLER == 'classroom' && ACTION == 'vip'} on{/if}">
+            <a href="{F:url('/user/classroom/vip')}">进入一对一教师</a>
+        </li>
 
-                <li class="black{if CONTROLLER == 'reservation'} on{/if}">
-                    <a href="{F:url('/user/reservation')}">预约一对一辅导</a>
-                </li>
+        <li class="black{if CONTROLLER == 'reservation'} on{/if}">
+            <a href="{F:url('/user/reservation')}">预约一对一辅导</a>
+        </li>
 
-                <li class="black{if CONTROLLER == 'lessons'} on{/if}">
-                    <a href="{F:url('/user/lessons')}">我的课程</a>
-                </li>
+        <li class="black{if CONTROLLER == 'lessons'} on{/if}">
+            <a href="{F:url('/user/lessons')}">我的课程</a>
+        </li>
 
-                <li class="black{if CONTROLLER == 'homework'} on{/if}">
-                    <a href="{F:url('/user/homework/lessons')}">课程和作业安排</a>
-                </li>
+        <li class="black{if CONTROLLER == 'homework'} on{/if}">
+            <a href="{F:url('/user/homework/lessons')}">课程和作业安排</a>
+        </li>
 
-                <li class="black"><a href="#">线上考试系统</a></li>
+        <li class="black"><a href="#">线上考试系统</a></li>
 
-                <li class="black{if CONTROLLER == 'scores'} on{/if}">
-                    <a href="{F:url('/user/scores')}">我的成绩</a>
-                </li>
+        <li class="black{if CONTROLLER == 'scores'} on{/if}">
+            <a href="{F:url('/user/scores')}">我的成绩</a>
+        </li>
 
-                <li><a href="{F:url('/index/bbs',array('cid'=>23))}">恒鼎社区</a></li>
+        <li><a href="{F:url('/index/bbs',array('cid'=>23))}">恒鼎社区</a></li>
 
-                <li><a href="#">下载专区</a></li>
+        <li><a href="#">下载专区</a></li>
 
-                <li {if CONTROLLER == 'comment'}class="on"{/if}><a href="{F:url('/user/comment/lessons')}">评论管理</a></li>
+        <li {if CONTROLLER == 'comment'}class="on"{/if}><a href="{F:url('/user/comment/lessons')}">评论管理</a></li>
 
-                <li {if CONTROLLER == 'personal'}class="on"{/if}>
-                	<a href="{F:url('/user/personal/index')}">资料管理</a>
-                </li>
+        <li {if CONTROLLER == 'personal'}class="on"{/if}>
+            <a href="{F:url('/user/personal/index')}">资料管理</a>
+        </li>
 
-                <li><a href="javascript:;" class="btn-ajax-post" data-id="" config-href="{F:url('/index/user/outlogin')}" config-tips="确定退出登录?">退出登录</a></li>
-                
-                <div class="bottom_c_e"><a class="q_h">中文</a>|<a href="javascript:;" class="btn-ajax-post" data-id="" config-href="/common/version/switchlg">English</a></div>
-            </ul>
-        </nav>
-    </div>
-</header>
+        <li><a href="javascript:;" class="btn-ajax-post" data-id="" config-href="{F:url('/index/user/outlogin')}" config-tips="确定退出登录?">退出登录</a></li>
+        
+        <div class="bottom_c_e"><a class="q_h">中文</a>|<a href="javascript:;" class="btn-ajax-post" data-id="" config-href="/common/version/switchlg">English</a></div>
+    </ul>
+</nav>
