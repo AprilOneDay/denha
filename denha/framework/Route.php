@@ -145,6 +145,7 @@ class Route
         $controller = self::initValue('controller', 'index');
         $action     = self::initValue('action', 'index');
 
+        define('MODULE', '');
         define('CONTROLLER', $controller);
         define('ACTION', $action);
         self::$path  = APP . DS;
