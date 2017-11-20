@@ -16,15 +16,40 @@ class Classroom extends \app\study\controller\Init
     /** 一对一 */
     public function vip()
     {
-        $map['column_id'] = 10;
-        $about            = dao('Article')->getRowContent($map, 'description,description_en', 1);
+        //获取最近的课程
+        $map['uid']        = $this->uid;
+        $map['status']     = 1;
+        $map['start_time'] = array('>=', TIME);
 
+        $course = table('UserCourseLog')->where($map)->find();
+        $goods  = table('Article')->where('id', $course['goods_id'])->field('title')->find();
+
+        $live = dao('YunwuRoom')->getList($goods['title']);
+
+        $user = dao('User')->getInfo($this->uid, 'avatar,real_name');
+
+        $this->assign('live', $live[0]);
+        $this->assign('user', $user);
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
     }
 
     /** 大厅 */
     public function hall()
     {
+        //获取最近的课程
+        $map['uid']        = $this->uid;
+        $map['status']     = 1;
+        $map['start_time'] = array('>=', TIME);
+
+        $course = table('UserCourseLog')->where($map)->find();
+        $goods  = table('Article')->where('id', $course['goods_id'])->field('title')->find();
+
+        $live = dao('YunwuRoom')->getList($goods['title']);
+
+        $user = dao('User')->getInfo($this->uid, 'avatar,real_name');
+
+        $this->assign('live', $live[0]);
+        $this->assign('user', $user);
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
     }
 

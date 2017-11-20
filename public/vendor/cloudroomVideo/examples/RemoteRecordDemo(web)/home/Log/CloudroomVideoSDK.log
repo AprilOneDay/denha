@@ -798,3 +798,345 @@
 [2017-11-17 10:21:22.221][DBG][MeetingSDK:5636:213] server notify queue status, queID:33, agent_num:1, wait_num:0, srv_num:0
 [2017-11-17 10:21:35.840][DBG][MeetMgr:688:221] handShake2CallSvr(sessionID:3223A651-A711-469C-9656-D922516B632C, timeStamp:1824166, callID:)
 [2017-11-17 10:21:35.925][DBG][MeetMgr:688:222] handShake2CallSvr success! (delay:78)
+[2017-11-20 09:53:50.833][INF][MeetingSDK:6736:0] ---------- SDK running... (pid:4720)----------
+[2017-11-20 09:53:50.833][INF][MeetingSDK:6736:1] startLog:E:\www\denha\public\vendor\cloudroomVideo\examples\RemoteRecordDemo(web)\home\Log\CloudroomVideoSDK.log
+[2017-11-20 09:53:50.833][DBG][MeetingSDK:6736:2] VideoCall init...(CallSDKVer:3.7.3 2017-9-12_14:19:56)
+[2017-11-20 09:53:50.833][DBG][MeetingSDK:6736:3] sdkParams:{"NoCallSvr":0,"NoMediaDatToSvr":0}
+[2017-11-20 09:53:50.835][DBG][MeetMgr:6736:4] MeetingMgrSDK init(sdkver:1.4.0 2017-9-12_13:05:49)...
+[2017-11-20 09:53:50.836][DBG][MeetMgr:6736:5] init ICE moudle, Timeout:90000
+[2017-11-20 09:53:50.837][DBG][ICE:6736:6] initialize communicator for MeetingCallAPI, timeout:90000, ConnectTimeout:30000...
+[2017-11-20 09:53:50.839][DBG][ICE:6736:7] initialize communicator for MeetingCallAPI...finished
+[2017-11-20 09:53:50.840][INF][SIG:6736:8] version: SIGClient 1.0.2.7 Release, for Win32, Built on Aug 25 2017,  13:52:00
+[2017-11-20 09:53:50.841][INF][SIG:6736:9] MainFrame::prepare in
+[2017-11-20 09:53:50.841][INF][SIG:6736:10] MainFrame::prepare out
+[2017-11-20 09:53:50.841][INF][SIG:6736:11] MainFrame::initialize in
+[2017-11-20 09:53:50.841][INF][SIG:6736:12] MainFrame::initialize out
+[2017-11-20 09:53:50.841][INF][SIG:6736:13] SIGClientInit out
+[2017-11-20 09:53:50.841][INF][SIG:6736:14] SIGClientStart in
+[2017-11-20 09:53:50.841][INF][SIG:6736:15] SIGClientStart out
+[2017-11-20 09:53:50.841][INF][SIG:6336:16] MainService::WorkThread start run.
+[2017-11-20 09:53:50.842][DBG][Main:6736:17] MeetingSDK init(sdkver:3.7.3 2017-9-12_14:19:56)...
+[2017-11-20 09:53:50.842][DBG][Main:6736:18] MeetingSDK testMode:0, shName:
+[2017-11-20 09:53:50.843][DBG][httpLink:6736:19] setHttpTimeout:90000
+[2017-11-20 09:53:50.844][DBG][ICE:6736:20] initialize communicator for MeetingSDK, timeout:90000, ConnectTimeout:30000...
+[2017-11-20 09:53:50.845][DBG][ICE:6736:21] initialize communicator for MeetingSDK...finished
+[2017-11-20 09:53:50.845][DBG][Main:6736:22] Init model:LOGIN
+[2017-11-20 09:53:50.845][DBG][Main:6736:23] Init model:MEMBER
+[2017-11-20 09:53:50.846][DBG][Main:6736:24] Init model:PSTNCTL
+[2017-11-20 09:53:50.846][DBG][Main:6736:25] Init model:INVITE
+[2017-11-20 09:53:50.846][DBG][Main:6736:26] Init model:MSClient
+[2017-11-20 09:53:50.846][DBG][MSCLient:6736:27] MscIncLib::SIGClientInit...
+[2017-11-20 09:53:50.846][INF][SIG:6736:28] SIGClientInit in
+[2017-11-20 09:53:50.846][INF][SIG:6736:29] version: SIGClient 1.0.2.7 Release, for Win32, Built on Aug 25 2017,  13:52:00
+[2017-11-20 09:53:50.847][INF][SIG:6736:30] SIGClientInit out
+[2017-11-20 09:53:50.847][DBG][MSCLient:6736:31] MscIncLib::MSCInit...
+[2017-11-20 09:53:50.847][INF][MS:6736:32] version: MSClient 1.2.3.2 Release, for Win32, Built on Sep  2 2017,  13:54:50
+[2017-11-20 09:53:50.848][INF][MS:6736:33] MainFrame::prepare in
+[2017-11-20 09:53:50.848][INF][MS:6736:34] MainFrame::prepare out
+[2017-11-20 09:53:50.848][INF][MS:6860:35] MainService::WorkThread start run.
+[2017-11-20 09:53:50.866][DBG][Audio:6344:36] voiceEng init...
+[2017-11-20 09:53:50.866][DBG][Audio:6344:37] AudioPrint level:0x1000, CRVE_Init in
+[2017-11-20 09:53:50.866][INF][MS:6344:38] MSCSetCRVECommandCallback in
+[2017-11-20 09:53:50.866][INF][MS:6344:39] handler?null: yes
+[2017-11-20 09:53:50.866][INF][MS:6344:40] MSCSetCRVECommandCallback out
+[2017-11-20 09:53:50.874][INF][MS:6860:41] MainFrame::initialize in
+[2017-11-20 09:53:50.874][INF][MS:6860:42] MainFrame::initialize out
+[2017-11-20 09:53:50.874][INF][MS:6736:43] MSCInit out
+[2017-11-20 09:53:50.874][INF][MS:6736:44] MSCSetTransProtocol in
+[2017-11-20 09:53:50.874][INF][MS:6736:45] transProto:0
+[2017-11-20 09:53:50.874][INF][MS:6736:46] MSCSetTransProtocol out
+[2017-11-20 09:53:50.874][INF][SIG:6736:47] SIGClientStart in
+[2017-11-20 09:53:50.874][INF][SIG:6736:48] SIGClientStart out
+[2017-11-20 09:53:50.874][INF][MS:6736:49] MSCStart in
+[2017-11-20 09:53:50.874][INF][MS:6736:50] MSCStart out
+[2017-11-20 09:53:50.874][DBG][Main:6736:51] Init model:SYNC
+[2017-11-20 09:53:50.874][DBG][Main:6736:52] Init model:BRIDGE
+[2017-11-20 09:53:50.875][DBG][Main:6736:53] Init model:VIDEO
+[2017-11-20 09:53:50.876][INF][MS:6736:54] MSCSetVideoCallback in
+[2017-11-20 09:53:50.876][INF][MS:6736:55] pHandler?null: yes
+[2017-11-20 09:53:50.876][INF][MS:6736:56] MSCSetVideoCallback out
+[2017-11-20 09:53:50.876][DBG][Main:6736:57] Init model:AUDIO
+[2017-11-20 09:53:50.876][DBG][Main:6736:58] Init model:MEDIA
+[2017-11-20 09:53:50.876][INF][MS:6736:59] MSCSetFilmCallback in
+[2017-11-20 09:53:50.876][INF][MS:6736:60] pHandler?null: yes
+[2017-11-20 09:53:50.876][INF][MS:6736:61] MSCSetFilmCallback out
+[2017-11-20 09:53:50.876][DBG][Main:6736:62] Init model:FILE_TRANS_NOTIFY
+[2017-11-20 09:53:50.876][DBG][Main:6736:63] Init model:FILE_TRANSFER
+[2017-11-20 09:53:50.877][DBG][Main:6736:64] Init model:FILE_SVRCOVER
+[2017-11-20 09:53:50.877][DBG][Main:6736:65] Init model:WHITE_BOARD
+[2017-11-20 09:53:50.877][DBG][Main:6736:66] Init model:SCREEN_SHARE
+[2017-11-20 09:53:50.877][INF][MS:6736:67] MSCSetScreenCallback in
+[2017-11-20 09:53:50.877][INF][MS:6736:68] pHandler?null: yes
+[2017-11-20 09:53:50.877][INF][MS:6736:69] MSCSetScreenCallback out
+[2017-11-20 09:53:50.877][DBG][Main:6736:70] Init model:NOTICE
+[2017-11-20 09:53:50.877][DBG][Main:6736:71] Init model:ROLLCALL
+[2017-11-20 09:53:50.878][DBG][Main:6736:72] Init model:IM
+[2017-11-20 09:53:50.878][DBG][Main:6736:73] Init model:NRTCOMM
+[2017-11-20 09:53:50.878][DBG][Main:6736:74] Init model:RECORD
+[2017-11-20 09:53:50.878][DBG][Main:6736:75] Init model:BROADCAST
+[2017-11-20 09:53:50.879][DBG][Audio:6736:76] WaitVoiceEngInit...
+[2017-11-20 09:53:50.895][DBG][Audio:6344:77] AudioPrint level:0x1000, Windows Core Audio APIs will be utilized
+[2017-11-20 09:53:50.910][DBG][Audio:6344:78] AudioPrint level:0x1000, CRVE_Init out
+[2017-11-20 09:53:50.910][DBG][Audio:6344:79] voiceEng init...2
+[2017-11-20 09:53:50.910][DBG][Audio:6344:80] AudioPrint level:0x1000, CRVE_CreateChannel in
+[2017-11-20 09:53:50.911][DBG][Audio:6344:81] AudioPrint level:0x1000, CRVE_CreateChannel out
+[2017-11-20 09:53:50.911][WAR][Audio:6344:82] Start Recording Microphone failed! retcode=-1
+[2017-11-20 09:53:50.911][DBG][Audio:6344:83] AudioPrint level:0x1000, CRVE_SetSpeakerVolume in
+[2017-11-20 09:53:50.911][DBG][Audio:6344:84] AudioPrint level:0x1000, CRVE_SetSpeakerVolume out
+[2017-11-20 09:53:50.911][WAR][Audio:6344:85] CRVE_SetSpeakerVolume failed! err=9002
+[2017-11-20 09:53:50.911][DBG][Audio:6344:86] voiceEng init...end
+[2017-11-20 09:53:50.911][DBG][Audio:6736:87] WaitVoiceEngInit...finished
+[2017-11-20 09:53:50.911][DBG][RateControl:6736:88] Upload start(bps:100000000)...
+[2017-11-20 09:53:50.911][DBG][RateControl:6736:89] Download start(bps:100000000)...
+[2017-11-20 09:53:50.912][DBG][MeetingSDK:6736:90] sdk file path: E:\www\denha\public\vendor\cloudroomVideo\examples\RemoteRecordDemo(web)\home\
+[2017-11-20 09:53:50.912][DBG][MeetingSDK:6736:91] set login server address:www.cloudroom.com
+[2017-11-20 09:53:50.912][DBG][httpLink:6736:92] setHttpServers:www.cloudroom.com
+[2017-11-20 09:53:50.912][DBG][httpLink:6736:93] slot_selectFinished:www.cloudroom.com
+[2017-11-20 09:53:50.913][DBG][MeetingSDK:6736:94] setMgrCallBack:0x63481ac
+[2017-11-20 09:53:50.913][DBG][MeetingSDK:6736:95] login...(nickname:2222)
+[2017-11-20 09:53:50.917][CRIT][MeetMgr:6736:96] WebAPI login, reqID:bfcab109-a66e-4871-ae08-366c96be3c9a-1, oemkey:CLOUDROOM, userName:demo@cloudroom.com, pcid:b4995133-86f6-4c0d-aa49-14b8c6113f4d, clientVer:, sdkVer:1.4.0 2017-9-12_13:05:49, languange:, ip:192.168.0.254, mac:FC-AA-14-D3-BF-BC, OSVer:6.1.7601(Microsoft Windows 7 Ultimate Edition Service Pack 1 (build 7601), 64-bit), OSLang:0x804 Chinese (PRC), CPU:4(3292MHz, Intel(R) Core(TM) i5-4590 CPU @ 3.30GHz), Mem:8139(used:35%)!
+[2017-11-20 09:53:50.917][DBG][MeetMgr:6736:97] WebAPI SendMsg url:/servlet/getCallServerInfo, dat:{ "ClientVer" : "", "IpAddr" : "192.168.0.254", "Language" : "", "MacAddr" : "FC-AA-14-D3-BF-BC", "MgrSDKVer" : "1.4.0 2017-9-12_13:05:49", "OEMKey" : "CLOUDROOM", "PRODUCT" : "win32_net", "RequestId" : "bfcab109-a66e-4871-ae08-366c96be3c9a-1", "UserName" : "demo@cloudroom.com", "UserPswd" : "********************************" }
+[2017-11-20 09:53:50.917][DBG][httpLink:6736:98] sendHttpCmd url:http://www.cloudroom.com/servlet/getCallServerInfo, dateLen:329, cmdID:bfcab109-a66e-4871-ae08-366c96be3c9a-2
+[2017-11-20 09:53:51.285][DBG][httpLink:6736:99] http rsp(200), url:/servlet/getCallServerInfo, cmdID:bfcab109-a66e-4871-ae08-366c96be3c9a-2
+[2017-11-20 09:53:51.285][DBG][MeetMgr:6736:100] WebAPI success! cmdType:/servlet/getCallServerInfo, RequestId:bfcab109-a66e-4871-ae08-366c96be3c9a-1
+[2017-11-20 09:53:51.285][DBG][MeetMgr:6736:101] WebAPI MyPublicIP:14.111.53.98
+[2017-11-20 09:53:51.285][DBG][MeetMgr:6736:102] WebAPI get call serverinfo success, call server:59.110.14.207:13200;60.190.243.250:13200
+[2017-11-20 09:53:51.285][DBG][MeetMgr:6736:103] LoginMgr login meeting server succeed, begin to Login call server...
+[2017-11-20 09:53:51.285][DBG][MeetMgr:6736:104] setTunnel off
+[2017-11-20 09:53:51.285][DBG][MeetMgr:6736:105] setSigProxyParams:
+[2017-11-20 09:53:51.285][INF][SIG:6736:106] SIGClientSetServerPorts in
+[2017-11-20 09:53:51.285][INF][SIG:6736:107] paramStr:
+[2017-11-20 09:53:51.285][INF][SIG:6736:108] SetTunnelParams SigPort:0, udtPort:0
+[2017-11-20 09:53:51.285][INF][SIG:6736:109] SIGClientSetServerPorts out
+[2017-11-20 09:53:51.285][DBG][MeetMgr:6736:110] CallAPI setLoginServerAddr(59.110.14.207:13200;60.190.243.250:13200)...
+[2017-11-20 09:53:51.285][DBG][MeetMgr:6736:111] register the CallServer(crAcnt:demo@cloudroom.com, userID:2222)...
+[2017-11-20 09:53:51.285][INF][SIG:6736:112] SIGClientStart in
+[2017-11-20 09:53:51.285][INF][SIG:6736:113] SIGClientStart out
+[2017-11-20 09:53:51.285][INF][SIG:6736:114] SIGClientSetTunnelServerIP in
+[2017-11-20 09:53:51.285][INF][SIG:6736:115] serverip: 
+[2017-11-20 09:53:51.285][INF][SIG:6736:116] SIGClientSetTunnelServerIP out
+[2017-11-20 09:53:51.285][DBG][MeetMgr:6736:117] wait for server selecting...(59.110.14.207:13200;60.190.243.250:13200)
+[2017-11-20 09:53:51.286][DBG][MeetMgr:6736:118] begin ping '59.110.14.207:13200' ...
+[2017-11-20 09:53:51.286][DBG][ICE:6736:119] category=Network, msg=trying to establish tcp connection to 59.110.14.207:13200
+[2017-11-20 09:53:51.286][INF][SIG:6736:120] proxy init channel(127.0.0.1:50874--59.110.14.207:13200) succ
+[2017-11-20 09:53:51.286][DBG][ICE:6736:121] category=Network, msg=init proxy connect 127.0.0.1:50874 destination 59.110.14.207:13200
+[2017-11-20 09:53:51.286][DBG][MeetMgr:6736:122] begin ping '60.190.243.250:13200' ...
+[2017-11-20 09:53:51.286][DBG][ICE:6736:123] category=Network, msg=trying to establish tcp connection to 60.190.243.250:13200
+[2017-11-20 09:53:51.286][DBG][ICE:6324:124] category=Network, msg=init proxy connect 127.0.0.1:50874 destination 59.110.14.207:13200
+[2017-11-20 09:53:51.287][INF][SIG:6736:125] proxy init channel(127.0.0.1:50876--60.190.243.250:13200) succ
+[2017-11-20 09:53:51.287][DBG][ICE:6736:126] category=Network, msg=init proxy connect 127.0.0.1:50876 destination 60.190.243.250:13200
+[2017-11-20 09:53:51.287][DBG][ICE:6324:127] category=Network, msg=tcp connection establishedlocal address = 127.0.0.1:50875remote address = 127.0.0.1:50874
+[2017-11-20 09:53:51.287][DBG][ICE:6324:128] category=Network, msg=init proxy connect 127.0.0.1:50876 destination 60.190.243.250:13200
+[2017-11-20 09:53:51.287][DBG][ICE:6324:129] category=Network, msg=tcp connection establishedlocal address = 127.0.0.1:50877remote address = 127.0.0.1:50876
+[2017-11-20 09:53:51.287][INF][SIG:6336:130] proxy channel(127.0.0.1:50874--59.110.14.207:13200) accept new session 127.0.0.1:50875
+[2017-11-20 09:53:51.287][INF][SIG:6336:131] session(127.0.0.1:50875) connect to 59.110.14.207:2728
+[2017-11-20 09:53:51.287][INF][SIG:6336:132] open tcp ipv4 connection, localAddr 0.0.0.0:50878, remoteAddr 59.110.14.207:2728
+[2017-11-20 09:53:51.287][INF][SIG:6336:133] open tcp ipv4 connection, localAddr 0.0.0.0:50879, remoteAddr 59.110.14.207:443
+[2017-11-20 09:53:51.287][INF][SIG:6336:134] proxy channel(127.0.0.1:50876--60.190.243.250:13200) accept new session 127.0.0.1:50877
+[2017-11-20 09:53:51.287][INF][SIG:6336:135] session(127.0.0.1:50877) connect to 60.190.243.250:2728
+[2017-11-20 09:53:51.287][INF][SIG:6336:136] open tcp ipv4 connection, localAddr 0.0.0.0:50880, remoteAddr 60.190.243.250:2728
+[2017-11-20 09:53:51.287][INF][SIG:6336:137] open tcp ipv4 connection, localAddr 0.0.0.0:50881, remoteAddr 60.190.243.250:443
+[2017-11-20 09:53:51.343][INF][SIG:6336:138] session(127.0.0.1:50875) establish connection 192.168.0.254:50879-59.110.14.207:443 succ.
+[2017-11-20 09:53:51.345][INF][SIG:6336:139] session(127.0.0.1:50877) establish connection 192.168.0.254:50881-60.190.243.250:443 succ.
+[2017-11-20 09:53:51.346][INF][SIG:6336:140] session(127.0.0.1:50877) establish connection 192.168.0.254:50880-60.190.243.250:2728 succ.
+[2017-11-20 09:53:51.346][INF][SIG:6336:141] session(127.0.0.1:50877) select connection 192.168.0.254:50880-60.190.243.250:2728
+[2017-11-20 09:53:51.347][INF][SIG:6336:142] session(127.0.0.1:50877) send init msg.
+[2017-11-20 09:53:51.348][INF][SIG:6336:143] session(127.0.0.1:50875) establish connection 192.168.0.254:50878-59.110.14.207:2728 succ.
+[2017-11-20 09:53:51.348][INF][SIG:6336:144] session(127.0.0.1:50875) select connection 192.168.0.254:50878-59.110.14.207:2728
+[2017-11-20 09:53:51.348][INF][SIG:6336:145] session(127.0.0.1:50875) send init msg.
+[2017-11-20 09:53:51.404][INF][SIG:6336:146] session(127.0.0.1:50877) recv init ack msg, sessionId:efe09194-efe08f20
+[2017-11-20 09:53:51.415][INF][SIG:6336:147] session(127.0.0.1:50875) recv init ack msg, sessionId:f02e0efc-ed4a8de0
+[2017-11-20 09:53:51.416][INF][SIG:6336:148] sigproxy local packet received.
+[2017-11-20 09:53:51.480][DBG][MeetMgr:6324:149] ping server 59.110.14.207:13200 success!
+[2017-11-20 09:53:51.480][DBG][MeetMgr:6736:150] selected call server:59.110.14.207:13200, continue to register the call server
+[2017-11-20 09:53:51.480][INF][SIG:6736:151] SIGClientStart in
+[2017-11-20 09:53:51.480][INF][SIG:6736:152] SIGClientStart out
+[2017-11-20 09:53:51.480][DBG][MeetMgr:6736:153] continue login callserver...
+[2017-11-20 09:53:51.556][DBG][MeetMgr:6324:154] ping server 60.190.243.250:13200 success!
+[2017-11-20 09:53:51.556][DBG][ICE:6736:155] category=Network, msg=closing tcp connectionlocal address = 127.0.0.1:50877remote address = 127.0.0.1:50876
+[2017-11-20 09:53:51.556][INF][SIG:6336:156] session(127.0.0.1:50877) close by client.
+[2017-11-20 09:53:51.556][INF][SIG:6336:157] session(127.0.0.1:50877) send close msg.
+[2017-11-20 09:53:51.586][INF][SIG:6336:158] session(127.0.0.1:50877) destroy
+[2017-11-20 09:53:51.587][DBG][MeetMgr:6736:159] callsvr register success({ "RspCode" : 0, "RspDesc" : "Ok", "meetID" : 0, "sessionID" : "C54B4D78-397F-463F-8FE5-C5831663632C", "ttv_type" : 1, "userID" : "2222", "userName" : "2222", "userPhoneNum" : "008615890908080", "userRole" : 1, "websvrList" : "" })!
+[2017-11-20 09:53:51.587][DBG][MeetMgr:6736:160] start handShake2CallSvr, timeout:30000
+[2017-11-20 09:53:51.587][DBG][MeetingSDK:6736:161] login success, userID:2222, nickName:2222, userRole:1, userType:0
+[2017-11-20 09:53:51.595][DBG][MeetingSDK:6736:162] setQueueCallback:0x634f444
+[2017-11-20 09:53:51.595][DBG][MeetingSDK:6736:163] init queue...
+[2017-11-20 09:53:51.595][DBG][MeetMgr:6736:164] get service data ...
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:165] get service data succeed(code:0, desc:Ok)
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:166] get all queue succeed(queue size:8)
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:167] update each queue status, queID:33
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:168] get queue status, queID:33 ...
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:169] update each queue status, queID:4
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:170] get queue status, queID:4 ...
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:171] update each queue status, queID:5
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:172] get queue status, queID:5 ...
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:173] update each queue status, queID:6
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:174] get queue status, queID:6 ...
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:175] update each queue status, queID:7
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:176] get queue status, queID:7 ...
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:177] update each queue status, queID:39
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:178] get queue status, queID:39 ...
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:179] update each queue status, queID:18
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:180] get queue status, queID:18 ...
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:181] update each queue status, queID:19
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:182] get queue status, queID:19 ...
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:183] get user service status ...
+[2017-11-20 09:53:51.661][DBG][MeetMgr:6736:184] get agent service status ...
+[2017-11-20 09:53:51.726][DBG][MeetMgr:6736:185] get queue status succeed(code:0, desc:Ok)
+[2017-11-20 09:53:51.726][DBG][MeetMgr:6736:186] get queue status succeed, queID:33, agent_num:0, wait_num:0, srv_num:0
+[2017-11-20 09:53:51.729][DBG][MeetMgr:6736:187] get queue status succeed(code:0, desc:Ok)
+[2017-11-20 09:53:51.729][DBG][MeetMgr:6736:188] get queue status succeed, queID:4, agent_num:0, wait_num:0, srv_num:0
+[2017-11-20 09:53:51.731][DBG][MeetMgr:6736:189] get queue status succeed(code:0, desc:Ok)
+[2017-11-20 09:53:51.731][DBG][MeetMgr:6736:190] get queue status succeed, queID:5, agent_num:0, wait_num:0, srv_num:0
+[2017-11-20 09:53:51.733][DBG][MeetMgr:6736:191] get queue status succeed(code:0, desc:Ok)
+[2017-11-20 09:53:51.733][DBG][MeetMgr:6736:192] get queue status succeed, queID:6, agent_num:0, wait_num:0, srv_num:0
+[2017-11-20 09:53:51.735][DBG][MeetMgr:6736:193] get queue status succeed(code:0, desc:Ok)
+[2017-11-20 09:53:51.735][DBG][MeetMgr:6736:194] get queue status succeed, queID:7, agent_num:0, wait_num:0, srv_num:0
+[2017-11-20 09:53:51.735][DBG][MeetMgr:6736:195] get queue status succeed(code:0, desc:Ok)
+[2017-11-20 09:53:51.736][DBG][MeetMgr:6736:196] get queue status succeed, queID:39, agent_num:0, wait_num:0, srv_num:0
+[2017-11-20 09:53:51.738][DBG][MeetMgr:6736:197] get queue status succeed(code:0, desc:Ok)
+[2017-11-20 09:53:51.738][DBG][MeetMgr:6736:198] get queue status succeed, queID:18, agent_num:0, wait_num:0, srv_num:0
+[2017-11-20 09:53:51.738][DBG][MeetMgr:6736:199] get queue status succeed(code:0, desc:Ok)
+[2017-11-20 09:53:51.738][DBG][MeetMgr:6736:200] get queue status succeed, queID:19, agent_num:0, wait_num:0, srv_num:0
+[2017-11-20 09:53:51.739][DBG][MeetMgr:6736:201] get user service status succeed(code:0, desc:Ok)
+[2017-11-20 09:53:51.739][DBG][MeetMgr:6736:202] get user service status succeed, queID:-1, position:-1, wait_time:0, callID:, peerID:, peerName:, duration:0, callSide:0, callState:0, meetID:0, meetUrl:
+[2017-11-20 09:53:51.740][DBG][MeetMgr:6736:203] get agent service status succeed(code:0, desc:Ok)
+[2017-11-20 09:53:51.740][DBG][MeetMgr:6736:204] get agent service status succeed, queue size:0, callID:, peerID:, peerName:, duration:0, callSide:0, callState:0, meetID:0, meetUrl:
+[2017-11-20 09:53:51.740][DBG][MeetingSDK:6736:205] init queue data succeed.
+[2017-11-20 09:53:51.892][DBG][MeetingSDK:6736:206] set DND: 0
+[2017-11-20 09:53:51.892][DBG][MeetMgr:6736:207] client CustomStatus Update(status:0)!
+[2017-11-20 09:53:51.959][DBG][MeetMgr:6736:208] client custom status update success!
+[2017-11-20 09:53:51.959][DBG][MeetingSDK:6736:209] set DND success
+[2017-11-20 09:53:53.192][DBG][MeetingSDK:6736:210] start service, queID:33...
+[2017-11-20 09:53:53.192][DBG][MeetMgr:6736:211] agent enter...
+[2017-11-20 09:53:53.257][DBG][MeetMgr:6736:212] agent enter succeed
+[2017-11-20 09:53:53.257][DBG][MeetingSDK:6736:213] start service succeed.
+[2017-11-20 09:53:53.258][DBG][MeetingSDK:6736:214] server notify queue status, queID:33, agent_num:1, wait_num:0, srv_num:0
+[2017-11-20 09:54:21.600][DBG][MeetMgr:6736:215] handShake2CallSvr(sessionID:C54B4D78-397F-463F-8FE5-C5831663632C, timeStamp:2854927, callID:)
+[2017-11-20 09:54:21.667][DBG][MeetMgr:6736:216] handShake2CallSvr success! (delay:62)
+[2017-11-20 09:54:36.289][INF][SIG:6336:217] proxy channel(127.0.0.1:50876-->60.190.243.250:13200) idle remove
+[2017-11-20 09:54:36.289][INF][SIG:6336:218] proxy channel(127.0.0.1:50876--60.190.243.250:13200) destroy
+[2017-11-20 09:54:51.678][DBG][MeetMgr:6736:219] handShake2CallSvr(sessionID:C54B4D78-397F-463F-8FE5-C5831663632C, timeStamp:2885004, callID:)
+[2017-11-20 09:54:51.748][DBG][MeetMgr:6736:220] handShake2CallSvr success! (delay:62)
+[2017-11-20 09:54:57.153][DBG][MeetingSDK:6736:221] logout...
+[2017-11-20 09:54:57.153][DBG][MeetMgr:6736:222] WebAPI logout...
+[2017-11-20 09:54:57.153][DBG][httpLink:6736:223] cancel all http cmd!
+[2017-11-20 09:54:57.153][DBG][MeetMgr:6736:224] logout...(sessionID:C54B4D78-397F-463F-8FE5-C5831663632C)
+[2017-11-20 09:54:57.153][DBG][MeetMgr:6736:225] stop handshake to call server
+[2017-11-20 09:54:57.253][DBG][ICE:6736:226] category=Network, msg=closing tcp connectionlocal address = 127.0.0.1:50875remote address = 127.0.0.1:50874
+[2017-11-20 09:54:57.253][INF][SIG:6336:227] session(127.0.0.1:50875) close by client.
+[2017-11-20 09:54:57.253][INF][SIG:6336:228] session(127.0.0.1:50875) send close msg.
+[2017-11-20 09:54:57.253][WAR][MeetMgr:6736:229] set callBack failed, m_prx is null!
+[2017-11-20 09:54:57.253][DBG][MeetMgr:6736:230] logout success!
+[2017-11-20 09:54:57.283][INF][SIG:6336:231] session(127.0.0.1:50875) destroy
+[2017-11-20 09:54:57.469][DBG][MeetingSDK:6736:232] logout...
+[2017-11-20 09:54:57.469][DBG][MeetMgr:6736:233] WebAPI logout...
+[2017-11-20 09:54:57.469][DBG][httpLink:6736:234] cancel all http cmd!
+[2017-11-20 09:54:57.469][DBG][MeetMgr:6736:235] logout...(sessionID:)
+[2017-11-20 09:54:57.469][WAR][MeetMgr:6736:236] logout_async: ice prx is null!!
+[2017-11-20 09:54:57.471][DBG][MeetingSDK:6736:237] CloudroomMeetingSDK uninit...
+[2017-11-20 09:54:57.471][DBG][MeetingSDK:6736:238] CloudroomMeetingSDK slot_unInit...
+[2017-11-20 09:54:57.471][DBG][MeetMgr:6736:239] LoginMgr unInit...
+[2017-11-20 09:54:57.471][DBG][MeetMgr:6736:240] begin uninit.
+[2017-11-20 09:54:57.471][INF][SIG:6736:241] SIGClientStop in
+[2017-11-20 09:54:57.471][INF][SIG:6736:242] MainService::Reset in
+[2017-11-20 09:54:57.471][INF][SIG:6736:243] MainService::Reset out
+[2017-11-20 09:54:57.471][INF][SIG:6736:244] SIGClientStop out
+[2017-11-20 09:54:57.471][DBG][ICE:6736:245] shutdown communicator for MeetingCallAPI
+[2017-11-20 09:54:57.471][DBG][ICE:6736:246] destroy communicator for MeetingCallAPI...
+[2017-11-20 09:54:57.471][DBG][ICE:6736:247] reset communicator to null...
+[2017-11-20 09:54:57.471][DBG][ICE:6736:248] uninit communicator for MeetingCallAPI...end
+[2017-11-20 09:54:57.471][DBG][httpLink:6736:249] cancel all http cmd!
+[2017-11-20 09:54:57.471][DBG][MeetMgr:6736:250] LoginMgr unInit...end
+[2017-11-20 09:54:57.471][DBG][Main:6736:251] sdk uninit...
+[2017-11-20 09:54:57.471][DBG][RateControl:6736:252] Upload stop...
+[2017-11-20 09:54:57.471][DBG][RateControl:6736:253] Download stop...
+[2017-11-20 09:54:57.473][DBG][Main:6736:254] UnitAllModels...
+[2017-11-20 09:54:57.473][DBG][Main:6736:255] unInit  model:BROADCAST
+[2017-11-20 09:54:57.473][DBG][Main:6736:0] unInit  model:RECORD
+[2017-11-20 09:54:57.473][DBG][Main:6736:1] unInit  model:NRTCOMM
+[2017-11-20 09:54:57.473][DBG][Main:6736:2] unInit  model:IM
+[2017-11-20 09:54:57.473][DBG][Main:6736:3] unInit  model:ROLLCALL
+[2017-11-20 09:54:57.473][DBG][Main:6736:4] unInit  model:NOTICE
+[2017-11-20 09:54:57.474][DBG][Main:6736:5] unInit  model:SCREEN_SHARE
+[2017-11-20 09:54:57.474][DBG][Main:6736:6] unInit  model:WHITE_BOARD
+[2017-11-20 09:54:57.474][DBG][Main:6736:7] unInit  model:FILE_SVRCOVER
+[2017-11-20 09:54:57.474][DBG][Main:6736:8] unInit  model:FILE_TRANSFER
+[2017-11-20 09:54:57.474][DBG][Main:6736:9] unInit  model:FILE_TRANS_NOTIFY
+[2017-11-20 09:54:57.474][DBG][Main:6736:10] unInit  model:MEDIA
+[2017-11-20 09:54:57.474][DBG][Media:6736:11] MediaMgr destory...
+[2017-11-20 09:54:57.474][INF][MS:6736:12] MSCSetFilmCallback in
+[2017-11-20 09:54:57.474][INF][MS:6736:13] pHandler?null: no
+[2017-11-20 09:54:57.474][INF][MS:6736:14] MSCSetFilmCallback out
+[2017-11-20 09:54:57.477][DBG][Media:6736:15] stopMediaFileDecode...
+[2017-11-20 09:54:57.477][DBG][Media:6736:16] stopMediaFileDecode finished!
+[2017-11-20 09:54:57.477][DBG][Main:6736:17] unInit  model:AUDIO
+[2017-11-20 09:54:57.477][DBG][Main:6736:18] unInit  model:VIDEO
+[2017-11-20 09:54:57.477][INF][MS:6736:19] MSCSetVideoCallback in
+[2017-11-20 09:54:57.477][INF][MS:6736:20] pHandler?null: no
+[2017-11-20 09:54:57.477][INF][MS:6736:21] MSCSetVideoCallback out
+[2017-11-20 09:54:57.477][DBG][Video:6736:22] DeleteAllDecoder...
+[2017-11-20 09:54:57.477][DBG][Video:6736:23] DeleteAllDecoder...finished
+[2017-11-20 09:54:57.477][DBG][Main:6736:24] unInit  model:BRIDGE
+[2017-11-20 09:54:57.477][DBG][Main:6736:25] unInit  model:SYNC
+[2017-11-20 09:54:57.477][DBG][Main:6736:26] unInit  model:MSClient
+[2017-11-20 09:54:57.477][INF][MS:6736:27] MSCStop in
+[2017-11-20 09:54:57.477][INF][MS:6860:28] Qos DisConnect.
+[2017-11-20 09:54:57.478][INF][MS:6860:29] MainService::Reset in
+[2017-11-20 09:54:57.478][INF][MS:6860:30] MainService::Reset out
+[2017-11-20 09:54:57.478][INF][MS:6736:31] MSCStop out
+[2017-11-20 09:54:57.478][DBG][Main:6736:32] unInit  model:INVITE
+[2017-11-20 09:54:57.478][DBG][Main:6736:33] unInit  model:PSTNCTL
+[2017-11-20 09:54:57.478][DBG][Main:6736:34] unInit  model:MEMBER
+[2017-11-20 09:54:57.478][DBG][Main:6736:35] unInit  model:LOGIN
+[2017-11-20 09:54:57.478][DBG][Main:6736:36] destory  model:BROADCAST
+[2017-11-20 09:54:57.478][DBG][Main:6736:37] destory  model:RECORD
+[2017-11-20 09:54:57.478][DBG][Main:6736:38] destory  model:NRTCOMM
+[2017-11-20 09:54:57.478][DBG][Main:6736:39] destory  model:IM
+[2017-11-20 09:54:57.478][DBG][Main:6736:40] destory  model:ROLLCALL
+[2017-11-20 09:54:57.478][DBG][Main:6736:41] destory  model:NOTICE
+[2017-11-20 09:54:57.478][DBG][Main:6736:42] destory  model:SCREEN_SHARE
+[2017-11-20 09:54:57.478][INF][MS:6736:43] MSCSetScreenCallback in
+[2017-11-20 09:54:57.478][INF][MS:6736:44] pHandler?null: no
+[2017-11-20 09:54:57.478][INF][MS:6736:45] MSCSetScreenCallback out
+[2017-11-20 09:54:57.478][INF][ScreenShr:6736:46] screenShare ScreenShareMsCallBack::Stop
+[2017-11-20 09:54:57.478][DBG][Main:6736:47] destory  model:WHITE_BOARD
+[2017-11-20 09:54:57.478][DBG][Main:6736:48] destory  model:FILE_SVRCOVER
+[2017-11-20 09:54:57.478][DBG][Main:6736:49] destory  model:FILE_TRANSFER
+[2017-11-20 09:54:57.478][DBG][FileTranCom:6736:50] destory
+[2017-11-20 09:54:57.478][DBG][FileTranUser:6736:51] destory
+[2017-11-20 09:54:57.478][DBG][FileTranConf:6736:52] destory
+[2017-11-20 09:54:57.478][DBG][Main:6736:53] destory  model:FILE_TRANS_NOTIFY
+[2017-11-20 09:54:57.478][DBG][Main:6736:54] destory  model:MEDIA
+[2017-11-20 09:54:57.478][INF][MS:6736:55] MSCSetFilmCallback in
+[2017-11-20 09:54:57.478][INF][MS:6736:56] pHandler?null: no
+[2017-11-20 09:54:57.478][INF][MS:6736:57] MSCSetFilmCallback out
+[2017-11-20 09:54:57.478][DBG][Main:6736:58] destory  model:AUDIO
+[2017-11-20 09:54:57.478][INF][MS:6736:59] MSCSetAudioCallback in
+[2017-11-20 09:54:57.478][INF][MS:6736:60] pHandler?null: no
+[2017-11-20 09:54:57.478][INF][MS:6736:61] MSCSetAudioCallback out
+[2017-11-20 09:54:57.478][DBG][Main:6736:62] destory  model:VIDEO
+[2017-11-20 09:54:57.479][DBG][Main:6736:63] destory  model:BRIDGE
+[2017-11-20 09:54:57.479][DBG][Main:6736:64] destory  model:SYNC
+[2017-11-20 09:54:57.479][DBG][Main:6736:65] destory  model:MSClient
+[2017-11-20 09:54:57.479][INF][MS:6736:66] MSCStop in
+[2017-11-20 09:54:57.479][INF][MS:6736:67] MSCStop out
+[2017-11-20 09:54:57.479][INF][MS:6736:68] MSCClean in
+[2017-11-20 09:54:57.584][INF][MS:6860:69] Qos DisConnect.
+[2017-11-20 09:54:57.587][INF][MS:6736:70] MSCClean out
+[2017-11-20 09:54:57.588][DBG][Main:6736:71] destory  model:INVITE
+[2017-11-20 09:54:57.588][DBG][Main:6736:72] destory  model:PSTNCTL
+[2017-11-20 09:54:57.588][DBG][Main:6736:73] destory  model:MEMBER
+[2017-11-20 09:54:57.588][DBG][Main:6736:74] destory  model:LOGIN
+[2017-11-20 09:54:57.588][DBG][Main:6736:75] UnitAllModels end!
+[2017-11-20 09:54:57.588][DBG][Audio:6736:76] UninitVoiceEng...
+[2017-11-20 09:54:57.588][DBG][Audio:6736:77] AudioPrint level:0x1000, CRVE_DeleteChannel in
+[2017-11-20 09:54:57.588][DBG][Audio:6736:78] AudioPrint level:0x1000, CRVE_DeleteChannel out
+[2017-11-20 09:54:57.588][DBG][Audio:6736:79] AudioPrint level:0x1000, CRVE_UnInit in
+[2017-11-20 09:54:57.588][DBG][Audio:6736:80] AudioPrint level:0x1000, CRVE_UnInit out
+[2017-11-20 09:54:57.588][DBG][Audio:6736:81] UninitVoiceEng...finished
+[2017-11-20 09:54:57.588][DBG][ICE:6736:82] shutdown communicator for MeetingSDK
+[2017-11-20 09:54:57.589][DBG][ICE:6736:83] destroy communicator for MeetingSDK...
+[2017-11-20 09:54:57.589][DBG][ICE:6736:84] reset communicator to null...
+[2017-11-20 09:54:57.589][DBG][ICE:6736:85] uninit communicator for MeetingSDK...end

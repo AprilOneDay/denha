@@ -21,6 +21,10 @@ return array(
     'debug'             => true, // 是否开启调试
     'trace'             => true, // 是否显示页面Trace信息
 
+    /** 云屋直播 */
+    'yunwu_key'         => '15923882847',
+    'yunwu_secret'      => md5('123456'),
+
     /* 百度翻译api */
     'baidu_trans_appid' => '20170926000085221',
     'baidu_trans_key'   => 'dEmcRIqvTsUWa1greRa4',

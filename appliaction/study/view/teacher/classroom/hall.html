@@ -4,6 +4,8 @@
 
    <head>
         <title>学生门户-进入教室</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="charset=utf-8" />
         <link rel="stylesheet" href="/ststic/study/css/base.css">
         <link rel="stylesheet" href="/ststic/study/css/center.css">
         <link rel="stylesheet" href="/ststic/study/css/u_mob.css"> 
@@ -15,12 +17,68 @@
 
         <script type="text/javascript" src="/ststic/study/js/common.js"></script>
         <script type="text/javascript" src="/vendor/layer/layer.js"></script>
+        <script type="text/javascript">
+            //44744672
+        var params = { 
+            RequestId : '123456789', 
+            UserName :'{F:\denha\Start::$config['yunwu_key']}',
+            UserPswd: '{F:\denha\Start::$config['yunwu_secret']}',
+            DoAction : 'get',  
+            LiveSubject:'{$live['liveSubject']}',
+            LiveID:'',
+            CallBack: 'jsoncallback'
+        }
+
+        function getList(){
+            params.CallBack    = 'getVideo';
+            console.log(params);
+
+            $.ajax({
+                url : 'http://www.cloudroom.com/api/queryLiveAPI',
+                data : params,
+                dataType : 'jsonp',
+                success : function(result){
+                }
+            });
+        }
+            
+        function startLiveAPI(LiveID){
+            params.LiveID = LiveID;
+            params.CallBack    = 'jsoncallback';
+
+            $.ajax({
+                url : 'http://www.cloudroom.com/api/startLiveAPI',
+                data : params,
+                dataType : 'jsonp',
+                success : function(result){
+                }
+            });
+        
+        }
+
+
+        function getVideo(result){
+            console.log(result.Data.LiveList[0].liveID);
+            startLiveAPI(result.Data.LiveList[0].liveID);
+        }
+
+        function jsoncallback(result){
+            //主持人进入直播客户端
+            window.location = result.Data.StartLive;
+            //助理进入直播客户端
+            //window.location = result.Data.MgrLive;
+        }
+
+        function intoRoom(){
+            getList();
+        }
+        </script>
 
    </head>
 <body bgcolor="f1f1f1" >
 	
         <div class="center">
-        	<div id="navbar"><span><i class="ico2"></i>教师中心-评论管理</span><a href="#" class="menubtn"></a>
+        	<div id="navbar"><span><i class="ico2"></i>教师中心-进入教室</span><a href="#" class="menubtn"></a>
         {include public/left_menus}
     </div>
         
@@ -32,8 +90,8 @@
             </div>
         	<div class="t_cr_right fr">
             	<div class="img_sp"><img src="/ststic/study/images/sp.jpg" /><span>正在候课中……</span></div>
-                <a class="join" href="#">立即加入</a>
-            
+                <a class="join" href="javascript:;" onclick="intoRoom()">立即加入</a>
+                <b>首次使用直播客户端，请先<a href="http://dl-3.cloudroom.com:8080/Update/Win32_live/1.5.0/Setup/CLOUDROOMLive_1.5.0.exe">下载</a>安装</b>
             </div>
         
         </div>

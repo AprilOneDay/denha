@@ -87,6 +87,7 @@ class Shop extends \app\app\controller\Init
         $shop['avatar']       = $this->appImg($shop['avatar'], 'avatar');
         $shop['ablum']        = $this->appImgArray($shop['ablum'], 'shop');
         $shop['credit_level'] = dao('User')->getShopCredit($shop['uid']);
+        $shop['mobile']       = dao('User')->getInfo($uid, 'mobile');
 
         if (!$shop['status']) {
             $this->appReturn(array('status' => false, 'msg' => '店铺暂停营业,敬请期待'));

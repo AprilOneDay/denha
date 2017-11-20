@@ -55,9 +55,20 @@ class Service extends \app\app\controller\Init
         }
 
         if ($param['keyword']) {
+            //搜索商品标题
             $mapGoods['title'] = array('instr', $param['keyword']);
             $idArray           = table('GoodsService')->where($mapGoods)->field('uid')->group('uid')->find('one', true);
-            $map['uid']        = array('in', $idArray);
+            $idArray           = $idArray ? $idArray : array();
+
+            //搜索店铺名称
+            $mapShop['name']   = array('instr', $param['keyword']);
+            $mapShop['status'] = 1;
+            $shopArray         = table('UserShop')->where($mapShop)->field('uid')->find('one', true);
+            $shopArray         = $shopArray ? $shopArray : array();
+
+            $idArray = array_merge($idArray, $shopArray);
+
+            $map['uid'] = array('in', $idArray);
         }
 
         $field = "name,uid,lng,lat,(2 * 6378.137* ASIN(SQRT(POW(SIN(PI()*($lng-lng)/360),2)+COS(PI()*$lat/180)* COS(lat * PI()/180)*POW(SIN(PI()*($lat)/360),2)))) AS km ";
@@ -103,9 +114,11 @@ class Service extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '服务已下架'));
         }
 
-        $data['thumb']                = $this->appImg($data['thumb'], 'car');
-        $data['ablum']                = $this->appImgArray($data['ablum'], 'car');
-        $data['shop']                 = table('UserShop')->where('uid', $data['uid'])->field('name,uid,credit_level')->find();
+        $data['thumb']  = $this->appImg($data['thumb'], 'car');
+        $data['ablum']  = $this->appImgArray($data['ablum'], 'car');
+        $data['shop']   = table('UserShop')->where('uid', $data['uid'])->field('name,uid,credit_level')->find();
+        $data['mobile'] = dao('User')->getInfo($data['uid'], 'mobile');
+
         $data['shop']['credit_level'] = dao('User')->getShopCredit($data['shop']['uid']);
         $data['coment']               = dao('Comment')->getList(3, $id); //获取评价内容
 

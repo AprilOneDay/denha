@@ -59,6 +59,12 @@ class Coupon extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '参数错误'));
         }
 
+        //关闭的店铺
+        $map['status']   = 2;
+        $map['category'] = array('instr', $date['category']);
+        $closeShop       = table('UserShop')->where($map)->field('uid')->find('one', true);
+
+        //可领抵扣券
         $map                  = array();
         $map['category']      = $data['category'];
         $map['remainder_num'] = array('>', 0);
@@ -66,6 +72,7 @@ class Coupon extends \app\app\controller\Init
         $map['is_exchange']   = 1;
         $map['del_status']    = 0;
         $map['end_time']      = array('>=', TIME);
+        $map['uid']           = array('not in', $closeShop); //剔除关闭店铺
 
         $coupon = table('Coupon')->where($map)->order('RAND()')->find();
 

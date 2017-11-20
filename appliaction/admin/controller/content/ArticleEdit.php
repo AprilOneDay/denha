@@ -307,12 +307,18 @@ class ArticleEdit extends \app\admin\controller\Init
                 }
             }
 
+            //创建直播间
+            dao('YunwuRoom')->created(post('title', 'text', ''));
+
             table('Article')->commit();
             $this->ajaxReturn(array('status' => true, 'msg' => '操作成功'));
 
         } else {
             if ($id) {
                 $rs = $this->getEditConent($id);
+
+                //创建直播间
+                dao('YunwuRoom')->created($rs['title']);
                 //获取课程信息
                 $schedule = table('Article' . self::$dataTable . 'Schedule')->where('id', $id)->order('start_time asc')->find('array');
 

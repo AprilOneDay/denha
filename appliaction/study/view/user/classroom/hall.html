@@ -18,26 +18,69 @@
         <script type="text/javascript" src="/ststic/study/js/common.js"></script>
         <script type="text/javascript" src="/vendor/layer/layer.js"></script>
 
+        <script src="http://www.cloudroom.com/api/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
+        <script src="http://www.cloudroom.com/api/crsdk.2.0.min.js" type="text/javascript"></script>
+        
+        <style type="text/css">
+        .close{ display: none; }
+        </style>
+
+        <script type="text/javascript">
+        var config = {
+           LiveCode:'{$live['LiveCode']}',  // 必传 string  会议地址 直播地址最后六位字符 如“afbse6” 
+           NickName:'{$user['real_name']}',  // 必传 string  用户的昵称 由用户设置
+           headerUrl:'{F:imgUrl($user['avatar'],'avatar')}', // 必传 string  用户头像url 地址
+           userCode: 'u_{$this->uid}',  // 必传 string  用户识别码 用户id   传递方式：‘wx’ 加‘_’加微信id值 如：‘wx_123456’   ‘kdyh’加 ‘_’ 加口袋用户id值 如‘kdyh1234567’
+           videoContent:'#video',  // 必传 string  创建的video的父元素的id值名称 如id值传"#contain"
+           openId:' ',  // 非必传 string  微信用户openid值
+        };
+       //初始化JDK
+        CR_SDK.init(config); // 初始化用户信息
+        CR_SDK.on('cr_init_callback', function(res) {
+            console.log(res);
+            if(!Number(res.data.isBroadcating)){
+                $('.close').css('display','block');
+                $('#video').css('display','none');   
+            }else{
+                $('.close').css('display','none');
+                $('#video').css('display','block');   
+            }
+            var a = CR_SDK.getRoominfo();
+           
+        })
+
+        CR_SDK.on('cr_notify_live_type', function(res){
+            console.log(res); 
+            if(res.msg == '直播中'){
+                $('.close').css('display','none');
+                $('#video').css('display','block');   
+            }else{
+                $('.close').css('display','block');
+                $('#video').css('display','none'); 
+            }
+        })
+        </script>
    </head>
 <body bgcolor="f1f1f1" >
 	
         <div class="center">
-        	<div id="navbar"><span><i class="ico2"></i>教师中心-评论管理</span><a href="#" class="menubtn"></a>
+        	<div id="navbar"><span><i class="ico2"></i>学生门户-进入教室</span><a href="#" class="menubtn"></a>
         {include public/left_menus}
     </div>
         
         <div class="classroom_right">
         		<h3 class="my_news">进入教室</h3>
         	<div class="t_cr_left fl">
-            	<b>老师您好！</b>
+            	<b>同学您好！</b>
                 <span>开课前半小时您就可以进入直播教室，请耐心等待！</span>
             </div>
         	<div class="t_cr_right fr">
-            	<div class="img_sp"><img src="/ststic/study/images/sp.jpg" /><span>正在候课中……</span></div>
-                <a class="join" href="#">立即加入</a>
-            
+            	<div class="img_sp"  id="video" style=" width: 90%;  height: 550px;"></div>
             </div>
-        
+            <div class="t_cr_right fr close">
+                <div class="img_sp"  id="video"><span>正在候课中……</span><img src="/ststic/study/images/sp.jpg" /></div>
+                <!--  <a class="join" href="#">立即加入</a> -->
+            </div>
         </div>
         
         
