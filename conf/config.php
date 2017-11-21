@@ -21,6 +21,10 @@ return array(
     'debug'             => true, // 是否开启调试
     'trace'             => true, // 是否显示页面Trace信息
 
+    /** 微信api */
+    'weixin_appid'      => 'wx4b49939c299d3868',
+    'weixin_secret'     => '505ca66c862ac4fdef8aee79e2f3ea01',
+
     /** 云屋直播 */
     'yunwu_key'         => '15923882847',
     'yunwu_secret'      => md5('123456'),

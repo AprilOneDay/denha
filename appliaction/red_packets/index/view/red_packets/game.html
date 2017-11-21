@@ -15,6 +15,7 @@
 <link rel="stylesheet" type="text/css" href="{F:getConfig('config','ststic')}/red_packets/css/demo.css" />
 <link rel="stylesheet" type="text/css" href="{F:getConfig('config','ststic')}/red_packets/css/sweet-alert.css">
 <script type="text/javascript" src="{F:getConfig('config','ststic')}/red_packets/js/jquery-1.12.3.min.js"></script>
+<script type="text/javascript" src="{F:getConfig('config','vendor')}/layer/layer.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		var win = (parseInt($(".couten").css("width"))) - 60;
@@ -26,18 +27,24 @@
 		$(".sen a").click(function(){
 		  $(".mo").css("display", "none")
 		});
-		
+
+		var allTime = 60;
+		var integral = 0;
+		var num = 0;
+		var numz = 4; //倒计时
+
 		var del = function(){
 			nums++;
-//					console.info(nums);
-//					console.log($(".li" + nums).css("left"));
+			console.info(nums);
+			console.log($(".li" + nums).css("left"));
 			$(".li" + nums).remove();
 			setTimeout(del,200)
 		}
 		
+		//红包流
 		var add = function() {
 			var hb = parseInt(Math.random() * (4 - 1) + 1);
-			var Wh = parseInt(Math.random() * (70 - 30) + 20);
+			var Wh = parseInt(Math.random() * (100 - 30) + 20); //红包宽度
 			var Left = parseInt(Math.random() * (win - 0) + 0);
 			var rot = (parseInt(Math.random() * (45 - (-45)) - 45)) + "deg";
 			//				console.log(rot)
@@ -57,22 +64,33 @@
 			});	
 			$(".li" + num).animate({'top':$(window).height()+20},5000,function(){
 				//删掉已经显示的红包
-				this.remove()
+				this.remove();
 			});
+
 			//点击红包的时候弹出模态层
 			$(".li" + num).click(function(){
+				$(this).remove();
 				var tag = $(this).find('img').attr('data-tag');
 				//炸弹停止游戏
 				if(tag == 2){
-					$(".mo").css("display", "block")
+					allTime = 1;
+					//$(".mo").css("display", "block")
+				}else if(tag == 3){
+					integral += 10;
+				}else if(tag == 1){
+					integral += 1;
 				}
+
+				updateIntegral();
 			});
+
+			//停止红包
+			if(allTime <= 0){
+ 				return ;
+			}
+
 			setTimeout(add,200)
 		}	
-		
-		//增加红包
-		var num = 0;
-		setTimeout(add,3000);
 		
 		//倒数计时
 		var backward = function(){
@@ -81,33 +99,94 @@
 				$(".backward span").html(numz);
 			}else{
 				$(".backward").remove();
+				start();
+				return;
 			}
 			setTimeout(backward,1000)
 					
 		}
+
+		//更新分数
+		function updateIntegral(){
+			$('.integral i').text(integral);
+		}
 		
-		var numz = 4;
+		//开始游戏
+		function start(){
+			if(allTime == 60){
+				$.post("{F:url('user_game_start')}",{id:0},function(result){
+					console.log(result);
+				},"json");
+			}
+
+			if(allTime > 0){
+				allTime --;
+				$('.allTime i').text(allTime);
+			}else{
+				$('.end').css('display','block');
+				$.post("{F:url('user_game_end')}",{integral:integral},function(result){
+					if(!result.status){
+						layer.msg(result.msg);
+						setInterval(function(){
+							window.location.href = '/red_packets';
+						},1000);
+					}
+					console.log(result);
+				},"json");
+				return;
+			}
+			setTimeout(start,1000)
+		}
+
 		backward();
-	
+		setTimeout(add,3000);
 	})
 </script>
 
 </head>
 <body>
+<div class="allTime"><i>60</i>s</div>
+<div class="fx integral">x<i>0</i></div>
 <ul class="couten">
 	<!--<li>
 		<a href="#"><img src="images/hb_1.png"></a>
 	</li>-->
 </ul>
-<div class="mo">
+<div class="end">
+	<div class="content">
+		<div class="info">
+			<img src="{F:\denha\Start::$config['ststic']}/red_packets/images/game_info.png">
+			<label class="integral">获得<i>0</i>积分</label>
+		</div>
+		<div class="menus">
+			<ul>
+				<li><a href="javascript:;" class="btn-reload"><img src="{F:\denha\Start::$config['ststic']}/red_packets/images/nav_3.png"></a></li>
+				<li><a href="{F:url('/red_packets')}" class="rule"><img src="{F:\denha\Start::$config['ststic']}/red_packets/images/nav_4.png"></a></li>
+				<li><a href="{F:url('/red_packets/ranking')}" class="rule"><img src="{F:\denha\Start::$config['ststic']}/red_packets/images/nav_5.png"></a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- <div class="mo">
 	<div class="sen">
 		<img src="images/gx.png">
 		<h3>获得红包3元</h3>
-		<a href="#">确定</a>
+		<a href="javascript:;">确定</a>
 	</div>
-</div>
+</div> -->
 <div class="backward">
-	<span></span>
-</div>		
+		<span></span>
+</div>
+<script type="text/javascript">
+	$('.btn-reload').click(function(){
+		$.post("{F:url('today_game_num')}",{id:0},function(result){
+			if(result.data >= 3){
+				layer.msg('今日游戏次数已完了,请明天再来吧')
+			}else{
+				window.location.href = '{F:url('game')}';
+			}
+		},'json');
+	})
+</script>
 </body>
 </html>

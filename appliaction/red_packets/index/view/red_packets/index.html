@@ -20,7 +20,7 @@
 		<img class="bg" src="{F:\denha\Start::$config['ststic']}/red_packets/images/start.jpg" data-id="1" style="width: 100%; height: 100%;">
 		<div class="menus">
 			<ul>
-				<li><a href="{F:url('/red_packets/game')}"><img src="{F:\denha\Start::$config['ststic']}/red_packets/images/nav_1.png"></a></li>
+				<li><a href="javascript:;" class="btn-reload"><img src="{F:\denha\Start::$config['ststic']}/red_packets/images/nav_1.png"></a></li>
 				<li><a href="javascript:;" class="rule"><img src="{F:\denha\Start::$config['ststic']}/red_packets/images/nav_2.png"></a></li>
 			</ul>
 		</div>
@@ -120,6 +120,15 @@
 		        bottom: 0
 		    }, //滚动条的位置
 		});
+		$('.btn-reload').click(function(){
+			$.post("{F:url('today_game_num')}",{id:0},function(result){
+				if(result.data >= 3){
+					layer.msg('今日游戏次数已完了,请明天再来吧')
+				}else{
+					window.location.href = '{F:url('game')}';
+				}
+			},'json');
+		})
 	</script>
 </body>
 </html>

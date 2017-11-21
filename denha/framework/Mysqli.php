@@ -28,6 +28,7 @@ class Mysqli
     public $total;
     public $excID; //插入ID
     public $_sql; //最后执行sql
+    public $chilidSql; //子查询
 
     private function __construct($dbConfig = '')
     {
@@ -105,12 +106,14 @@ class Mysqli
             $this->tablepre != '' ? $this->table = $this->tablepre . $this->table : '';
         }
 
-        $this->where = '';
-        $this->field = '*';
-        $this->limit = '';
-        $this->group = '';
-        $this->order = '';
-        $this->join  = '';
+        $this->where     = '';
+        $this->field     = '*';
+        $this->limit     = '';
+        $this->group     = '';
+        $this->order     = '';
+        $this->join      = '';
+        $this->chilidSql = false;
+        $this->having    = '';
         return $this;
     }
 
@@ -347,12 +350,15 @@ class Mysqli
      * @author ChenMingjiang
      * @return [type]                   [description]
      */
-    public function count($field = 't')
+    public function count($field = '')
     {
 
         $this->limit(1);
-
-        $sql = 'SELECT  COUNT(*) AS ' . $field . '  FROM ' . $this->table;
+        if ($field) {
+            $sql = 'SELECT   ' . $field . '  FROM ' . $this->table;
+        } else {
+            $sql = 'SELECT  COUNT(*) AS  t  FROM ' . $this->table;
+        }
 
         if ($this->join) {
             $sql .= $this->join;
@@ -365,20 +371,67 @@ class Mysqli
             $sql .= $this->group;
         }
 
-        $sql .= $this->limit;
+        $result      = $this->query($sql);
+        $this->total = mysqli_num_rows($result);
 
-        $result = $this->query($sql);
-        $data   = mysqli_fetch_array($result, MYSQLI_NUM);
+        if ($field) {
+            return (int) $this->total;
+        }
+
+        $data = mysqli_fetch_array($result, MYSQLI_NUM);
 
         return $data[0];
     }
 
     /**
-     * 查询单条/多条信息
-     * @date   2017-03-19T16:18:52+0800
+     * 子查询 如果开启 则直接返回sql
+     * @date   2017-11-22T00:38:42+0800
      * @author ChenMingjiang
-     * @param  string                   $value [array:查询数据 one:查询单条单个字段内容]
+     * @param  boolean                  $value [description]
      * @return [type]                          [description]
+     */
+    public function childSql($value = false)
+    {
+        $this->chilidSql = $value;
+
+        return $this;
+    }
+
+    /**
+     * 子查询table
+     * @date   2017-11-22T00:45:38+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $table [description]
+     * @return [type]                          [description]
+     */
+    public function childSqlQuery($table)
+    {
+        $this->table = '(' . $table . ') as child';
+
+        return $this;
+    }
+
+    /**
+     * hvaing
+     * @date   2017-11-22T01:18:55+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $field [description]
+     * @return [type]                          [description]
+     */
+    public function having($field)
+    {
+        $this->having = ' HAVING ' . $field;
+        return $this;
+    }
+
+    /**
+     * 查询单条/多条信息
+     * @date   2017-11-22T00:35:19+0800
+     * @author ChenMingjiang
+     * @param  string                   $value   [array:查询数据 one:查询单条单个字段内容]
+     * @param  boolean                  $isArray [单字段 数组模式]
+     * @param  boolean                  $chilid  [子查询]
+     * @return [type]                            [description]
      */
     public function find($value = '', $isArray = false)
     {
@@ -400,8 +453,14 @@ class Mysqli
         empty($this->join) ?: $this->_sql .= $this->join;
         empty($this->where) ?: $this->_sql .= $this->where;
         empty($this->group) ?: $this->_sql .= $this->group;
+        empty($this->having) ?: $this->_sql .= $this->having;
         empty($this->order) ?: $this->_sql .= $this->order;
         empty($this->limit) ?: $this->_sql .= $this->limit;
+
+        //开启子查询直接返回sql
+        if ($this->chilidSql) {
+            return $this->_sql;
+        }
 
         $result = $this->query();
         if (!$result) {

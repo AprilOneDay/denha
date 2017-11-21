@@ -319,7 +319,7 @@ function getConfig($path = 'config', $name = '')
 function url($location = '', $params = array(), $url = '', $isGet = false)
 {
 
-    $locationUrl = $url . '/' . MODULE;
+    $locationUrl = MODULE ? $url . '/' . MODULE : $url;
     if ($location === '') {
         $locationUrl .= '/' . CONTROLLER . '/' . ACTION;
     } elseif (stripos($location, '/') === false && $location != '') {
@@ -459,6 +459,15 @@ function session($name = '', $value = '')
         if (isset($_SESSION[$name])) {
             unset($_SESSION[$name]);
         }
+    }
+    //读取session
+    elseif ($value == '') {
+        $data = isset($_SESSION[$name]) ? $_SESSION[$name] : '';
+        if (is_object($data)) {
+            $data = (array) $data;
+        }
+        session_write_close(); //关闭session
+        return $data;
     }
     //保存
     else {

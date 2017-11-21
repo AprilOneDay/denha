@@ -24,7 +24,6 @@
 	<script type="text/javascript" src="{F:getConfig('config','vendor')}/pace/pace.min.js"></script>
 	<script type="text/javascript" src="{F:getConfig('config','vendor')}/layer/layer.js"></script>
 	<script type="text/javascript">
-		console.log(window.screen.height);
 		$('.guide img').css('height',window.screen.height);
 		$('.guide').click(function(){
 			var id = Number($(this).find('img').attr('data-id'));
@@ -32,7 +31,7 @@
 				$(this).find('img').attr('data-id',2);
 				$(this).find('img').attr('src','{F:\denha\Start::$config['ststic']}/red_packets/images/guide_2.jpg');
 				setTimeout(function(){
-					window.location.href = '/';
+					window.location.href = '{F:url('/red_packets')}';
 				},1000);
 			}
 			console.log(id);
