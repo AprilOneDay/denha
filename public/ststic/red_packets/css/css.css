@@ -10,6 +10,9 @@ body{ background: #f0f2f7; }
 .tips .content{ margin-top: 7.4rem; width: 80%; margin-left: 10%;  height: 80%; overflow: auto;}
 
 .ranking{ background: url(../images/ranking_bg.jpg) no-repeat; background-size: 100%100%;  width: 100%;  padding-top: 10rem; }
+
+.ranking .back{ width: 10%; position: absolute; top: 0;  margin-top: 2%; margin-left: 3%; }
+.ranking .back img{ width: 80%; }
 .ranking .info{ background: #da2931; width: 80%; line-height: 4rem; margin:0 auto;  text-align: center; font-size: 1.5rem; color: #fff; margin-bottom: 2rem;  }
 
 .ranking .list{ height: 74%; overflow: auto; }
