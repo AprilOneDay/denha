@@ -17,13 +17,15 @@
 
         <script type="text/javascript" src="/ststic/study/js/common.js"></script>
         <script type="text/javascript" src="/vendor/layer/layer.js"></script>
+        <script src="http://www.cloudroom.com/api/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
+        <script src="http://www.cloudroom.com/api/crsdk.2.0.min.js" type="text/javascript"></script>
         <style type="text/css">
         .close{ display: none; }
         </style>
 
         <script type="text/javascript">
         var config = {
-           LiveCode:'7viqbc',  // 必传 string  会议地址 直播地址最后六位字符 如“afbse6” 
+           LiveCode:'{$live['LiveCode']}',  // 必传 string  会议地址 直播地址最后六位字符 如“afbse6” 
            NickName:'{$user['real_name']}',  // 必传 string  用户的昵称 由用户设置
            headerUrl:'{F:imgUrl($user['avatar'],'avatar')}', // 必传 string  用户头像url 地址
            userCode: 'u_{$this->uid}',  // 必传 string  用户识别码 用户id   传递方式：‘wx’ 加‘_’加微信id值 如：‘wx_123456’   ‘kdyh’加 ‘_’ 加口袋用户id值 如‘kdyh1234567’
@@ -42,7 +44,18 @@
                 $('#video').css('display','block');   
             }
             var a = CR_SDK.getRoominfo();
-            console.log(a);
+           
+        })
+
+        CR_SDK.on('cr_notify_live_type', function(res){
+            console.log(res); 
+            if(res.msg == '直播中'){
+                $('.close').css('display','none');
+                $('#video').css('display','block');   
+            }else{
+                $('.close').css('display','block');
+                $('#video').css('display','none'); 
+            }
         })
         </script>
    </head>

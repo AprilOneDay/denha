@@ -16,10 +16,48 @@ class Comment extends \app\study\controller\Init
     /** 课程评论 */
     public function lessons()
     {
-        $map['column_id'] = 10;
-        $about            = dao('Article')->getRowContent($map, 'description,description_en', 1);
+        $pageNo   = get('pageNo', 'intval', 1);
+        $pageSize = get('pageSize', 'intval', 10);
 
+        $offer = max(($pageNo - 1), 0) * $pageSize;
+
+        $map['uid'] = $this->uid;
+
+        $list  = table('CourseComment')->where($map)->order('created desc')->field('id,content,uid,teacher_uid,created,goods_id')->limit($offer, $pageSize)->order('id desc')->find('array');
+        $total = table('CourseComment')->where($map)->count();
+        $page  = new \denha\Pages($total, $pageNo, $pageSize, url(''));
+
+        foreach ($list as $key => $value) {
+            $list[$key]['goods']          = table('Article')->where('id', $value['goods_id'])->field('title,btitle,thumb')->find();
+            $list[$key]['goods']['thumb'] = getConfig('config.app', 'imgUrl') . '/uploadfile/article/' . $list[$key]['goods']['thumb'];
+
+            $user               = dao('User')->getInfo($value['uid'], 'nickname,avatar');
+            $user['avatar']     = getConfig('config.app', 'imgUrl') . '/uploadfile/avatar/' . $user['avatar'];
+            $list[$key]['user'] = $user;
+
+            $teahcer               = dao('User')->getInfo($value['teacher_uid'], 'nickname,avatar');
+            $teahcer['avatar']     = getConfig('config.app', 'imgUrl') . '/uploadfile/avatar/' . $teahcer['avatar'];
+            $list[$key]['teahcer'] = $teahcer;
+
+        }
+
+        $this->assign('list', $list);
+        $this->assign('pages', $page->pages());
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+    }
+
+    public function delLessonsComment()
+    {
+        $id         = post('id', 'intval', 0);
+        $map['id']  = $id;
+        $map['uid'] = $this->uid;
+
+        $result = table('CourseComment')->where($map)->delete();
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '删除失败'));
+        }
+
+        $this->appReturn(array('status' => true, 'msg' => '操作成功'));
     }
 
     /** 论坛评论 */

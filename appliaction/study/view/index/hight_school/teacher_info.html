@@ -40,7 +40,7 @@
                     <ul class="kec">
                         {loop $data['lessionList']['list'] $value}
                         <li>
-                            <div class="imgs"><a href="javascript:;" onclick="javascript:top.location.href = '{F:url('detail',array('id'=>$value['id']))}'"><img src="{F:imgUrl($value['thumb'],'article')}"/></a></div>
+                            <div class="imgs"><a href="javascript:;" onclick="javascript:top.location.href = '{F:url('/index/course/detail',array('id'=>$value['id']))}'"><img src="{F:imgUrl($value['thumb'],'article')}"/></a></div>
                             <div class="name">{$value['title']}</div>
                             <div class="keshi"><span>255人已购买</span></div>
                         </li>

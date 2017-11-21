@@ -73,6 +73,7 @@ class Article
         $this->article     = table('Article')->tableName();
         $this->articleData = table('Article' . $this->dataTable)->tableName();
 
+        //主表字段
         $fieldArray = table('Article')->getField();
 
         $this->map = '';
@@ -85,6 +86,7 @@ class Article
                 }
             }
         }
+        $this->map[$this->article . '.model_id'] = $modelId;
 
         $this->field = '';
         $nativeField = explode(',', $nativeField);

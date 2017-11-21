@@ -99,7 +99,7 @@ $(function() {
                         if(trueUrl){
                             window.location.href= trueUrl;
                         }else{
-                            location.reload();   
+                            location.reload(); 
                         }
                     }
                 },1000);

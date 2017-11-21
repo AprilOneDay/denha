@@ -36,7 +36,7 @@
                 	   <div class="img_news"><img src="{F:imgUrl($value['thumb'],'article')}" /></div>
                     </a>
                     <div class="right_new">
-                    <b><a href="#">{$value['title']}</a></b>
+                    <b><a href="{F:url('/index/about/detail',array('id'=>$value['id']))}">{$value['title']}</a></b>
                     <p class="time">发布时间：{F:date('Y/m-d',$value['publish_time'])}</p>
                     <p class="conts">{$value['description']}<a href="#">[更多]</a></p></div>
                 </li>

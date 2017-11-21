@@ -33,6 +33,11 @@ class Bbs extends \app\study\controller\Init
 
         $columnList = table('Column')->where('parentid', $this->parentColumn['id'])->field('id,name,bname,jump_url')->find('array');
 
+        //推荐列表
+        $remmond['remmondList'] = dao('RecommendList', 'study')->recommendList();
+        //热门话题
+        $remmond['hotList'] = dao('RecommendList', 'study')->hotList();
+
         $other = array(
             'timeCopy' => array(
                 'year'  => '年',
@@ -46,6 +51,7 @@ class Bbs extends \app\study\controller\Init
 
         $this->assign('other', $other);
         $this->assign('list', $list);
+        $this->assign('remmond', $remmond);
         $this->assign('columnList', $columnList);
         $this->assign('pages', $page->pages());
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
@@ -75,6 +81,11 @@ class Bbs extends \app\study\controller\Init
         }
 
         $columnList = table('Column')->where('parentid', $this->parentColumn['id'])->field('id,name,bname,jump_url')->find('array');
+
+        //推荐列表
+        $data['remmondList'] = dao('RecommendList', 'study')->recommendList();
+        //热门话题
+        $data['hotList'] = dao('RecommendList', 'study')->hotList();
 
         //增加浏览记录
         table('Article')->where('id', $id)->save(array('hot' => array('add', 1)));

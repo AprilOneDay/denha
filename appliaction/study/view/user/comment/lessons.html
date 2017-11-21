@@ -47,76 +47,26 @@
             </div>
 			<div class="t_cr_right pp_t fr navgation ">
              <div class="width80 clearfix">
+                {loop $list $value}
                 <div class="com_pp clearfix">
-                	<div class="left_img"><img src="/ststic/study/images/kc5.jpg" /></div>
+                	<div class="left_img"><img src="{$value['goods']['thumb']}" /></div>
                 	<div class="comm_title">
-                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
-                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b>”</b></p>
-                        <p class="time_hf"><span class="times">2017/05/20</span><span class="dels">删除</span></p>
-                         
+                    	<p class="title_pp"><a href="#" class="names">{$value['goods']['title']} </a></p>
+                        <p class="comm_cont"><b>“</b>{$value['content']}”<b>”</b></p>
+                        <p class="time_hf"><span class="times">{F:date('Y/m/d',$value['created'])}</span><span class="dels btn-ajax-post" config-tips="删除后评论将不会存在,确定删除?" config-href="{F:url('del_lessons_comment')}" data-id="{$value['id']}">删除</span></p>
                     </div>
                     
                 </div>
+                {/loop}
                 
                 
-                <div class="com_pp clearfix">
-                	<div class="left_img"><img src="/ststic/study/images/kc5.jpg" /></div>
-                	<div class="comm_title">
-                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
-                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b>”</b></p>
-                        <p class="time_hf"><span class="times">2017/05/20</span><span class="dels">删除</span></p>
-                         
-                    </div>
-                    
+                {if $pages}
+                <div class="page ">
+                    <p><b>{$pages['pageNo']}</b>/{$pages['allPage']}</p>
+                    <a href="{$pages['pageUrl']}?pageNo={F:max($pages['pageNo'] - 1,1)}">上一页</a>
+                    <a href="{$pages['pageUrl']}?pageNo={F:min($pages['pageNo'] + 1,$pages['allPage'])}">下一页</a>
                 </div>
-                <div class="com_pp clearfix">
-                	<div class="left_img"><img src="/ststic/study/images/kc5.jpg" /></div>
-                	<div class="comm_title">
-                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
-                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b>”</b></p>
-                        <p class="time_hf"><span class="times">2017/05/20</span><span class="dels">删除</span></p>
-                         
-                    </div>
-                    
-                </div>
-                
-                
-                <div class="com_pp clearfix">
-                	<div class="left_img"><img src="/ststic/study/images/kc5.jpg" /></div>
-                	<div class="comm_title">
-                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
-                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b>”</b></p>
-                        <p class="time_hf"><span class="times">2017/05/20</span><span class="dels">删除</span></p>
-                         
-                    </div>
-                    
-                </div>
-                <div class="com_pp clearfix">
-                	<div class="left_img"><img src="/ststic/study/images/kc5.jpg" /></div>
-                	<div class="comm_title">
-                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
-                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b>”</b></p>
-                        <p class="time_hf"><span class="times">2017/05/20</span><span class="dels">删除</span></p>
-                         
-                    </div>
-                    
-                </div>
-                
-                
-                <div class="com_pp clearfix">
-                	<div class="left_img"><img src="/ststic/study/images/kc5.jpg" /></div>
-                	<div class="comm_title">
-                    	<p class="title_pp"><a href="#" class="names">雅思7.5分精品课程 </a></p>
-                        <p class="comm_cont"><b>“</b>王冰冰评论您好老师，咋们的课程周期是多久，我基础差，认真学习这门课程应该是可以过的吧认真学习这门课程应该是可以过的吧！”<b>”</b></p>
-                        <p class="time_hf"><span class="times">2017/05/20</span><span class="dels">删除</span></p>
-                         
-                    </div>
-                    
-                </div>
-    
-                
-                
-                <div class="page "><p><b>2</b>/6</p><a href="#">上一页</a><a href="#">下一页</a></div>
+                {/if}
        
 			</div>
         

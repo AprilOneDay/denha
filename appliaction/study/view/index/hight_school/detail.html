@@ -63,49 +63,15 @@
                     </div>
                     <div class="tab-pal ">
                     	<ul class="pl clearfix">
+                            {loop $data['commentList'] $value}
                         	<li>
-                            	<div class="img_user"><img src="/ststic/study/images/team5.jpg"/></div>
-                            	<div class="pl_cont"><p>陈言言charity<span class="time">发布时间：2017/07/17</span></p>
-                                <p class="cont">老师会根据学生的水平来配课，不会盲目推荐最贵的，前台人也很好～晚上还能在教室自习到九点半。</p>
+                            	<div class="img_user"><img src="{$value['user']['avatar']}"/></div>
+                            	<div class="pl_cont"><p>{$value['user']['nickname']}<span class="time">发布时间：{F:date('Y/m/d',$value['created'])}</span></p>
+                                <p class="cont">{$value['content']}</p>
                                 </div>
                             </li>
-                        	<li>
-                            	<div class="img_user"><img src="/ststic/study/images/team5.jpg"/></div>
-                            	<div class="pl_cont"><p>陈言言charity<span class="time">发布时间：2017/07/17</span></p>
-                                <p class="cont">在这里学习两周了，收获很大，价格合理，点个赞咯😊老师讲的都很好，性格也很好，6分口语都是外教好期待，老师会
-根据学生的水平来配课，不会盲目推荐最贵的，前台人也很好～晚上还能在教室自习到九点半。</p>
-                                </div>
-                            </li>
-                        	<li>
-                            	<div class="img_user"><img src="/ststic/study/images/team5.jpg"/></div>
-                            	<div class="pl_cont"><p>陈言言charity<span class="time">发布时间：2017/07/17</span></p>
-                                <p class="cont">老师会根据学生的水平来配课，不会盲目推荐最贵的，前台人也很好～晚上还能在教室自习到九点半。</p>
-                                </div>
-                            </li>
-                        	<li>
-                            	<div class="img_user"><img src="/ststic/study/images/team5.jpg"/></div>
-                            	<div class="pl_cont"><p>陈言言charity<span class="time">发布时间：2017/07/17</span></p>
-                                <p class="cont">在这里学习两周了，收获很大，价格合理，点个赞咯😊老师讲的都很好，性格也很好，6分口语都是外教好期待，老师会
-根据学生的水平来配课，不会盲目推荐最贵的，前台人也很好～晚上还能在教室自习到九点半。</p>
-                                </div>
-                            </li>
-                        	<li>
-                            	<div class="img_user"><img src="/ststic/study/images/team5.jpg"/></div>
-                            	<div class="pl_cont"><p>陈言言charity<span class="time">发布时间：2017/07/17</span></p>
-                                <p class="cont">老师会根据学生的水平来配课，不会盲目推荐最贵的，前台人也很好～晚上还能在教室自习到九点半。</p>
-                                </div>
-                            </li>
-                        	<li>
-                            	<div class="img_user"><img src="/ststic/study/images/team5.jpg"/></div>
-                            	<div class="pl_cont"><p>陈言言charity<span class="time">发布时间：2017/07/17</span></p>
-                                <p class="cont">在这里学习两周了，收获很大，价格合理，点个赞咯😊老师讲的都很好，性格也很好，6分口语都是外教好期待，老师会
-根据学生的水平来配课，不会盲目推荐最贵的，前台人也很好～晚上还能在教室自习到九点半。</p>
-                                </div>
-                            </li>
-                        
+                            {/loop}
                         </ul>
-                    
-                    
                     </div>
                 </div>
             </div>                
@@ -121,27 +87,17 @@
             	<div class="rec clearfix">
                 	<h3>推荐课程</h3>
                 	<ul>
+                        {loop $data['remmondList']['list'] $value}
                         <li>
-                            <div class="imgs"><a href="#"><img src="/ststic/study/images/kc1.jpg" /></a></div>
-                            <div class="name">雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺7.5分课程</div>
-                            <div class="keshi"><span><i></i>证书颁发</span><span><i></i>一对一授课</span></div>
+                            <div class="imgs"><a href="{F:url('/index/course/detail',array('id'=>$value['id']))}"><img src="{$value['thumb']}" /></a></div>
+                            <div class="name">{$value['title']}</div>
+                            <div class="keshi">
+                                {loop $value['characteristics_copy'] $v}
+                                    <span><i></i>{$v}</span>
+                                {/loop} 
+                            </div>
                         </li>
-                        <li>
-                            <div class="imgs"><a href="#"><img src="/ststic/study/images/kc2.jpg" /></a></div>
-                            <div class="name">雅思冲刺7.5分课程</div>
-                            <div class="keshi"><span><i></i>证书颁发</span><span><i></i>一对一授课</span></div>
-                        </li>
-                        <li>
-                            <div class="imgs"><a href="#"><img src="/ststic/study/images/kc3.jpg" /></a></div>
-                            <div class="name">雅思冲刺7.5分课程</div>
-                            <div class="keshi"><span><i></i>证书颁发</span><span><i></i>一对一授课</span></div>
-                        </li>
-                        <li>
-                            <div class="imgs"><a href="#"><img src="/ststic/study/images/kc4.jpg" /></a></div>
-                            <div class="name">雅思冲刺7.5分课程</div>
-                            <div class="keshi"><span><i></i>证书颁发</span><span><i></i>一对一授课</span></div>
-                        </li>
-                    
+                        {/loop}
                     </ul>
                 
                 </div>

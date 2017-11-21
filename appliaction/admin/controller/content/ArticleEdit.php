@@ -221,9 +221,10 @@ class ArticleEdit extends \app\admin\controller\Init
 
         if (IS_POST) {
 
-            $data               = post('info');
-            $data['start_time'] = post('info.start_time', 'time');
-            $data['end_time']   = post('info.end_time', 'time');
+            $data                    = post('info');
+            $data['start_time']      = post('info.start_time', 'time');
+            $data['end_time']        = post('info.end_time', 'time');
+            $data['characteristics'] = implode(',', $data['characteristics']);
 
             if (!$data['sale_price']) {
                 $this->ajaxReturn(array('status' => false, 'msg' => '请输入售卖价格'));
@@ -340,7 +341,7 @@ class ArticleEdit extends \app\admin\controller\Init
 
             $other = array(
                 'teacherHourType' => dao('Category')->getList(74),
-                'featuredCopy'    => dao('Category')->getList(34),
+                'featuredCopy'    => dao('Category')->getList(78),
                 'columnListCopy'  => dao('Column', 'admin')->columnList(),
                 'schedule'        => isset($schedule) ? $schedule : array(),
                 'teacherList'     => table('User')->where(array('type' => 2, 'status' => 1))->field('id,real_name')->find('array'),

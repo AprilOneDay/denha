@@ -402,7 +402,7 @@ function imgUrl($name, $path = '', $size = 0, $host = false)
     foreach ($imgName as $key => $value) {
         if (!$value) {
             $url = '/ststic/default.png';
-            $url = !$host ? URL . $url : $host . $url;
+            $url = !$host ? $url : $host . $url;
         } else {
             if ($path) {
                 $url = '/uploadfile/' . $path . '/' . $value;
@@ -410,7 +410,7 @@ function imgUrl($name, $path = '', $size = 0, $host = false)
                 $url = '/uploadfile/' . $value;
             }
 
-            $url = !$host ? URL . $url : $host . $url;
+            $url = !$host ? $url : $host . $url;
 
             //这块有点影响网速 设置超时 后续会改为检测数据库
             /*$opts = array(

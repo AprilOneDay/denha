@@ -83,12 +83,9 @@
                 <div class="rec rec_ht">
                 	<h3>热门话题</h3>
                     <ul>
-                    	<li><a href="javascript:;">【留学指南】北京一名房东签卖房合同后反悔 被法院强制过户</a></li>
-                    	<li><a href="javascript:;">【留学指南】北京一名房东签卖房合同后反悔 被法院强制过户</a></li>
-                    	<li><a href="javascript:;">【留学指南】北京一名房东签卖房合同后反悔 被法院强制过户</a></li>
-                    	<li><a href="javascript:;">【留学指南】北京一名房东签卖房合同后反悔 被法院强制过户</a></li>
-                    	<li><a href="javascript:;">【留学指南】北京一名房东签卖房合同后反悔 被法院强制过户</a></li>
-                    	<li><a href="javascript:;">【留学指南】北京一名房东签卖房合同后反悔 被法院强制过户</a></li>
+                    	{loop $remmond['hotList']['list'] $value}
+                        <li><a href="{F:url('/index/bbs/detail',array('cid'=>$value['column_id'],'id'=>$value['id']))}">{$value['title']}</a></li>
+                        {/loop}
                     </ul>
                 
                 </div>
@@ -96,17 +93,17 @@
             	<div class="rec clearfix">
                 	<h3>推荐课程</h3>
                 	<ul class="kc_rec">
+                        {loop $remmond['remmondList']['list'] $value}
                         <li>
-                            <div class="imgs"><a href="javascript:;"><img src="images/kc1.jpg" /></a></div>
-                            <div class="name">雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺7.5分课程</div>
-                            <div class="keshi"><span><i></i>证书颁发</span><span><i></i>一对一授课</span></div>
+                            <div class="imgs"><a href="{F:url('/index/course/detail',array('id'=>$value['id']))}"><img src="{$value['thumb']}" /></a></div>
+                            <div class="name">{$value['title']}</div>
+                            <div class="keshi">
+                                {loop $value['characteristics_copy'] $v}
+                                    <span><i></i>{$v}</span>
+                                {/loop} 
+                            </div>
                         </li>
-                        <li>
-                            <div class="imgs"><a href="javascript:;"><img src="images/kc2.jpg" /></a></div>
-                            <div class="name">雅思冲刺7.5分课程</div>
-                            <div class="keshi"><span><i></i>证书颁发</span><span><i></i>一对一授课</span></div>
-                        </li>
-                    
+                        {/loop}
                     </ul>
                 
                 </div>

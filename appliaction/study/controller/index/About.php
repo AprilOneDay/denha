@@ -40,7 +40,16 @@ class About extends \app\study\controller\Init
         $id        = get('id', 'intval', 0);
         $map['id'] = $id;
 
-        $data = dao('Article')->getRowContent($map, 'id,parentid,publish_time,title,btitle,content,content_en', 1);
+        $data = dao('Article')->getRowContent($map, 'id,hot,publish_time,title,btitle,content,content_en', 1);
+
+        //推荐列表
+        $data['remmondList'] = dao('RecommendList', 'study')->recommendList();
+        //热门话题
+        $data['hotList'] = dao('RecommendList', 'study')->hotList();
+
+        //增加浏览记录
+        table('Article')->where('id', $id)->save(array('hot' => array('add', 1)));
+
         $this->assign('data', $data);
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
     }
