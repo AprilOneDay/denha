@@ -60,9 +60,10 @@ class Coupon extends \app\app\controller\Init
         }
 
         //关闭的店铺
-        $map['status']   = 2;
-        $map['category'] = array('instr', $date['category']);
-        $closeShop       = table('UserShop')->where($map)->field('uid')->find('one', true);
+        $map           = array();
+        $map['status'] = 2;
+        //$map['category'] = array('instr', $date['category']);
+        $closeShop = table('UserShop')->where($map)->field('uid')->find('one', true);
 
         //可领抵扣券
         $map                  = array();

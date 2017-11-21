@@ -555,6 +555,9 @@
 		display:block;
 		clear:both;
 	}
+	.shequ_left .tie_li .right_tie .name a{
+		color:#333333;
+	}
 }
 @media screen and (max-width: 767px) and (min-width: 320px){
 	.hs_cont .hs_box .notice .tab-pal .img{
