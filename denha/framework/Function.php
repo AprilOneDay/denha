@@ -88,8 +88,7 @@ function post($name, $type = '', $default = '')
             case 'img':
                 $data = stripos($data, 'default') !== false ? $default : $data;
                 if (stripos($data, 'http') !== false) {
-                    $url  = pathinfo($data);
-                    $data = $url['basename'];
+                    $data = pathinfo($data, PATHINFO_BASENAME);
                 }
                 break;
             case 'time':

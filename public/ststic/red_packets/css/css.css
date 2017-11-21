@@ -1,0 +1,10 @@
+body{ background: #f0f2f7; }
+.wapper{ background: #fff; padding-left: 15px; padding-right: 15px; }
+
+.menus{ position: fixed; margin-top: -90%; }
+.menus li{ width: 70%; margin:0 auto; margin-top: 2rem; }
+.menus li img{ width: 95%; margin-left: 2%; }
+
+.tips{ display: none; background: url(../images/tips.png) no-repeat; background-size: 100%100%;  position: absolute; z-index: 100; top: 2rem; height: 90%; width: 98%; margin-left: 2%; }
+.tips .close{ float: right; width: 55px; height: 75px;}
+.tips .content{ margin-top: 7.4rem; width: 80%; margin-left: 10%;  height: 80%; overflow: auto;}
