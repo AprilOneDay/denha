@@ -45,7 +45,7 @@ class Shop extends \app\app\controller\Init
         $list = table('GoodsCar')->where($map)->order('id desc')->field('is_lease,id,thumb,title,produce_time,mileage,price')->limit($offer, $pageSize)->find('array');
         foreach ($list as $key => $value) {
             if ($value['is_lease'] || stripos($value['guarantee'], 3) !== false) {
-                $list[$key]['title'] = "【转lease】" . $value['title'];
+                $list[$key]['title'] = "【lease】" . $value['title'];
             }
 
             $list[$key]['price']   = dao('Number')->price($value['price']);

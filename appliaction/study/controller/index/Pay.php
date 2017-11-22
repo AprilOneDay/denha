@@ -60,7 +60,7 @@ class Pay extends \app\study\controller\Init
     {
         $orderSn = get('order_sn', 'text', '');
 
-        $orders = table('Orders')->where('order_sn', $orderSn)->field('is_pay')->find();
+        $orders = table('Orders')->where('order_sn', $orderSn)->field('is_pay,uid')->find();
         if (!$orders['is_pay']) {
             return false;
         }
@@ -69,6 +69,7 @@ class Pay extends \app\study\controller\Init
 
         //获取课程
         $list = table('ArticleCourseSchedule')->where('id', $ordersData['goods_id'])->find('array');
+
         //导入学院课程学习记录
         if ($list) {
 
@@ -81,13 +82,13 @@ class Pay extends \app\study\controller\Init
             foreach ($list as $key => $value) {
                 $data                = array();
                 $data['order_sn']    = $orderSn;
-                $data['uid']         = $this->uid;
+                $data['uid']         = $orders['uid'];
                 $data['teacher_uid'] = $ordersData['teacher_uid'];
                 $data['credit']      = $value['credit'];
                 $data['start_time']  = $value['start_time'];
                 $data['end_time']    = $value['end_time'];
                 $data['goods_id']    = $ordersData['goods_id'];
-                $data['sgin']        = $$ordersData['sgin'];
+                $data['sign']        = $ordersData['sign'];
 
                 table('UserCourseLog')->add($data);
             }

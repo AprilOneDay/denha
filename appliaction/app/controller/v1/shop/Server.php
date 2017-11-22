@@ -42,7 +42,7 @@ class Server extends \app\app\controller\Init
         $list = table('GoodsCar')->where($map)->order('created desc')->limit($offer, $pageSize)->find('array');
         foreach ($list as $key => $value) {
             if ($value['is_lease'] || stripos($value['guarantee'], 3) !== false) {
-                $list[$key]['title'] = "【转lease】" . $value['title'];
+                $list[$key]['title'] = "【lease】" . $value['title'];
             }
             $list[$key]['price']   = dao('Number')->price($value['price']);
             $list[$key]['mileage'] = $value['mileage'] . '公里';
@@ -250,7 +250,7 @@ class Server extends \app\app\controller\Init
 
             $data['type'] = post('type', 'intval', 0);
 
-            $data['price'] = post('price', 'float', 0);
+            $data['price'] = post('price', 'text', 0);
 
             $data['title'] = post('title', 'text', '');
 
@@ -272,10 +272,6 @@ class Server extends \app\app\controller\Init
 
             if (!$data['price']) {
                 $this->appReturn(array('status' => false, 'msg' => '请输入价格'));
-            }
-
-            if (!is_numeric($data['price'])) {
-                $this->appReturn(array('status' => false, 'msg' => '价格请输入数字'));
             }
 
             //判断是否可用添加卖车信息

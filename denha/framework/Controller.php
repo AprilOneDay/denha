@@ -52,15 +52,17 @@ class Controller
             }
             //绝对路径
             elseif (stripos($viewPath, '/') === 0) {
-                $path = APP_PATH . APP . DS . 'view' . DS . str_replace('/', DS, substr($viewPath, 1)) . '.html';
+                $path = APP_PATH . APP . DS . 'view' . DS . substr($viewPath, 1) . '.html';
             }
             //相对路径
             else {
-                $path = APP_PATH . APP . DS . 'view' . DS . MODULE . DS . str_replace('/', DS, $viewPath) . '.html';
+                $path = APP_PATH . APP . DS . 'view' . DS . MODULE . DS . $viewPath . '.html';
             }
         } else {
             $path = $viewPath;
         }
+
+        $path = str_replace('\\', DS, $path);
 
         if (!is_file($path)) {
             throw new Exception('视图地址' . $path . '不存在');

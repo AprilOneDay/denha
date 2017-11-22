@@ -195,20 +195,13 @@ class User extends \app\app\controller\Init
     public function findPassword()
     {
         parent::__construct();
-        $this->checkShop();
-        $this->checkIde();
 
-        $uid    = $this->uid;
         $mobile = post('mobile', 'text', '');
 
         $password  = post('password', 'text', '');
         $password2 = post('password2', 'text', '');
 
         $code = post('code', 'intval', 0);
-
-        $map['id']     = $this->uid;
-        $map['mobile'] = $mobile;
-        $map['type']   = 1;
 
         if (!$mobile) {
             $this->appReturn(array('status' => false, 'msg' => '请输入手机号'));
@@ -218,12 +211,16 @@ class User extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '请输入验证码'));
         }
 
-        $is = table('User')->where($map)->field('id')->find('one');
-        if (!$is) {
-            $this->appReturn(array('status' => false, 'msg' => '非绑定手机号'));
+        $map['mobile'] = $mobile;
+        $map['type']   = 2;
+
+        $user = table('User')->where($map)->field('id')->find();
+
+        if (!$user) {
+            $this->appReturn(array('status' => false, 'msg' => '尚未注册'));
         }
 
-        $reslut = dao('User')->findPassword($this->uid, $password, $password2, $code);
+        $reslut = dao('User')->findPassword($user['id'], $password, $password2, $code, $mobile);
         $this->appReturn($reslut);
     }
 

@@ -34,7 +34,7 @@ class Car extends \app\app\controller\Init
 
         if ($data['is_lease'] || stripos($data['guarantee'], 3) !== false) {
             $data['is_lease'] = 1;
-            $data['title']    = "【转lease】" . $data['title'];
+            $data['title']    = "【lease】" . $data['title'];
         }
 
         $data['brand_copy']    = dao('Category')->getName($data['brand']);

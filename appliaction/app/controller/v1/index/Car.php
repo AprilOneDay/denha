@@ -102,7 +102,7 @@ class Car extends \app\app\controller\Init
 
         foreach ($list as $key => $value) {
             if ($value['is_lease'] || stripos($value['guarantee'], 3) !== false) {
-                $list[$key]['title'] = "【转lease】" . $value['title'];
+                $list[$key]['title'] = "【lease】" . $value['title'];
             }
 
             $list[$key]['price']   = dao('Number')->price($value['price']);
@@ -179,7 +179,7 @@ class Car extends \app\app\controller\Init
 
         if ($data['is_lease'] || stripos($data['guarantee'], 3) !== false) {
             $data['is_lease'] = 1;
-            $data['title']    = "【转lease】" . $data['title'];
+            $data['title']    = "【lease】" . $data['title'];
         }
 
         $data['brand_copy']    = dao('Category')->getName($data['brand']);

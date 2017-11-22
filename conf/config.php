@@ -22,8 +22,11 @@ return array(
     'trace'             => true, // 是否显示页面Trace信息
 
     /** 微信api */
-    'weixin_appid'      => 'wxeec81ef588a9214a',
-    'weixin_secret'     => '1c326927e93070e1d4f4efbfb17cfb6f',
+    /*'weixin_appid'      => 'wxeec81ef588a9214a',
+    'weixin_secret'     => '1c326927e93070e1d4f4efbfb17cfb6f',*/
+
+    'weixin_appid'      => 'wx4b49939c299d3868',
+    'weixin_secret'     => '505ca66c862ac4fdef8aee79e2f3ea01',
 
     /** 云屋直播 */
     'yunwu_key'         => '15923882847',

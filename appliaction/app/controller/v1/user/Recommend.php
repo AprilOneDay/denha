@@ -141,7 +141,7 @@ class Recommend extends \app\app\controller\Init
         $list      = table('GoodsCar')->where($map)->order('created desc')->limit($offer, $pageSize)->find('array');
         foreach ($list as $key => $value) {
             if ($value['is_lease'] || stripos($value['guarantee'], 3) !== false) {
-                $list[$key]['title'] = "【转lease】" . $value['title'];
+                $list[$key]['title'] = "【lease】" . $value['title'];
             }
             $list[$key]['price']   = dao('Number')->price($value['price']);
             $list[$key]['mileage'] = $value['mileage'] . '公里';

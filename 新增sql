@@ -13,3 +13,8 @@ CREATE TABLE `dh_user_red_packets_log` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='红包雨记录'
 
+
+ALTER TABLE `koudaiche`.`dh_orders`   
+  CHANGE `acount` `acount` VARCHAR(200) DEFAULT '0.00'  NULL   COMMENT '实付金额(订单金额 - 优惠金额 + 运费）';
+
+

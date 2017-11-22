@@ -29,7 +29,7 @@ class Circle extends \app\app\controller\Init
             $list[$key]['like']    = (int) table('Enjoy')->where(array('type' => 1, 'value' => $value['id']))->count();
             $list[$key]['ablum']   = $this->appImgArray($value['ablum'], 'circle');
             $list[$key]['created'] = date('Y/m/d', $value['created']);
-            $user                  = dao('User')->getInfo($value['uid'], 'nickname,avatar');
+            $user                  = dao('User')->getInfo($value['uid'], 'nickname,avatar,type');
             $user['avatar']        = $this->appImg($user['avatar'], 'avatar');
             $list[$key]['user']    = $user;
             $comment               = dao('Comment')->getList(1, $value['id']);

@@ -11,7 +11,9 @@ class Index extends \app\app\controller\Init
     public function __construct()
     {
         parent::__construct();
-        $this->checkIndividual();
+        if (ACTION !== 'find_password') {
+            $this->checkIndividual();
+        }
     }
 
     public function index()
@@ -47,7 +49,7 @@ class Index extends \app\app\controller\Init
         $list              = table('GoodsCar')->where($mapCar)->field('title,type,id,thumb,price,mileage,produce_time,is_lease')->limit($offer, $pageSize)->order('id desc')->find('array');
         foreach ($list as $key => $value) {
             if ($value['is_lease'] || stripos($value['guarantee'], 3) !== false) {
-                $list[$key]['title'] = "【转lease】" . $value['title'];
+                $list[$key]['title'] = "【lease】" . $value['title'];
             }
 
             $list[$key]['price']   = dao('Number')->price($value['price']);
@@ -85,7 +87,7 @@ class Index extends \app\app\controller\Init
         foreach ($list as $key => $value) {
             $time = date('Y/m/d', $value['created']);
             if ($value['is_lease'] || stripos($value['guarantee'], 3) !== false) {
-                $value['title'] = "【转lease】" . $value['title'];
+                $value['title'] = "【lease】" . $value['title'];
             }
 
             $value['price']   = dao('Number')->price($value['price']);
@@ -154,17 +156,13 @@ class Index extends \app\app\controller\Init
      */
     public function findPassword()
     {
-        $uid    = $this->uid;
+
         $mobile = post('mobile', 'text', '');
 
         $password  = post('password', 'text', '');
         $password2 = post('password2', 'text', '');
 
         $code = post('code', 'intval', 0);
-
-        $map['id']     = $this->uid;
-        $map['mobile'] = $mobile;
-        $map['type']   = 1;
 
         if (!$mobile) {
             $this->appReturn(array('status' => false, 'msg' => '请输入手机号'));
@@ -174,12 +172,16 @@ class Index extends \app\app\controller\Init
             $this->appReturn(array('status' => false, 'msg' => '请输入验证码'));
         }
 
-        $is = table('User')->where($map)->field('id')->find('one');
-        if (!$is) {
-            $this->appReturn(array('status' => false, 'msg' => '非绑定手机号'));
+        $map['mobile'] = $mobile;
+        $map['type']   = 1;
+
+        $user = table('User')->where($map)->field('id')->find();
+
+        if (!$user) {
+            $this->appReturn(array('status' => false, 'msg' => '尚未注册'));
         }
 
-        $reslut = dao('User')->findPassword($this->uid, $password, $password2, $code);
+        $reslut = dao('User')->findPassword($user['id'], $password, $password2, $code, $mobile);
         $this->appReturn($reslut);
     }
 }
