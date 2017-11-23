@@ -19,6 +19,7 @@ class Classroom extends \app\study\controller\Init
         //获取最近的课程
         $map['uid']        = $this->uid;
         $map['status']     = 1;
+        $map['sign']       = 1;
         $map['start_time'] = array('>=', TIME);
 
         $course = table('UserCourseLog')->where($map)->find();
@@ -28,6 +29,7 @@ class Classroom extends \app\study\controller\Init
 
         $user = dao('User')->getInfo($this->uid, 'avatar,real_name');
 
+        $this->assign('course', $course);
         $this->assign('live', $live[0]);
         $this->assign('user', $user);
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
@@ -39,6 +41,7 @@ class Classroom extends \app\study\controller\Init
         //获取最近的课程
         $map['uid']        = $this->uid;
         $map['status']     = 1;
+        $map['sign']       = 2;
         $map['start_time'] = array('>=', TIME);
 
         $course = table('UserCourseLog')->where($map)->find();
@@ -48,6 +51,7 @@ class Classroom extends \app\study\controller\Init
 
         $user = dao('User')->getInfo($this->uid, 'avatar,real_name');
 
+        $this->assign('course', $course);
         $this->assign('live', $live[0]);
         $this->assign('user', $user);
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);

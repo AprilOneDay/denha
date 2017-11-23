@@ -29,6 +29,12 @@ class BusinessSchool extends \app\study\controller\Init
         $map['column_id'] = get('cid', 'intval', 0);
         $list             = dao('Article')->getList($map, 'id,thumb,num,class_type,characteristics', 3, 6);
 
+        foreach ($list['list'] as $key => $value) {
+            $list['list'][$key]['characteristics_copy'] = (array) dao('Category')->getName($value['characteristics']);
+        }
+
+        var_dump($list);
+
         $columnList = table('Column')->where('parentid', $this->parentColumn['id'])->field('id,name,bname,jump_url')->find('array');
 
         $this->assign('list', $list);
@@ -43,6 +49,10 @@ class BusinessSchool extends \app\study\controller\Init
 
         $map['column_id'] = get('cid', 'intval', 0);
         $list             = dao('Article')->getList($map, 'id,thumb,num,class_type,characteristics', 3, $pageSize, $pageNo);
+
+        foreach ($list['list'] as $key => $value) {
+            $list['list'][$key]['characteristics_copy'] = (array) dao('Category')->getName($value['characteristics']);
+        }
 
         $this->assign('list', $list);
         $this->show('hight_school' . '/' . ACTION . $this->lg, false, false);

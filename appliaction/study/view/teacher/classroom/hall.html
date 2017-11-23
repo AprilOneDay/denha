@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
    <head>
-        <title>学生门户-进入教室</title>
+        <title>教师中心-进入教室</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="Content-Type" content="charset=utf-8" />
         <link rel="stylesheet" href="/ststic/study/css/base.css">
@@ -82,23 +82,80 @@
         {include public/left_menus}
     </div>
         
-        <div class="classroom_right">
-        		<h3 class="my_news">进入教室</h3>
-        	<div class="t_cr_left fl">
-            	<b>老师您好！</b>
-                <span>开课前半小时您就可以进入直播教室，请耐心等待！</span>
-            </div>
-        	<div class="t_cr_right fr">
-            	<div class="img_sp"><img src="/ststic/study/images/sp.jpg" /><span>正在候课中……</span></div>
-                <a class="join" href="javascript:;" onclick="intoRoom()">立即加入</a>
-                <b>首次使用直播客户端，请先<a href="http://dl-3.cloudroom.com:8080/Update/Win32_live/1.5.0/Setup/CLOUDROOMLive_1.5.0.exe">下载</a>安装</b>
-            </div>
-        
+    <div class="classroom_right">
+    		<h3 class="my_news">进入教室</h3>
+    	<div class="t_cr_left fl">
+        	<b>老师您好！</b>
+            <span>开课前半小时您就可以进入直播教室，请耐心等待！</span>
         </div>
-        
-        
+    	<div class="t_cr_right fr">
+        	<div class="img_sp">
+            <img src="/ststic/study/images/sp.jpg" />
+                {if !$course} 
+                <span>正在候课中……</span>
+                {else}
+                    <span class="time" data-time="{$course['start_time']}">距离上课还有：<label>0天0小时0分</label></span>
+                {/if}
+
+            </div>
+            {if !$course['start_time'] >= TIME + 60*30} 
+            <a class="join" href="javascript:;" onclick="intoRoom()">立即加入</a>
+            {/if}
+            <b>首次使用直播客户端，请先<a href="http://dl-3.cloudroom.com:8080/Update/Win32_live/1.5.0/Setup/CLOUDROOMLive_1.5.0.exe">下载</a>安装</b>
         </div>
-        
+    
+    </div>
+    
+    
+    </div>
+    
+<script type="text/javascript">
+    var timeData = new Array();
+    var time = Number($('.time').attr('data-time'))*1000;
+    var endTime = new Date(time);
+    var startTime = new Date();
+
+    var t =endTime.getTime() - startTime.getTime();
+    
+    var timeText = function updateTime(){
+        var text = '';
+
+        timeData['d'] = Math.floor(t/1000/60/60/24);//天
+        timeData['h'] = Math.floor(t/1000/60/60%24);//时
+        timeData['m'] = Math.floor(t/1000/60%60);//分
+        timeData['s'] = Math.floor(t/1000%60);//秒
+
+        if(timeData['d'] > 0){
+            text += timeData['d']+'天'; 
+        }
+
+        if(timeData['h'] > 0){
+            text += timeData['h']+'小时';
+        }
+
+        if (timeData['m'] > 0) {
+            text += timeData['m']+'分';
+        }
+
+        if(timeData['s'] > 0){
+            text += timeData['s']+'秒';
+        }
+        $('.time').find('label').text('');
+        $('.time').find('label').text(text);
+    }
+
+   
+    timeText();
+    //每分钟执行一次
+    setInterval(function(){
+        if( t >= 0){
+            t = Math.max((t - 1000),0);
+            timeText();
+        }else{
+            window.reload;
+        }
+    },1000);
+</script>
         
 </body>
 

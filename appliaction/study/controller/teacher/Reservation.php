@@ -2,7 +2,7 @@
 /**
  * 前台用户管理
  */
-namespace app\study\controller\user;
+namespace app\study\controller\teacher;
 
 class Reservation extends \app\study\controller\Init
 {

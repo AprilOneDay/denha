@@ -49,6 +49,11 @@ class Category
 
         $map['id'] = array('in', $id);
         $name      = table('Category')->where($map)->field('name')->find('one', true);
+
+        if (!$name) {
+            return null;
+        }
+
         if (count($name) == 1) {
             return (string) $name[0];
         }

@@ -39,10 +39,6 @@ class Pay extends \app\study\controller\Init
         $data['goods_id'] = post('id', 'intval', 0);
         $paymethod        = post('paymethod', 'intval', 0);
 
-        if (!$data['nickname']) {
-            $this->appReturn(array('status' => false, 'msg' => '请输入姓名'));
-        }
-
         if (!$data['mobile']) {
             $this->appReturn(array('status' => false, 'msg' => '请输入手机号'));
         }
@@ -56,14 +52,16 @@ class Pay extends \app\study\controller\Init
     }
 
     /** 购买成功后批量导入课程表 */
+
+    //--------url http://192.168.0.254:8091/index/pay/get_lession?order_sn=
     public function getLession()
     {
         $orderSn = get('order_sn', 'text', '');
 
         $orders = table('Orders')->where('order_sn', $orderSn)->field('is_pay,uid')->find();
-        if (!$orders['is_pay']) {
-            return false;
-        }
+        /*if (!$orders['is_pay']) {
+        return false;
+        }*/
 
         $ordersData = table('OrdersCourse')->where('order_sn', $orderSn)->field('goods_id,sign,teacher_uid')->find();
 

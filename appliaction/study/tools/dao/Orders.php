@@ -26,7 +26,7 @@ class Orders
         $data['status']       = 1;
         $data['order_status'] = 1;
         $data['order_sn']     = $orderSn;
-        $data['acount']       = $data['acount_original']       = $goodsInfo['dis_price'] ? $goodsInfo['dis_price'] : $goodsInfo['sale_price'];
+        $data['acount']       = $data['acount_original']       = $goodsInfo['dis_price'] > 0 ? $goodsInfo['dis_price'] : $goodsInfo['sale_price'];
         $data['coupon_price'] = $couponPrice;
         $data['coupon_price'] = $farePrice;
         $data['created']      = TIME;

@@ -11,6 +11,7 @@ class AppVersion extends \app\admin\controller\Init
 {
     public function lists()
     {
+		
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 25);
 

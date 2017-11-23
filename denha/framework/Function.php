@@ -87,7 +87,7 @@ function post($name, $type = '', $default = '')
                 break;
             case 'img':
                 $data = stripos($data, 'default') !== false ? $default : $data;
-                if (stripos($data, 'http') !== false) {
+                if (stripos($data, 'http') !== false || stripos($data, '/') !== false) {
                     $data = pathinfo($data, PATHINFO_BASENAME);
                 }
                 break;

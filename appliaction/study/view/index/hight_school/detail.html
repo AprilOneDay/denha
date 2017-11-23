@@ -26,7 +26,7 @@
     
     <div class="kc_cont clearfix adjust">
     	<div class="cont_box width1200">
-        	<div class="daohang"><a href="/">首页</a><span>>></span><a href="/">国际商学院</a><span>>></span>SAT基础阶段课程</div>
+        	<div class="daohang"><a href="/">首页</a><span>>></span><a href="/index/business_school/about/s/cid/6">国际商学院</a><span>>></span>{$data['title']}</div>
             <div class="cont_left fl">
                 <div class="detail clearfix">
                     <div class="img"><img src="{F:imgUrl($data['thumb'],'article')}" /></div>
@@ -41,11 +41,20 @@
                         {/if}
                         <p class="">
                             <span>课程价格:</span><span>{$data['sale_price']}元</span>
-                            {if $data['dis_price']}
+                            {if $data['dis_price'] > 0}
                             <span>活动价格：</span><span>{$data['dis_price']}元</span>
                             {/if}
                         </p>
-                        <p><span>班级特色:</span><strong>证书颁发</strong><strong >一对一授课</strong></p>
+
+                        {if $data['characteristics_copy']}
+                        <p>
+                            <span>班级特色:</span>
+                            {loop $data['characteristics_copy'] $v}
+                                <strong>{$v}</strong>
+                            {/loop} 
+                        </p>
+                        {/if}
+
                         <div class="clearfix"></div>
                         <a class="buy_btn" href="javascript:;" data-href="{F:url('/index/pay/lession',array('id'=>$data['id']))}">立即购买</a>
                     </div>

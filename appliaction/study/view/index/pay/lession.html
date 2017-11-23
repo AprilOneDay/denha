@@ -32,7 +32,7 @@
                         </p>
                         {/if}
                         <p class="price"><span>课程价格:</span>
-                        {if $data['dis_price']}{$data['dis_price']}{else}{$data['sale_price']}{/if}元
+                        {if $data['dis_price'] > 0}{$data['dis_price']}{else}{$data['sale_price']}{/if}元
                         </p>
                     </div>
                 </div>
@@ -42,8 +42,8 @@
                     	<h4>联系方式</h4>
                         <br />
                         <br />
-                    	<p><span>姓名</span><input type="text" placeholder="请输入姓名" name="nickname" class="input"/></p>
-                        <br />
+                    	<!-- <p><span>姓名</span><input type="text" placeholder="请输入姓名" name="nickname" class="input"/></p>
+                                                <br /> -->
                     	<p><span>手机号</span><input type="tel" placeholder="输入手机号码" name="mobile" class="input"/></p><br />
                         <br />
 
@@ -53,7 +53,7 @@
                         <p><input name="paymethod" type="radio" value="3" ><b>银行卡支付</b><i>银行卡安全支付</i></p> <br />
                     </div>
                     <div class="js"><h4>订单结算</h4>
-                    	<p>支付金额：<span>{if $data['dis_price']}{$data['dis_price']}{else}{$data['sale_price']}{/if}元</span></p>
+                    	<p>支付金额：<span>{if $data['dis_price'] > 0}{$data['dis_price']}{else}{$data['sale_price']}{/if}元</span></p>
                             <a class="buy_btn btn-comply" href="javascript:;">立即支付</a>
                     </div>
                 </form>

@@ -36,7 +36,7 @@ class Index extends \app\app\controller\Init
     }
 
     /**
-     * 获取分类
+     * 获取服务分类 去除了汽车销售
      * @date   2017-09-18T10:16:11+0800
      * @author ChenMingjiang
      * @return [type]                   [description]
@@ -64,6 +64,7 @@ class Index extends \app\app\controller\Init
 
         $data = $list ? $list : array();
 
+        //$this->appReturn(array('status' => false, 'msg' => $this->lg));
         $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));
     }
 

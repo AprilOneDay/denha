@@ -85,7 +85,7 @@ class User extends \app\study\controller\Init
         }
 
         if (!$data['mail']) {
-            $this->appReturn(array('status' => true, 'msg' => '请输入邮箱'));
+            $this->appReturn(array('status' => false, 'msg' => '请输入邮箱'));
         }
 
         $code = post('code', 'text', '');

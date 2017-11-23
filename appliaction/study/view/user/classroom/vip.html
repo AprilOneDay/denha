@@ -1,9 +1,8 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
    <head>
-        <title>学生门户-进入教室</title>
+        <title>学生门户- 一对一教室</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="Content-Type" content="charset=utf-8" />
         <link rel="stylesheet" href="/ststic/study/css/base.css">
@@ -17,12 +16,13 @@
 
         <script type="text/javascript" src="/ststic/study/js/common.js"></script>
         <script type="text/javascript" src="/vendor/layer/layer.js"></script>
-        <script src="http://www.cloudroom.com/api/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
-        <script src="http://www.cloudroom.com/api/crsdk.2.0.min.js" type="text/javascript"></script>
-        <style type="text/css">
-        .close{ display: none; }
-        </style>
 
+        <script src="http://www.cloudroom.com/api/crsdk.2.0.min.js" type="text/javascript"></script>
+        
+        <style type="text/css">
+        /* .close{ display: none; } */
+        </style>
+        {if $live['LiveCode']}
         <script type="text/javascript">
         var config = {
            LiveCode:'{$live['LiveCode']}',  // 必传 string  会议地址 直播地址最后六位字符 如“afbse6” 
@@ -48,7 +48,6 @@
         })
 
         CR_SDK.on('cr_notify_live_type', function(res){
-            console.log(res); 
             if(res.msg == '直播中'){
                 $('.close').css('display','none');
                 $('#video').css('display','block');   
@@ -58,34 +57,87 @@
             }
         })
         </script>
+        {/if}
    </head>
 <body bgcolor="f1f1f1" >
-	
+    
         <div class="center">
-        	<div id="navbar"><span><i class="ico2"></i>学生门户-进入教室</span><a href="#" class="menubtn"></a>
+            <div id="navbar"><span><i class="ico2"></i>学生门户-一对一教室</span><a href="#" class="menubtn"></a>
         {include public/left_menus}
     </div>
         
         <div class="classroom_right">
-        		<h3 class="my_news">进入一对一教室</h3>
-        	<div class="t_cr_left fl">
-            	<b>同学您好！</b>
+                <h3 class="my_news">进入教室</h3>
+            <div class="t_cr_left fl">
+                <b>同学您好！</b>
                 <span>开课前半小时您就可以进入直播教室，请耐心等待！</span>
             </div>
-        	<div class="t_cr_right fr">
+            <div class="t_cr_right fr" style="display: none;">
                 <div class="img_sp"  id="video" style=" width: 90%;  height: 550px;"></div>
             </div>
             <div class="t_cr_right fr close">
-                <div class="img_sp"  id="video"><span>正在候课中……</span><img src="/ststic/study/images/sp.jpg" /></div>
+                <div class="img_sp"  id="video">
+                {if !$live['LiveCode']}
+                    <span>暂无授课....</span>
+                {else}
+                    <span class="time" data-time="{$course['start_time']}">距离开课还有： <label>0天0小时0分</label></span>
+                {/if}
+                <img src="/ststic/study/images/sp.jpg" /></div>
                 <!--  <a class="join" href="#">立即加入</a> -->
             </div>
-        
         </div>
         
         
         </div>
+    <script type="text/javascript">
         
+        var timeData = new Array();
+        var time = Number($('.time').attr('data-time'))*1000;
+        var endTime = new Date(time);
+        var startTime = new Date();
+
+        var t =endTime.getTime() - startTime.getTime();
         
+        var timeText = function updateTime(){
+            var text = '';
+
+            timeData['d'] = Math.floor(t/1000/60/60/24);//天
+            timeData['h'] = Math.floor(t/1000/60/60%24);//时
+            timeData['m'] = Math.floor(t/1000/60%60);//分
+            timeData['s'] = Math.floor(t/1000%60);//秒
+
+            if(timeData['d'] > 0){
+                text += timeData['d']+'天'; 
+            }
+
+            if(timeData['h'] > 0){
+                text += timeData['h']+'小时';
+            }
+
+            if (timeData['m'] > 0) {
+                text += timeData['m']+'分';
+            }
+
+            if(timeData['s'] > 0){
+                text += timeData['s']+'秒';
+            }
+            $('.time').find('label').text('');
+            $('.time').find('label').text(text);
+        }
+
+       
+        timeText();
+        //每分钟执行一次
+        setInterval(function(){
+            if( t >= 0){
+                t = Math.max((t - 1000),0);
+                timeText();
+            }else{
+                window.reload;
+            }
+        },1000);
+
+    </script>
 </body>
 
 </html>

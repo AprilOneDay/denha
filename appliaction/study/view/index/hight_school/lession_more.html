@@ -6,6 +6,9 @@
     {if $value['num']}
     <i></i>{$value['num']}课时</span><span>
     {/if}
-    <i></i>证书颁发</span><span><i></i>一对一授课</span></div>
+ 	{loop $value['characteristics_copy'] $v}
+        <i></i>{$v}</span><span> 
+    {/loop}
+	</div>
 </li>
 {/loop}
