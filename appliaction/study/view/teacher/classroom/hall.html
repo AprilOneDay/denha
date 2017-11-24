@@ -69,7 +69,9 @@
             //window.location = result.Data.MgrLive;
         }
 
-        function intoRoom(){
+        function intoRoom(obj){
+            var id = $(obj).attr('data-id');
+            $.post("{F:url('addLog')}",{id:id},function(){})
             getList();
         }
         </script>
@@ -99,7 +101,7 @@
 
             </div>
             {if !$course['start_time'] >= TIME + 60*30} 
-            <a class="join" href="javascript:;" onclick="intoRoom()">立即加入</a>
+            <a class="join" href="javascript:;" onclick="intoRoom(obj)" data-id="{$course['id']}">立即加入</a>
             {/if}
             <b>首次使用直播客户端，请先<a href="http://dl-3.cloudroom.com:8080/Update/Win32_live/1.5.0/Setup/CLOUDROOMLive_1.5.0.exe">下载</a>安装</b>
         </div>

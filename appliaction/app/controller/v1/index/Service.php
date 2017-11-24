@@ -4,9 +4,9 @@
  */
 namespace app\app\controller\v1\index;
 
-use app\app\controller;
+use app\app\controller\Init;
 
-class Service extends \app\app\controller\Init
+class Service extends Init
 {
     public function lists()
     {

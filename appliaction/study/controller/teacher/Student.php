@@ -42,9 +42,7 @@ class Student extends \app\study\controller\Init
             $userList[$key]['goods_id'] = $value['goods_id'];
         }
 
-        $map                = array();
-        $map['teacher_uid'] = $this->uid;
-        $courseList         = dao('Article')->getList($map, 'title,btitle,id', 3);
+        $courseList = dao('Teacher', 'study')->getTeacherCourseList($this->uid);
 
         $this->assign('list', $userList);
         $this->assign('courseList', $courseList['list']);
@@ -62,9 +60,7 @@ class Student extends \app\study\controller\Init
         $user['goods'] = table('Article')->where('id', $goodsid)->field('title,btitle')->find();
 
         //老师可选课程
-        $map                = array();
-        $map['teacher_uid'] = $this->uid;
-        $courseList         = dao('Article')->getList($map, 'title,btitle,id', 3);
+        $courseList = dao('Teacher', 'study')->getTeacherCourseList($this->uid);
 
         //学生详情情况
         $map             = array();

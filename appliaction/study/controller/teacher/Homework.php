@@ -30,9 +30,7 @@ class Homework extends \app\study\controller\Init
             $list[$key]['annex']   = $this->annex($value['annex']);
         }
 
-        $map                = array();
-        $map['teacher_uid'] = $this->uid;
-        $courseList         = dao('Article')->getList($map, 'title,btitle,id', 3);
+        $courseList = dao('Teacher', 'study')->getTeacherCourseList($this->uid);
 
         $this->assign('list', $list);
         $this->assign('courseList', $courseList['list']);
@@ -100,9 +98,7 @@ class Homework extends \app\study\controller\Init
         $total = table('UserUpWork')->where($map)->count();
         $page  = new \denha\Pages($total, $pageNo, $pageSize, url('', array('course_id' => $courseId)));
 
-        $map                = array();
-        $map['teacher_uid'] = $this->uid;
-        $courseList         = dao('Article')->getList($map, 'title,btitle,id', 3);
+        $courseList = dao('Teacher', 'study')->getTeacherCourseList($this->uid);
 
         $this->assign('list', $list);
         $this->assign('courseList', $courseList['list']);

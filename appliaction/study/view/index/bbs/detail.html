@@ -163,13 +163,11 @@ jQuery(".focusBox").slide({ mainCell:".pic",effect:"fold", autoPlay:true, delayT
 </script>
 	<script type="text/javascript">
         $(document).ready(function () {
-            $(".navgation input").each(function () {
-                var this_div = $(".navgation .div");
-                var _inx = $(".navgation input").index(this);
-                $(this).click(
-                function () { this_div.eq(_inx).slideToggle(); },
-                function () { this_div.eq(_inx).slideToggle(); }
-           );
+            $(".navgation input").each(function (i,value) {
+                $(value).click(
+                    function () { $(value).parent().next().slideToggle(); },
+                    function () { $(value).parent().next().slideToggle(); }
+                );
             });
         });
     </script>

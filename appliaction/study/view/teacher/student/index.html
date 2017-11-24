@@ -41,7 +41,7 @@
                 <ul class="clearfix div_ul2">
                     {loop $courseList $key $value}
                       <li {if $goodsid == $value['id']}class="on"{/if}><a href="{F:url('index',array('goodsid'=>$value['id']))}" >{$value['title']}</a></li>
-                   {/loop}
+                    {/loop}
                 </ul>
             </div>
 

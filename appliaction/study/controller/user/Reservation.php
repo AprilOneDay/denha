@@ -40,7 +40,7 @@ class Reservation extends \app\study\controller\Init
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
     }
 
-    /** 发起预约 */
+    /** 发起预约展示 */
     public function initiated()
     {
         //学生购买的一对一课程
@@ -60,6 +60,7 @@ class Reservation extends \app\study\controller\Init
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
     }
 
+    /** 增加预约操作 */
     public function add()
     {
         $data['order_sn']   = post('order_sn', 'text', '');
@@ -113,4 +114,33 @@ class Reservation extends \app\study\controller\Init
 
         $this->appReturn(array('msg' => '预约成功,请耐心等待老师同意'));
     }
+
+    /** 同意修改时间 */
+    public function agree()
+    {
+        $id = post('id', 'intval', 0);
+
+        if (!$id) {
+            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
+        }
+
+        $map['uid']    = $this->uid;
+        $map['id']     = $id;
+        $map['status'] = 2;
+        $userCourseLog = table('UserCourseLog')->where($map)->find();
+        if (!$userCourseLog) {
+            $this->appReturn(array('status' => false, 'msg' => '可操作信息不存在'));
+        }
+
+        $data['status']     = 1;
+        $data['user_agree'] = 1;
+
+        $result = table('UserCourseLog')->where('id', $id)->save($data);
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '操作失败，请稍后重试'));
+        }
+
+        $this->appReturn(array('status' => true, 'msg' => '操作成功'));
+    }
+
 }

@@ -87,6 +87,7 @@ class Pay extends \app\study\controller\Init
                 $data['end_time']    = $value['end_time'];
                 $data['goods_id']    = $ordersData['goods_id'];
                 $data['sign']        = $ordersData['sign'];
+                $data['lesson']      = $value['teacher_hour'];
 
                 table('UserCourseLog')->add($data);
             }

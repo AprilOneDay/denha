@@ -28,9 +28,7 @@ class Scores extends \app\study\controller\Init
             $list[$key]['user'] = dao('User')->getInfo($value['uid'], 'nickname,real_name');
         }
 
-        $map                = array();
-        $map['teacher_uid'] = $this->uid;
-        $courseList         = dao('Article')->getList($map, 'title,btitle,id', 3);
+        $courseList = dao('Teacher', 'study')->getTeacherCourseList($this->uid);
 
         //获取购买课程的学生
         foreach ($courseList['list'] as $key => $value) {

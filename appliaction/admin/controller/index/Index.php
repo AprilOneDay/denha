@@ -28,7 +28,7 @@ class Index extends \app\admin\controller\Init
         $map['del_status'] = 0;
         $map['parentid']   = $id;
 
-        $list = table('ConsoleMenus')->where($map)->field('id,name,icon,url')->order('sort asc')->find('array');
+        $list = table('ConsoleMenus')->where($map)->field('id,name,icon,url')->order('sort asc,id asc')->find('array');
         foreach ($list as $key => $value) {
             //隐藏未授权栏目信息
             if (in_array($value['id'], $this->power)) {

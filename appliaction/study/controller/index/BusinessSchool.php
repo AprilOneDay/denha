@@ -33,8 +33,6 @@ class BusinessSchool extends \app\study\controller\Init
             $list['list'][$key]['characteristics_copy'] = (array) dao('Category')->getName($value['characteristics']);
         }
 
-        var_dump($list);
-
         $columnList = table('Column')->where('parentid', $this->parentColumn['id'])->field('id,name,bname,jump_url')->find('array');
 
         $this->assign('list', $list);

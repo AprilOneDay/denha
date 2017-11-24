@@ -34,9 +34,7 @@ class Homework extends \app\study\controller\Init
 
         }
 
-        $map                = array();
-        $map['teacher_uid'] = $this->uid;
-        $courseList         = dao('Article')->getList($map, 'title,btitle,id', 3);
+        $courseList = dao('Teacher', 'study')->getTeacherCourseList($this->uid);
 
         $this->assign('list', $list);
         $this->assign('courseList', $courseList['list']);

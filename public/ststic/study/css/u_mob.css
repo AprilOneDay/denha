@@ -223,7 +223,7 @@
 	nav  ul li:hover a{ background:url(../images/right.png) no-repeat center right; }
 	nav  ul li.on a{ background:url(../images/right.png) no-repeat center right; color:#98d8f3 }
 	nav  ul li.black{ background:#134063}
-	#navbar span{ color:#fff; font-size:0}
+	#navbar span{ color:#fff; font-size:0;display:none;}
 	.t_news  .t_news_right{ border-left:#ccc 1px solid; box-sizing:border-box; width:84%; padding-left:6%}
 	.classroom_right .t_cr_left{ float:left; width:15%; padding-right:2%}
 	.classroom_right .t_cr_right{ border-left:#ccc 1px solid; box-sizing:border-box; width:80%; padding-left:5%}

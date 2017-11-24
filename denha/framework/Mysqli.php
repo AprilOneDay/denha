@@ -213,7 +213,7 @@ class Mysqli
 
         $where ?: $where = $this->table . '.id =' . $table . '.id';
 
-        $this->join = ' ' . $float . ' JOIN ' . $table . ' ON ' . $where;
+        $this->join .= ' ' . $float . ' JOIN ' . $table . ' ON ' . $where;
         return $this;
     }
 

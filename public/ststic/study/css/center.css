@@ -51,7 +51,7 @@ nav  ul{ display:block; /*padding-top:30px*/}
 .t_news  .t_news_right .newsul  li  .zhongyao{ background:url(../images/zhongyao.png) no-repeat left center; padding-left:20px}
 
 
-.page{ float:right; width:190px; margin:20px auto; line-height:25px}
+.page{ clear:both;float:right; width:190px; margin:20px auto; line-height:25px}
 .page p{ float:left; line-height:25px }
  .page a{ color:#000; display:block; float:right; border:#ccc 1px solid; padding: 0 5px; margin-left:10px}
 .demo1{}
@@ -1255,6 +1255,32 @@ textarea.int{ height:auto; padding:10px; line-height:1.7;}
     cursor:pointer;
     background:url("../images/close.png") no-repeat center center;
     background-size:cover;
+}
+.t_cr_right .yuyue_fo div.date-choice{
+    position: relative;
+    float: left;
+    margin-bottom: 15px;
+    width: 23.5%;
+}
+.t_cr_right .yuyue_fo div.date-choice input{
+    height: 20px;
+    padding: 5px;
+    font-size: 14px;
+    display: inline-block;
+    border: 1px solid #d2ccc4;
+    background: #fcfcfb url(../images/input_r.png) no-repeat right 10px center;
+    float: left;
+    line-height: 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: relative;
+    z-index: 99;
+    text-align: left;
+    font-weight: 100;
+    color: #999;
+    width: 95%;
 }
 @media screen and (min-width:1200px){
     .classroom_right .enter-classrrom{

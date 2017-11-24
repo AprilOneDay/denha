@@ -4,7 +4,9 @@
  */
 namespace app\study\controller\teacher;
 
-class Classroom extends \app\study\controller\Init
+use app\study\controller\Init;
+
+class Classroom extends Init
 {
 
     public function __construct()
@@ -60,6 +62,26 @@ class Classroom extends \app\study\controller\Init
         $this->assign('live', $live[0]);
         $this->assign('user', $user);
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+    }
+
+    /** 增加进入记录 */
+    public function addLog()
+    {
+        $id = post('id', 'intval');
+
+        $map['id']          = $id;
+        $map['teacher_uid'] = $this->uid;
+
+        $courseLog = table('UserCourseLog')->where($map)->field('id,goods_id')->find();
+
+        if (!$is) {
+            $this->appReturn(array('status' => false, 'msg' => '可操作信息不存在'));
+        }
+
+        $result = dao('Classroom')->centerLog($this->uid, 1, array(), $courseLog['goods_id'], $courseLog['id']);
+
+        $this->appReturn($result);
+
     }
 
 }

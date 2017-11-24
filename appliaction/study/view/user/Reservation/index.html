@@ -46,16 +46,22 @@
                         {/if}
                         </div>
                         {if $value['status'] == 0}
-                        <div class="right_li"><a class="xg_time" href="javascript:;">预约中</a></div>
+                            <div class="right_li"><a class="xg_time" href="javascript:;">预约中</a></div>
                         {elseif $value['status'] == 1}
-                        <div class="right_li"><a class="yy_su" href="javascript:;">已预约成功</a></div>
-                        {else}
-                        <div class="right_li"><a class="xg_time" href="javascript:;">老师拒绝</a></div>
+                            <div class="right_li"><a class="yy_su" href="javascript:;">已预约成功</a></div>
+                        {elseif $value['status'] == 3}
+                            <div class="right_li"><a class="yy_su" href="javascript:;">老师拒绝</a></div>
+                        {elseif $value['status'] == 4}
+                            <div class="right_li"><a class="yy_su" href="javascript:;">学生拒绝</a></div>
+                        {/if}
+
+                        {if $value['status'] == 2 && $value['user_agree'] != 1}
+                            <div class="right_li"><a class="yy_su btn-ajax-post" href="javascript:;" config-href="{F:url('agree')}" data-id="{$value['id']}" config-tips="老师修改了预约时间<br/>同意修改后,表示预约生效<br/>请谨慎操作！！">同意修改时间</a></div>
                         {/if}
                         
-                        {if $value['teahcer_msg']}
+                        {if $value['teacher_msg']}
                         <div class="hf_te">
-                            <p><span>{$value['teacher']['real_name']}</span><b>回复</b> {$value['teacher_msg']}</p>
+                            <p><span>{$value['teacher']['real_name']} </span><b>回复:</b> {$value['teacher_msg']}</p>
                         </div>
                         {/if}
                     </li>

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
    <head>
-        <title>学生门户-评论管理</title>
+        <title>教师中心-评论管理</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="Content-Type" content="charset=utf-8" />
         <link rel="stylesheet" href="/ststic/study/css/base.css">
@@ -22,57 +22,49 @@
 <body bgcolor="f1f1f1" >
 	
         <div class="center">
-        	<div id="navbar"><span><i class="ico2"></i>教师中心-评论管理</span><a href="#" class="menubtn"></a>
+        	<div id="navbar"><span><i class="ico2"></i>教师中心-我发布的帖子</span><a href="#" class="menubtn"></a>
         {include public/left_menus}
     </div>
         
         <div class="classroom_right clearfix " >
-        	<h3 class="t_student t_talk_about">评论管理</h3>
+        	<h3 class="t_student t_talk_about">我发布的帖子</h3>
         	<div class="t_cr_left t_fbcj fl">
-            	<p class="onli">课程安排</p>
+            	<p class="onli">
+                {if ACTION == 'lessons'}
+                  课程评论
+                {elseif ACTION == 'bbs'}
+                  论坛评论
+                {else}
+                  我发布的帖子
+                {/if}
+              </p>
             	<ul class="clearfix div_ul2">
                     <li {if ACTION == 'lessons'}class="on"{/if}><a href="{F:url('lessons')}" class="kc_pp">课程评论</a></li>
                     <li {if ACTION == 'bbs'}class="on"{/if}><a href="{F:url('bbs')}" class="lt_pp">论坛评论</a></li>
                     <li {if ACTION == 'my_article'}class="on"{/if}><a href="{F:url('my_article')}" class="my_pp">我发布的帖子</a></li>                 
-                    <li><button type="button">发帖</button></li>
+                    <!-- <li><button type="button">发帖</button></li> -->
                 </ul>
                
             </div>
      	<div class="t_cr_right fr demo1 ">
-			<ul class="t_my_pp">
-            	<li>
-                	<p class="title">推荐几个国内好玩的地方给大家，希望大家有时间去玩，不要错过了！</p>
-                    <a class="chankan" href="s_ppcont.html">查看详情</a>
- 					<span class="del">删除</span>
-                   <span class="time">2017/05/20</span>
-                </li>
-            	<li>
-                	<p class="title">推荐几个国内好玩的地方给大家，希望大家有时间去玩，不要错过了！</p>
-                    <a class="chankan" href="s_ppcont.html">查看详情</a>
- 					<span class="del">删除</span>
-                   <span class="time">2017/05/20</span>
-                </li>
-            	<li>
-                	<p class="title">推荐几个国内好玩的地方给大家，希望大家有时间去玩，不要错过了！</p>
-                    <a class="chankan" href="s_ppcont.html">查看详情</a>
- 					<span class="del">删除</span>
-                   <span class="time">2017/05/20</span>
-                </li>
-            	<li>
-                	<p class="title">推荐几个国内好玩的地方给大家，希望大家有时间去玩，不要错过了！</p>
-                    <a class="chankan" href="s_ppcont.html">查看详情</a>
- 					<span class="del">删除</span>
-                   <span class="time">2017/05/20</span>
-                </li>
-            	<li>
-                	<p class="title">推荐几个国内好玩的地方给大家，希望大家有时间去玩，不要错过了！</p>
-                    <a class="chankan" href="s_ppcont.html">查看详情</a>
- 					<span class="del">删除</span>
-                   <span class="time">2017/05/20</span>
-                   
-                </li>
-                    <div class="page"><p><b>2</b>/6</p><a href="#">上一页</a><a href="#">下一页</a></div>
-            </ul>
+         <ul class="t_my_pp">
+            {loop $list $value}
+          	<li>
+              	<p class="title">{$value['title']}{if !$value['is_review']} <b style="color: red">[审核中]</b>{/if}</p>
+                  <a class="chankan" href="{F:url('/index/bbs/detail',array('id'=>$value['id'],'cid'=>$value['column_id']))}">查看详情</a>
+    			<span class="del btn-ajax-post" config-tips="删除后文章将不再存在，确定删除？" config-href="{F:url('del_article')}" data-id="{$value['id']}">删除</span>
+                 <span class="time">{F:date('Y/m/d',$value['publish_time'])}</span>
+            </li>
+            {/loop}
+
+            {if $pages}
+            <div class="page ">
+                <p><b>{$pages['pageNo']}</b>/{$pages['allPage']}</p>
+                <a href="{$pages['pageUrl']}?pageNo={F:max($pages['pageNo'] - 1,1)}">上一页</a>
+                <a href="{$pages['pageUrl']}?pageNo={F:min($pages['pageNo'] + 1,$pages['allPage'])}">下一页</a>
+            </div>
+            {/if}
+          </ul>
         </div>
         </div>
             
