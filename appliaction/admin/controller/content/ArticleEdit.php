@@ -225,6 +225,7 @@ class ArticleEdit extends \app\admin\controller\Init
         if (IS_POST) {
 
             $data                    = post('info');
+            $data['video_url']       = post('video_url', 'text', '');
             $data['start_time']      = post('info.start_time', 'time');
             $data['end_time']        = post('info.end_time', 'time');
             $data['characteristics'] = implode(',', $data['characteristics']);

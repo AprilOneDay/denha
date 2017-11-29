@@ -478,7 +478,8 @@
         var path     = $(this).attr('data-path'); 
         var content  = '<input type="file" style="display:none;" id="'+name+'"  multiple="multiple"><input type="hidden" name="'+name+'" >';
         var progress = '<div class="progress" style="margin:0px; margin-top:5px;"><div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 1%;">1%</div></div>';
-        var value   = $(this).attr('data-value');
+        var value    = $(this).attr('data-value');
+        var maxNum   = Number($(this).attr('data-max'));
 
 
         //DOM 显示文件
@@ -524,6 +525,11 @@
 
         //上传
         $(_this).click(function(){
+            //判断是否达到最大上传数量
+            if($('input[name=tmp'+name+']').length >= maxNum && maxNum > 0){
+                return layer.msg('只可上传'+maxNum+'个文件');
+            } 
+
             $('input[id='+name+']').wrap('<form>').closest('form').get(0).reset();
             $('input[id='+name+']').trigger('click');
         })

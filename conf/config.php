@@ -31,6 +31,7 @@ return array(
     /** 云屋直播 */
     'yunwu_key'         => '15923882847',
     'yunwu_secret'      => md5('123456'),
+    'yunwu_api_key'     => md5('220762'), //加密企业ID
 
     /* 百度翻译api */
     'baidu_trans_appid' => '20170926000085221',

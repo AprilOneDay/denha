@@ -21,7 +21,7 @@ class Classroom extends Init
         //获取进行中的课程
         $map['teacher_uid'] = $this->uid;
         $map['status']      = 1;
-        $map['sign']        = 2;
+        $map['sign']        = 1;
         $map['start_time']  = array('<=', TIME);
         $map['end_time']    = array('>=', TIME);
         $course             = table('UserCourseLog')->where($map)->order('id desc')->find();
@@ -31,7 +31,7 @@ class Classroom extends Init
             $map                = array();
             $map['teacher_uid'] = $this->uid;
             $map['status']      = 1;
-            $map['sign']        = 2;
+            $map['sign']        = 1;
 
             $course = table('UserCourseLog')->where($map)->order('id desc')->find();
         }
@@ -43,12 +43,14 @@ class Classroom extends Init
         $goods = table('Article')->where('id', $course['goods_id'])->field('title')->find();
 
         if ($goods) {
-            $live = dao('YunwuRoom')->getList($goods['title']);
+            $meet    = dao('YunwuRoom')->getMeetList($goods['title']);
+            $meetUrl = dao('YunwuRoom')->joinMeet($meet['MeetID'], 1, dao('User')->getInfo($this->uid, 'real_name'), $meet['HostPwd']);
         }
 
         $user = dao('User')->getInfo($this->uid, 'avatar,real_name');
 
         $this->assign('course', $course);
+        $this->assign('meetUrl', $meetUrl);
         $this->assign('live', $live[0]);
         $this->assign('user', $user);
 
@@ -82,7 +84,6 @@ class Classroom extends Init
         }
 
         $goods = table('Article')->where('id', $course['goods_id'])->field('title')->find();
-
         if ($goods) {
             $live = dao('YunwuRoom')->getList($goods['title']);
         }

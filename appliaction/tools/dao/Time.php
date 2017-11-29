@@ -23,12 +23,14 @@ class Time
 
         //未开始
         $status = 0;
+
         //进行中
         if ($startTime <= TIME) {
             $status = 1;
         }
+
         //已结束
-        elseif ($endTime <= TIME) {
+        if ($endTime <= TIME) {
             $status = 2;
         }
 

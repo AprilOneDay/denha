@@ -22,44 +22,7 @@
         <style type="text/css">
         /* .close{ display: none; } */
         </style>
-        {if $live['LiveCode']}
-        <script type="text/javascript">
-        var config = {
-           LiveCode:'{$live['LiveCode']}',  // 必传 string  会议地址 直播地址最后六位字符 如“afbse6” 
-           NickName:'{$user['real_name']}',  // 必传 string  用户的昵称 由用户设置
-           headerUrl:'{F:imgUrl($user['avatar'],'avatar')}', // 必传 string  用户头像url 地址
-           userCode: 'u_{$this->uid}',  // 必传 string  用户识别码 用户id   传递方式：‘wx’ 加‘_’加微信id值 如：‘wx_123456’   ‘kdyh’加 ‘_’ 加口袋用户id值 如‘kdyh1234567’
-           videoContent:'#video',  // 必传 string  创建的video的父元素的id值名称 如id值传"#contain"
-           openId:' ',  // 非必传 string  微信用户openid值
-        };
-       //初始化JDK
-        CR_SDK.init(config); // 初始化用户信息
-        CR_SDK.on('cr_init_callback', function(res) {
-            console.log(res);
-            if(!Number(res.data.isBroadcating)){
-                $('.close').css('display','block');
-                $('#video').css('display','none');   
-            }else{
-                $('.close').css('display','none');
-                $('#video').css('display','block');
-                $('#video').parent().css('display','block');   
-            }
-            var a = CR_SDK.getRoominfo();
-           
-        })
-
-        CR_SDK.on('cr_notify_live_type', function(res){
-            if(res.msg == '直播中'){
-                $('.close').css('display','none');
-                $('#video').css('display','block');
-                $('#video').parent().css('display','block');   
-            }else{
-                $('.close').css('display','block');
-                $('#video').css('display','none'); 
-            }
-        })
-        </script>
-        {/if}
+        
    </head>
 <body bgcolor="f1f1f1" >
     
@@ -79,16 +42,17 @@
             </div>
             <div class="t_cr_right fr close">
                 <div class="img_sp"  id="video">
-                {if !$live['LiveCode']}
-                    <span>暂无授课....</span>
-                {elseif $course['hd_status'] == 0}
-                    <span class="time" data-time="{$course['start_time']}">距离开课还有： <label>0天0小时0分</label></span>
-                    <img src="/ststic/study/images/sp.jpg" /></div>
-                {else}
-                    <span>暂时中断等待老师链接</span>
-                    <img src="/ststic/study/images/sp.jpg" /></div>
+                {if $course['hd_status'] == 0} 
+                    <span class="time" data-time="{$course['start_time']}">距离上课还有：<label>0天0小时0分</label></span>
+                {elseif $course['hd_status'] == 2 || !$course}
+                    <span>暂无课程安排</span>
+                {elseif $course['hd_status'] == 1}
+                    <span>已经开课了请及时进入房间上课</span>
                 {/if}
-                <!--  <a class="join" href="#">立即加入</a> -->
+                {if !$course['start_time'] >= TIME + 60*30 || $course['hd_status'] == 1} 
+                    <a class="join" href="{$meetUrl}"  data-id="{$course['id']}">立即加入</a>
+                {/if}
+                <b>首次使用会议客户端，请先<a href="http://dl-3.cloudroom.com:8080/Update/Win32_live/1.5.0/Setup/CLOUDROOMLive_1.5.0.exe">下载</a>安装</b>
             </div>
         </div>
         
