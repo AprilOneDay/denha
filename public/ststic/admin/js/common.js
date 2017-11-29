@@ -1,4 +1,4 @@
-$(function() {
+    $(function() {
 
     init();
     //监听product-nav-scene的宽度变化
@@ -6,28 +6,7 @@ $(function() {
         $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) );
         return true;
     })
-    //监听content-main的宽度变化
-    /*$(".content-main").bind("DOMNodeInserted",function(e){
-        $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) - 10);
-        return true;
-    })*/
-    /*$(window).keyup(function(event){
-        //按下F12
-        if(event.keyCode == 123){
-         
-            if($('.product-nav-scene').css('display') == 'block'){
-                $('.content-main').width(($(document).width() - 150 - 150));
-            }else{
-                console.log($(document).width());
-                $('.content-main').width(($(document).width() - 150));
-            }
-        }
-    });*/
-    //监听出现滚动条
-    /*$(window).scroll(function () {
-        $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) );
-        return true;
-    })*/
+   
     $(window).resize(function(){
         if($('.product-nav-scene').css('display') == 'block'){
             $('.content-main').width(($(document).width() - 150 - 150));
@@ -131,7 +110,8 @@ $(function() {
     $('.checkbox').each(function(){
         var data  = $(this).val();
         var value = $(this).attr('data-checked');
-        if(value != ''){
+        if(typeof(value) != 'undefined' && value != ''){
+            console.log(value)
             value =  jQuery.parseJSON(value);
         }
 
@@ -139,6 +119,15 @@ $(function() {
             $(this).attr("checked","checked");
         }
     })
+
+    //前置触发事件
+    $('.btn-before').on('mousedown',function(){
+        var eventString = $(this).attr('config-event'); 
+        console.log(eventString);
+        $('.form-horizontal').unbind();
+        //eventString.preventDefault();
+        return;
+    });
 
    //打开弹出
     $('.btn-open').click(function() {
@@ -176,16 +165,36 @@ $(function() {
     //提交信息
     $('.btn-comply').click(function(){
         var form     = $(this).parents('.form-horizontal');
-        var data     = form.serializeArray();
         var url      = form.attr('action');
         var trueUrl  = $(this).attr('config-true-url'); //执行成功跳转地址
         var falseUrl = $(this).attr('config-false-url'); //执行失败跳转地址
+        var before   = $(this).attr('config-before');
+
+        //处理checked 未选中不传值的问题
+        $(form).find('input[type=checkbox]').each(function(){
+            if(!$(this).prop('checked')){
+                $(this).prop('checked',true);
+                $(this).val(0);
+            }
+        })
+
+
+        var data     = form.serializeArray();
+
         if(data.length < 1){
             return layer.msg('请上传参数');
         }
-
-
+       
         $.post(url,data,function(result){
+
+            //恢复正常选项样式
+            $(form).find('input[type=checkbox]').each(function(){
+                console.log($(this).val());
+                if($(this).prop('checked',true) && Number($(this).val()) == 0){
+                    $(this).prop('checked',false);
+                }
+            })
+
             layer.msg(result.msg);
             if(result.status){
                 setTimeout(function(){
@@ -303,8 +312,8 @@ $(function() {
         var path    = $(this).attr('data-path'); 
         var content = '<input type="file" style="display:none;" id="'+name+'"  multiple="multiple"><div class="img-list" style="margin-top:20px;"><ul></ul></div>';
         var value   = $(this).attr('data-value');
-        if(value != ''){
-            value =  jQuery.parseJSON(value);
+        if(value != '' && typeof(value) != 'undefined'){
+            value =  value.split(',');
         }
 
         if(maxNum == 1){
@@ -317,6 +326,7 @@ $(function() {
 
         //渲染初始图片
         for(var i=0;i<value.length;i++){
+            value[i] = '/uploadfile/'+path+'/'+value[i]
             var content = '<li style="float:left;width:150px;height:100px;margin-left:10px;margin-top:10px;"><img src="'+value[i]+'" width="150" height="100" style="border:1px solid #ccc;"> <a style="float:right;margin-top:-100px;margin-right:2px;cursor: pointer;" class="btn-del-img"><i class="glyphicon glyphicon-remove"></i></a></li>';
             $(_this).parent().find('.img-list ul').append(content);
         }
@@ -366,7 +376,6 @@ $(function() {
             bindValue();
         })
 
-        //绑定input
         function bindValue(){
             var data = new Array();
             $(_this).parent().find('.img-list').find('img').each(function(){
@@ -375,7 +384,6 @@ $(function() {
                 if(path != 'nd.jpg'){
                     data[data.length] = path.substring(path.lastIndexOf("/")+1,path.length);
                 }
-                
             })
 
             var content = '<input type="hidden" name="'+name+'" value="'+data.join(',')+'" />';
@@ -401,8 +409,7 @@ $(function() {
         var max        = $(this).attr('data-max');         // string int
         var format     = $(this).attr('data-format');
         var type       = $(this).attr('data-type');        //year month date time datetime
-        var isNull     = $(this).attr('data-isnull');        //year month date time datetime
-
+        var isNull     = $(this).attr('data-isnull');      //year month date time datetime
 
         if(!format){ format  = 'yyyy-MM-dd'; }
         if(!min){ min = '1900-1-1';}
@@ -469,14 +476,51 @@ $(function() {
         var _this    = this;
         var name     = $(this).attr('data-name');
         var path     = $(this).attr('data-path'); 
-        var content  = '<input type="file" style="display:none;" id="'+name+'"  multiple="multiple">';
+        var content  = '<input type="file" style="display:none;" id="'+name+'"  multiple="multiple"><input type="hidden" name="'+name+'" >';
         var progress = '<div class="progress" style="margin:0px; margin-top:5px;"><div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 1%;">1%</div></div>';
         var value   = $(this).attr('data-value');
-        if(value != ''){
-            value =  jQuery.parseJSON(value);
+
+
+        //DOM 显示文件
+        var fileHtml = function(value){
+            var  html = '<div class="form-inline" style="padding-bottom: 10px;"><input type="text" value="'+value+'" name="tmp'+name+'" class="form-control" style="width: 30rem;margin-left: 10px;margin-right: 10px;"> <a href="javascript:;" class="form-control-static del-files">删除</a></div>';
+            return html;
         }
-       
-        $(_this).parent().append(content);
+
+        //DOM 最终上传input
+        var initValue = function(){
+            let html = '';
+            $(_this).parent().parent().find('input[name=tmp'+name+']').each(function(){
+               html += ','+$(this).val();
+            }) 
+            
+            html = html.substring(1,html.length);
+
+            $('input[name='+name+']').val(html);
+        }
+
+        //删除已上传文件
+        $('body').on('click','.del-files',function(){
+            $(this).parent().find('input[name='+name+']').val();
+            $(this).parent().remove();
+            initValue();
+        })
+
+        //DOM上传保存信息 和上传插件
+        if($('#'+name)){
+            $(_this).parent().append(content);
+        }
+
+        if(value != ''){
+           var  tmpValue =  value.split(',');
+            for (var key in tmpValue){
+                $(_this).parent().parent().find('.col-sm-8').append(fileHtml(tmpValue[key]));
+                initValue();
+            }
+        }else{
+            value = '';
+        }
+
 
         //上传
         $(_this).click(function(){
@@ -485,10 +529,6 @@ $(function() {
         })
 
         $('#'+name).change(function(e){
-            //移除之前的上传进度条
-            $(_this).parent().find('.progress').remove();
-            //添加现在的进度条
-            $(_this).parent().append(progress);
             //获取资源
             var files = e.target.files || e.dataTransfer.files;
             //资源赋值
@@ -504,21 +544,25 @@ $(function() {
                 dataType: 'json',  
                 contentType: false, //必须false才会自动加上正确的Content-Type  
                 processData: false,  //必须false才会避开jQuery对 formdata 的默认处理  
-                xhr: function(){ //获取ajaxSettings中的xhr对象，为它的upload属性绑定progress事件的处理函数  
+                xhr: function(){ //获取ajaxSettings中的xhr对象，为它的upload属性绑定progress事件的处理函数
+                    //移除之前的上传进度条
+                    $(_this).parent().find('.progress').remove();
+                    //添加现在的进度条
+                    layer.alert(progress);  
                     myXhr = $.ajaxSettings.xhr();  
-                    if(myXhr.upload){ //检查upload属性是否存在  
+                    if(myXhr.upload){ 
+                        //检查upload属性是否存在  
                         //绑定progress事件的回调函数  
+            
                         myXhr.upload.addEventListener('progress',progressHandlingFunction, false);   
                     }  
                     return myXhr; //xhr对象返回给jQuery使用  
                 },  
                 success: function(result){
-                    if(!result.status){
-                        $(_this).parent().find('.progress').remove();
-                    }else{
-                        var inputContent = '<input type="text" value="'+result.data.name[0]+'" name="'+name+'" class="form-control pull-left" style="width: 30rem;margin-left: 10px;margin-right: 10px;">';  
-                        $(_this).after(inputContent);
-
+                    if(result.status){
+                        value  = value +','+ result.data.name[0];
+                        $(_this).parent().parent().find('.col-sm-8').append(fileHtml(result.data.name[0]));
+                        initValue();
                     }
 
                     return layer.msg(result.msg);               
@@ -526,7 +570,7 @@ $(function() {
             });  
 
             //上传进度回调函数：  
-            function progressHandlingFunction(e) { 
+            function progressHandlingFunction(e) {
                 if (e.lengthComputable) {  
                     $('progress').attr({value : e.loaded, max : e.total}); //更新数据到进度条  
                     var percent = e.loaded/e.total*100; 
@@ -536,9 +580,6 @@ $(function() {
             } 
 
         });
-
-        
-  
         
     })
 })

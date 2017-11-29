@@ -3,7 +3,7 @@
     <h3>学生门户</h3>
     <ul>
         <li {if CONTROLLER == 'message'}class="on"{/if}>
-            <a href="{F:url('/user/message')}">我的消息<b>（5）</b></a>
+            <a href="{F:url('/user/message')}">我的消息<b></b></a>
         </li>
 
         <li {if CONTROLLER == 'calendar'}class="on"{/if}>
@@ -29,8 +29,10 @@
         <li class="black{if CONTROLLER == 'homework'} on{/if}">
             <a href="{F:url('/user/homework/lessons')}">课程和作业安排</a>
         </li>
-
-        <li class="black"><a href="#">线上考试系统</a></li>
+        
+        <li class="black{if CONTROLLER == 'exam'} on{/if}">
+            <a href="{F:url('/user/exam')}">线上考试系统</a>
+        </li>
 
         <li class="black{if CONTROLLER == 'scores'} on{/if}">
             <a href="{F:url('/user/scores')}">我的成绩</a>
@@ -38,7 +40,9 @@
 
         <li><a href="{F:url('/index/bbs',array('cid'=>23))}">恒鼎社区</a></li>
 
-        <li><a href="#">下载专区</a></li>
+         <li class="black{if CONTROLLER == 'download'} on{/if}">
+            <a href="{F:url('/user/download')}">下载专区</a>
+        </li>
 
         <li {if CONTROLLER == 'comment'}class="on"{/if}><a href="{F:url('/user/comment/lessons')}">评论管理</a></li>
 

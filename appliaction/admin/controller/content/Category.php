@@ -4,7 +4,9 @@
  */
 namespace app\admin\controller\content;
 
-class Category extends \app\admin\controller\Init
+use app\admin\controller\Init;
+
+class Category extends Init
 {
     public function lists()
     {

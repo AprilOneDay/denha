@@ -22,10 +22,10 @@ class Time
         }
 
         //未开始
-        $status = 1;
+        $status = 0;
         //进行中
-        if ($startTime >= TIME) {
-            $status = 0;
+        if ($startTime <= TIME) {
+            $status = 1;
         }
         //已结束
         elseif ($endTime <= TIME) {

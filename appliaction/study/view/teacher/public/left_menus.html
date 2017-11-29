@@ -1,9 +1,9 @@
 <nav id="hamburgermenu">
-    <div class="logo"><img src="/ststic/study/images/logo.png" /></div>
-    <h3>教师中心</h3>
+    <div class="logo"><a href="/"><img src="/ststic/study/images/logo.png" /></a></div>
+    <h3><a href="{F:url('/teacher')}">教师中心</a></h3>
     <ul>
         <li {if CONTROLLER == 'message'}class="on"{/if}>
-            <a href="{F:url('/teacher/message')}">我的消息<b>（5）</b></a>
+            <a href="{F:url('/teacher/message')}">我的消息<b></b></a>
         </li>
 
         <li {if CONTROLLER == 'calendar'}class="on"{/if}>
@@ -15,7 +15,7 @@
         </li>
 
         <li class="black{if CONTROLLER == 'classroom' && ACTION == 'vip'} on{/if}">
-            <a href="{F:url('/teacher/classroom/vip')}">进入一对一教师</a>
+            <a href="{F:url('/teacher/classroom/vip')}">进入一对一教室</a>
         </li>
 
         <li class="black{if CONTROLLER == 'reservation'} on{/if}">
@@ -44,6 +44,8 @@
          <li {if CONTROLLER == 'personal'}class="on"{/if}>
             <a href="{F:url('/teacher/personal/index')}">资料管理</a>
         </li>
+
+        <li><a href="javascript:;" class="btn-ajax-post" data-id="" config-href="{F:url('/index/user/outlogin')}" config-tips="确定退出登录?">退出登录</a></li>
 
         <div class="bottom_c_e"><a class="q_h">中文</a>|<a href="javascript:;" class="btn-ajax-post" data-id="" config-href="/common/version/switchlg">English</a></div>
     </ul>

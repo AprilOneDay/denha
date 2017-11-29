@@ -190,6 +190,12 @@ class Message extends \app\study\controller\Init
         $this->appReturn(array('msg' => '删除成功'));
     }
 
+    /**
+     * 获取消息数量
+     * @date   2017-11-27T19:35:54+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
     private function mailTotal()
     {
         //所有信息

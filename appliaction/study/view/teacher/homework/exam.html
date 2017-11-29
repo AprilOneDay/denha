@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
    <head>
-        <title>教师中心-课程和作业安排</title>
+        <title>教师中心-试卷安排</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="Content-Type" content="charset=utf-8" />
         <link rel="stylesheet" href="/ststic/study/css/base.css">
@@ -27,7 +27,7 @@
     </div>
         
         <div class="classroom_right teacher_right_t">
-                <h3 class="ks_zy" >课程和作业安排</h3>
+                <h3 class="ks_zy" >试卷安排</h3>
             <div class="t_cr_left t_kczy fl">
                 <p class="onli">课程安排</p>
                 <ul class="clearfix div_ul2">
@@ -63,7 +63,7 @@
                 <ul class="kczy">
                 {loop $list $value}
                     <li>
-                        <p class="name"><a href="javascript:;">{$value['goods']['title']}</a></p>
+                        <p class="name"><a href="javascript:;">{$value['goods']['title']} 考卷:{$value['exam']['name']}</a></p>
                         <p class="zy_cont">{$value['content']}</p>
                         {loop $value['annex'] $v}
                         <p class="wenjian"><a href="{$v['url']}" target="_blank">{$v['name']}</a></p>
@@ -79,7 +79,7 @@
    </div>
 
         <div class="xiugais  clearfix">
-            <form class="form-horizontal" action="">
+            <form class="form-horizontal" action="{F:url('lessonsPost',array('type'=>3))}">
                 <input  type="hidden" value="" name="annex" />
                 <div class="xiugai_box">
                     <div class="close"><a href="javascript:;" class="closebox"></a></div>
@@ -92,11 +92,17 @@
                             {/loop}
                         </select>
                     </p>
+                    <p><span>选择试卷</span>
+                        <select style="width: 70%;height:30px;padding: 5px;border: 1px solid #dcdcdc;" name="exam_id">
+                            <option value="">选择试卷</option>
+                            {loop $examList $value}
+                            <option value="{$value['id']}">{$value['name']}</option>
+                            {/loop}
+                        </select>
+                    </p>
                     <p><span>描述</span><textarea name="content" cols="" rows=""></textarea></p>
-                    <p class="iDate date"><span>日期</span><input type="text" placeholder="课程开始时间" name="start_time"><button type="button" class="addOn"></button></p>
-                    <p><span>附件</span> <a href="javascript:;" class="btn_sc"><input type="file" name="tmp_annex" style="width: 100%" />立即上传</a></p>
-                    <p class="wenjian">附件个数：<label>0</label></p>
-                    <a class="btn_xg btn-comply" href="javascript:;">立即上传</a>
+                    <p class="iDate date"><span>开始日期</span><input type="text" placeholder="课程开始时间" name="start_time"><button type="button" class="addOn"></button></p>
+                    <a class="btn_xg btn-comply" href="javascript:;">提交</a>
                 </div>
             </form>
         </div>  

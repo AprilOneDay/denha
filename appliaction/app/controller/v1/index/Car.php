@@ -203,14 +203,52 @@ class Car extends \app\app\controller\Init
         $data['city_copy'] = (string) dao('Category')->getName($data['city']);
 
         //获取图片介绍
-        $data['content'] = '';
-        $ablum           = table('GoodsAblum')->where(array('goods_id' => $data['id']))->find('array');
-        foreach ($ablum as $key => $value) {
-            $data['content'] .= '<p><img src="' . $this->appImg($value['path'], 'car') . '" style="width:96%;margin-left:2%;display:block;" /></p>';
-            if ($value['description']) {
-                $data['content'] .= '<p style="line-height:1rem; padding-left:0.2rem">' . $value['description'] . '</p>';
+        if (!$data['content']) {
+            $data['content'] = '';
+            $ablum           = table('GoodsAblum')->where(array('goods_id' => $data['id']))->find('array');
+            foreach ($ablum as $key => $value) {
+                $data['content'] .= '<p><img src="' . $this->appImg($value['path'], 'car') . '" style="width:96%;margin-left:2%;display:block;" /></p>';
+                if ($value['description']) {
+                    $data['content'] .= '<p style="line-height:1rem; padding-left:0.2rem">' . $value['description'] . '</p>';
+                }
             }
+        } else {
+            $expP      = explode('</p>', $data['content']);
+            $duanluo[] = array();
+            foreach ($expP as $key => $value) {
+                $value = trim($value);
+                if ($value) {
+                    $f1 = strip_tags($value, '<img>');
+                    preg_match_all('/<img[^>]*?src=\"([^>]+?)\"[^>]*?>/i', $f1, $imgArr);
+                    if ($imgArr[0]) {
+                        foreach ($imgArr[0] as $k => $vimg) {
+                            $duanluo[] = array(
+                                'is_img'  => 1,
+                                'content' => $imgArr[1][$k],
+                            );
+                        }
+                    }
+                    $content = strip_tags($value, '<br>');
+                    if ($content) {
+                        $duanluo[] = array(
+                            'is_img'  => 0,
+                            'content' => $content,
+                        );
+                    }
+                }
+            }
+            $data['content'] = '';
+            foreach ($duanluo as $key => $value) {
+                if ($value['is_img']) {
 
+                    //$value['content'] = strripos($value['content'], 'ueditor') !== false ? URL . $value['content'] : $this->appImg($value['content'], 'car');
+                    $value['content'] = URL . $value['content'];
+                    $data['content'] .= '<p><img src="' . $value['content'] . '" style="width:96%;margin-left:2%;display:block;" /></p>';
+                } else {
+                    $data['content'] .= '<p style="line-height:1rem; padding-left:0.2rem">' . $value['content'] . '</p>';
+                }
+
+            }
         }
 
         if ($data['type'] == 1) {

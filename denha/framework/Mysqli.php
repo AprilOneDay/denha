@@ -478,20 +478,14 @@ class Mysqli
                 return false;
             }
 
-            if (count($row) > 1) {
-                throw new Exception('sql模块中one只能查询单个字段内容请设置field函数');
-            }
-
             return $row[0];
         }
         //单字段数组模式
         elseif ($value == 'one' && $isArray) {
             while ($row = mysqli_fetch_array($result, MYSQLI_NUM)) {
                 $this->field = str_replace('`', '', $this->field);
-                if (count($row) > 1) {
-                    throw new Exception('sql模块中one只能查询单个字段内容请设置field函数');
-                }
-                $data[] = $row[0];
+
+                $isArray !== true ? $data[$row[1]] = $row[0] : $data[] = $row[0];
             }
 
             if (empty($data)) {

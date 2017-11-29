@@ -53,7 +53,7 @@ class Pay extends \app\study\controller\Init
 
     /** 购买成功后批量导入课程表 */
 
-    //--------url http://192.168.0.254:8091/index/pay/get_lession?order_sn=
+    //--------url http://192.168.0.254:8091/index/pay/get_lession?order_sn=173315141060578204
     public function getLession()
     {
         $orderSn = get('order_sn', 'text', '');

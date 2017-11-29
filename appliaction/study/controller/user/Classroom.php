@@ -16,16 +16,30 @@ class Classroom extends \app\study\controller\Init
     /** 一对一 */
     public function vip()
     {
-        //获取最近的课程
+        //获取进行中的课程
         $map['uid']        = $this->uid;
         $map['status']     = 1;
-        $map['sign']       = 1;
-        $map['start_time'] = array('>=', TIME);
+        $map['sign']       = 2;
+        $map['start_time'] = array('<=', TIME);
+        $map['end_time']   = array('>=', TIME);
+        $course            = table('UserCourseLog')->where($map)->order('id desc')->find();
 
-        $course = table('UserCourseLog')->where($map)->find();
-        $goods  = table('Article')->where('id', $course['goods_id'])->field('title')->find();
+        if (!$course) {
+            //获取最近开始的课程
+            $map           = array();
+            $map['uid']    = $this->uid;
+            $map['status'] = 1;
+            $map['sign']   = 2;
 
-        $live = dao('YunwuRoom')->getList($goods['title']);
+            $course = table('UserCourseLog')->where($map)->order('id desc')->find();
+        } else {
+            $goods = table('Article')->where('id', $course['goods_id'])->field('title')->find();
+            $live  = dao('YunwuRoom')->getList($goods['title']);
+        }
+
+        if ($course) {
+            $course['hd_status'] = dao('Time')->hdStatus($course['start_time'], $course['end_time']);
+        }
 
         $user = dao('User')->getInfo($this->uid, 'avatar,real_name');
 
@@ -38,16 +52,31 @@ class Classroom extends \app\study\controller\Init
     /** 大厅 */
     public function hall()
     {
-        //获取最近的课程
+        //获取进行中的课程
         $map['uid']        = $this->uid;
         $map['status']     = 1;
-        $map['sign']       = 2;
-        $map['start_time'] = array('>=', TIME);
+        $map['sign']       = 1;
+        $map['start_time'] = array('<=', TIME);
+        $map['end_time']   = array('>=', TIME);
+        $course            = table('UserCourseLog')->where($map)->order('id desc')->find();
 
-        $course = table('UserCourseLog')->where($map)->find();
-        $goods  = table('Article')->where('id', $course['goods_id'])->field('title')->find();
+        if (!$course) {
+            //获取最近开始的课程
+            $map           = array();
+            $map['uid']    = $this->uid;
+            $map['status'] = 1;
+            $map['sign']   = 1;
 
-        $live = dao('YunwuRoom')->getList($goods['title']);
+            $course = table('UserCourseLog')->where($map)->order('id desc')->find();
+        } else {
+            $goods = table('Article')->where('id', $course['goods_id'])->field('title')->find();
+            $live  = dao('YunwuRoom')->getList($goods['title']);
+        }
+
+        if ($course) {
+            $course['hd_status'] = dao('Time')->hdStatus($course['start_time'], $course['end_time']);
+
+        }
 
         $user = dao('User')->getInfo($this->uid, 'avatar,real_name');
 

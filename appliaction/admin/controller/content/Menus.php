@@ -1,7 +1,10 @@
 <?php
 namespace app\admin\controller\content;
 
-class Menus extends \app\admin\controller\Init
+use app\admin\controller\Init;
+use app\admin\tools\util\MenuTree;
+
+class Menus extends Init
 {
     public $type;
 
@@ -22,7 +25,7 @@ class Menus extends \app\admin\controller\Init
         $result = table('Column')->where($map)->order('sort asc,id asc')->find('array');
 
         if ($result) {
-            $tree = new \app\admin\tools\util\MenuTree();
+            $tree = new MenuTree();
             $tree->setConfig('id', 'parentid', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
             $list = $tree->getLevelTreeArray($result);
             foreach ($list as $key => $value) {
@@ -212,7 +215,7 @@ class Menus extends \app\admin\controller\Init
         $id   = get('id', 'intval', 0);
         $menu = table('ConsoleMenu')->order('sort asc,id asc')->select();
         if ($menu) {
-            $tree = new \app\console\tools\util\MenuTree();
+            $tree = new MenuTree();
             $tree->setConfig('id', 'parentid');
             $ids = $tree->getChildsId($menu, $id);
             if ($ids) {
@@ -232,7 +235,7 @@ class Menus extends \app\admin\controller\Init
         //格式化菜单
         $result = table('Column')->field('id,parentid,name,bname')->find('array');
         if ($result) {
-            $tree = new \app\console\tools\util\MenuTree();
+            $tree = new MenuTree();
             $tree->setConfig('id', 'parentid');
             $list = $tree->getLevelTreeArray($result);
             if (isset($list) && $list) {

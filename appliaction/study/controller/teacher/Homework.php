@@ -37,6 +37,41 @@ class Homework extends \app\study\controller\Init
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
     }
 
+    /**
+     * 获取试卷安排列表
+     * @date   2017-11-27T16:57:15+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function exam()
+    {
+        $type = get('type', 'intval', 0);
+
+        $map['type']        = 3;
+        $map['teacher_uid'] = $this->uid;
+
+        $list = table('UserWork')->where($map)->find('array');
+
+        foreach ($list as $key => $value) {
+            $list[$key]['teacher'] = dao('User')->getInfo($value['teacher_uid'], 'real_name,nickname');
+            $list[$key]['goods']   = table('article')->where('id', $value['goods_id'])->field('title,btitle')->find();
+            $list[$key]['exam']    = table('ExamList')->where('id', $value['exam_id'])->field('name,exam_time')->find();
+            $list[$key]['annex']   = $this->annex($value['annex']);
+        }
+
+        $map               = array();
+        $map['del_status'] = 0;
+        $map['status']     = 1;
+
+        $courseList = dao('Teacher', 'study')->getTeacherCourseList($this->uid);
+        $examList   = table('ExamList')->where($map)->field('name,id')->order('created desc')->find('array');
+
+        $this->assign('list', $list);
+        $this->assign('examList', $examList);
+        $this->assign('courseList', $courseList['list']);
+        $this->show(CONTROLLER . '/' . ACTION . $this->lg);
+    }
+
     /** 获取课程对于的时间安排 */
     public function getCourseTime()
     {
@@ -57,6 +92,7 @@ class Homework extends \app\study\controller\Init
         $data['content']    = post('content', 'text', '');
         $data['goods_id']   = post('goods_id', 'intval', 0);
         $data['annex']      = post('annex', 'text', '');
+        $data['exam_id']    = post('exam_id', 'intval', 0);
 
         $data['teacher_uid'] = $this->uid;
         $data['type']        = $type;

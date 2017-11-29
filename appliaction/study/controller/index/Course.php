@@ -34,9 +34,19 @@ class Course extends \app\study\controller\Init
         }
 
         //老师信息
-        $data['teacher']           = dao('User')->getInfo('real_name,avatar');
-        $data['teacher']['avatar'] = $this->appImg($data['teacher']['avatar'], 'avatar');
+        $data['teacher']                  = dao('User')->getInfo($data['teacher_uid'], 'real_name,avatar');
+        $data['teacher']['avatar']        = $this->appImg($data['teacher']['avatar'], 'avatar');
+        $data['teacher']['data']          = dao('Article')->getRowContent(array('teacher_uid' => $data['teacher_uid']), 'thumb,title,btitle,description,description_en', 2);
+        $data['teacher']['data']['thumb'] = $this->appImg($data['teacher']['data']['thumb'], 'article');
 
+        $map                = array();
+        $map['teacher_uid'] = $data['teacher_uid'];
+
+        $data['teacher']['data']['course_num'] = (int) table('ArticleCourse')->where($map)->count();
+
+        $map                                    = array();
+        $map['teacher_uid']                     = $data['teacher_uid'];
+        $data['teacher']['data']['student_num'] = (int) table('OrdersCourse')->where($map)->count();
         //推荐列表
         $data['remmondList'] = dao('RecommendList', 'study')->recommendList();
 

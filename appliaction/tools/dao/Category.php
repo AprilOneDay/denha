@@ -58,6 +58,8 @@ class Category
             return (string) $name[0];
         }
 
+        var_dump($name);die;
+
         return (array) $name;
     }
 

@@ -27,7 +27,7 @@ class BusinessSchool extends \app\study\controller\Init
     public function lession()
     {
         $map['column_id'] = get('cid', 'intval', 0);
-        $list             = dao('Article')->getList($map, 'id,thumb,num,class_type,characteristics', 3, 6);
+        $list             = dao('Article')->getList($map, 'id,title,btitle,thumb,num,class_type,characteristics', 3, 6);
 
         foreach ($list['list'] as $key => $value) {
             $list['list'][$key]['characteristics_copy'] = (array) dao('Category')->getName($value['characteristics']);
@@ -46,7 +46,7 @@ class BusinessSchool extends \app\study\controller\Init
         $pageSize = 6;
 
         $map['column_id'] = get('cid', 'intval', 0);
-        $list             = dao('Article')->getList($map, 'id,thumb,num,class_type,characteristics', 3, $pageSize, $pageNo);
+        $list             = dao('Article')->getList($map, 'id,title,btitle,thumb,num,class_type,characteristics', 3, $pageSize, $pageNo);
 
         foreach ($list['list'] as $key => $value) {
             $list['list'][$key]['characteristics_copy'] = (array) dao('Category')->getName($value['characteristics']);

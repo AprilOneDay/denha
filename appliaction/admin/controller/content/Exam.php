@@ -50,7 +50,8 @@ class Exam extends Init
         $data = post('all');
 
         if (!$id) {
-            $result = table('ExamList')->add($data);
+            $data['created'] = TIME;
+            $result          = table('ExamList')->add($data);
             if (!$result) {
                 $this->appReturn(array('status' => false, 'msg' => '添加失败'));
             }
@@ -71,7 +72,7 @@ class Exam extends Init
         if ($id) {
             $data = table('ExamList')->where('id', $id)->find();
         } else {
-            $data = array('sort' => 0, 'status' => 1);
+            $data = array('sort' => 0, 'status' => 1, 'exam_time' => 0);
         }
 
         $this->assign('data', $data);
@@ -91,8 +92,8 @@ class Exam extends Init
 
         $map = array();
 
-        $list  = table('AppVersion')->where($map)->limit($offer, $pageSize)->order('id desc')->find('array');
-        $total = table('AppVersion')->where($map)->count();
+        $list  = table('ExamData')->where($map)->limit($offer, $pageSize)->order('id desc')->find('array');
+        $total = table('ExamData')->where($map)->count();
         $page  = new Pages($total, $pageNo, $pageSize, url('', $param));
 
         foreach ($list as $key => $value) {
@@ -100,9 +101,8 @@ class Exam extends Init
         }
 
         $other = array(
-            'tag'             => getVar('tags', 'admin.article'),
-            'isShowCopy'      => array(0 => '隐藏', 1 => '显示'),
-            'isRecommendCopy' => array(1 => '推荐', 0 => '不推荐'),
+            'typeCopy'   => getVar('question_type', 'admin.exam'),
+            'statusCopy' => array(0 => '关闭', 1 => '开启'),
         );
 
         $this->assign('list', $list);
@@ -118,12 +118,82 @@ class Exam extends Init
     {
         $id = get('id', 'intval', 0);
         if ($id) {
-            $data = table('ExamList')->where('id', $id)->find();
+            $data            = table('ExamData')->where('id', $id)->find();
+            $data['content'] = json_decode($data['content'], true);
         } else {
             $data = array('sort' => 0, 'status' => 1);
         }
 
+        $other = array(
+            'typeCopy'   => getVar('question_type', 'admin.exam'),
+            'isShowCopy' => array(0 => '关闭', 1 => '开启'),
+        );
+
+        $this->assign('other', $other);
         $this->assign('data', $data);
         $this->show();
+    }
+
+    /** 编辑考题操作 */
+    public function editQuestionPost()
+    {
+        $id              = get('id', 'intval', 0);
+        $data['exam_id'] = get('exam_id', 'intval', 0);
+        $data['title']   = post('title', 'text', '');
+        $data['type']    = post('type', 'intval', 0);
+        $data['sort']    = post('sort', 'intval', 0);
+
+        $other = post('other');
+
+        if (!$data['exam_id']) {
+            $this->appReturn(array('status' => false, 'msg' => '试卷参数错误'));
+        }
+
+        if (!$data['title']) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入考题'));
+        }
+
+        if (!$data['type']) {
+            $this->appReturn(array('status' => false, 'msg' => '请选择答案类型'));
+        }
+
+        $tmpContent  = null;
+        $isAnswerNum = 0;
+        foreach ($other['answer'] as $key => $value) {
+            if ($value) {
+                $isAnswerNum  = $other['is_answer'][$key] ? $isAnswerNum + 1 : $isAnswerNum;
+                $tmpContent[] = array('answer' => $value, 'is_answer' => $other['is_answer'][$key]);
+            }
+        }
+        $data['content'] = json_encode($tmpContent);
+
+        if (($data['type'] == 1 || $data['type'] == 2)) {
+            if (!$tmpContent) {
+                $this->appReturn(array('status' => false, 'msg' => '请输入答案'));
+            }
+
+            if (!$isAnswerNum) {
+                $this->appReturn(array('status' => false, 'msg' => '请勾选题目的正确答案'));
+            }
+
+            if ($data['type'] == 1 && $isAnswerNum > 1) {
+                $this->appReturn(array('status' => false, 'msg' => '【单选模式】只能选择一个正确答案'));
+            }
+        }
+
+        if (!$id) {
+            $result = table('ExamData')->add($data);
+            if (!$result) {
+                $this->appReturn(array('status' => false, 'msg' => '添加失败'));
+            }
+        } else {
+            $result = table('ExamData')->where('id', $id)->save($data);
+            if (!$result) {
+                $this->appReturn(array('status' => false, 'msg' => '修改失败'));
+            }
+        }
+
+        $this->appReturn(array('status' => true, 'msg' => '操作成功'));
+
     }
 }

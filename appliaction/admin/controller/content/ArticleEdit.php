@@ -45,6 +45,9 @@ class ArticleEdit extends \app\admin\controller\Init
             case '3':
                 $this->edit_3();
                 break;
+            case '4':
+                $this->edit_4();
+                break;
             default:
                 # code...
                 break;
@@ -146,7 +149,7 @@ class ArticleEdit extends \app\admin\controller\Init
             }
 
             $other = array(
-                'tag'            => getVar('tags', 'console.article'),
+                'tag'            => getVar('tags', 'admin.article'),
                 'columnListCopy' => dao('Column', 'admin')->columnList(),
             );
 
@@ -202,7 +205,7 @@ class ArticleEdit extends \app\admin\controller\Init
             }
 
             $other = array(
-                'tag'            => getVar('tags', 'console.article'),
+                'tag'            => getVar('tags', 'admin.article'),
                 'columnListCopy' => dao('Column', 'admin')->columnList(),
                 'teacherList'    => table('User')->where(array('type' => 2, 'status' => 1))->field('id,real_name')->find('array'),
             );
@@ -353,6 +356,58 @@ class ArticleEdit extends \app\admin\controller\Init
         }
     }
 
+    //下载
+    public function edit_4()
+    {
+        $id       = get('id', 'intval', 0);
+        $columnId = get('column_id', 'intval', 0);
+
+        if (IS_POST) {
+            $data = post('info');
+
+            $data['down_url'] = post('down_url', 'text', '');
+
+            //开启事务
+            table('Article')->startTrans();
+            $dataId = $this->defaults(); //保存主表
+
+            //编辑
+            if ($dataId && $id) {
+                $resultData = table('Article' . self::$dataTable)->where(array('id' => $id))->save($data);
+                $dataId     = $id;
+            } else {
+                $data['id'] = $dataId;
+                $resultData = table('Article' . self::$dataTable)->add($data);
+            }
+
+            if (!$resultData) {
+                table('Article')->rollback();
+                $this->ajaxReturn(array('status' => false, 'msg' => '操作失败,请重新尝试'));
+            }
+
+            table('Article')->commit();
+            $this->ajaxReturn(array('status' => true, 'msg' => '操作成功'));
+
+        } else {
+            if ($id) {
+                $rs = $this->getEditConent($id);
+            } else {
+                $rs              = array('is_show' => 1, 'is_recommend' => 0, 'created' => date('Y-m-d', TIME), 'model_id' => self::$modelId);
+                $rs['column_id'] = $columnId;
+            }
+
+            $other = array(
+                'tag'            => getVar('tags', 'admin.article'),
+                'columnListCopy' => dao('Column', 'admin')->columnList(),
+                'teacherList'    => table('User')->where(array('type' => 2, 'status' => 1))->field('id,real_name')->find('array'),
+            );
+
+            $this->assign('data', $rs);
+            $this->assign('other', $other);
+            $this->show(self::$tpl);
+        }
+    }
+
     public function delArticle()
     {
         $modelTable = getVar('model_table', 'admin.article');
@@ -394,7 +449,6 @@ class ArticleEdit extends \app\admin\controller\Init
         }
 
         $rs['created'] = date('Y-m-d', $rs['created']);
-        $rs['thumb']   = json_encode((array) imgUrl($rs['thumb'], 'article'));
 
         return $rs;
     }

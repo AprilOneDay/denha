@@ -41,7 +41,8 @@
                 $('#video').css('display','none');   
             }else{
                 $('.close').css('display','none');
-                $('#video').css('display','block');   
+                $('#video').css('display','block');
+                $('#video').parent().css('display','block');   
             }
             var a = CR_SDK.getRoominfo();
            
@@ -50,7 +51,8 @@
         CR_SDK.on('cr_notify_live_type', function(res){
             if(res.msg == '直播中'){
                 $('.close').css('display','none');
-                $('#video').css('display','block');   
+                $('#video').css('display','block');
+                $('#video').parent().css('display','block');   
             }else{
                 $('.close').css('display','block');
                 $('#video').css('display','none'); 
@@ -73,16 +75,19 @@
                 <span>开课前半小时您就可以进入直播教室，请耐心等待！</span>
             </div>
             <div class="t_cr_right fr" style="display: none;">
-                <div class="img_sp"  id="video" style=" width: 90%;  height: 550px;"></div>
+                <div id="video" style=" width: 90%;  height: 550px;"></div>
             </div>
             <div class="t_cr_right fr close">
                 <div class="img_sp"  id="video">
                 {if !$live['LiveCode']}
                     <span>暂无授课....</span>
-                {else}
+                {elseif $course['hd_status'] == 0}
                     <span class="time" data-time="{$course['start_time']}">距离开课还有： <label>0天0小时0分</label></span>
+                    <img src="/ststic/study/images/sp.jpg" /></div>
+                {else}
+                    <span>暂时中断等待老师链接</span>
+                    <img src="/ststic/study/images/sp.jpg" /></div>
                 {/if}
-                <img src="/ststic/study/images/sp.jpg" /></div>
                 <!--  <a class="join" href="#">立即加入</a> -->
             </div>
         </div>

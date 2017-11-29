@@ -17,19 +17,13 @@
 							<h5>文章列表</h5>
 						</div>
 						<div class="pull-right">
-							<a class="btn btn-primary btn-open" config-href="{F:url('article_edit/edit',array('column_id'=>$param['column_id']))}" config-width="90%" config-height="800px">添加文章</a>
+							<a class="btn btn-primary btn-open" config-href="{F:url('article_edit/edit',array('column_id'=>$param['column_id']))}" config-width="90%" config-height="800px">添加</a>
 						</div>
 					</div>
 					<form class="form-inline ng-pristine ng-valid" action=""  method="get">
                         <div class="form-group">
                         	<select class="form-control" data-selected="{??$param['column_id']}" name="param[column_id]">
                             	{loop $other['columnListCopy'] $key $value}
-                               		<option value="{$key}">{$value}</option>
-                            	{/loop}
-                            </select>
-                    	  	<select class="form-control" data-selected="{??$param['tag']}" name="param[tag]">
-                            	<option value="0">选择类型</option>
-                            	{loop $other['tag'] $key $value}
                                		<option value="{$key}">{$value}</option>
                             	{/loop}
                             </select>

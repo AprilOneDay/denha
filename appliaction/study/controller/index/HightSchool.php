@@ -4,7 +4,9 @@
  */
 namespace app\study\controller\index;
 
-class HightSchool extends \app\study\controller\Init
+use \app\study\controller\Init;
+
+class HightSchool extends Init
 {
     /**
      * 单页模块
@@ -27,7 +29,7 @@ class HightSchool extends \app\study\controller\Init
     public function lession()
     {
         $map['column_id'] = get('cid', 'intval', 0);
-        $list             = dao('Article')->getList($map, 'id,thumb,num,class_type,characteristics', 3, 6);
+        $list             = dao('Article')->getList($map, 'id,title,btitle,thumb,num,class_type,characteristics', 3, 6);
 
         $columnList = table('Column')->where('parentid', $this->parentColumn['id'])->field('id,name,bname,jump_url')->find('array');
 
@@ -42,7 +44,7 @@ class HightSchool extends \app\study\controller\Init
         $pageSize = 6;
 
         $map['column_id'] = get('cid', 'intval', 0);
-        $list             = dao('Article')->getList($map, 'id,thumb,num,class_type,characteristics', 3, $pageSize, $pageNo);
+        $list             = dao('Article')->getList($map, 'id,title,btitle,thumb,num,class_type,characteristics', 3, $pageSize, $pageNo);
 
         $this->assign('list', $list);
         $this->show(CONTROLLER . '/' . ACTION . $this->lg);
