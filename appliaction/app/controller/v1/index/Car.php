@@ -115,7 +115,7 @@ class Car extends \app\app\controller\Init
 
         $data['list'] = $list ? $list : array();
         //随机排序
-        if ($param['order_type'] == 1) {
+        if ($param['order_type'] == 1 || !$param['order_type']) {
             shuffle($data['list']);
         }
 

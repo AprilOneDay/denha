@@ -55,7 +55,7 @@
 										<tr>
 											<th style="width:75px;">ID</th>
 											<th>标题</th>
-											<th style="width:120px;">所属栏目</th>
+											<!-- <th style="width:120px;">所属栏目</th> -->
 											<th style="width:120px;">发布时间</th>
 											<th style="width:120px;">状态</th>
 											<th style="width:160px; text-align:center;">编辑/操作</th>
@@ -66,7 +66,7 @@
 									 	<tr v-for="list in data.list">
 											<td>{$value['id']}</td>
 											<td>{$value['title']}</td>
-											<td>{$other['tag'][$value['tag']]}</td>
+											<!-- <td>{$other['tag'][$value['tag']]}</td> -->
 											<td>{F:date('Y-m-d H:i',$value['created'])}</td>
 											<td>{$other['isShowCopy'][$value['is_review']]}</td>
 											<td align='center'>

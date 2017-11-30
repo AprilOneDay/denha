@@ -23,7 +23,7 @@ class Index extends Init
         //获取白名单 不需要登录验证的
         $list = getVar('list', 'admin.white');
         //获取栏目信息
-        $list = $this->menus();
+        $list['list'] = $this->menus();
         if ($this->thisConsoleMenusId) {
             $list['two']['list'] = $this->menus(1, $this->thisConsoleMenusId);
         }

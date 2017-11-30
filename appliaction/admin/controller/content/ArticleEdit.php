@@ -234,13 +234,13 @@ class ArticleEdit extends \app\admin\controller\Init
                 $this->ajaxReturn(array('status' => false, 'msg' => '请输入售卖价格'));
             }
 
-            if (!$data['sale_price']) {
-                $this->ajaxReturn(array('status' => false, 'msg' => '请输入售卖价格'));
+            if ($data['sale_price'] <= $data['dis_price']) {
+                $this->ajaxReturn(array('status' => false, 'msg' => '活动价不可高于售卖价'));
             }
 
-            if (!$data['teacher_uid']) {
-                $this->ajaxReturn(array('status' => false, 'msg' => '请关联老师'));
-            }
+            /*if (!$data['teacher_uid']) {
+            $this->ajaxReturn(array('status' => false, 'msg' => '请关联老师'));
+            }*/
 
             if ($data['start_time'] > $data['end_time']) {
                 $this->ajaxReturn(array('status' => false, 'msg' => '开始时间大于结束时间'));

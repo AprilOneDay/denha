@@ -1282,6 +1282,20 @@ textarea.int{ height:auto; padding:10px; line-height:1.7;}
     color: #999;
     width: 95%;
 }
+.classroom_right .dati_List li span{
+    float: left;
+    margin-right: 20px;
+    color: #333;
+    display:inline-flex;
+    display:-webkit-inline-flex;
+    align-items: center;
+}
+.classroom_right .dati_List li span>input{
+    width:15px;
+    height:15px;
+    background:#fff;
+    margin-right:10px;
+}
 @media screen and (min-width:1200px){
     .classroom_right .enter-classrrom{
         width:auto;

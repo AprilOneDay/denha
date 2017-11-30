@@ -92,7 +92,7 @@
         </div>
     	<div class="t_cr_right fr">
         	<div class="img_sp">
-            <img src="/ststic/study/images/sp.jpg" />
+                <img src="/ststic/study/images/sp.jpg" />
                 {if $course['hd_status'] == 0} 
                     <span class="time" data-time="{$course['start_time']}">距离上课还有：<label>0天0小时0分</label></span>
                 {elseif $course['hd_status'] == 2 || !$course}
@@ -100,7 +100,6 @@
                 {elseif $course['hd_status'] == 1}
                     <span>已经开课了请及时进入房间上课</span>
                 {/if}
-            </div>
             {if !$course['start_time'] >= TIME + 60*30 || $course['hd_status'] == 1} 
             <a class="join" href="javascript:;" onclick="intoRoom(this)" data-id="{$course['id']}">立即加入</a>
             {/if}

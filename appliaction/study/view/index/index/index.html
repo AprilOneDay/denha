@@ -220,35 +220,15 @@
 				<div class="bd">
 					<div class="tempWrap" style="overflow:hidden; position:relative;">
                     <ul style="width: 1920px; position: relative; overflow: hidden; padding: 0px; margin: 0px; transition-duration: 200ms; transform: translate(-640px, 0px) translateZ(0px);">
+                        {loop $data['teacher']['list'] $key $value}
 						<li style="display: table-cell; vertical-align: top;">
-							<a class="pic" href="#"><img src="/ststic/study/images/team4.jpg"></a><span>推荐讲师-大卫</span>
+							<a class="pic" href="#"><img src="{F:imgUrl($value['thumb'],'article')}"></a><span>推荐讲师-{$value['title']}</span>
                             <div class="tab-pals clearfix">
-                            <p>作为澳大利亚教育首席培训官、澳大利亚教育海外研发中心教研员、ETS官方培训师、British Council（英国教育文化协会）雅思考试年度工作坊特邀嘉宾、作为教育年度峰会主讲官，对于命题规律和考点了如指掌，授课过程中总能直击要害短期突破瓶颈。擅长：雅思听力、阅读、口语；托福听力；SAT阅读</p>
-                            <p><a href="#" class="btn_zx">立即咨询</a><a href="#" class="bttn_zxs">更多老师</a></p>
+                            <p>{$value['description']}</p>
+                            <p><!-- <a href="#" class="btn_zx">立即咨询</a> --><a href="/index/business_school/team/s/cid/7" class="bttn_zxs">更多老师</a></p>
                             </div>
 						</li>
-                        <li style="display: table-cell; vertical-align: top;">
-							<a class="pic" href="#"><img src="/ststic/study/images/team1.jpg"></a><span>推荐讲师-大卫</span>
-                            <div class="tab-pals clearfix">
-                            <p>作为澳大利亚教育首席培训官、澳大利亚教育海外研发中心教研员、ETS官方培训师、British Council（英国教育文化协会）雅思考试年度工作坊特邀嘉宾、作为教育年度峰会主讲官，对于命题规律和考点了如指掌，授课过程中总能直击要害短期突破瓶颈。擅长：雅思听力、阅读、口语；托福听力；SAT阅读</p>
-                            <p><a href="#" class="btn_zx">立即咨询</a><a href="#" class="bttn_zxs">更多老师</a></p>
-                            </div>
-						</li>
-						<li style="display: table-cell; vertical-align: top;">
-							<a class="pic" href="#"><img src="/ststic/study/images/team2.jpg"></a>
-                            <span>推荐讲师-大卫</span>
-                            <div class="tab-pals clearfix">
-                            <p>作为澳大利亚教育首席培训官、澳大利亚教育海外研发中心教研员、ETS官方培训师、British Council（英国教育文化协会）雅思考试年度工作坊特邀嘉宾、作为教育年度峰会主讲官，对于命题规律和考点了如指掌，授课过程中总能直击要害短期突破瓶颈。擅长：雅思听力、阅读、口语；托福听力；SAT阅读</p>
-                            <p><a href="#" class="btn_zx">立即咨询</a><a href="#" class="bttn_zxs">更多老师</a></p>
-                            </div>
-						</li>
-						<li style="display: table-cell; vertical-align: top;">
-							<a class="pic" href="#"><img src="/ststic/study/images/team3.jpg"></a><span>推荐讲师-大卫</span>
-                            <div class="tab-pals clearfix">
-                            <p>作为澳大利亚教育首席培训官、澳大利亚教育海外研发中心教研员、ETS官方培训师、British Council（英国教育文化协会）雅思考试年度工作坊特邀嘉宾、作为教育年度峰会主讲官，对于命题规律和考点了如指掌，授课过程中总能直击要害短期突破瓶颈。擅长：雅思听力、阅读、口语；托福听力；SAT阅读</p>
-                            <p><a href="#" class="btn_zx">立即咨询</a><a href="#" class="bttn_zxs">更多老师</a></p>
-                            </div>
-						</li>
+                        {/loop}
                        </ul>
                     </div>
 				</div>

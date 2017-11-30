@@ -1,4 +1,6 @@
-    $(function() {
+$(function() {
+    //如果某个接口返回失败了 或存在BUG哦
+    var btnBlock = true; //ajax提交堵塞 ture可提交 false堵塞中不可提交
 
     init();
     //监听product-nav-scene的宽度变化
@@ -34,47 +36,18 @@
 
     }
 
-    //收缩一级导航
-    $('.sidebar-fold').click(function() {
-        var width = $(this).width();
-        if (width > 38) {
-            $('.sidebar-inner').width(38);
-        } else {
-            $('.sidebar-inner').width(180);
+    //判断通道是否堵塞 如果堵塞 返回提示文案 反之则变成堵塞
+    function checkBtnBlock(msg = '请勿重复提交'){
+        if(!btnBlock){
+            layer.msg(msg); 
+            return false; 
+        }else{
+            btnBlock = false;
         }
 
-    });
+        return true;
+    }
 
-    //导航展开下级菜单
-    $('.sidebar-inner ul li').click(function() {
-        //初始化
-        $('.sidebar-inner ul li dl').css('display', 'none');
-        $('.sidebar-inner ul li').each(function() {
-            if ($(this).children().children().eq(0).attr('class') == 'glyphicon glyphicon-triangle-bottom') {
-                $(this).children().children().eq(0).attr('class', 'glyphicon glyphicon-triangle-right');
-            }
-        });
-
-        //展开/收缩
-        var ico = $(this).children().children(':first').attr('class');
-        if (ico == 'glyphicon glyphicon-triangle-right') {
-            $(this).children().children(':first').attr('class', 'glyphicon glyphicon-triangle-bottom');
-            $(this).find('dl').css('display', 'block');
-        } else if (ico == 'glyphicon glyphicon-triangle-bottom') {
-            $(this).children().children(':first').attr('class', 'glyphicon glyphicon-triangle-right');
-            $(this).find('dl').css('display', 'none');
-        }
-
-    })
-
-
-    //一级高亮
-    $('.sidebar-inner dd').click(function() {
-        $('.sidebar-inner dd').each(function() {
-            $(this).find('a').removeClass();
-        })
-        $(this).find('a').addClass('cur');
-    });
 
     //绑定初试信息
     $('select').each(function() {
@@ -119,6 +92,16 @@
             $(this).attr("checked","checked");
         }
     })
+
+    //checkBox单选
+    $('.btn-checkbox-radio').each(function(){
+        var _this = this;
+        var name = $(this).attr('name');
+        $(this).click(function(){
+            $('input[name="'+name+'"]').prop('checked',false);
+            $(this).prop('checked',true);
+        })
+    });
 
     //前置触发事件
     $('.btn-before').on('mousedown',function(){
@@ -172,25 +155,33 @@
 
         //处理checked 未选中不传值的问题
         $(form).find('input[type=checkbox]').each(function(){
+            var  falseValue = typeof($(this).attr('data-false-value')) != 'undefined' ?  $(this).attr('data-false-value') : 0;
+            var  trueValue  = typeof($(this).attr('data-true-value')) != 'undefined' ?  $(this).attr('data-true-value') : 0;
             if(!$(this).prop('checked')){
                 $(this).prop('checked',true);
-                $(this).val(0);
+                $(this).val(falseValue);
+            }else{
+                $(this).val(trueValue);
             }
         })
 
-
         var data     = form.serializeArray();
-
         if(data.length < 1){
             return layer.msg('请上传参数');
         }
-       
-        $.post(url,data,function(result){
 
-            //恢复正常选项样式
+        //处理通讯堵塞
+        if(!checkBtnBlock()){
+            return false;
+        } 
+
+        $.post(url,data,function(result){
+            btnBlock = true; //恢复通道
+            //恢复checkbox 未选中的样式
             $(form).find('input[type=checkbox]').each(function(){
-                console.log($(this).val());
-                if($(this).prop('checked',true) && Number($(this).val()) == 0){
+                var  falseValue = typeof($(this).attr('data-false-value')) != 'undefined' ?  $(this).attr('data-false-value') : 0;
+                var  trueValue  = typeof($(this).attr('data-true-value')) != 'undefined' ?  $(this).attr('data-true-value') : 0;
+                if($(this).prop('checked',true) && $(this).val() == falseValue){
                     $(this).prop('checked',false);
                 }
             })
@@ -237,7 +228,14 @@
             layer.confirm(tips, {
               btn: ['确定','取消'] //按钮
             }, function(){
-               $.post(url,data,function(result){
+
+                //处理通讯堵塞
+                if(!checkBtnBlock()){
+                    return false;
+                } 
+
+                $.post(url,data,function(result){
+                    btnBlock = true; //恢复通道
                     layer.msg(result.msg);
                     if(result.status){
                         setTimeout(function(){
@@ -262,7 +260,13 @@
                 },"json")
             }, function(){});
         }else{
+            //处理通讯堵塞
+            if(!checkBtnBlock()){
+                return false;
+            } 
+
             $.post(url,data,function(result){
+                btnBlock = true; //恢复通道
                 if(result.msg){
                     layer.msg(result.msg);
                 }

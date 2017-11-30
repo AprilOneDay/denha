@@ -36,6 +36,7 @@
 							</label>
 							<div class="col-sm-8">
 								<select data-selected="{??$data['teacher_uid']}" name="info[teacher_uid]" class="form-control w160">
+									<option value="0">选择授课老师</option>
 									{loop $other['teacherList'] $key $value}
 	                               		<option value="{$value['id']}">{$value['real_name']}</option>
 	                            	{/loop}

@@ -1,6 +1,6 @@
 <?php
 /**
- * 车友圈模块
+ * 试卷模块管理
  */
 namespace app\admin\controller\content;
 
@@ -15,8 +15,6 @@ class Exam extends Init
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 25);
 
-        $param['field'] ?: $param['field'] = 'title';
-
         $offer = max(($pageNo - 1), 0) * $pageSize;
 
         $map               = array();
@@ -27,13 +25,15 @@ class Exam extends Init
         $page  = new Pages($total, $pageNo, $pageSize, url('', $param));
 
         foreach ($list as $key => $value) {
-            $list[$key]['thumb'] = 'http://qr.liantu.com/api.php?text=' . URL . $value['apk_url'] . '&w=200&h=200';
+            $map               = array();
+            $map['exam_id']    = $value['id'];
+            $map['del_status'] = 0;
+
+            $list[$key]['score'] = (int) table('ExamData')->where($map)->field('SUM(score) AS score')->find('one');
         }
 
         $other = array(
-            'tag'             => getVar('tags', 'admin.article'),
-            'isShowCopy'      => array(0 => '隐藏', 1 => '显示'),
-            'isRecommendCopy' => array(1 => '推荐', 0 => '不推荐'),
+            'statusCopy' => array(0 => '关闭', 1 => '开启'),
         );
 
         $this->assign('list', $list);
@@ -121,12 +121,12 @@ class Exam extends Init
             $data            = table('ExamData')->where('id', $id)->find();
             $data['content'] = json_decode($data['content'], true);
         } else {
-            $data = array('sort' => 0, 'status' => 1);
+            $data = array('sort' => 0, 'status' => 1, 'score' => 0);
         }
 
         $other = array(
             'typeCopy'   => getVar('question_type', 'admin.exam'),
-            'isShowCopy' => array(0 => '关闭', 1 => '开启'),
+            'statusCopy' => array(0 => '关闭', 1 => '开启'),
         );
 
         $this->assign('other', $other);
@@ -139,9 +139,11 @@ class Exam extends Init
     {
         $id              = get('id', 'intval', 0);
         $data['exam_id'] = get('exam_id', 'intval', 0);
-        $data['title']   = post('title', 'text', '');
-        $data['type']    = post('type', 'intval', 0);
-        $data['sort']    = post('sort', 'intval', 0);
+
+        $data['title'] = post('title', 'text', '');
+        $data['type']  = post('type', 'intval', 0);
+        $data['score'] = post('score', 'intval', 0);
+        $data['sort']  = post('sort', 'intval', 0);
 
         $other = post('other');
 

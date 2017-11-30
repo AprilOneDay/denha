@@ -53,7 +53,13 @@ class Course extends \app\study\controller\Init
         //增加浏览记录
         table('Article')->where('id', $id)->save(array('hot' => array('add', 1)));
 
+        if ($data['class_type'] == 3) {
+            $tpl = 'hight_school/detail_video' . $this->lg;
+        } else {
+            $tpl = 'hight_school' . '/' . ACTION . $this->lg;
+        }
+
         $this->assign('data', $data);
-        $this->show('hight_school' . '/' . ACTION . $this->lg, false, false);
+        $this->show($tpl);
     }
 }

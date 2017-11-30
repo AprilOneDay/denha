@@ -85,10 +85,9 @@ class Category extends Init
 
             $this->ajaxReturn(array('status' => false, 'msg' => '操作失败'));
         } else {
-            $id          = get('id', 'intval', 0);
-            $parentid    = get('parentid', 'intval', 0);
-            $rs          = table('Category')->where(array('id' => $id))->find();
-            $rs['thumb'] = json_encode((array) imgUrl($rs['thumb'], 'category'));
+            $id       = get('id', 'intval', 0);
+            $parentid = get('parentid', 'intval', 0);
+            $rs       = table('Category')->where(array('id' => $id))->find();
 
             if ($id == 0 && $parentid != 0) {
                 $rs['parentid'] = $parentid;

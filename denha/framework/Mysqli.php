@@ -535,6 +535,7 @@ class Mysqli
 
         foreach ($data as $k => $v) {
             $v = str_replace('\'', '\\\'', $v);
+            $v = str_replace('\\', '\\/\\', $v);
             $newField .= '`' . $k . '` = \'' . $v . '\',';
         }
 
@@ -577,21 +578,25 @@ class Mysqli
 
         $newField = '';
         if ($value !== '' && !is_array($data)) {
-            $newField = '`' . $data . '`=\'' . str_replace('\'', '\\\'', $value) . '\'';
+            $value    = str_replace('\\', '\\\\', $value);
+            $value    = str_replace('\'', '\\\'', $value);
+            $newField = '`' . $data . '`=\'' . $value . '\'';
         } else {
             if (is_array($data)) {
                 foreach ($data as $k => $v) {
                     if (is_array($v)) {
                         $v[0] = strtolower($v[0]);
                         if ($v[0] == 'add') {
-                            $newField .= '`' . $k . '`  = `' . $k . '` + ' . str_replace('\'', '\\\'', $v[1]) . ',';
+                            $newField .= '`' . $k . '`  = `' . $k . '` + ' . $v[1] . ',';
                         } elseif ($v[0] == 'less') {
-                            $newField .= '`' . $k . '`  = `' . $k . '` - ' . str_replace('\'', '\\\'', $v[1]) . ',';
+                            $newField .= '`' . $k . '`  = `' . $k . '` - ' . $v[1] . ',';
                         } elseif ($v[0] == 'concat') {
                             $newField .= '`' . $k . '`  = CONCAT(`' . $k . '`,\'\',\'' . str_replace('\'', '\\\'', $v[1]) . '\'),';
                         }
                     } else {
-                        $newField .= '`' . $k . '`=\'' . str_replace('\'', '\\\'', $v) . '\',';
+                        $v = str_replace('\\', '\\\\', $v);
+                        $v = str_replace('\'', '\\\'', $v);
+                        $newField .= '`' . $k . '`=\'' . $v . '\',';
                     }
                 }
                 $newField = substr($newField, 0, -1);

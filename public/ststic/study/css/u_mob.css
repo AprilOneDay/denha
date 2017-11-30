@@ -388,6 +388,12 @@
 	.classroom_right .t_cr_left ul.div_ul2>li:last-child{
 		float:right;
 	}
+	.classroom_right .dati_List li span {
+		display: flex;
+		display:-webkit-inline-flex;
+		width: 100%;
+		margin-bottom: 15px;
+	}
 }
 	
 	

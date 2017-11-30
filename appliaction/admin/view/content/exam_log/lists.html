@@ -37,22 +37,23 @@
 										<tr>
 											<th style="width:75px;">ID</th>
 											<th>考卷名称</th>
-											<th style="width:120px;">试卷总分</th>
-											<th style="width:120px;">状态</th>
-											<th style="width:160px; text-align:center;">编辑/操作</th>
+											<th style="width:120px;">用户</th>
+											<th style="width:60px;">总分</th>
+											<th style="width:60px;">得分</th>
+											<th style="width:150px;">开考时间</th>
+											<th style="width:120px;">用时</th>
 										</tr>
 									</thead>
 									<tbody>
 										{loop $list $key $value}
 									 	<tr v-for="list in list">
 											<td>{$value['id']}</td>
-											<td>{$value['name']}</td>
+											<td>{$value['exam']['name']}</td>
+											<td>{$value['user']['real_name']}</td>
+											<td>{$value['total_score']}</td>
 											<td>{$value['score']}</td>
-											<td>{$other['statusCopy'][$value['status']]}</td>
-											<td align='center'>
-												<a href="{F:url('question_list',array('id'=>$value['id']))}">查看题目</a>
-												<a config-href="{F:url('edit',array('id'=>$value['id']))}"  config-height="500px" config-width="60%"  config-title="编辑分类"  class="btn-open">编辑</a>
-											</td>
+											<td>{F:date('Y-m-d H:i:s',$value['start_time'])}</td>
+											<td>大约{F:reset($value['use_time'])}{$other['timeCopy'][key($value['use_time'])]}</td>
 										</tr>
 										{/loop}
 									</tbody>
