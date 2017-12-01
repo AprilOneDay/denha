@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <title>{$this->parentColumn['bname']}</title>
+    {include public/global_css}
+    <script type="text/javascript" src="/ststic/study/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/ststic/study/js/common.js"></script>
+    <script type="text/javascript" src="/vendor/layer/layer.js"></script>
+</head>
+
+
+<body>
+	{include public/top_en}
+    <div class="banner clearfix">
+    	<div class="banner_box" align="center">
+        	<span><img src="/ststic/study/images/banner01.png" /></span>
+        </div>
+    </div>  
+    <div class="gj_cont adjust">
+    	<div class="hs_box width1200">
+        	<div class="title">{$this->parentColumn['bname']}</div>
+            <div class="cont"><p>The team sticks to the principle of "six principles of teaching and promoting scientific research, fruitful achievements, rewarding achievements, rewarding projects, winning awards with projects, and promoting teaching through contingent of teachers", put forward the goal of six "one" education reform results, That is, presided over a number of topics, the construction of a number of quality courses, published a number of planning materials, research and development of a group Kaoyan brand courses to guide a group of students to participate in national competitions and awards</p></div>
+        	<div class="notice width1200" style="margin:0 auto">
+            	<div class="tab-hd">
+            		<ul class="tab-nav ">
+            			{loop $columnList $value}
+                            <li {if $value['id'] == $cid}class="on"{/if}><a href="{$value['jump_url']}">{$value['bname']}</a></li>
+                        {/loop}
+            		</ul>
+            	</div>
+            	<div class="tab-bd clearfix">
+            		<div class="tab-pal width1200">
+                    	<ul class="team">
+                            {loop $list['list'] $value}
+                        	<li data-href="{F:url('teacher_info',array('id'=>$value['id'],'teacher_uid'=>$value['teacher_uid']))}">
+                            	<a href="javascript:;" >
+                                	<div class="img_t"><img src="{F:imgUrl($value['thumb'],'article')}" /></div>
+                                    <div class="add">+</div>
+                                    <div class="t_name">{$value['btitle']}</div>
+                                    <div class="t_ty">{$value['position_en']}</div>
+                                </a>
+                            </li>
+                            {/loop}
+                        </ul>
+            		</div>
+            	</div>
+        	</div>
+        </div>
+    </div>
+<iframe src="{F:url('teacher_info')}" id="pop-data"></iframe>
+<a href="#" class="close_btn close_btn_new"></a>
+<div class="clearfix"></div>
+    {include public/footer_en}  
+</body>
+<script>
+    $(".tab-pal .team li").click(function (e) {
+        var  href = $(this).attr('data-href');
+        e.preventDefault();
+        $("#pop-data").slideToggle();
+        $(".close_btn_new").slideToggle();
+        $("#pop-data").attr('src',href);
+    })
+    $("body").on("click",".close_btn ",function(e){
+        e.preventDefault();
+        $("#pop-data").slideToggle();
+        $(this).slideToggle();
+    })
+    if(parseFloat($("body").css("width"))>768){
+        var bodyWidth=parseFloat($("body").css("width"));
+        $(".close_btn_new").css({
+            top:bodyWidth/20+35
+        })
+    }
+    $(".close_btn_new").css("display","none");
+</script>
+</html>

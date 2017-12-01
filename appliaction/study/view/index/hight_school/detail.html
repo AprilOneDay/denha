@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="wap-font-scale" content="no">
-    <title>{$this->parentColumn['name']}</title>
+    <title>{$data['title']}</title>
     {include public/global_css}
 
 	<script src="/ststic/study/js/jquery.min.js"></script>
@@ -40,9 +40,9 @@
                         <p><span>上课时间:</span>{$data['class_time']}</p>
                         {/if}
                         <p class="">
-                            <span>课程价格:</span><span>{$data['sale_price']}元</span>
+                            <span>课程价格:{$data['sale_price']}元</span>
                             {if $data['dis_price'] > 0}
-                            <span>活动价格：</span><span>{$data['dis_price']}元</span>
+                            <span>活动价格：{$data['dis_price']}元</span>
                             {/if}
                         </p>
 

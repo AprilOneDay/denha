@@ -4,7 +4,9 @@
  */
 namespace app\study\controller\index;
 
-class BusinessSchool extends \app\study\controller\Init
+use app\study\controller\Init;
+
+class BusinessSchool extends Init
 {
     /**
      * 单页模块
@@ -30,8 +32,10 @@ class BusinessSchool extends \app\study\controller\Init
         $list             = dao('Article')->getList($map, 'id,title,btitle,thumb,num,class_type,characteristics', 3, 6);
 
         foreach ($list['list'] as $key => $value) {
-            $list['list'][$key]['characteristics_copy'] = (array) dao('Category')->getName($value['characteristics']);
+            $list['list'][$key]['characteristics_copy'] = (array) dao('Category')->getName($value['characteristics'], $this->lg);
         }
+
+        print_r();
 
         $columnList = table('Column')->where('parentid', $this->parentColumn['id'])->field('id,name,bname,jump_url')->find('array');
 
@@ -49,7 +53,7 @@ class BusinessSchool extends \app\study\controller\Init
         $list             = dao('Article')->getList($map, 'id,title,btitle,thumb,num,class_type,characteristics', 3, $pageSize, $pageNo);
 
         foreach ($list['list'] as $key => $value) {
-            $list['list'][$key]['characteristics_copy'] = (array) dao('Category')->getName($value['characteristics']);
+            $list['list'][$key]['characteristics_copy'] = (array) dao('Category')->getName($value['characteristics'], $this->lg);
         }
 
         $this->assign('list', $list);

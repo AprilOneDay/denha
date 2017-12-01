@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="wap-font-scale" content="no">
-	<title>首页</title>
+	<title>Home - Hengding College</title>
     {include public/global_css}
 
 	<script src="/ststic/study/js/jquery.min.js"></script>
@@ -21,10 +21,9 @@
     <div class="banner clearfix">
         <div class="swiper-container">
             <div class="swiper-wrapper banner_adjust">
-                <div class="swiper-slide"><a href="javascript:;"><img src="/ststic/study/images/banner01.png"/></a></div>
-                <div class="swiper-slide"><a href="javascript:;"><img src="/ststic/study/images/banner01.png"/></a></div>
-                <div class="swiper-slide"><a href="javascript:;"><img src="/ststic/study/images/banner01.png"/></a></div>
-                <div class="swiper-slide"><a href="javascript:;"><img src="/ststic/study/images/banner01.png"/></a></div>
+                {loop $data['banner'] $value}
+                    <div class="swiper-slide"><a href="javascript:;"><img src="{$value['url']}"/></a></div>
+                {/loop}
             </div>
             <!-- Add Pagination -->
             <div class="swiper-pagination"></div>
@@ -44,118 +43,83 @@
         	<h3>Hengding Learning Community</h3>
             <i class="line"></i>
         </div>
-    	<div class="news_four clearfix width1200 ">
-        	<div class="li_div fadeInUp animated">
-            	<div class="title_s"><span>Latest News</span><a href="#">...</a></div>
-            	<div class="img_left">
-                	<div class="img_1"><a href="#"><img src="/ststic/study/images/img01.jpg" /><span>雅思口语介绍</span></a></div>
-                	<div class="img_1"><a href="#"><img src="/ststic/study/images/img01.jpg" /><span>雅思口语介绍</span></a></div>
+
+        <div class="news_four clearfix width1200 ">
+            <div class="li_div fadeInUp animated">
+                <div class="title_s"><span>Latest News</span><a href="/index/about/news/s/cid/21">...</a></div>
+                <div class="img_left">
+                    {loop $data['news']['list'] $key $value}
+                        {if $key <= 1}
+                            <div class="img_1"><a href="{F:url('/index/about/detail',array('id'=>$value['id']))}"><img src="{F:imgUrl($value['thumb'],'article')}" /><span>{$value['btitle']}</span></a></div>
+                       {/if}
+                    {/loop}
                 </div>
-            	<ul class="news_n2">
-                	<li>
-                    	<a href="#">站在高起点，着眼“高端雅思高端雅思高端雅思”</a><span>08/20</span>
+                <ul class="news_n2">
+                {loop $data['news']['list'] $key $value}
+                    <li>
+                        <a href="{F:url('/index/about/detail',array('id'=>$value['id']))}">{$value['btitle']}</a><span>{F:date('m/d',$value['publish_time'])}</span>
                     </li>
-                	<li>
-                    	<a href="#">站在高起点，着眼“高端雅思”</a><span>08/20</span>
-                    </li>
-                	<li>
-                    	<a href="#">站在高起点，着眼“高端雅思”</a><span>08/20</span>
-                    </li>
-                	<li>
-                    	<a href="#">站在高起点，着眼“高端雅思”</a><span>08/20</span>
-                    </li>
-                	<li>
-                    	<a href="#">站在高起点，着眼“高端雅思”</a><span>08/20</span>
-                    </li>
-                
+                {/loop}  
                 </ul>
             </div>
-        	
-        	<div class="li_div fadeInUp animated">
-            	<div class="title_s"><span>Life Exchange Area</span><a href="#">...</a></div>
+            
+            <div class="li_div fadeInUp animated">
+                <div class="title_s"><span>Live exchange area</span><a href="/index/bbs/s/cid/25">...</a></div>
+                {loop $data['bbs_1']['list'] $value}
                 <div class="tie_li clearfix">
-                    <div class="left_tie"><span><b>920000</b><i>回复</i></span></div>
+                    <div class="left_tie"><span><b>{$value['comment_num']}</b><i>Reply</i></span></div>
                     <div class="right_tie">
-                        <p class="name"><span>关晓彤谎报身高，身高，杨洋</span><em class="biaoqian zd">置顶</em><em class="biaoqian jh">精华</em></p>
+                        <p class="name"><span><a href="{F:url('/index/bbs/detail',array('cid'=>$value['column_id'],'id'=>$value['id']))}">{$value['title']}</a></span>
+                         {if $value['is_top']}<em class="biaoqian zd">Top</em>{/if}<!-- <em class="biaoqian jh">精华</em> --></p>
                         <div class="img"><img src="/ststic/study/images/team2.jpg" / ></div>
-                        <p class="tie_f"><b>张散散</b>发起了话题<i>·</i>2天前<i>·</i>最后回复<b>飞鱼</b><i>·</i></p>
+                        <p class="tie_f"><b>{$value['user']['nickname']}</b> Initiated<i>·</i>{F:reset($value['publish_time_copy'])} {F:key($value['publish_time_copy'])} ago
+                        {if $value['comment_num']}
+                            <i>·</i>Last Reply <b>{$value['commentUser']['nickname']}</b><i>·</i>{F:reset($value['comment_time_copy'])} {F:key($value['comment_time_copy'])} ago
+                        {/if}
+                        </p>
                     </div>
                 </div>
-                <div class="tie_li clearfix">
-                    <div class="left_tie"><span><b>4</b><i>回复</i></span></div>
-                    <div class="right_tie">
-                        <p class="name"><span>关晓彤谎报身高，而张艺兴报净身高泄露她真实身高，杨洋</span><em class="biaoqian zd">置顶</em><em class="biaoqian jh">精华</em></p>
-                        <div class="img"><img src="/ststic/study/images/team2.jpg" / ></div>
-                        <p class="tie_f"><b>张散散</b>发起了话题<i>·</i>2天前<i>·</i>最后回复<b>飞鱼</b><i>·</i></p>
-                    </div>
-                </div>
-                <div class="tie_li clearfix">
-                    <div class="left_tie"><span><b>4</b><i>回复</i></span></div>
-                    <div class="right_tie">
-                        <p class="name"><span>关晓彤谎报身高，而张艺兴报净身高泄露她真实身高，杨洋</span><em class="biaoqian jh">精华</em></p>
-                        <div class="img"><img src="/ststic/study/images/team2.jpg" / ></div>
-                        <p class="tie_f"><b>张散散</b>发起了话题<i>·</i>2天前<i>·</i>最后回复<b>飞鱼</b><i>·</i></p>
-                    </div>
-                </div>
+                {/loop}
             </div>
             
-        	<div class="li_div fadeInUp animated">
-            	<div class="title_s"><span>Study Discussion Area</span><a href="#">...</a></div>
+            <div class="li_div fadeInUp animated">
+                <div class="title_s"><span>Study discussion area</span><a href="/index/bbs/s/cid/23">...</a></div>
+                {loop $data['bbs_2']['list'] $value}
                 <div class="tie_li clearfix">
-                    <div class="left_tie"><span><b>920000</b><i>回复</i></span></div>
+                    <div class="left_tie"><span><b>{$value['comment_num']}</b><i>Reply</i></span></div>
                     <div class="right_tie">
-                        <p class="name"><span>关晓彤谎报身高，而张艺兴报净身高泄露她真实身高，杨洋</span><em class="biaoqian zd">置顶</em></p>
+                        <p class="name"><span><a href="{F:url('/index/bbs/detail',array('cid'=>$value['column_id'],'id'=>$value['id']))}">{$value['title']}</a></span>
+                         {if $value['is_top']}<em class="biaoqian zd">Top</em>{/if}<!-- <em class="biaoqian jh">精华</em> --></p>
                         <div class="img"><img src="/ststic/study/images/team2.jpg" / ></div>
-                        <p class="tie_f"><b>张散散</b>发起了话题<i>·</i>2天前<i>·</i>最后回复<b>飞鱼</b><i>·</i></p>
+                        <p class="tie_f"><b>{$value['user']['nickname']}</b> Initiated<i>·</i>{F:reset($value['publish_time_copy'])} {F:key($value['publish_time_copy'])} ago
+                        {if $value['comment_num']}
+                            <i>·</i>Last Reply <b>{$value['commentUser']['nickname']}</b><i>·</i>{F:reset($value['comment_time_copy'])} {F:key($value['comment_time_copy'])} ago
+                        {/if}
+                        </p>
                     </div>
                 </div>
-                <div class="tie_li clearfix">
-                    <div class="left_tie"><span><b>4</b><i>回复</i></span></div>
-                    <div class="right_tie">
-                        <p class="name"><span>关晓彤谎报身高，而张艺兴报净身高泄露她真实身高，杨洋</span><em class="biaoqian jh">精华</em></p>
-                        <div class="img"><img src="/ststic/study/images/team2.jpg" / ></div>
-                        <p class="tie_f"><b>张散散</b>发起了话题<i>·</i>2天前<i>·</i>最后回复<b>飞鱼</b><i>·</i></p>
-                    </div>
-                </div>
-                <div class="tie_li clearfix">
-                    <div class="left_tie"><span><b>4</b><i>回复</i></span></div>
-                    <div class="right_tie">
-                        <p class="name"><span>关晓彤谎报身高，而张艺兴报净身高泄露她真实身高，杨洋</span><em class="biaoqian jh">精华</em></p>
-                        <div class="img"><img src="/ststic/study/images/team2.jpg" / ></div>
-                        <p class="tie_f"><b>张散散</b>发起了话题<i>·</i>2天前<i>·</i>最后回复<b>飞鱼</b><i>·</i></p>
-                    </div>
-                </div>
+                {/loop}
             </div>
-        	<div class="li_div fadeInUp animated">
-            	<div class="title_s"><span>Study Abroad And International Area</span><a href="#">...</a></div>
+            <div class="li_div fadeInUp animated">
+                <div class="title_s"><span>Study abroad and international zone</span><a href="/index/bbs/s/cid/24">...</a></div>
+                {loop $data['bbs_3']['list'] $value}
                 <div class="tie_li clearfix">
-                    <div class="left_tie"><span><b>920000</b><i>回复</i></span></div>
+                    <div class="left_tie"><span><b>{$value['comment_num']}</b><i>Reply</i></span></div>
                     <div class="right_tie">
-                        <p class="name"><span>关晓彤谎报身高，而张艺兴报净身高泄露她真实身高，杨洋</span><em class="biaoqian zd">置顶</em></p>
+                        <p class="name"><span><a href="{F:url('/index/bbs/detail',array('cid'=>$value['column_id'],'id'=>$value['id']))}">{$value['title']}</a></span>
+                         {if $value['is_top']}<em class="biaoqian zd">Top</em>{/if}<!-- <em class="biaoqian jh">精华</em> --></p>
                         <div class="img"><img src="/ststic/study/images/team2.jpg" / ></div>
-                        <p class="tie_f"><b>张散散</b>发起了话题<i>·</i>2天前<i>·</i>最后回复<b>飞鱼</b><i>·</i></p>
+                        <p class="tie_f"><b>{$value['user']['nickname']}</b> Initiated<i>·</i>{F:reset($value['publish_time_copy'])} {F:key($value['publish_time_copy'])} ago
+                        {if $value['comment_num']}
+                            <i>·</i>Last Reply <b>{$value['commentUser']['nickname']}</b><i>·</i>{F:reset($value['comment_time_copy'])} {F:key($value['comment_time_copy'])} ago
+                        {/if}
+                        </p>
                     </div>
                 </div>
-                <div class="tie_li clearfix">
-                    <div class="left_tie"><span><b>4</b><i>回复</i></span></div>
-                    <div class="right_tie">
-                        <p class="name"><span>关晓彤谎报身高，而张艺兴报净身高泄露她真实身高，杨洋</span><em class="biaoqian jh">精华</em></p>
-                        <div class="img"><img src="/ststic/study/images/team2.jpg" / ></div>
-                        <p class="tie_f"><b>张散散</b>发起了话题<i>·</i>2天前<i>·</i>最后回复<b>飞鱼</b><i>·</i></p>
-                    </div>
-                </div>
-                <div class="tie_li clearfix">
-                    <div class="left_tie"><span><b>4</b><i>回复</i></span></div>
-                    <div class="right_tie">
-                        <p class="name"><span>关晓彤谎报身高，而张艺兴报净身高泄露她真实身高，杨洋</span><em class="biaoqian jh">精华</em></p>
-                        <div class="img"><img src="/ststic/study/images/team2.jpg" / ></div>
-                        <p class="tie_f"><b>张散散</b>发起了话题<i>·</i>2天前<i>·</i>最后回复<b>飞鱼</b><i>·</i></p>
-                    </div>
-                </div>
+                {/loop}
             </div>
         
         </div>
-    
     </div>    
     
 	<div class="index_ab ">
@@ -164,91 +128,45 @@
             <i class="line"></i>
            <!--  <span>START&nbsp;YOUR&nbsp;JOURNEY&nbsp;NOW</span> -->
         </div>
-		<div class="notice fadeInUpBig animated width1200" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUpBig; margin:0 auto;  ">
-            	<div class="tab-hd width1200">
-            		<ul class="tab-nav fadeInUp animated">
-            			<li ><a>国际商学院</a></li>
-                        <li class="on"><a>高中部</a></li>
-            		</ul>
-            	</div>
-            	<div class="tab-bd clearfix">
-            		<div class="tab-pal ">
-                    	<ul class="azkc clearfix">
-                        	<li>
-                            	<div class="imgs"><a href="#"><img src="/ststic/study/images/kc1.jpg" /></a></div>
-                                <div class="names">sss雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺7.分课程</div>
-                                <div class="liuyan"><span><i class="ico2"></i>255</span><span><i class="ico1"></i>158</span></div>
+		      <div class="notice fadeInUpBig animated width1200" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUpBig; margin:0 auto;  ">
+                <div class="tab-hd width1200">
+                    <ul class="tab-nav fadeInUp animated">
+                        <li ><a >Business School</a></li>
+                        <li class="on"><a >High School</a></li>
+                    </ul>
+                </div>
+                <div class="tab-bd clearfix">
+                    <div class="tab-pal ">
+                        <ul class="azkc clearfix">
+                            {loop $data['course_1']['list'] $value}
+                            <li>
+                                <div class="imgs"><a href="{F:url('/index/course/detail',array('id'=>$value['id']))}"><img src="{F:imgUrl($value['thumb'],'article')}" /></a></div>
+                                <div class="names">{$value['btitle']}</div>
+                                <div class="liuyan"><span><i class="ico2"></i>{$value['hot']}</span><span><i class="ico1"></i>{$value['comment_num']}</span></div>
                             </li>
-                        	<li>
-                            	<div class="imgs"><a href="#"><img src="/ststic/study/images/kc2.jpg" /></a></div>
-                                <div class="names">雅思冲刺7.分课程</div>
-                                <div class="liuyan"><span><i class="ico2"></i>255</span><span><i class="ico1"></i>158</span></div>
-                            </li>
-                        	<li>
-                            	<div class="imgs"><a href="#"><img src="/ststic/study/images/kc3.jpg" /></a></div>
-                                <div class="names">雅思冲刺7.分课程</div>
-                                <div class="liuyan"><span><i class="ico2"></i>255</span><span><i class="ico1"></i>158</span></div>
-                            </li>
-                        	<li>
-                            	<div class="imgs"><a href="#"><img src="/ststic/study/images/kc4.jpg" /></a></div>
-                                <div class="names">雅思冲刺7.分课程</div>
-                                <div class="liuyan"><span><i class="ico2"></i>255</span><span><i class="ico1"></i>158</span></div>
-                            </li>
-                        	<li>
-                            	<div class="imgs"><a href="#"><img src="/ststic/study/images/kc2.jpg" /></a></div>
-                                <div class="names">雅思冲刺7.分课程</div>
-                                <div class="liuyan"><span><i class="ico2"></i>255</span><span><i class="ico1"></i>158</span></div>
-                            </li>
-                        	<li>
-                            	<div class="imgs"><a href="#"><img src="/ststic/study/images/kc6.jpg" /></a></div>
-                                <div class="names">雅思冲刺7.分课程</div>
-                                <div class="liuyan"><span><i class="ico2"></i>255</span><span><i class="ico1"></i>158</span></div>
-                            </li>
+                            {/loop}
                             <div class="clearfix"> </div>
                         </ul>
-            		</div>
-            		<div class="tab-pal">
-                    	<ul class="azkc ">
-                        	<li>
-                            	<div class="imgs"><a href="#"><img src="/ststic/study/images/kc1.jpg" /></a></div>
-                                <div class="names">雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺雅思冲刺7.分课程</div>
-                                <div class="liuyan"><span><i class="ico2"></i>255</span><span><i class="ico1"></i>158</span></div>
+                    </div>
+                    <div class="tab-pal">
+                        <ul class="azkc ">
+                            {loop $data['course_2']['list'] $value}
+                            <li>
+                                <div class="imgs"><a href="{F:url('/index/course/detail',array('id'=>$value['id']))}"><img src="{F:imgUrl($value['thumb'],'article')}" /></a></div>
+                                <div class="names">{$value['btitle']}</div>
+                                <div class="liuyan"><span><i class="ico2"></i>{$value['hot']}</span><span><i class="ico1"></i>{$value['comment_num']}</span></div>
                             </li>
-                        	<li>
-                            	<div class="imgs"><a href="#"><img src="/ststic/study/images/kc2.jpg" /></a></div>
-                                <div class="names">雅思冲刺7.分课程</div>
-                                <div class="liuyan"><span><i class="ico2"></i>255</span><span><i class="ico1"></i>158</span></div>
-                            </li>
-                        	<li>
-                            	<div class="imgs"><a href="#"><img src="/ststic/study/images/kc3.jpg" /></a></div>
-                                <div class="names">雅思冲刺7.分课程</div>
-                                <div class="liuyan"><span><i class="ico2"></i>255</span><span><i class="ico1"></i>158</span></div>
-                            </li>
-                        	<li>
-                            	<div class="imgs"><a href="#"><img src="/ststic/study/images/kc4.jpg" /></a></div>
-                                <div class="names">雅思冲刺7.分课程</div>
-                                <div class="liuyan"><span><i class="ico2"></i>255</span><span><i class="ico1"></i>158</span></div>
-                            </li>
-                        	<li>
-                            	<div class="imgs"><a href="#"><img src="/ststic/study/images/kc2.jpg" /></a></div>
-                                <div class="names">雅思冲刺7.分课程</div>
-                                <div class="liuyan"><span><i class="ico2"></i>255</span><span><i class="ico1"></i>158</span></div>
-                            </li>
-                        	<li>
-                            	<div class="imgs"><a href="#"><img src="/ststic/study/images/kc6.jpg" /></a></div>
-                                <div class="names">雅思冲刺7.分课程</div>
-                                <div class="liuyan"><span><i class="ico2"></i>255</span><span><i class="ico1"></i>158</span></div>
-                            </li>
+                            {/loop}
                             <div class="clearfix"> </div>
                         </ul>
                           
                     
-            		</div>
-            		
+                    </div>
                     
-            	</div>
-        	</div>        
-        <a class="more" href="#">MORE++</a>
+                    
+                </div>
+            </div>        
+        <a class="more" href="/index/business_school/lession/s/cid/8">MORE++</a>
         
     </div>
     
@@ -265,219 +183,74 @@
     
     
     <div class="team_boxs clearfix">
-    	<div class="team_boxs_midd width1200">
+        <div class="team_boxs_midd width1200">
             <div class="title fadeInUp animated">
-                <h3>Hengding College teaching and research team</h3>
+                <h3>HENGDING&nbsp;COLLEGE&nbsp;TEACHING&nbsp;AND&nbsp;RESEARCH&nbsp;TEAM</h3>
                 <i class="line"></i>
-                <!-- <span>HENGDING&nbsp;COLLEGE&nbsp;TEACHING&nbsp;AND&nbsp;RESEARCH&nbsp;TEAM</span> -->
+                <!--<span>HENGDING&nbsp;COLLEGE&nbsp;TEACHING&nbsp;AND&nbsp;RESEARCH&nbsp;TEAM</span> -->
              </div>
-        	 <div class="notice width1200" style="margin:0 auto">
-            	<div class="tab-hd">
-            		<ul class="tab-nav fadeInUp animated">
-            			<li ><a ><i><img src="/ststic/study/images/team3.jpg" /></i><span>推荐讲师-大卫</span></a></li>
-                        <li class="on"><a  ><i><img src="/ststic/study/images/team3.jpg" /></i><span>推荐讲师-杨浩</span></a></li>
-                        <li ><a ><i><img src="/ststic/study/images/team3.jpg" /></i><span>推荐讲师-的的张洋</span></a></li>
-                        <li ><a ><i><img src="/ststic/study/images/team3.jpg" /></i><span>推荐讲师-王姗</span></a></li>
-            		</ul>
-            	</div>
-            	<div class="tab-bd clearfix fadeInUp animated">
-            		<div class="tab-pal clearfix">
-                    <p>作为澳大利亚教育首席培训官、澳大利亚教育海外研发中心教研员、ETS官方培训师、British Council（英国教育文化协会）雅思考试年度工作坊特邀嘉宾、作为教育年度峰会主讲官，对于命题规律和考点了如指掌，授课过程中总能直击要害短期突破瓶颈。擅长：雅思听力、阅读、口语；托福听力；SAT阅读</p>
-        			<p><a href="#" class="btn_zx">立即咨询</a><span><a href="#" class="bttn_zxs">更多老师</a></span></p>
+             <div class="notice width1200" style="margin:0 auto">
+                <div class="tab-hd">
+                    <ul class="tab-nav fadeInUp animated">
+                        {loop $data['teacher']['list'] $key $value}
+                        <li {if !$key}class="on"{/if}><a ><i><img src="{F:imgUrl($value['thumb'],'article')}" /></i><span>{$value['btitle']}</span></a></li>
+                        {/loop}
+                    </ul>
+                </div>
+                <div class="tab-bd clearfix fadeInUp animated">
+                    {loop $data['teacher']['list'] $key $value}
+                    <div class="tab-pal clearfix">
+                    <p>{$value['description_en']}</p>
+                    <p><!-- <a href="#" class="btn_zx">立即咨询</a> --><span><a href="/index/business_school/team/s/cid/7" class="bttn_zxs">More teachers</a></span></p>
                     </div>
-            		<div class="tab-pal clearfix ">
-                    <p>作为澳大利亚教育首席培训官、澳大利亚教育海外研发中心教研员、ETS官方培训师、British Council（英国教育文化协会）雅思考试年度工作坊特邀嘉宾、作为教育年度峰会主讲官，对于命题规律和考点了如指掌，授课过程中总能直击要害短期突破瓶颈。擅长：雅思听力、阅读、口语；托福听力；SAT阅读</p>
-        			<p><a href="#" class="btn_zx">立即咨询</a><span><a href="#" class="bttn_zxs">更多老师</a></span></p>
-                    </div>
-            		<div class="tab-pal clearfix">
-                    <p>作为澳大利亚教育首席培训官、澳大利亚教育海外研发中心教研员、ETS官方培训师、British Council（英国教育文化协会）雅思考试年度工作坊特邀嘉宾、作为教育年度峰会主讲官，对于命题规律和考点了如指掌，授课过程中总能直击要害短期突破瓶颈。擅长：雅思听力、阅读、口语；托福听力；SAT阅读</p>
-        			<p><a href="#" class="btn_zx">立即咨询</a><span><a href="#" class="bttn_zxs">更多老师</a></span></p>
-                    </div>
-            		<div class="tab-pal clearfix">
-                    <p>作为澳大利亚教育首席培训官、澳大利亚教育海外研发中心教研员、ETS官方培训师、British Council（英国教育文化协会）雅思考试年度工作坊特邀嘉宾、作为教育年度峰会主讲官，对于命题规律和考点了如指掌，授课过程中总能直击要害短期突破瓶颈。擅长：雅思听力、阅读、口语；托福听力；SAT阅读</p>
-        			<p><a href="#" class="btn_zx">立即咨询</a><span><a href="#" class="bttn_zxs">更多老师</a></span></p>
-                    </div>
+                    {/loop}
+                    
                 </div> 
             </div>
         </div>  
     </div>
-    <div class="aside_menu">
-        <div>
-            <span>国际商学院</span>
-            <!--弹出层-->
-            <div class="pop_contact_way">
-                <div>
-                    <p>联系我们</p>
-                    <div>
-                        <ul class="call_number">
-                            <li>
-                                <img src="/ststic/study/images/QQ_icon.png">
-                                <span>QQ：</span>
-                                <span>1005336621</span>
-                            </li>
-                            <li>
-                                <img src="/ststic/study/images/weixin_icon.png">
-                                <span>微信：</span>
-                                <span>21546452</span>
-                            </li>
-                            <li>
-                                <img src="/ststic/study/images/duanxin_icon.png">
-                                <span>邮箱：</span>
-                                <span>1005336621@qq.com</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="QR_code">
-                        <div>
-                            <img src="/ststic/study/images/wx.jpg">
-                            <p>微信公众号</p>
-                        </div>
-                        <div>
-                            <img src="/ststic/study/images/wx.jpg">
-                            <p>APP</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div>
-            <span>高中部</span>
-            <!--弹出层-->
-            <div class="pop_contact_way">
-                <div>
-                    <p>联系我们</p>
-                    <div>
-                        <ul class="call_number">
-                            <li>
-                                <img src="/ststic/study/images/QQ_icon.png">
-                                <span>QQ：</span>
-                                <span>1005336621</span>
-                            </li>
-                            <li>
-                                <img src="/ststic/study/images/weixin_icon.png">
-                                <span>微信：</span>
-                                <span>21546452</span>
-                            </li>
-                            <li>
-                                <img src="/ststic/study/images/duanxin_icon.png">
-                                <span>邮箱：</span>
-                                <span>1005336621@qq.com</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="QR_code">
-                        <div>
-                            <img src="/ststic/study/images/wx.jpg">
-                            <p>微信公众号</p>
-                        </div>
-                        <div>
-                            <img src="/ststic/study/images/wx.jpg">
-                            <p>APP</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div>
-            <span>留学</span>
-            <!--弹出层-->
-            <div class="pop_contact_way">
-                <div>
-                    <p>联系我们</p>
-                    <div>
-                        <ul class="call_number">
-                            <li>
-                                <img src="/ststic/study/images/QQ_icon.png">
-                                <span>QQ：</span>
-                                <span>1005336621</span>
-                            </li>
-                            <li>
-                                <img src="/ststic/study/images/weixin_icon.png">
-                                <span>微信：</span>
-                                <span>21546452</span>
-                            </li>
-                            <li>
-                                <img src="/ststic/study/images/duanxin_icon.png">
-                                <span>邮箱：</span>
-                                <span>1005336621@qq.com</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="QR_code">
-                        <div>
-                            <img src="/ststic/study/images/wx.jpg">
-                            <p>微信公众号</p>
-                        </div>
-                        <div>
-                            <img src="/ststic/study/images/wx.jpg">
-                            <p>APP</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-<!--手机 -->
 
+    <!--手机 -->
     <div class="team_box2 clearfix">
-    	<div class="team_box2_midd width1200">
-			<div id="slideBox" class="slideBox">
-				<div class="bd">
-					<div class="tempWrap" style="overflow:hidden; position:relative;">
+        <div class="team_box2_midd width1200">
+            <div id="slideBox" class="slideBox">
+                <div class="bd">
+                    <div class="tempWrap" style="overflow:hidden; position:relative;">
                     <ul style="width: 1920px; position: relative; overflow: hidden; padding: 0px; margin: 0px; transition-duration: 200ms; transform: translate(-640px, 0px) translateZ(0px);">
-						<li style="display: table-cell; vertical-align: top;">
-							<a class="pic" href="#"><img src="/ststic/study/images/team4.jpg"></a><span>推荐讲师-大卫</span>
-                            <div class="tab-pals clearfix">
-                            <p>作为澳大利亚教育首席培训官、澳大利亚教育海外研发中心教研员、ETS官方培训师、British Council（英国教育文化协会）雅思考试年度工作坊特邀嘉宾、作为教育年度峰会主讲官，对于命题规律和考点了如指掌，授课过程中总能直击要害短期突破瓶颈。擅长：雅思听力、阅读、口语；托福听力；SAT阅读</p>
-                            <p><a href="#" class="btn_zx">立即咨询</a><a href="#" class="bttn_zxs">更多老师</a></p>
-                            </div>
-						</li>
+                        {loop $data['teacher']['list'] $key $value}
                         <li style="display: table-cell; vertical-align: top;">
-							<a class="pic" href="#"><img src="/ststic/study/images/team1.jpg"></a><span>推荐讲师-大卫</span>
+                            <a class="pic" href="#"><img src="{F:imgUrl($value['thumb'],'article')}"></a><span>{$value['btitle']}</span>
                             <div class="tab-pals clearfix">
-                            <p>作为澳大利亚教育首席培训官、澳大利亚教育海外研发中心教研员、ETS官方培训师、British Council（英国教育文化协会）雅思考试年度工作坊特邀嘉宾、作为教育年度峰会主讲官，对于命题规律和考点了如指掌，授课过程中总能直击要害短期突破瓶颈。擅长：雅思听力、阅读、口语；托福听力；SAT阅读</p>
-                            <p><a href="#" class="btn_zx">立即咨询</a><a href="#" class="bttn_zxs">更多老师</a></p>
+                            <p>{$value['description_en']}</p>
+                            <p><!-- <a href="#" class="btn_zx">立即咨询</a> --><a href="/index/business_school/team/s/cid/7" class="bttn_zxs">More teachers</a></p>
                             </div>
-						</li>
-						<li style="display: table-cell; vertical-align: top;">
-							<a class="pic" href="#"><img src="/ststic/study/images/team2.jpg"></a>
-                            <span>推荐讲师-大卫</span>
-                            <div class="tab-pals clearfix">
-                            <p>作为澳大利亚教育首席培训官、澳大利亚教育海外研发中心教研员、ETS官方培训师、British Council（英国教育文化协会）雅思考试年度工作坊特邀嘉宾、作为教育年度峰会主讲官，对于命题规律和考点了如指掌，授课过程中总能直击要害短期突破瓶颈。擅长：雅思听力、阅读、口语；托福听力；SAT阅读</p>
-                            <p><a href="#" class="btn_zx">立即咨询</a><a href="#" class="bttn_zxs">更多老师</a></p>
-                            </div>
-						</li>
-						<li style="display: table-cell; vertical-align: top;">
-							<a class="pic" href="#"><img src="/ststic/study/images/team3.jpg"></a><span>推荐讲师-大卫</span>
-                            <div class="tab-pals clearfix">
-                            <p>作为澳大利亚教育首席培训官、澳大利亚教育海外研发中心教研员、ETS官方培训师、British Council（英国教育文化协会）雅思考试年度工作坊特邀嘉宾、作为教育年度峰会主讲官，对于命题规律和考点了如指掌，授课过程中总能直击要害短期突破瓶颈。擅长：雅思听力、阅读、口语；托福听力；SAT阅读</p>
-                            <p><a href="#" class="btn_zx">立即咨询</a><a href="#" class="bttn_zxs">更多老师</a></p>
-                            </div>
-						</li>
+                        </li>
+                        {/loop}
                        </ul>
                     </div>
-				</div>
+                </div>
 
-				<div class="hd">
-					<ul></ul>
-				</div>
-			</div>        
+                <div class="hd">
+                    <ul></ul>
+                </div>
+            </div>        
         
         </div>
     </div>    
 
 <script type="text/javascript">
-				TouchSlide({ 
-					slideCell:"#slideBox",
-					titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
-					mainCell:".bd ul", 
-					effect:"leftLoop", 
-					autoPage:false //自动分页
-				});
-			</script>
+                TouchSlide({ 
+                    slideCell:"#slideBox",
+//                  titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+                    mainCell:".bd ul", 
+                    effect:"leftLoop", 
+                    autoPage:false //自动分页
+                });
+            </script>
 
+{include public/float_en}              
 <div class="clearfix"></div>
-	{include public/footer_en}                                                                                         
+    {include public/footer_en}                                                                                         
 </body>
 <script>
 jQuery(".notice").slide({ titCell:".tab-hd li", mainCell:".tab-bd",delayTime:0 });

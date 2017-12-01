@@ -20,9 +20,9 @@
 .header .ch_en a{ text-align:right}
 .logo_nav .logo{ width:200px;height:90px}
 .logo_nav  .nav ul li a b{ display:block; text-align:center; font-size:14px; font-weight:500; color:#333; line-height:30px}
-.logo_nav  .nav ul li a span em{ color:#b4b4b4; font-size:10px; margin-right:5px}
+/*.logo_nav  .nav ul li a span em{ color:#b4b4b4; font-size:10px;}*/
 .logo_nav  .nav ul li a b{ display:block; text-align:center; font-size:14px; font-weight:500; color:#333; line-height:30px}
-.logo_nav  .nav ul li a span em{ color:#b4b4b4; font-size:10px; margin-right:5px}
+.logo_nav  .nav ul li a span em{ color:#b4b4b4; font-size:10px;text-align:center}
 .why_ch{ height:320px}
 .why_ch .why_midd{ background:url(../images/tm.png); width:765px; margin:10px auto; padding:20px;min-height:160px}
 
@@ -97,7 +97,7 @@
 .team_boxs_midd .notice .tab-bd .tab-pal .btn_zx{ width:150px; line-height:45px;}
 .tab-bd .tab-pal .bttn_zxs{line-height:60px}
 .bottom .bottom-midd{ width:1200px; }
-.bottom .bottom-midd ul{width:550px;}
+.bottom .bottom-midd ul{width:650px;}
 .bottom{ height:205px;}
 .Copyright .share{ width:150px}
 .Copyright .Copyright_box p{ float:left}
@@ -213,7 +213,7 @@
 .cont_box .cont_right li .keshi {width:200px;}
 .cont_box .cont_left  .notices  .pl_cont{width:740px;}
 .cont_box .cont_right .rec{ width:250px;padding:15px;}
-.cont_box .cont_right .teacher p i{ display:block; float:left; padding:9px; text-align:center; font-size:16px; margin-left:10px;}
+.cont_box .cont_right .teacher p i{ display:block; float:left; padding:9px; text-align:center; font-size:16px;}
 .login .login_box form{ bwidth:500px;  height:270px} 
 .login .login_box .yz{ width:500px}
 .login .login_box form .btn_ico{ width:330px;}
@@ -558,6 +558,36 @@
 	}
 	.shequ_left .tie_li .right_tie .name a{
 		color:#333333;
+	}
+	.bottom .bottom-midd:after{
+		content:"";
+		display:block;
+		clear:both;
+	}
+	.bottom{
+		height:auto;
+	}
+	.bottom .bottom-midd ul li{
+		height:auto;
+		font-size:14px;
+		flex:1;
+		margin-right:30px;
+	}
+	.bottom .bottom-midd ul li  a{
+		width:100%;
+		white-space: nowrap;
+	}
+	.bottom .bottom-midd ul{
+		display:flex;
+		display:-webkit-flex;
+	}
+	.cont_box .cont_right .teacher p{
+		display:flex;
+		display:-webkit-flex;
+		justify-content:space-between;
+	}
+	.li_div .tie_li .right_tie{
+		width:100%;
 	}
 }
 .gj_cont .hs_box .notice .tab-hd ul{

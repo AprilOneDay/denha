@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="wap-font-scale" content="no">
-	<title>{$this->parentColumn['name']}</title>
+	<title>{$this->parentColumn['bname']}</title>
     <link rel="stylesheet" href="/ststic/study/css/base.css">
     <link rel="stylesheet" href="/ststic/study/css/comm.css">
     <link rel="stylesheet" href="/ststic/study/css/mob.css">
@@ -19,7 +19,7 @@
 
 
 <body>
-	{include public/top}
+	{include public/top_en}
     <div class="banner clearfix">
     	<div class="banner_box">
         	<img src="/ststic/study/images/banner01.png" />
@@ -31,7 +31,7 @@
         	<div class="shequ_left clearfix">
             	<ul class="nav_shequ clearfix">
                     {loop $columnList $value}
-                	<li {if $value['id'] == $cid}class="on"{/if}><a href="{$value['jump_url']}">{$value['name']}</a></li>
+                	<li {if $value['id'] == $cid}class="on"{/if}><a href="{$value['jump_url']}">{$value['bname']}</a></li>
                 	{/loop}
                 </ul>
                 {if $cid == 26}
@@ -40,29 +40,29 @@
                     <li>
                         <div class="img"><a href="javascript:;"><img src="{$value['thumb']}" / ></a></div>
                         <p class="name"><a href="javascript:;">{$value['title']}</a></p>
-                        <p class="fu_n">{$value['description']}..<a href="javascript:;">[更多]</a></p>
-                        <p class="time"><span>发布时间:{F:date('Y/m/d',$value['publish_time'])}</span><i>浏览（{$value['hot']}）</i><i>回复（{$value['comment_num']}）</i></p>
+                        <p class="fu_n">{$value['description']}..<a href="javascript:;">[More]</a></p>
+                        <p class="time"><span>Published:{F:date('Y/m/d',$value['publish_time'])}</span><i>Browse（{$value['hot']}）</i><i>Reply（{$value['comment_num']}）</i></p>
                     </li>
                     {/loop}
                 </ul>
                 {else}
             	<div class="tie_list clearfix">
                 	<div class="choose_tie clearfix">
-                    	<a href="javascript:;" class="on a_ch">全部</a>
+                    	<a href="javascript:;" class="on a_ch">ALL</a>
                         <!-- <a href="javascript:;" class="a_ch">精华</a><a href="javascript:;" class="a_ch">排序<span>最新发帖</span></a> -->
-                        <a class="btn_tie" href="javascript:;">我要发帖</a>
+                        <a class="btn_tie" href="javascript:;">Posted</a>
                     </div>
                     {loop $list $value}
                 	<div class="tie_li clearfix">
-                    	<div class="left_tie"><span><b>{$value['comment_num']}</b><i>回复</i></span></div>
+                    	<div class="left_tie"><span><b>{$value['comment_num']}</b><i>Reply</i></span></div>
                         <div class="right_tie">
                             <p class="name"><a href="{F:url('detail',array('id'=>$value['id'],'cid'=>$cid))}"><span>{$value['title']}</span></a>
-                                {if $value['is_top']}<em class="biaoqian zd">置顶</em>{/if}
+                                {if $value['is_top']}<em class="biaoqian zd">Top</em>{/if}
                             </p>
                             <div class="img"><img src="{F:imgUrl($value['user']['avatar'],'avatar')}" / ></div>
-                            <p class="tie_f"><b>{$value['user']['nickname']}</b>发起了话题<i>·</i>{F:reset($value['publish_time_copy'])}{$other['timeCopy'][key($value['publish_time_copy'])]}前
+                            <p class="tie_f"><b>{$value['user']['nickname']}</b> Launched a topic<i>·</i>{F:reset($value['publish_time_copy'])} {F:key($value['publish_time_copy'])} ago
                             {if $value['comment_num']}
-                                <i>·</i>最后回复<b>{$value['commentUser']['nickname']}</b><i>·</i>{F:reset($value['comment_time_copy'])}{$other['timeCopy'][key($value['comment_time_copy'])]}前
+                                <i>·</i>Last Reply <b>{$value['commentUser']['nickname']}</b><i>·</i>{F:reset($value['comment_time_copy'])} {F:key($value['comment_time_copy'])} ago
                             {/if}
                             </p>
                         </div>
@@ -72,8 +72,8 @@
                     {if $pages}
                     <div class="page ">
                         <p><b>{$pages['pageNo']}</b>/{$pages['allPage']}</p>
-                        <a href="{$pages['pageUrl']}?pageNo={F:max($pages['pageNo'] - 1,1)}">上一页</a>
-                        <a href="{$pages['pageUrl']}?pageNo={F:min($pages['pageNo'] + 1,$pages['allPage'])}">下一页</a>
+                        <a href="{$pages['pageUrl']}?pageNo={F:max($pages['pageNo'] - 1,1)}">Previous page</a>
+                        <a href="{$pages['pageUrl']}?pageNo={F:min($pages['pageNo'] + 1,$pages['allPage'])}">Next page</a>
                     </div>
                     {/if}
                 </div>
@@ -82,7 +82,7 @@
         	<div class="shequ_right fr">
             	
                 <div class="rec rec_ht">
-                	<h3>热门话题</h3>
+                	<h3>Hot Topic</h3>
                     <ul>
                     	{loop $remmond['hotList']['list'] $value}
                         <li><a href="{F:url('/index/bbs/detail',array('cid'=>$value['column_id'],'id'=>$value['id']))}">{$value['title']}</a></li>
@@ -92,12 +92,12 @@
                 </div>
                
             	<div class="rec clearfix">
-                	<h3>推荐课程</h3>
+                	<h3>Recommended Courses</h3>
                 	<ul class="kc_rec">
                         {loop $remmond['remmondList']['list'] $value}
                         <li>
                             <div class="imgs"><a href="{F:url('/index/course/detail',array('id'=>$value['id']))}"><img src="{$value['thumb']}" /></a></div>
-                            <div class="name">{$value['title']}</div>
+                            <div class="name">{$value['btitle']}</div>
                             <div class="keshi">
                                 {loop $value['characteristics_copy'] $v}
                                     <span><i></i>{$v}</span>
@@ -109,25 +109,6 @@
                 
                 </div>
             
-				<!-- <div class="focusBox rec" >
-                                             <h3>学员风采</h3>
-                                             <ul class="pic" >
-                                                 <li ><a href="javascript:;" target="_blank"><img src="images/team1.jpg"></a><span>张散散——雅思培训</span></li>
-                                                 <li ><a href="javascript:;" target="_blank"><img src="images/team2.jpg"></a><span>张散散——雅思培训</span></li>
-                                                 <li ><a href="javascript:;" target="_blank"><img src="images/team3.jpg"></a><span>张散散——雅思培训</span></li>
-                                                 <li ><a href="javascript:;" target="_blank"><img src="images/team4.jpg"></a><span>张散散——雅思培训</span></li>
-                                                 <li ><a href="javascript:;" target="_blank"><img src="images/team5.jpg"></a><span>张散散——雅思培训</span></li>
-                                             </ul>
-                                             <a class="prev" href="javascript:void(0)" style="opacity: 0.2; display: none;"></a>
-                                             <a class="next" href="javascript:void(0)" style="opacity: 0.2; display: none;"></a>
-                                             <ul class="hd">
-                                                 <li class=""></li>
-                                                 <li class=""></li>
-                                                 <li class="on"></li>
-                                                 <li></li>
-                                                 <li></li>
-                             </ul>
-                                         </div>    -->         
             </div>
         
         
@@ -138,8 +119,8 @@
             <form>
             	<div class="xiugai_box clearfix">
                 	<div class="close"><a href="javascript:;" class="closebox"></a></div>
-                    <b>发帖</b>
-                    <p><span>板块选择</span>
+                    <b>Posted</b>
+                    <p><span>Plate selection</span>
                     <select class="mokuai" name="column_id">
                         {loop $columnList $value}
                             {if $value['id'] != 26}
@@ -148,20 +129,20 @@
                         {/loop}
                     </select>
                     </p>
-                    <p><span>标题</span><input type="text" name="title"  placeholder="请输入"/></p>
+                    <p><span>title</span><input type="text" name="title"  placeholder="请输入"/></p>
                     <p class="add-input">
-                        <a href="insert-img">插入图片</a>
+                        <a href="insert-img">Insert picture</a>
                         <input type="file" id="insert-img">
-                        <span>内容</span>
+                        <span>content</span>
                         <textarea name="content" cols="" rows="" style="display: none;"></textarea>
                         <div class="textarea" id="textarea" contenteditable="true" style="text-align: left;overflow-y:scroll;"></div>
                     </p>
-                    <a class="btn_xg clearfix btn-fatie" href="javascript:;">发布帖子</a>
+                    <a class="btn_xg clearfix btn-fatie" href="javascript:;">Posted</a>
                 </div>
             </form>
         </div>  
     <div class="clearfix"></div>
-    {include public/footer}
+    {include public/footer_en}
     
 </body>
 <script type="text/javascript">
@@ -170,7 +151,7 @@
 $(".btn_tie").click(function(){
   var token = getCookie('token');
   if(!token){
-    layer.msg('请登录');
+    layer.msg('please sign in');
     setTimeout(function(){
         window.location.href = '/index/user/login/s/return/'+encodeURIComponent(window.location.href);
     },1000)

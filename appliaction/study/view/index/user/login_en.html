@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+	<title>Login</title>
+	<link rel="stylesheet" href="/ststic/study/css/base.css">
+	<link rel="stylesheet" href="/ststic/study/css/index.css">
+    <link rel="stylesheet" href="/ststic/study/css/mob.css">
+</head>
+<body style="overflow:hidden">
+	<div class="header">
+    	<div class="header_box">
+        	<div class="logo fl"><a href="/"><img src="/ststic/study/images/logo.png" /></a></div>
+        </div>
+    </div>
+    <div class="login">
+    	<div class="login_box">
+        	<form class="form-horizontal" action="{F:url('/index/user/login')}">
+                <input type="hidden" value="1" name="type">
+            	<h3>User Login</h3>
+            	<p class="name div clearfix">
+                	<span><i></i><input type="text" class="input" name="account" placeholder="用户名/邮箱/手机号"></span>
+                    <div class="selectbox">
+                        <div class="selemediv">
+                             <div class="selemenu">Student</div>
+                                  <div class="citylist">
+                                       <span data-value="1">Student</span>
+                                       <span data-value="2">Teacher</span>
+                                  </div>
+                         </div>
+                    </div>
+				</p>
+            	<p class="password div"><span><i></i><input type="password" name="password" class="input" placeholder="请输入登录密码"></span><a href="#" class="forget">password？</a></p>
+            	<a href="javascript:;" class="btn_ico btn-comply">Login</a>
+            </form>
+                <b class="yz">No account？<a href="{F:url('/index/user/register')}">Sign up</a></b>
+        </div>
+    </div>
+    <div id="sections-wrapper">
+        <section class="show" data-img="/ststic/study/images/bg.jpg">
+            
+        </section>
+    </div>
+    <!-- sections control -->
+</body>
+    <script type="text/javascript" src="/ststic/study/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/ststic/study/js/anime.min.js"></script>
+    <script type="text/javascript" src="/ststic/study/js/interaction.js"></script>
+    <script type="text/javascript" src="/ststic/study/js/common.js"></script>
+    <script type="text/javascript" src="/vendor/layer/layer.js"></script>
+<script>
+$(".selemenu").click(function(){
+	$(this).next().slideToggle();
+	$(this).parents().siblings().find(".citylist,.citylist2").slideUp();
+	})
+$(".citylist span").click(function(){
+	var text=$(this).text();
+    var id  =$(this).attr('data-value');
+	$(this).parent().prev().html(text);
+	$(this).parent().prev().css("color","#666")
+    $("input[name=type]").val(id);
+	$(this).parent().fadeOut();
+	
+	})
+$(".shangquan li").click(function(){
+	$(".shangquan li").removeClass("active")
+	$(this).addClass("active")
+	var text1=$(this).text();
+	$(".sqinput").html(text1)
+	})
+$(".chengshi li").click(function(){
+	$(".chengshi li").removeClass("active")
+	$(this).addClass("active")
+    var text2=$(this).text();
+	$(".csinput").html("-"+text2)
+	$(".citylist2").slideUp();
+	})
+  $(function(){
+    $(document).not($(".selectbox")).click(function(){
+        $(".citylist,.citylist2").slideUp();
+	 })
+	 $(".selectbox").click(function(event){
+        event.stopPropagation();
+    })
+	})
+</script>
+</html>

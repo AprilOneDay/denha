@@ -4,7 +4,9 @@
  */
 namespace app\study\tools\dao;
 
-class RecommendList extends \app\study\controller\Init
+use app\study\controller\Init;
+
+class RecommendList extends Init
 {
     //热门评论
     public function hotList()
@@ -26,7 +28,7 @@ class RecommendList extends \app\study\controller\Init
         if ($data['list']) {
             foreach ($data['list'] as $key => $value) {
                 $data['list'][$key]['thumb']                = $this->appImg($value['thumb'], 'article');
-                $data['list'][$key]['characteristics_copy'] = (array) dao('Category')->getName($value['characteristics']);
+                $data['list'][$key]['characteristics_copy'] = (array) dao('Category')->getName($value['characteristics'], $this->lg);
             }
         }
 

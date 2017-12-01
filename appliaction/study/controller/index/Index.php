@@ -84,6 +84,17 @@ class Index extends \app\study\controller\Init
         $map['column_id'] = 7;
         $data['teacher']  = dao('Article')->getList($map, 'id,title,btitle,publish_time,thumb,position,position_en,description,description_en', 2);
 
+        //广告图
+        if ($this->lg == 'en') {
+            $data['banner'] = dao('Banner')->getBannerList(2);
+        } else {
+            $data['banner'] = dao('Banner')->getBannerList(1);
+        }
+
+        foreach ($data['banner'] as $key => $value) {
+            $data['banner'][$key]['url'] = $this->appImg($value['path'], 'banner');
+        }
+
         $other = array(
             'timeCopy' => array(
                 'year'  => '年',

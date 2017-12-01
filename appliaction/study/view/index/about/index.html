@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="wap-font-scale" content="no">
-	<title>关于我们</title>
+	<title>{$this->parentColumn['name']}</title>
 	<link rel="stylesheet" href="/ststic/study/css/base.css">
 	<link rel="stylesheet" href="/ststic/study/css/comm.css">
 	<link rel="stylesheet" href="/ststic/study/css/mob.css">
@@ -29,9 +29,9 @@
         	<div class="notice width1200" style="margin:0 auto">
             	<div class="tab-hd">
             		<ul class="tab-nav">
-            			<li {if $cid == 10}class="on"{/if}><a href="#" >恒鼎学院简介</a></li>
-                        <li {if $cid == 11}class="on"{/if}><a href="#" >联系我们</a></li>
-                        <li {if $cid == 12}class="on"{/if}><a href="#" >合作院校</a></li>
+            			<li {if $cid == 10}class="on"{/if}><a href="javascript:;" >恒鼎学院简介</a></li>
+                        <li {if $cid == 11}class="on"{/if}><a href="javascript:;" >联系我们</a></li>
+                        <li {if $cid == 12}class="on"{/if}><a href="javascript:;" >合作院校</a></li>
             		</ul>
             	</div>
             	<div class="tab-bd clearfix">
@@ -81,7 +81,7 @@
 	{include public/footer}
 </body>
 <script>
-jQuery(".notice").slide({ titCell:".tab-hd li", mainCell:".tab-bd",delayTime:0 });
+jQuery(".notice").slide({ titCell:".tab-hd li", mainCell:".tab-bd",delayTime:0,trigger:"click"});
 </script>
 
 </html>

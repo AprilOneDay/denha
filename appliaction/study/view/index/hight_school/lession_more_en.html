@@ -1,0 +1,14 @@
+{loop $list['list'] $value}
+<li>
+	<div class="imgs"><a href="{F:url('/index/course/detail',array('id'=>$value['id']))}"><img src="{F:imgUrl($value['thumb'],'article')}" /></a></div>
+    <div class="name">{$value['btitle']}</div>
+    <div class="keshi"><span>
+    {if $value['num']}
+    <i></i>{$value['num']} lesson</span><span>
+    {/if}
+ 	{loop $value['characteristics_copy'] $v}
+        <i></i>{$v}</span><span> 
+    {/loop}
+	</div>
+</li>
+{/loop}

@@ -1,74 +1,55 @@
 <?php
-namespace app\study\controller;
+namespace app\undies\app\controller;
 
-use denha;
+use denha\Controller;
 
-class Init extends denha\Controller
+class Init extends Controller
 {
-    public $token    = '';
-    public $uid      = 0;
-    public $nickname = '';
+    public $token = '';
+    public $uid   = 0;
     public $version;
     public $group;
     public $lg; //返货提示信息语音版本
     public $imei;
-    public $thisColumn;
-    public $parentColumn;
-    public $topColumn;
 
     public function __construct()
     {
-
-        $this->lg    = getCookie('lg') ? '_' . getCookie('lg') : '';
-        $this->token = getCookie('token') ? getCookie('token') : '';
-
-        //获取栏目信息
-        if ($cid = get('cid', 'intval', 0)) {
-            //当前栏目信息
-            $this->thisColumn = table('Column')->where('id', $cid)->find();
-            //上级栏目信息
-            if ($this->thisColumn['parentid'] == 0) {
-                $this->topColumn = $this->parentColumn = $this->thisColumn;
-            } else {
-                $this->parentColumn = table('Column')->where('id', $this->thisColumn['parentid'])->find();
-                if ($this->parentColumn['parentid'] == 0) {
-                    $this->topColumn = $this->parentColumn;
-                }
-            }
-        }
+        !isset($_SERVER['HTTP_TOKEN']) ?: $this->token     = (string) $_SERVER['HTTP_TOKEN'];
+        !isset($_SERVER['HTTP_VERSION']) ?: $this->version = (string) $_SERVER['HTTP_VERSION'];
+        !isset($_SERVER['HTTP_LG']) ?: $this->lg           = (string) $_SERVER['HTTP_LG'];
+        !isset($_SERVER['HTTP_IMEI']) ?: $this->imei       = (string) $_SERVER['HTTP_IMEI'];
 
         if ($this->token) {
             $map['token'] = $this->token;
-            $user         = table('User')->where($map)->field('nickname,id,type,imei,time_out,ip')->find();
+            $user         = table('User')->where($map)->field('id,type,imei,time_out')->find();
             if ($user) {
-                /*if ($user['imei'] != $this->imei && $this->imei) {
-                $this->appReturn(array('status' => false, 'msg' => '你的账户已在其他地方登录,请重新登录', 'code' => 501));
+                if ($user['imei'] != $this->imei && $this->imei) {
+                    $this->appReturn(array('status' => false, 'msg' => '你的账户已在其他手机登录,请重新登录', 'code' => 501));
                 }
 
                 //超过token时间 重新登录
-                if ($user['time_out'] < TIME) {
+                /*if ($user['time_out'] < TIME) {
                 $this->appReturn(array('status' => false, 'msg' => '登录超时,请重新登录', 'code' => 501));
-                }
-
-                //更换ip 需要重新登录
-                if ($user['ip'] != getIP()) {
-                $this->appReturn(array('status' => false, 'msg' => '请重新登录', 'code' => 501));
                 }*/
 
-                $this->nickname   = $user['nickname'];
                 $this->uid        = $user['id'];
                 $this->group      = $user['type'];
                 $data['time_out'] = TIME + 3600 * 24 * 2;
                 $reslut           = table('User')->where(array('id' => $user['id']))->save($data);
             }
         }
-
     }
 
+    /**
+     * 验证用户组权限
+     * @date   2017-11-23T16:45:03+0800
+     * @author ChenMingjiang
+     * @param  integer                  $group [description]
+     * @return [type]                          [description]
+     */
     public function checkIndividual($group = 1)
     {
         if (!$this->uid) {
-            header('LOCATION:/');
             $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
         }
 
@@ -76,7 +57,6 @@ class Init extends denha\Controller
             $this->appReturn(array('status' => false, 'msg' => '权限不足'));
         }
     }
-
     /**
      * 商户用户必须通过认证
      * @date   2017-09-21T10:38:24+0800
@@ -90,6 +70,8 @@ class Init extends denha\Controller
             $this->appReturn(array('status' => false, 'msg' => '认证未通过,请在店铺资料修改中修改后重新提交'));
         } elseif ($isIde == 0) {
             $this->appReturn(array('status' => false, 'msg' => '请先申请认证,或等待认证通过后操作'));
+        } elseif ($isIde == 3) {
+            $this->appReturn(array('status' => false, 'msg' => '认证审核中请耐心等待，或联系管理员'));
         }
     }
 
@@ -105,23 +87,9 @@ class Init extends denha\Controller
 
         $value = array_merge($array, $value);
         if ($this->lg) {
-            $value['msg'] = dao('BaiduTrans')->baiduTrans($value['msg'], 'en');
+            $value['msg'] = dao('BaiduTrans')->baiduTrans($value['msg'], $this->lg);
         }
         exit(json_encode($value));
-    }
-
-    /** 处理带名称附件 */
-    protected function annex($files)
-    {
-        $tmpFiles = $files ? explode(',', $files) : array();
-        $annex    = array();
-        foreach ($tmpFiles as $key => $value) {
-            $pathinfo            = explode(':::', $value);
-            $annex[$key]['url']  = $pathinfo[0];
-            $annex[$key]['name'] = $pathinfo[1];
-        }
-
-        return $annex;
     }
 
     /**
@@ -153,9 +121,6 @@ class Init extends denha\Controller
             }
             //替换数组
             $data = implode(',', array_filter(array_replace($merge, $reslut['data']['name'])));
-/*                var_dump($merge);
-var_dump($reslut['data']['name']);
-var_dump($data);die;*/
         } else {
             $data = implode(',', $reslut['data']['name']);
         }

@@ -1,9 +1,9 @@
 <?php
 namespace app\app\controller;
 
-use denha;
+use denha\Controller;
 
-class Init extends denha\Controller
+class Init extends Controller
 {
     public $token = '';
     public $uid   = 0;

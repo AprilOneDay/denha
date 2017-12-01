@@ -59,6 +59,12 @@ $(function() {
 
     //绑定radio值
     $(".radio").each(function(){
+         //不进行渲染
+        var native = $(this).attr('data-native');
+        if(native){
+            return true;
+        }
+
         var data = $(this).attr('data-radio');
         $(this).find('input[type=radio]').each(function(){
             if($(this).attr('value') == data){
@@ -81,6 +87,12 @@ $(function() {
 
     //绑定checkbox
     $('.checkbox').each(function(){
+        //不进行渲染
+        var native = $(this).attr('data-native');
+        if(native){
+            return true;
+        }
+
         var data  = $(this).val();
         var value = $(this).attr('data-checked');
         if(typeof(value) != 'undefined' && value != ''){
@@ -155,6 +167,9 @@ $(function() {
 
         //处理checked 未选中不传值的问题
         $(form).find('input[type=checkbox]').each(function(){
+            if($(this).attr('data-native')){
+                return true;
+            }
             var  falseValue = typeof($(this).attr('data-false-value')) != 'undefined' ?  $(this).attr('data-false-value') : 0;
             var  trueValue  = typeof($(this).attr('data-true-value')) != 'undefined' ?  $(this).attr('data-true-value') : 0;
             if(!$(this).prop('checked')){
@@ -179,6 +194,9 @@ $(function() {
             btnBlock = true; //恢复通道
             //恢复checkbox 未选中的样式
             $(form).find('input[type=checkbox]').each(function(){
+                if($(this).attr('data-native')){
+                    return true;
+                }
                 var  falseValue = typeof($(this).attr('data-false-value')) != 'undefined' ?  $(this).attr('data-false-value') : 0;
                 var  trueValue  = typeof($(this).attr('data-true-value')) != 'undefined' ?  $(this).attr('data-true-value') : 0;
                 if($(this).prop('checked',true) && $(this).val() == falseValue){

@@ -21,10 +21,9 @@
     <div class="banner clearfix">
         <div class="swiper-container">
             <div class="swiper-wrapper banner_adjust">
-                <div class="swiper-slide"><a href="javascript:;"><img src="/ststic/study/images/banner01.png"/></a></div>
-                <div class="swiper-slide"><a href="javascript:;"><img src="/ststic/study/images/banner01.png"/></a></div>
-                <div class="swiper-slide"><a href="javascript:;"><img src="/ststic/study/images/banner01.png"/></a></div>
-                <div class="swiper-slide"><a href="javascript:;"><img src="/ststic/study/images/banner01.png"/></a></div>
+                {loop $data['banner'] $value}
+                    <div class="swiper-slide"><a href="javascript:;"><img src="{$value['url']}"/></a></div>
+                {/loop}
             </div>
             <!-- Add Pagination -->
             <div class="swiper-pagination"></div>
@@ -213,7 +212,7 @@
         </div>  
     </div>
 
-<!--手机 -->
+    <!--手机 -->
     <div class="team_box2 clearfix">
     	<div class="team_box2_midd width1200">
 			<div id="slideBox" class="slideBox">

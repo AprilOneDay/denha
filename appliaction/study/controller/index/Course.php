@@ -15,7 +15,7 @@ class Course extends \app\study\controller\Init
 
         $data = dao('Article')->getRowContent($map, '', 3);
 
-        $data['characteristics_copy'] = (array) dao('Category')->getName($data['characteristics']);
+        $data['characteristics_copy'] = (array) dao('Category')->getName($data['characteristics'], $this->lg);
 
         if (!$data) {
             \denha\Log::error('信息不存在');

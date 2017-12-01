@@ -48,7 +48,7 @@ a img { border: none; text-decoration:none; }
 .bottom .bottom-midd ul li{ display:block; float:left; height:150px; width:130px; border-right:#585858 1px solid; margin-right:40px  }
 .bottom .bottom-midd ul li span{ display:block; height:50px; line-height:40px;  font-size:16px; color:#aaaaaa; text-align:left}
 .bottom .bottom-midd ul li  a{ display:block; width:100px; line-height:25px; text-align:left; color:#b8b8b8; margin:0 auto; float:left}
-.bottom .bottom-midd .bottom-right{ float:right; width:620px; text-align:left; }
+.bottom .bottom-midd .bottom-right{ float:right; width:550px; text-align:left; }
 .bottom .bottom-midd .bottom-right .tel_dz span{ color:#dfdfdf; font-size:16px; display:block; margin-top:30px}
 .bottom .bottom-midd .bottom-right b{ display:block;  font-size:14px;color:#b8b8b8; font-weight:400; margin-top:10px; margin-left:10px}
 .bottom .bottom-midd .bottom-right strong{ display:block; font-weight:100; margin-top:10px}
@@ -76,6 +76,15 @@ a img { border: none; text-decoration:none; }
 .page p{ float:left; line-height:25px }
  .page a{ color:#000; display:block; float:right; border:#ccc 1px solid; padding: 0 5px; margin-left:10px}
 @media screen and (min-width:1200px){
-
+    .bottom .bottom-midd ul li span{
+        font-size:14px;
+        white-space: nowrap;
+    }
+    .page{
+        width:auto;
+    }
+    .page p{
+        margin-right:30px;
+    }
 }
 
