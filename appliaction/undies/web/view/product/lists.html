@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+    <title>{$this->thisColumn['name']}</title>
+    <link rel="stylesheet" href="/ststic/undies/css/style.css">
+    <link rel="stylesheet" href="/ststic/undies/css/cmj.css">
+    <script type="text/javascript" src="/ststic/undies/js/flexible.js"></script>
+    <script src="/ststic/undies/js/zepto.min.js"></script>
+</head>
+<body class="special-body">
+    <div class="header">
+        <span>{$this->thisColumn['name']}</span>
+    </div>
+    <div class="video-nav product-nav">
+        <ul>
+            {loop $menus $value}
+                <li>
+                    <a href="{$value['jump_url']}" {if $cid == $value['id']}class="intro-hover"{/if}>{$value['name']}</a>
+                </li>
+            {/loop}
+        </ul>
+    </div>
+    <div class="product">
+        <div class="imgbox">
+            <ul>
+                {loop $data['list'] $value}
+                <li>
+                    <div>
+                        <img src="{$value['thumb']}">
+                    </div>
+                    <p>{$value['title']}</p>
+                    <p>{$value['btitle']}</p>
+                </li>
+                {/loop}
+            </ul>
+        </div>
+        <!-- <ul>
+            <li><span id="page">1</span>/16</li>
+            <li data-circle="product">
+                <span class="pro-i"></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </li>
+        </ul> -->
+    </div>
+    {include public/footer}
+    <script src="/ststic/undies/js/own_swiper.js"></script>
+    <script>
+        (function(){
+            var scrollImg = $.mggScrollImg('.imgbox ul',{
+                loop : true,//循环切换
+                auto : true,//自动切换
+                callback : function(ind){//这里传过来的是索引值
+                    $('#page').text(ind+1);
+                    $("[data-circle=product]>span").eq(ind).addClass("pro-i").siblings().removeClass("pro-i");
+                }
+            });
+        })()
+    </script>
+</body>
+</html>

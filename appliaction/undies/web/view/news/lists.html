@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+    <title>{$this->thisColumn['name']}</title>
+    <link rel="stylesheet" href="/ststic/undies/css/style.css">
+    <link rel="stylesheet" href="/ststic/undies/css/cmj.css">
+    <script type="text/javascript" src="/ststic/undies/js/flexible.js"></script>
+</head>
+
+
+<body class="special-body">
+    <div class="header about-header">
+        <a href="/">
+            <img src="/ststic/undies/images/back.png">
+        </a>
+         <span>{$this->thisColumn['name']}</span>
+    </div>
+    <div class="video-nav">
+        <ul>
+            {loop $menus $value}
+                <li>
+                    <a href="{$value['jump_url']}" {if $cid == $value['id']}class="intro-hover"{/if}>{$value['name']}</a>
+                </li>
+            {/loop}
+        </ul>
+    </div>
+    <div class="news-list">
+        <ul>
+            {loop $data['list'] $value}
+            <li>
+                <h3>{$value['title']}</h3>
+                <img src="{$value['thumb']}">
+                <p>{$value['description']}</p>
+                <ul>
+                    <li>{F:date('Y-m-d',$value['created'])}</li>
+                    <li><img src="/ststic/undies/images/heart.png">喜欢</li>
+                    <li><img src="/ststic/undies/images/share-icon.png">分享</li>
+                </ul>
+            </li>
+            {/loop}
+         </ul>
+    </div>
+    {include public/footer}
+</body>
+</html>

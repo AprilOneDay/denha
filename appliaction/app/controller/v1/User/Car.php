@@ -73,7 +73,7 @@ class Car extends \app\app\controller\Init
             $data['is_lease']     = post('is_lease', 'intval', 0);
 
             $data['mileage'] = post('mileage', 'float', 0);
-            $data['price']   = post('price', 'float', 0);
+            $data['price']   = post('price', 'text', 0);
 
             $data['style']    = post('style', 'text', '');
             $data['model']    = post('model', 'text', '');
@@ -106,14 +106,6 @@ class Car extends \app\app\controller\Init
             if (!$data['style']) {
                 $this->appReturn(array('status' => false, 'msg' => '请输入款号'));
             }
-
-            if (!is_numeric($data['price'])) {
-                $this->appReturn(array('status' => false, 'msg' => '价格请输入数字'));
-            }
-
-            /* if (!$data['mileage']) {
-            $this->appReturn(array('status' => false, 'msg' => '请输入里程数'));
-            }*/
 
             if (!$data['city']) {
                 $this->appReturn(array('status' => false, 'msg' => '请输入城市'));

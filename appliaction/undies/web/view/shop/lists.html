@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+    <title>{$this->thisColumn['name']}</title>
+    <link rel="stylesheet" href="/ststic/undies/css/style.css">
+    <link rel="stylesheet" href="/ststic/undies/css/cmj_h5.css">
+    <script type="text/javascript" src="/ststic/undies/js/flexible.js"></script>
+</head>
+<body>
+    <div class="header map-header">
+        <span>{$this->thisColumn['name']}</span>
+        <a href="/">
+            <img src="/ststic/undies/images/back.png">
+        </a>
+    </div>
+    <div class="store">
+        <div class="store-search">
+            <input type="text" name="keyword">
+            <h3 class="btn-comply"></h3>
+        </div>
+        <ul class="store-choice">
+            <li>我的位置</li>
+            <li></li>
+            <li>离我最近</li>
+        </ul>
+        <ul class="store-list">
+            {loop $data['list'] $value}
+            <li>
+                <p>{$value['title']}</p>
+                <ul>
+                    <li>{$value['address']}</li>
+                    <li><span>{$value['km']}</span></li>
+                </ul>
+            </li>
+            {/loop}
+        </ul>
+    </div>
+    {include public/footer}
+</body>
+</html>

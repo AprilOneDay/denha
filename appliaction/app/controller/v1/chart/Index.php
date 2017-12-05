@@ -18,6 +18,24 @@ class Index extends \app\app\controller\Init
     }
 
     /**
+     * 获取未读信息
+     * @date   2017-12-04T16:59:58+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function notReaderLists()
+    {
+        $toUid                  = get('to_uid', 'intval', 0);
+        $data                   = dao('Chart')->getNotReaderList($uid, $toUid);
+        $data['not_loading_id'] = implode(',', $data['id_array']);
+
+        //标记已读
+        dao('Chart')->tagChartReader($data['not_loading_id']);
+
+        $this->appReturn(array('data' => $data));
+    }
+
+    /**
      * 拉取历史聊天记录
      * @date   2017-09-28T15:03:31+0800
      * @author ChenMingjiang
@@ -30,7 +48,14 @@ class Index extends \app\app\controller\Init
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 10);
 
-        $data['list'] = dao('Chart')->histroyLists($this->uid, $toUid, $pageNo, $pageSize);
+        $notId = get('not_loading_id', 'text', '');
+
+        $map = array();
+        if ($notId) {
+            $map['id'] = array('not in', $notId);
+        }
+
+        $data['list'] = dao('Chart')->histroyLists($this->uid, $toUid, $map, $pageNo, $pageSize);
 
         $data['list']['user']['avatar']    = $this->appImg($data['list']['user']['avatar'], 'avatar');
         $data['list']['to_user']['avatar'] = $this->appImg($data['list']['to_user']['avatar'], 'avatar');
@@ -61,7 +86,7 @@ class Index extends \app\app\controller\Init
         $data['uid']       = $this->uid;
         $data['created']   = TIME;
         $data['content']   = $content;
-        $data['is_reader'] = 1; //默认已读
+        $data['is_reader'] = 0; //默认已读
 
         $reslut = table('ChatLog')->add($data);
         if (!$reslut) {
@@ -69,7 +94,7 @@ class Index extends \app\app\controller\Init
         }
 
         //发送站内推送提示
-        dao('Message')->send($toUid, 'newComment', '', '', $this->uid, 3);
+        dao('Message')->send($toUid, 'newComment', array(), array('type' => 4, 'to_uid' => $this->uid), $this->uid, 3);
 
         $this->appReturn(array('msg' => '发送成功'));
     }

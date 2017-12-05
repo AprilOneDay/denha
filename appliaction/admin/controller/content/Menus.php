@@ -89,6 +89,7 @@ class Menus extends Init
         $data['parentid'] = post('parentid', 'intval', 0);
         $data['is_show']  = post('is_show', 'intval', 0);
         $data['sort']     = post('sort', 'intval', 0);
+        $data['thumb']    = post('thumb', 'img', '');
 
         $data['bname'] ?: $data['bname'] = $data['name'];
 

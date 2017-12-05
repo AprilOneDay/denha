@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+    <title>{$this->thisColumn['name']}</title>
+    <link rel="stylesheet" href="/ststic/undies/css/style.css">
+    <link rel="stylesheet" href="/ststic/undies/css/cmj.css">
+    <script type="text/javascript" src="/ststic/undies/js/flexible.js"></script>
+</head>
+<body>
+    <div class="header about-header">
+        <span>{$this->thisColumn['name']}</span>
+        {if $menus}
+        <div class="video-nav">
+            <ul>
+                {loop $menus $value}
+                <li>
+                    <a href="{$value['jump_url']}" {if $cid == $value['id']}class="intro-hover"{/if}>{$value['name']}</a>
+                </li>
+                {/loop}
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        {else}
+            <a href="/">
+                <img src="/ststic/undies/images/back.png">
+            </a>
+        {/if}
+    </div>
+
+    <div class="sr-content">
+        {$data['content']}
+    </div>
+    {include public/footer}
+</body>
+</html>

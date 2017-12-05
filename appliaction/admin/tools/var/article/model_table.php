@@ -5,5 +5,5 @@ array(
     '2' => 'Teacher',
     '3' => 'Course',
     '4' => 'Download',
-    '5' => '服务',
+    '5' => 'Shop',
 );
