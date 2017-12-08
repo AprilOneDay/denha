@@ -68,12 +68,12 @@ class Join extends Init
         $map['ip']         = $data['ip'];
         $map['apply_name'] = $data['apply_name'];
 
-        $count = table('JoinApplyLog')->where($map)->count();
+        $count = table('FromJoin')->where($map)->count();
         if ($count > 2) {
             $this->appReturn(array('status' => false, 'msg' => '请不要重复提交'));
         }
 
-        $result = table('JoinApplyLog')->add($data);
+        $result = table('FromJoin')->add($data);
         if (!$result) {
             $this->appReturn(array('status' => false, 'msg' => '申请失败,请稍后尝试'));
         }

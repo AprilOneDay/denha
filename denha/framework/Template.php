@@ -75,6 +75,8 @@ class Template
                     $path = APP_PATH . APP . DS . 'view' . DS . MODULE . DS . $value . '.html';
                 }
 
+                $path = str_replace('\\', DS, $path);
+
                 if (is_file($path)) {
                     $file    = fopen($path, 'r');
                     $content = fread($file, filesize($path));

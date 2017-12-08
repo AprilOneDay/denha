@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="/ststic/undies/css/style.css">
     <link rel="stylesheet" href="/ststic/undies/css/cmj.css">
     <script type="text/javascript" src="/ststic/undies/js/flexible.js"></script>
+    <script type="text/javascript" src="/ststic/undies/js/zepto.min.js"></script>
+    <script type="text/javascript" src="/ststic/undies/js/zepto.touch.js"></script>
 </head>
-<body>
+<body style="overflow-x:hidden; ">
     <div class="header about-header">
         <span>{$this->thisColumn['name']}</span>
         {if $menus}
@@ -31,8 +33,26 @@
     </div>
 
     <div class="sr-content">
+        {if $id}
+        <div class="message" style="margin-top: 2rem;">
+            <h3>{$data['title']}</h3>
+            <p>{F:date('Y-m-d',$data['created'])}</p>
+        </div>
+        {/if}
+
         {$data['content']}
     </div>
     {include public/footer}
+
+    <script type="text/javascript">
+        +function(){
+            $(".data-type").tap(function(){
+                $(this).hide().prev().hide();
+                var video=document.getElementsByTagName("video")[0];
+                video.style.display="block";
+                video.play();
+            })
+        }()
+    </script>
 </body>
 </html>

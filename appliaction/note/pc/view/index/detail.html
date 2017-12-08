@@ -1,0 +1,31 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>html 便签</title>
+
+{include /public/global_css}
+</head>
+<form class="form-horizontal">
+	<textarea class="note-content" name="content">
+	</textarea>
+
+	<div class="modal-footer">
+		<button type="button" class="btn btn-primary btn-comply">保存</button>
+		<button type="button" class="btn btn-default" id="btn-close" >取消</button>
+	</div>
+</form>
+<body>
+	
+</body>
+	{include /public/global_js}
+	<script type="text/javascript">
+		var  width = document .body.scrollLeft ? document.documentElement.scrollWidth - document .body.scrollLeft : document .body.scrollWidth;
+		$('textarea').css('width',width);
+		$('body').css('width',width);
+		$('textarea').css('height',document.documentElement.scrollHeight);
+		$('textarea').focus();
+		
+	</script>
+</html>

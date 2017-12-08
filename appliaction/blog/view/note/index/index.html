@@ -20,15 +20,18 @@ body{margin:0px auto;width:800px;font-family:arial,sans-serif;font-size:100%;mar
 <link rel="stylesheet" href="{F:getConfig('config','vendor')}/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" href="{F:getConfig('config','vendor')}/pace/themes/blue/pace-theme-minimal.css" />
 <link rel="stylesheet" href="{F:getConfig('config','ststic')}/blog/css/common.css" />
-<link rel="stylesheet" href="{F:getConfig('config','ststic')}/blog/css/css.css" />
+<link rel="stylesheet" href="{F:getConfig('config','ststic')}/blog/css/note_main.css" />
+<link rel="stylesheet" href="{F:getConfig('config','ststic')}/blog/css/note.css" />
+<link rel="stylesheet" href="{F:getConfig('config','vendor')}/right_click/jquery.contextmenu.css">
 
 </head>
 
 <body>
 
-<div class="menus">
+<div class="menus" id="menus">
 	<ul>
 		<li draggable="true" ><img src="{F:denha\Start::$config['ststic']}/blog/images/files.png" width="80" style="clear: both;"><br/>xxxx</li>
+		<li draggable="true" ><img src="{F:denha\Start::$config['ststic']}/blog/images/files.png" width="80" style="clear: both;"><br/><input type="text" value="" placeholder="输入名称" name="name"></li>
 	</ul>
 </div>
 <div class="clearfix"></div>
@@ -62,4 +65,51 @@ body{margin:0px auto;width:800px;font-family:arial,sans-serif;font-size:100%;mar
 </div>
 
 </body>
+	<script type="text/javascript" src="{F:getConfig('config','ststic')}/blog/js/jquery-1.12.3.min.js"></script>
+	<script type="text/javascript" src="{F:getConfig('config','ststic')}/blog/js/common.js"></script>
+	<script type="text/javascript" src="{F:getConfig('config','vendor')}/pace/pace.min.js"></script>
+	<script type="text/javascript" src="{F:getConfig('config','vendor')}/layer/layer.js"></script>
+	<script type="text/javascript" src="{F:getConfig('config','vendor')}/right_click/jquery.contextmenu.js"></script>
+	<script type="text/javascript">
+		$(function() {
+	        $('body').contextPopup({
+	          title: '',
+	          items: [
+	            {label:'创建文件夹',icon:'icons/shopping-basket.png',action:function() { createFile(); } },
+	            {label:'创建文件',icon:'icons/receipt-text.png',action:function() { createText(); } },
+	          ]
+	        });
+
+         	$('.menus li').contextPopup({
+	          title: '',
+	          items: [
+	            {label:'创建文件夹',icon:'icons/shopping-basket.png',action:function() { createFile(); } },
+	            {label:'创建文件',icon:'icons/receipt-text.png',action:function() { createText(); } },
+	            {label:'设置密码',icon:'icons/receipt-text.png',action:function() { alert('clicked 2') } },
+	            {label:'重命名',icon:'icons/application-monitor.png',action:function() { alert('clicked 4') } },
+             	{label:'删除',icon:'icons/book-open-list.png',action:function() { alert('clicked 3') } },
+	          ]
+	        });
+
+
+	        function createFile(){
+	        	var html = '<li draggable="true" ><img src="/ststic/blog/images/files.png" width="80" style="clear: both;"><br/><input type="text" value="" placeholder="输入名称" name="name"></li>';
+	        	$('.menus ul').append(html);
+	        	$('input[name="name"]').focus();
+	        }
+
+	        function createText(){
+	        	//iframe层
+		        layer.open({
+		            type: 2,
+		            title: '新建文档',
+		            shadeClose: true,
+		            shade: 0.8,
+		            fixed:true,
+		            area: ['80%', '80%'],
+		            content: ['{F:url('detail')}'] //iframe的url
+		        });
+	        }
+      	});
+	</script>
 </html>

@@ -2,6 +2,7 @@
 namespace app\undies\app\controller;
 
 use denha\Controller;
+use denha\Start;
 
 class Init extends Controller
 {
@@ -157,14 +158,14 @@ class Init extends Controller
      */
     public function appImgArray($data = '', $path = '', $size = 0)
     {
-        $data = $data ? (array) imgUrl($data, $path, 0, getConfig('config.app', 'imgUrl')) : array();
+        $data = $data ? (array) imgUrl($data, $path, 0, Start::$config['imgUrl']) : array();
         return (array) $data;
     }
 
     public function appImg($data = '', $path = '', $size = 0)
     {
 
-        $data = imgUrl($data, $path, 0, getConfig('config.app', 'imgUrl'));
+        $data = imgUrl($data, $path, 0, Start::$config['imgUrl']);
         return (string) $data;
     }
 }

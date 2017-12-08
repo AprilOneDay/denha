@@ -5,29 +5,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
-    <title>Title</title>
-    <link rel="stylesheet" href="css/swiper.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <script type="text/javascript" src="js/flexible.js"></script>
+    <title>{$this->thisColumn['name']}</title>
+    <link rel="stylesheet" href="/ststic/undies/css/swiper.min.css">
+    <link rel="stylesheet" href="/ststic/undies/css/style.css">
+    <link rel="stylesheet" href="/ststic/undies/css/cmj.css">
+    <script type="text/javascript" src="/ststic/undies/js/flexible.js"></script>
 </head>
 <body class="special-body">
     <div class="header about-header">
-        <a href="#">
-            <img src="images/back.png">
+        <a href="/">
+            <img src="/ststic/undies/images/back.png">
         </a>
-        <span>关于我们</span>
+        <span>{$this->thisColumn['name']}</span>
     </div>
     <div class="video-nav">
         <ul>
-            <li>
-                <a href="#">欧拉曲曼</a>
-            </li>
-            <li>
-                <a href="#" class="intro-hover">每月活动</a>
-            </li>
-            <li>
-                <a href="#">流行资讯</a>
-            </li>
+            {loop $menus $value}
+                <li>
+                    <a href="{$value['jump_url']}" {if $cid == $value['id']}class="intro-hover"{/if}>{$value['name']}</a>
+                </li>
+            {/loop}
         </ul>
     </div>
     <div class="activity">
@@ -37,41 +34,15 @@
         </ul>
         <div class="swiper-container active-box">
             <div class="swiper-wrapper">
+                {loop $data['recommend_list'] $value}
                 <div class="swiper-slide active-img">
-                    <img src="images/active-img.png">
+                    <a href="{F:url('/about/detail',array('id'=>$value['id']))}"><img src="{$value['thumb']}"></a>
                     <ul>
-                        <li>欧拉曲曼重庆展会活动</li>
-                        <li>2017-10-26</li>
+                        <li><a href="{F:url('/about/detail',array('id'=>$value['id']))}">{$value['title']}</a></li>
+                        <li>{F:date('Y-m-d',$value['created'])}</li>
                     </ul>
                 </div>
-                <div class="swiper-slide active-img">
-                    <img src="images/active-img.png">
-                    <ul>
-                        <li>欧拉曲曼重庆展会活动</li>
-                        <li>2017-10-26</li>
-                    </ul>
-                </div>
-                <div class="swiper-slide active-img">
-                    <img src="images/active-img.png">
-                    <ul>
-                        <li>欧拉曲曼重庆展会活动</li>
-                        <li>2017-10-26</li>
-                    </ul>
-                </div>
-                <div class="swiper-slide active-img">
-                    <img src="images/active-img.png">
-                    <ul>
-                        <li>欧拉曲曼重庆展会活动</li>
-                        <li>2017-10-26</li>
-                    </ul>
-                </div>
-                <div class="swiper-slide active-img">
-                    <img src="images/active-img.png">
-                    <ul>
-                        <li>欧拉曲曼重庆展会活动</li>
-                        <li>2017-10-26</li>
-                    </ul>
-                </div>
+                {/loop}
             </div>
             <!-- Add Pagination -->
             <div class="swiper-pagination active-circle"></div>
@@ -79,67 +50,22 @@
     </div>
     <div class="other-activity">
         <ul>
+            {loop $data['list'] $value}
             <li>
                 <div>
-                    <img src="images/active-other-img.png">
+                    <a href="{F:url('/about/detail',array('id'=>$value['id']))}"><img src="{$value['thumb']}"></a>
                 </div>
                 <ul>
-                    <li>聚会返场会员礼遇</li>
-                    <li><span>2017-10-26</span>~<span>2017-10-30</span></li>
-                    <li>内衣对于女人来说，比合脚的鞋子更重要！一件合适的内衣不但能够展现自己的品味，更能塑造更加完美的体态！除了买自己喜欢的内衣款式</li>
+                    <li><a href="{F:url('/about/detail',array('id'=>$value['id']))}">{$value['title']}</a></li>
+<!--                     <li><span>{F:date('Y-m-d',$value['created'])}</span></li> -->
+                    <li>{$value['description']}</li>
                 </ul>
             </li>
-            <li>
-                <div>
-                    <img src="images/active-other-img.png">
-                </div>
-                <ul>
-                    <li>聚会返场会员礼遇</li>
-                    <li><span>2017-10-26</span>~<span>2017-10-30</span></li>
-                    <li>内衣对于女人来说，比合脚的鞋子更重要！一件合适的内衣不但能够展现自己的品味，更能塑造更加完美的体态！除了买自己喜欢的内衣款式</li>
-                </ul>
-            </li>
-            <li>
-                <div>
-                    <img src="images/active-other-img.png">
-                </div>
-                <ul>
-                    <li>聚会返场会员礼遇</li>
-                    <li><span>2017-10-26</span>~<span>2017-10-30</span></li>
-                    <li>内衣对于女人来说，比合脚的鞋子更重要！一件合适的内衣不但能够展现自己的品味，更能塑造更加完美的体态！除了买自己喜欢的内衣款式</li>
-                </ul>
-            </li>
+            {/loop}
         </ul>
     </div>
-    <div class="footer">
-        <ul>
-            <li>
-                <a href="#">
-                    <img src="images/house-normal.png">
-                    <p>首页</p>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <img src="images/underwear.png">
-                    <p>产品</p>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <img src="images/sell.png">
-                    <p>销售</p>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <img src="images/data.png">
-                    <p>留言</p>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <script src="js/swiper.min.js"></script>
+    {include public/footer}
+    <script src="/ststic/undies/js/swiper.min.js"></script>
     <script>
         var swiper = new Swiper('.swiper-container', {
             pagination: '.swiper-pagination',

@@ -54,6 +54,57 @@ class News extends Init
         $this->assign('menus', $menus);
         $this->assign('data', $data);
 
+        if ($columnId == 43) {
+            $this->show('news\lists_active');
+        }
+
+        $this->show();
+    }
+
+    public function listsActive()
+    {
+        $pageNo   = get('pageNo', 'intval', 1);
+        $pageSize = get('pageSize', 'intval', 10);
+        $offer    = max(($pageNo - 1), 0) * $pageSize;
+
+        $columnId = get('cid', 'intval', 0);
+
+        if (!$columnId) {
+            $this->appReturn(array('stauts' => false, 'msg' => '参数错误'));
+        }
+
+        $map['column_id']    = $columnId;
+        $map['is_recommend'] = 1;
+
+        $recommend              = dao('Article')->getList($map, 'title,description,created,thumb,id', 1, $pageSize, $pageNo);
+        $data['recommend_list'] = $recommend['list'];
+
+        foreach ($data['recommend_list'] as $key => $value) {
+            $data['recommend_list'][$key]['thumb'] = $this->appImg($value['thumb'], 'article');
+        }
+
+        $map                 = array();
+        $map['column_id']    = $columnId;
+        $map['is_recommend'] = 0;
+
+        $list         = dao('Article')->getList($map, 'title,description,created,thumb,id', 1, $pageSize, $pageNo);
+        $data['list'] = $list['list'];
+
+        foreach ($data['list'] as $key => $value) {
+            $data['list'][$key]['thumb'] = $this->appImg($value['thumb'], 'article');
+        }
+
+        $menus = array();
+        if ($this->thisColumn['parentid']) {
+            $map             = array();
+            $map['web_type'] = 2;
+            $map['parentid'] = $this->thisColumn['parentid'];
+            $menus           = dao('Column', 'undies')->getList($map, 'id,thumb,name,bname,parentid,jump_url');
+        }
+
+        $this->assign('menus', $menus);
+        $this->assign('data', $data);
+
         $this->show();
     }
 }

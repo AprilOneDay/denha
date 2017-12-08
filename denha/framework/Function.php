@@ -453,26 +453,38 @@ function imgFetch($path)
 //保存Session
 function session($name = '', $value = '')
 {
-    isset($_SESSION) ?: session_start();
+    static $_sessionData = array();
+
     //删除
     if ($value === null) {
+        session_start();
         if (isset($_SESSION[$name])) {
             unset($_SESSION[$name]);
         }
-        //session_write_close(); //关闭session
+        session_write_close(); //关闭session
+        $_sessionData = $_SESSION;
         return true;
     }
     //读取session
     elseif ($value == '') {
-        $data = isset($_SESSION[$name]) ? $_SESSION[$name] : '';
+        if (!isset($_sessionData[$value])) {
+            session_start();
+            $_sessionData = $_SESSION;
+            session_write_close();
+
+        }
+
+        $data = isset($_sessionData[$name]) ? $_sessionData[$name] : '';
         if (is_object($data)) {
             $data = (array) $data;
         }
-        //session_write_close(); //关闭session
+
         return $data;
     }
     //保存
     else {
+        session_start();
+
         // 数组
         if (is_array($name)) {
             foreach ($name as $k => $v) {
@@ -488,22 +500,13 @@ function session($name = '', $value = '')
             $_SESSION[$name] = $value;
         }
 
+        $_sessionData = $_SESSION;
+
         //关闭session 可防止高并发下死锁问题
         session_write_close();
         return true;
     }
 
-    return false;
-}
-
-//判断是否存在session
-function issetSession($name)
-{
-    isset($_SESSION) ?: session_start();
-    if (isset($_SESSION[$name])) {
-        return true;
-    }
-    session_write_close(); //关闭session
     return false;
 }
 
@@ -798,7 +801,7 @@ function getSystem($agent = '')
     return $browserplatform . ' ';
 }
 
-//百度转腾讯坐标转换
+//百度转（腾讯/高德/谷歌）坐标转换
 function baiduToTenxun($lat, $lng)
 {
     $x_pi  = 3.14159265358979324 * 3000.0 / 180.0;
@@ -811,7 +814,7 @@ function baiduToTenxun($lat, $lng)
     return array('lng' => $lng, 'lat' => $lat);
 }
 
-//腾讯转百度坐标转换
+//（腾讯/高德/谷歌）转百度坐标转换
 function tenxunToBaidu($lat, $lng)
 {
     $x_pi  = 3.14159265358979324 * 3000.0 / 180.0;

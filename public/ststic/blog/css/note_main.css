@@ -1,0 +1,4 @@
+.menus li{ line-height: 25px; margin-right: 15px; }
+.menus li input{ width: 80px; text-align: center; height: 20px; }
+
+.note-content{ padding: 5px; min-height: 500px; line-height: 25px; border: none; resize:none; outline:none; }

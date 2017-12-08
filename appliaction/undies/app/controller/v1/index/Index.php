@@ -54,7 +54,7 @@ class Index extends Init
 
         $data = dao('Article')->getRowContent($map, 'id,title,btitle,created,thumb,description,description_en,content,content_en', 1);
 
-        $data['content'] = str_replace('<img src="', '<img src="' . Start::$config['h5Url'], $data['content']);
+        $data['content'] = str_replace('src="', 'src="' . Start::$config['h5Url'], $data['content']);
         $this->assign('data', $data);
         $this->show('/h5/index/detail', false, false);
 
@@ -92,6 +92,13 @@ class Index extends Init
 
         foreach ($data['list'] as $key => $value) {
             $data['list'][$key]['thumb'] = $this->appImg($value['thumb'], 'article');
+
+            $list[$key]['share'] = array(
+                'title'       => $value['title'],
+                'thumb'       => $data['list'][$key]['thumb'],
+                'description' => $value['description'],
+                'url'         => Start::$config['wapUrl'] . '/about/detail/s/id/' . $value['id'],
+            );
         }
 
         $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));
@@ -120,10 +127,7 @@ class Index extends Init
         $map[$article . '.is_show']   = 1;
         $map[$article . '.column_id'] = 32;
 
-        $orderBy = 'id asc';
-        if ($param['orderType']) {
-            $orderType = 'km asc';
-        }
+        $orderBy = 'km asc';
 
         $field = "$article.id,$article.title,$articleData.address,$articleData.lng,$articleData.lat,(2 * 6378.137* ASIN(SQRT(POW(SIN(PI()*($lng-$articleData.lng)/360),2)+COS(PI()*$lat/180)* COS($articleData.lat * PI()/180)*POW(SIN(PI()*($lat)/360),2)))) AS km ";
 
@@ -132,16 +136,27 @@ class Index extends Init
         if ($list) {
             foreach ($list as $key => $value) {
                 if ($value['km'] !== null) {
-                    $km               = (int) dao('Distance')->nearbyDistance($lng, $lat, $value['lng'], $value['lat']);
-                    $list[$key]['km'] = !$km || $km < 50 ? '<10Km' : round($km) . 'Km';
+                    $km                     = (int) dao('Distance')->nearbyDistance($lng, $lat, $value['lng'], $value['lat']);
+                    $list[$key]['km']       = !$km || $km <= 1 ? '<1Km' : round($km) . 'Km';
+                    $list[$key]['distance'] = $km;
+                    $distance[]             = $km;
 
                 } else {
                     $list[$key]['km'] = '距离太过遥远';
                 }
+
+                //百度地图地址转换
+                $point             = baiduToTenxun($value['lat'], $value['lng']);
+                $list[$key]['lat'] = $point['lat'];
+                $list[$key]['lng'] = $point['lng'];
+
             }
         }
 
-        $data['list']  = $list ? $list : array();
+        array_multisort($distance, SORT_ASC, $list);
+
+        $data['list'] = $list ? $list : array();
+
         $data['param'] = $param;
 
         $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));

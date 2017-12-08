@@ -14,7 +14,7 @@
 img {
   display: block; }
 
-.transX, .product .imgbox > ul > li > div > img {
+.transX, .product .imgbox > ul > li > div img {
   left: 50%;
   -webkit-transform: translateX(-50%);
   -moz-transform: translateX(-50%);
@@ -22,17 +22,13 @@ img {
   -o-transform: translateX(-50%);
   transform: translateX(-50%); }
 
-.transY, .about-header > a > img {
+.transY, .about-header > a > img, .apply-container > form .proposer-data > ul > li > ul > li {
   top: 50%;
   -webkit-transform: translateY(-50%);
   -moz-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   -o-transform: translateY(-50%);
   transform: translateY(-50%); }
-
-body {
-  padding-top: 1.2rem;
-  padding-bottom: 1.2933333333rem; }
 
 .special-body {
   padding-top: 2.2rem; }
@@ -44,7 +40,7 @@ a {
   display: flex;
   display: -webkit-flex; }
 
-.lineF, .news-list > ul > li > ul > li {
+.lineF, .news-list > ul > li > ul > li, .apply-container > form .proposer-data > ul > li > ul > li {
   display: inline-flex;
   display: -webkit-inline-flex; }
 
@@ -53,7 +49,7 @@ a {
   -moz-border-radius: 50%;
   border-radius: 50%; }
 
-.trans, .video-container .video-intro > div > div {
+.trans, .video-container .video-intro > div > div, .apply-container > form .proposer-data > ul > li > ul > li > div > img {
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
@@ -216,11 +212,12 @@ a {
         margin-right: 0; }
 .about-intro > div:nth-child(3) {
   padding: 0.4666666667rem 0.4rem 0;
-  font-size: 0.3466666667rem;
-  line-height: 0.6933333333rem;
-  text-indent: 0.6933333333rem;
+  font-size: 13px;
+  line-height: 25px;
+  text-indent: 26px;
   color: #737271;
-  font-weight: 700; }
+  font-weight: 700;
+  text-align: justify; }
 
 .video-nav {
   background: #ffffff;
@@ -356,17 +353,19 @@ a {
         width: 10rem;
         height: 9.1733333333rem;
         position: relative; }
-        .product .imgbox > ul > li > div > img {
+        .product .imgbox > ul > li > div img {
           position: absolute;
           bottom: 0;
           max-width: 7.7333333333rem;
           max-height: 8rem; }
       .product .imgbox > ul > li p:nth-child(2) {
         margin-top: 0.8rem;
-        font-size: 0.5333333333rem;
-        color: #7D3F72;
-        line-height: 1em;
         margin-bottom: 0.3866666667rem; }
+        .product .imgbox > ul > li p:nth-child(2) > a {
+          display: block;
+          font-size: 0.5333333333rem;
+          color: #7D3F72;
+          line-height: 1em; }
       .product .imgbox > ul > li p:nth-child(3) {
         font-size: 0.4rem;
         line-height: 1em;
@@ -468,11 +467,13 @@ a {
       border-top: 0.0133333333rem solid #E1E1E1;
       padding: 0.5066666667rem 0 0.3733333333rem; }
       .store .store-list > li > p {
-        font-size: 0.4266666667rem;
-        color: #404040;
-        line-height: 1em;
-        font-weight: 700;
         margin-bottom: 0.2133333333rem; }
+        .store .store-list > li > p > a {
+          display: block;
+          font-size: 0.4266666667rem;
+          color: #404040;
+          line-height: 1em;
+          font-weight: 700; }
       .store .store-list > li > ul {
         justify-content: space-between; }
         .store .store-list > li > ul > li {
@@ -496,11 +497,13 @@ a {
       .news-list > ul > li:last-child {
         margin-bottom: 0; }
       .news-list > ul > li > h3 {
-        font-size: 0.4rem;
-        line-height: 1em;
-        color: #3B3B3B;
-        margin-bottom: 0.3866666667rem;
-        font-weight: 700; }
+        margin-bottom: 0.3866666667rem; }
+        .news-list > ul > li > h3 > a {
+          display: block;
+          font-size: 0.4rem;
+          line-height: 1em;
+          color: #3B3B3B;
+          font-weight: 700; }
         .news-list > ul > li > h3:hover {
           color: #7D3F72; }
       .news-list > ul > li > img {
@@ -578,8 +581,11 @@ a {
     -webkit-box-shadow: 0 0 13px #D8C4C4;
     -moz-box-shadow: 0 0 13px #D8C4C4;
     box-shadow: 0 0 13px #D8C4C4; }
-    .activity .active-box .active-img > img {
+    .activity .active-box .active-img > a {
+      display: block;
       width: 100%; }
+      .activity .active-box .active-img > a > img {
+        width: 100%; }
     .activity .active-box .active-img > ul {
       position: absolute;
       width: 100%;
@@ -639,11 +645,13 @@ a {
         .other-activity > ul > li > ul > li {
           color: #8B8B8B; }
           .other-activity > ul > li > ul > li:first-child {
-            color: #020202;
-            font-weight: 700;
-            font-size: 0.4266666667rem;
-            line-height: 0.56rem;
             margin-bottom: 0.24rem; }
+            .other-activity > ul > li > ul > li:first-child > a {
+              display: block;
+              color: #020202;
+              font-weight: 700;
+              font-size: 0.4266666667rem;
+              line-height: 0.56rem; }
           .other-activity > ul > li > ul > li:nth-child(2) {
             font-size: 0.24rem;
             line-height: 1em; }
@@ -714,8 +722,8 @@ a {
     padding-left: 0.3733333333rem;
     border-left: 0.04rem solid #E5E5E5; }
     .join > ul > li {
-      font-size: 0.3466666667rem;
-      line-height: 0.6133333333rem;
+      font-size: 13px;
+      line-height: 22px;
       color: #4A4A4A;
       position: relative;
       margin-bottom: 0.7466666667rem; }
@@ -899,6 +907,27 @@ a {
     padding-left: 0.24rem;
     line-height: 1.1733333333rem;
     width: 100%; }
+  .apply-container > form .proposer-data > ul > li > ul > li {
+    position: absolute;
+    right: 0.2rem;
+    align-items: center; }
+    .apply-container > form .proposer-data > ul > li > ul > li > div {
+      height: 0.8rem;
+      width: 1rem;
+      position: relative; }
+      .apply-container > form .proposer-data > ul > li > ul > li > div > img {
+        position: absolute;
+        width: 100%; }
+    .apply-container > form .proposer-data > ul > li > ul > li > img {
+      height: 0.4rem;
+      margin-left: 0.1333333333rem; }
+    .apply-container > form .proposer-data > ul > li > ul > li > input {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      opacity: 0; }
   .apply-container > form .proposer-data > ul > li > select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -907,7 +936,7 @@ a {
     line-height: 1.1733333333rem;
     width: 100%;
     color: #9C9C9C;
-    background: url("../images/apply-down.png") no-repeat 3.4666666667rem center;
+    background: url("../images/apply-down.png") no-repeat 8.3333333333rem center;
     background-size: 0.4rem; }
   .apply-container > form .proposer-data > ul > li > div {
     flex: 1;
@@ -959,6 +988,7 @@ a {
       border-bottom: none;
       width: 100%; }
       .apply-container > form > div > ul > li {
+        position: relative;
         border-bottom: 0.0133333333rem solid #D3D3D3; }
   .apply-container > form > button {
     width: 100%;

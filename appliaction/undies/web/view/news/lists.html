@@ -10,7 +10,6 @@
     <script type="text/javascript" src="/ststic/undies/js/flexible.js"></script>
 </head>
 
-
 <body class="special-body">
     <div class="header about-header">
         <a href="/">
@@ -31,7 +30,7 @@
         <ul>
             {loop $data['list'] $value}
             <li>
-                <h3>{$value['title']}</h3>
+                <h3><a href="{F:url('/about/detail',array('id'=>$value['id']))}">{$value['title']}</a></h3>
                 <img src="{$value['thumb']}">
                 <p>{$value['description']}</p>
                 <ul>

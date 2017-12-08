@@ -6,8 +6,12 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
     <title>{$this->thisColumn['name']}</title>
     <link rel="stylesheet" href="/ststic/undies/css/style.css">
-    <link rel="stylesheet" href="/ststic/undies/css/cmj_h5.css">
+    <link rel="stylesheet" href="/ststic/undies/css/cmj.css">
+
+    <script type="text/javascript" src="/ststic/undies/js/jquery-1.12.3.min.js"></script>
     <script type="text/javascript" src="/ststic/undies/js/flexible.js"></script>
+    <script type="text/javascript" src="/ststic/undies/js/common.js"></script>
+    <script type="text/javascript" src="/vendor/layer/layer.js"></script>
 </head>
 <body>
     <div class="header map-header">
@@ -16,9 +20,9 @@
             <img src="/ststic/undies/images/back.png">
         </a>
     </div>
-    <div class="store">
+    <div class="store" style="margin-top:40px;">
         <div class="store-search">
-            <input type="text" name="keyword">
+            <input type="text" name="keyword" value="{??$data['param']['keyword']}">
             <h3 class="btn-comply"></h3>
         </div>
         <ul class="store-choice">
@@ -29,7 +33,7 @@
         <ul class="store-list">
             {loop $data['list'] $value}
             <li>
-                <p>{$value['title']}</p>
+                <p><a href="{F:url('map',array('id'=>$value['id']))}">{$value['title']}</a></p>
                 <ul>
                     <li>{$value['address']}</li>
                     <li><span>{$value['km']}</span></li>
@@ -39,5 +43,11 @@
         </ul>
     </div>
     {include public/footer}
+    <script type="text/javascript">
+        $('.btn-comply').click(function(){
+            var keyword = $('input[name=keyword]').val();
+            window.location.href = '/shop/lists/s/keyword/'+keyword;
+        })
+    </script>
 </body>
 </html>

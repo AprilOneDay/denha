@@ -30,9 +30,9 @@
                 {loop $data['list'] $value}
                 <li>
                     <div>
-                        <img src="{$value['thumb']}">
+                        <a href="{F:url('/about/detail',array('id'=>$value['id']))}"><img src="{$value['thumb']}"></a>
                     </div>
-                    <p>{$value['title']}</p>
+                    <p><a href="{F:url('/about/detail',array('id'=>$value['id']))}">{$value['title']}</a></p>
                     <p>{$value['btitle']}</p>
                 </li>
                 {/loop}

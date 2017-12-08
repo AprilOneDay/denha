@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+    <title>{$this->thisColumn['name']}</title>
+    <link rel="stylesheet" href="/ststic/undies/css/style.css">
+    <link rel="stylesheet" href="/ststic/undies/css/cmj.css">
+
+    <script src="/ststic/undies/js/jquery-1.8.0.js"></script>
+    <script type="text/javascript" src="/ststic/undies/js/flexible.js"></script>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=A1LU7iHS0avqQwPLAxbhKn0UYSQCuRVH"></script>
+    <script type="text/javascript" src="/ststic/undies/js/jquery.baiduMap.min.js"></script>
+
+</head>
+<body>
+    <div class="header map-header">
+        <a href="/">
+            <img src="/ststic/undies/images/back.png">
+        </a>
+        <span>{$this->thisColumn['name']}</span>
+        <a href="/shop/lists/s/cid/32">
+            <img src="/ststic/undies/images/list-icon.png">
+        </a>
+    </div>
+    <div id="map" style="width:100%;height:calc(100vh - 2.49333rem)"></div>
+    {include public/footer}
+    <script>
+        new BaiduMap({
+            id: "map",
+            title: {
+                text: "{$data['title']}",
+                className: "title"
+            },
+            content: {
+                className: "content",
+                text: ["{$data['address']}"]
+            },
+            point: {
+                lng: "{$data['lng']}",
+                lat: "{$data['lat']}"
+            },
+            level: 15,
+            zoom: true,
+            type: ["地图", "卫星", "三维"],
+            width: 320,
+            height: 70,
+            icon: {
+                width: 36,
+                height: 36
+            }
+        });
+    </script>
+</body>
+</html>

@@ -328,17 +328,22 @@ class Mysqli
      * @author ChenMingjiang
      * @return [type]                   [description]
      */
-    public function getField()
+    public function getField($field = 'column_name')
     {
         $this->where = ' where table_name = ' . "'" . $this->table . "'";
-        $this->field = 'column_name';
+        $this->field = $field;
         $this->table = 'information_schema.columns';
 
         $this->_sql = "select " . $this->field . " from " . $this->table . $this->where;
         $result     = $this->query();
 
         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-            $data[] = $row['column_name'];
+            if (stripos($field, ',') === false) {
+                $data[] = $row['column_name'];
+            } else {
+                $data[] = $row;
+            }
+
         }
 
         return $data;
