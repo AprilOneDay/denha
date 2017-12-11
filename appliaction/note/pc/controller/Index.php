@@ -15,7 +15,26 @@ class Index extends Init
     {
         $map['uid'] = $this->uid;
 
-        $data['fliesList'] = table('NoteFiles')->where($map)->field('id,name')->order('sort asc')->find('array');
+        $data['fliesList'] = table('NoteFiles')->where($map)->field('id,name')->order('sort asc,id asc')->find('array');
+
+        $data['user'] = dao('User')->getUserInfo($this->uid, 'nickname,uid');
+
+        $this->assign('data', $data);
+
+        $this->show();
+    }
+
+    public function content()
+    {
+        $map               = array();
+        $map['uid']        = $this->uid;
+        $map['del_status'] = 0;
+
+        $data['contentList'] = table('NoteData')->where($map)->field('id,title,content,modifyd,created')->find('array');
+
+        foreach ($data['contentList'] as $key => $value) {
+            $data['contentList'][$key]['listContent'] = explode(PHP_EOL, str_replace(' ', '', $value['content']));
+        }
 
         $this->assign('data', $data);
 
@@ -45,7 +64,7 @@ class Index extends Init
             $this->appReturn(array('status' => false, 'msg' => '操作失败'));
         }
 
-        $this->appReturn(array('msg' => '操作成功'));
+        $this->appReturn(array('msg' => '操作成功', 'data' => $result));
     }
 
     /**
@@ -57,6 +76,14 @@ class Index extends Init
     public function detail()
     {
         $id = get('id', 'intval', 0);
+
+        if ($id) {
+            $map['uid'] = $this->uid;
+            $map['id']  = $id;
+            $data       = table('NoteData')->where($map)->find();
+        } else {
+            $data = array('title' => '新建文件');
+        }
 
         $this->assign('data', $data);
         $this->show();
@@ -71,14 +98,19 @@ class Index extends Init
         $data['uid']     = $this->uid;
         $data['title']   = '新建文档';
         $data['content'] = $content;
-        $data['created'] = TIME;
 
         if ($id) {
+
+            $data['modifyd'] = TIME;
+
             $map        = array();
             $map['uid'] = $this->uid;
             $map['id']  = $id;
             $result     = table('NoteData')->where($map)->save($data);
         } else {
+            $data['created'] = TIME;
+            $data['modifyd'] = TIME;
+
             $result = table('NoteData')->add($data);
         }
 
@@ -89,20 +121,18 @@ class Index extends Init
         $this->appReturn(array('msg' => '操作成功'));
     }
 
-    /**
-     * 排行榜
-     * @date   2017-09-28T17:05:24+0800
-     * @author ChenMingjiang
-     * @return [type]                   [description]
-     */
-    private function rank()
+    public function delFiles()
     {
-        $map['is_show']      = 1;
-        $map['is_recommend'] = 1;
+        $id = post('id', 'text', '');
 
-        $field = 'id,title';
-        $list  = table('Article')->where($map)->field($field)->limit(0, 10)->find('array');
+        $map['uid'] = $this->uid;
+        $map['id']  = array('in', $id);
 
-        return $list;
+        $result = table('NoteFiles')->where($map)->delete();
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '操作失败'));
+        }
+
+        $this->appReturn(array('msg' => '操作成功'));
     }
 }

@@ -246,7 +246,6 @@ $(function() {
             layer.confirm(tips, {
               btn: ['确定','取消'] //按钮
             }, function(){
-
                 //处理通讯堵塞
                 if(!checkBtnBlock()){
                     return false;

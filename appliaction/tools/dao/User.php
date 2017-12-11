@@ -354,6 +354,23 @@ class User
     }
 
     /**
+     * 根据uid获取用户信息
+     * @date   2017-10-25T16:28:32+0800
+     * @author ChenMingjiang
+     * @param  integer                  $uid   [description]
+     * @param  string                   $field [description]
+     * @return [type]                          [description]
+     */
+    public function getUserInfo($uid = 0, $field = '*')
+    {
+        $data = table('User')->where(array('uid' => $uid))->field($field)->find();
+        if (count($data) == 1) {
+            return $data[$field];
+        }
+        return $data;
+    }
+
+    /**
      * 获取用户名称
      * @date   2017-09-19T09:52:14+0800
      * @author ChenMingjiang

@@ -1,0 +1,37 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>记事本</title>
+{include /public/global_css}
+</head>
+<body>
+<div class="content pull-right">
+	<div class="location">
+		<div class="tips">
+			<a href="">全部</a> > <a href=""> xxxxx</a> > xxxxxxx
+		</div>
+
+		<div class="search">
+			
+		</div>
+	</div>
+	<div class="note">
+		<ul>
+			{loop $data['contentList'] $value}
+			<li draggable="true">
+				<a class="btn-open" config-href="{F:url('detail',array('id'=>$value['id']))}"><h2>{$value['title']}</h2></a>
+				{loop $value['listContent'] $k $v}
+					{if $v}
+						<p>{$v} <label class="copy">复制</label></p>
+					{/if}
+				{/loop}
+			</li>
+			{/loop}
+		</ul>
+	</div>
+</div>
+</body>
+	{include /public/global_js}
+</html>

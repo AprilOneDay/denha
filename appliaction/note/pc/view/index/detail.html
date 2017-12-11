@@ -7,17 +7,15 @@
 
 {include /public/global_css}
 </head>
-<form class="form-horizontal">
-	<textarea class="note-content" name="content">
-	</textarea>
+<body style="overflow: auto; overflow-x:hidden; ">
+	<form class="form-horizontal">
+	<textarea class="note-content" name="content" placeholder="输入保存内容">{??$data['content']}</textarea>
 
 	<div class="modal-footer">
 		<button type="button" class="btn btn-primary btn-comply">保存</button>
 		<button type="button" class="btn btn-default" id="btn-close" >取消</button>
 	</div>
 </form>
-<body>
-	
 </body>
 	{include /public/global_js}
 	<script type="text/javascript">

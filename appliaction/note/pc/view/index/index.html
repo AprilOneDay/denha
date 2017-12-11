@@ -6,105 +6,110 @@
 <title>html 便签</title>
 {include /public/global_css}
 </head>
-
 <body>
-<div class="menus" id="menus">
-	<ul>
-		{loop $data['fliesList'] $value}
-			<li draggable="true" data-id="{$value['id']}"><img src="{F:denha\Start::$config['ststic']}/blog/images/files.png" width="80" style="clear: both;"><br/>{$value['name']}</li>
-		{/loop}
-	</ul>
+<div class="top">
+	<div class="logo pull-left">记事本</div>
+	<div class="member pull-right">
+		<ul>
+			<li>{$data['user']['nickname']}</li>
+			<li>退出</li>
+		</ul>
+	</div>
 </div>
 <div class="clearfix"></div>
-<div class="note">
-	<ul>
-		<li draggable="true">
-			<h2>Baici Liu:</h2>
-			<p>小米的饥饿营销真是太坑爹了！ball shit!</p>
-		</li>
-		<li draggable="true" >
-			<h2>Xiaoqiang Yan:</h2>
-			<p>最近怎么没有妹纸发帖呢?recommend!recommend!</p>
-		</li>
-		<li draggable="true" >
-			<h2>Pan Huang:</h2>
-			<p>好饿啊！求带！hungry！hungry！</p>
-		</li>
-		<li draggable="true" >
-			<h2>Feng Deng:</h2>
-			<p>哎哟，那妹纸不错来着，看我去问个电话号码回来！come on!</p>
-		</li>
-		<li draggable="true" >
-			<h2>star 张:</h2>
-			<p>好好学习，天天向上！good good study!day day up!</p>
-		</li>
-		<li draggable="true" >
-			<h2>某武林高手:</h2>
-			<p>低于25000/month的面试再也不去了，他grandma的！</p>
-		</li>
-	</ul>
+<div class="main">
+	<div class="menus pull-left">
+		<ul>
+			{loop $data['fliesList'] $value}
+				<li draggable="true" data-id="{$value['id']}">
+					<img src="{F:denha\Start::$config['ststic']}/note/images/files.png" width="80" style="clear: both;">
+					<br/>{$value['name']}
+					<span class="check glyphicon glyphicon-ok"></span>
+				</li>
+			{/loop}
+		</ul>
+		<div class="clearfix"></div>
+	</div>
+	<div class="content-iframe pull-right">
+		<iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="/index/content" frameborder="false" scrolling="auto" style="border:none" width="100%" height="auto" allowtransparency="true"></iframe>
+	</div>
 </div>
-
 </body>
 	{include /public/global_js}
-	<script type="text/javascript" src="{F:getConfig('config','vendor')}/right_click/jquery.contextmenu.js"></script>
+	<script type="text/javascript" src="{F:getConfig('config','vendor')}/right_click/js/jquery-smartMenu.js"></script>
 	<script type="text/javascript">
 		$(function() {
-	        $('body').contextPopup({
-	          title: '',
-	          items: [
-	            {label:'创建文件夹',icon:'icons/shopping-basket.png',action:function() { createFile(); } },
-	            {label:'创建文件',icon:'icons/receipt-text.png',action:function() { createText(); } },
-	          ]
-	        });
+			var funGet = function() { 
+				return $('[data-check]');
+			};
 
-         	$('.menus li').contextPopup({
-	          title: '',
-	          items: [
-	            {label:'创建文件夹',icon:'icons/shopping-basket.png',action:function() { createFile(); } },
-	            {label:'创建文件',icon:'icons/receipt-text.png',action:function() { createText(); } },
-	            {label:'设置密码',icon:'icons/receipt-text.png',action:function() { alert('clicked 2') } },
-	            {label:'重命名',icon:'icons/application-monitor.png',action:function() { alert('clicked 4') } },
-             	{label:'删除',icon:'icons/book-open-list.png',action:function() { alert('clicked 3') } },
-	          ]
-	        });
+			//鼠标操作文件 事件
+			$('body').on('mousedown','.menus li',function(e){
+				//右键
+				if(e.which == 3){
+					$(this).attr('data-check',true);
+					$(this).addClass('cur');
+				}
+				/*//左键
+				else if(e.which == 1){
+					if(!$(this).attr('data-check')){
+						$(this).attr('data-check',true);
+						$(this).addClass('cur');
+					}else{
+						$(this).removeAttr('data-check');
+						$(this).removeClass('cur');
+					}
+				}*/
+			})
 
+			$('body').on('click','.menus li span',function(){
+				if(!$(this).parent().attr('data-check')){
+					$(this).parent().attr('data-check',true);
+					$(this).parent().addClass('cur');
+				}else{
+					$(this).parent().removeAttr('data-check');
+					$(this).parent().removeClass('cur');
+				}
+			})
 
-         	//保存文件夹
+			//鼠标操作文件 事件
+			$('body').on('mousemove','.menus li',function(){
+				if(!$(this).attr('data-check')){
+					$(this).find('span').css('background','#ccc');
+				}else{
+					$(this).find('span').css('background','#3b8cff');
+				}
+			});
+
+			//保存文件夹
          	$('body').on('blur','input[name="name"]',function(){
          		var _this = this;
          		var name = $(this).val() ? $(this).val() : '新建文件夹';
          		$.post("{F:url('edit_file')}",{name:name},function(result){
          			if(result.status){
+         				$(_this).parent().attr('data-id',result.data);
          				$(_this).after(name);
          				$(_this).remove();
          			}
          		},"json")
          	});
 
+         	function clearFiels(){
+         		$('.menus li').removeAttr('data-check');
+         		$('.menus li').removeClass('cur');
+         	}
+
+         	//创建文件夹
 	        function createFile(){
-	        	var html = '<li draggable="true" ><img src="/ststic/blog/images/files.png" width="80" style="clear: both;"><br/><input type="text" value="" placeholder="输入名称" name="name"></li>';
+	        	clearFiels();
+	        	var html = '<li draggable="true" ><img src="/ststic/note/images/files.png" width="80" style="clear: both;"><br/><input type="text" value="" placeholder="输入名称" name="name"></li>';
 	        	$('.menus ul').append(html);
 	        	$('input[name="name"]').focus();
-	        	
-	        	$('.menus li').contextPopup({
-		          title: '',
-		          items: [
-		            {label:'创建文件夹',icon:'icons/shopping-basket.png',action:function() { createFile(); } },
-		            {label:'创建文件',icon:'icons/receipt-text.png',action:function() { createText(); } },
-		            {label:'设置密码',icon:'icons/receipt-text.png',action:function() { alert('clicked 2') } },
-		            {label:'重命名',icon:'icons/application-monitor.png',action:function() { alert('clicked 4') } },
-	             	{label:'删除',icon:'icons/book-open-list.png',action:function() { alert('clicked 3') } },
-		          ]
-		        });
 	        }
 
-	        function delFile(id){
-
-	        }
-
-
+	        //创建文件
 	        function createText(){
+	        	clearFiels();
 	        	//iframe层
 		        layer.open({
 		            type: 2,
@@ -116,6 +121,110 @@
 		            content: ['{F:url('detail')}'] //iframe的url
 		        });
 	        }
+
+	        function delFile(event){
+	        	//console.log(event);
+	        	let id = new Array();
+	        	$(event).each(function(){
+	        		if($(this).attr('data-id')){
+	        			id[id.length] = $(this).attr('data-id');
+	        		}
+	        	})
+
+
+	        	data = id.join(',');
+
+	        	layer.confirm('确定删除文件夹?<br/>删除后文件中内容不可恢复<br/>', {
+	              btn: ['确定','取消'] //按钮
+	            }, function(){
+		        	$.post("{F:url('del_files')}",{id:data},function(result){
+		        		if(result.status){
+		        			$('[data-check]').remove();
+		        			layer.msg('删除成功');
+		        		}else{
+		        			layer.msg('删除失败,请刷新后重试');
+		        		}
+		        		
+		        	});
+		        });
+	        }
+
+
+
+			//自定义右键上下文
+			//数据
+			var objCreateFiles = {
+			    text: "创建文件夹",
+			    func: function() {
+			    	createFile();
+			    }  
+			}, objCreateText = {
+			    text: "创建文件",
+			    func: function() {
+			        createText();
+			    }
+			},objOpenFile = {
+			    text: "打开",
+			    func: function() {
+			        funGet().css("font-weight", "700");
+			    }    
+			}, objChangeName = {
+			    text: "重命名",
+			    func: function() {
+			        funGet().css("font-weight", "700");
+			    }    
+			}, objDelete = {
+			    text: "删除",
+			    func: function() {
+			    	delFile(funGet());
+			    }    
+			}, objSend = {
+			    text: "移动到",
+			    data: [
+			        [{
+			            text: "收件箱",
+			            func: function() {
+			                funGet().hide();
+			            }
+			        }, {
+			            text: "已发送",
+			            func: function() {
+			                funGet().hide();
+			            }
+			        }, {
+			            text: "QQ邮箱订阅",
+			            func: function() {
+			                funGet().hide();
+			            }
+			        }], [{
+			            text: "新建文件夹",
+			            func: function() {
+			                alert("模拟不了，弹出个框框意思下");    
+			            }
+			        }]
+			    ]
+			};
+			var mailMenuData = [
+			    [objCreateFiles,objCreateText]
+			];
+
+			//绑定
+			$("body").smartMenu(mailMenuData, {
+			    name: "",
+			    //前钩子
+			    beforeShow: function() {
+		    	 	//动态数据，及时清除
+			        $.smartMenu.remove();
+			        if($('[data-check]').length == 1){
+			        	mailMenuData[1] = [objOpenFile,objDelete,objChangeName];
+			        }
+			        else if($('[data-check]').length > 1){
+			        	mailMenuData[1] = [objDelete];
+			        }else{
+			        	delete mailMenuData[1];
+			        }
+			    }
+			});
       	});
 	</script>
 </html>
