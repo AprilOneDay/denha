@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
 <title>html 便签</title>
 {include /public/global_css}
 </head>
@@ -12,7 +13,7 @@
 	<div class="member pull-right">
 		<ul>
 			<li>{$data['user']['nickname']}</li>
-			<li>退出</li>
+			<li><a href="{F:url('login/login_out')}">退出</a></li>
 		</ul>
 	</div>
 </div>
@@ -22,8 +23,10 @@
 		<ul>
 			{loop $data['fliesList'] $value}
 				<li draggable="true" data-id="{$value['id']}">
-					<img src="{F:denha\Start::$config['ststic']}/note/images/files.png" width="80" style="clear: both;">
-					<br/>{$value['name']}
+					<a href="{F:url('content',array('files_id'=>$value['id']))}" target="iframe0">
+						<img src="{F:denha\Start::$config['ststic']}/note/images/files.png" width="80" style="clear: both;">
+						<br/>{$value['name']}
+					</a>
 					<span class="check glyphicon glyphicon-ok"></span>
 				</li>
 			{/loop}
@@ -31,7 +34,7 @@
 		<div class="clearfix"></div>
 	</div>
 	<div class="content-iframe pull-right">
-		<iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="/index/content" frameborder="false" scrolling="auto" style="border:none" width="100%" height="auto" allowtransparency="true"></iframe>
+		<iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{F:url('content')}" frameborder="false" scrolling="auto" style="border:none" width="100%" height="auto" allowtransparency="true"></iframe>
 	</div>
 </div>
 </body>
@@ -113,7 +116,7 @@
 	        	//iframe层
 		        layer.open({
 		            type: 2,
-		            title: '新建文档',
+		            title: '文档编辑',
 		            shadeClose: true,
 		            shade: 0.8,
 		            fixed:true,

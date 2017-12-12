@@ -9,7 +9,7 @@ class Init extends Controller
     public $consoleName;
     public $group;
     public $power;
-    public $webType = 2; //站点标记
+    public $webType = 1; //站点标记
 
     public function __construct()
     {

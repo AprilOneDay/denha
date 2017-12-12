@@ -9,21 +9,26 @@
 </head>
 <body style="overflow: auto; overflow-x:hidden; ">
 	<form class="form-horizontal">
-	<textarea class="note-content" name="content" placeholder="输入保存内容">{??$data['content']}</textarea>
+		<input type="hidden" value="{??$data['files_id']}" name="files_id">
+		<div class="note-detail-title">
+			<input type="text" value="{??$data['title']}" name="title" placeholder="新建文件" class="">
+		</div>
+		
+		<textarea class="note-content" name="content" placeholder="输入保存内容">{??$data['content']}</textarea>
 
-	<div class="modal-footer">
-		<button type="button" class="btn btn-primary btn-comply">保存</button>
-		<button type="button" class="btn btn-default" id="btn-close" >取消</button>
-	</div>
-</form>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary btn-comply">保存</button>
+			<button type="button" class="btn btn-default" id="btn-close" >取消</button>
+		</div>
+	</form>
 </body>
 	{include /public/global_js}
 	<script type="text/javascript">
 		var  width = document .body.scrollLeft ? document.documentElement.scrollWidth - document .body.scrollLeft : document .body.scrollWidth;
-		$('textarea').css('width',width);
+
+		/*$('textarea').css('width',width);
 		$('body').css('width',width);
-		$('textarea').css('height',document.documentElement.scrollHeight);
+		$('textarea').css('height',document.documentElement.scrollHeight);*/
 		$('textarea').focus();
-		
 	</script>
 </html>

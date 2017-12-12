@@ -2,40 +2,6 @@ $(function() {
     //如果某个接口返回失败了 或存在BUG哦
     var btnBlock = true; //ajax提交堵塞 ture可提交 false堵塞中不可提交
 
-    init();
-    //监听product-nav-scene的宽度变化
-    $(".product-nav-scene").bind("DOMNodeInserted",function(e){
-        $('.content-main').width(($(document).width() - $('.sidebar-inner').width() - $('.product-nav-scene').width()) );
-        return true;
-    })
-   
-    $(window).resize(function(){
-        if($('.product-nav-scene').css('display') == 'block'){
-            $('.content-main').width(($(document).width() - 150 - 150));
-        }else{
-            $('.content-main').width(($(document).width() - 150));
-        }
-    });
-
-   
-
-    //主页容器固定高宽
-    function init(){
-        //一级栏目高度
-        $('.sidebar-inner').height($(document).height() - $('.border-top').height() - 2);
-        //二级栏目高度
-        $('.product-nav-scene').height($(document).height() - $('.border-top').height() - 2)
-        //主体显示高度
-        $('.content-main').height($(document).height() - $('.border-top').height() - 2);
-        //二级栏目如果可见
-        if($('.product-nav-scene').css('display') == 'block'){
-            $('.content-main').width(($(document).width() - 150 - 150));
-        }else{
-            $('.content-main').width(($(document).width() - 150));
-        }
-
-    }
-
     //判断通道是否堵塞 如果堵塞 返回提示文案 反之则变成堵塞
     function checkBtnBlock(msg = '请勿重复提交'){
         if(!btnBlock){
@@ -323,102 +289,8 @@ $(function() {
         },"json");
     })
 
-    
-
-    //渲染图片上传插件
-    $('.btn-ablum').each(function(){
-        var _this   = this;
-        var name    = $(this).attr('data-name');
-        var maxNum  = Math.max($(this).attr('data-max'),1);
-        var path    = $(this).attr('data-path'); 
-        var content = '<input type="file" style="display:none;" id="'+name+'"  multiple="multiple"><div class="img-list" style="margin-top:20px;"><ul></ul></div>';
-        var value   = $(this).attr('data-value');
-        if(value != '' && typeof(value) != 'undefined'){
-            value =  value.split(',');
-        }
-
-        if(maxNum == 1){
-            var ablum   = '';
-        }else{
-            var ablum   = new Array();
-        }
-       
-        $(_this).parent().append(content);
-
-        //渲染初始图片
-        for(var i=0;i<value.length;i++){
-            value[i] = '/uploadfile/'+path+'/'+value[i]
-            var content = '<li style="float:left;width:150px;height:100px;margin-left:10px;margin-top:10px;"><img src="'+value[i]+'" width="150" height="100" style="border:1px solid #ccc;"> <a style="float:right;margin-top:-100px;margin-right:2px;cursor: pointer;" class="btn-del-img"><i class="glyphicon glyphicon-remove"></i></a></li>';
-            $(_this).parent().find('.img-list ul').append(content);
-        }
-
-
-        //上传
-        $(_this).click(function(){
-            $('input[id='+name+']').wrap('<form>').closest('form').get(0).reset();
-            $('input[id='+name+']').trigger('click');
-        })
-
-        //转换图片url
-        $('#'+name).change(function(e){
-            var imgLength = $(_this).parent().find('.img-list ul img').length;
-            var files = e.target.files || e.dataTransfer.files;
-            if(maxNum  && maxNum < files.length + imgLength){
-                 return layer.msg('最多只能传'+maxNum+'张图片');
-            }
-
-            for(var i=0;i<files.length;i++){
-                var reader = new FileReader();
-                reader.readAsDataURL(files[i]); 
-                reader.onload = function(e){
-                    $.post('/common/upload/up_base64_img',{data:e.target.result,path:path},function(result){
-                        if(result.status){
-                            var content = '<li style="float:left;width:150px;height:100px;margin-left:10px;margin-top:10px;"><img src="'+result.data+'" width="150" height="100" style="border:1px solid #ccc;"> <a style="float:right;margin-top:-100px;margin-right:2px;cursor: pointer;" class="btn-del-img"><i class="glyphicon glyphicon-remove"></i></a></li>';
-                            $(_this).parent().find('.img-list ul').append(content);  
-                        }
-
-                        //删除照片
-                        $('.btn-del-img').click(function(){
-                            //console.log($(this).parent().html());
-                            $(this).parent().remove();
-                            bindValue();    
-                        })
-
-                        bindValue();    
-                    },"json");
-                }
-            }
-        })
-        //绑定初始值
-        bindValue();
-        //删除照片
-        $('.btn-del-img').click(function(){
-            $(this).parent().remove();
-            bindValue();
-        })
-
-        function bindValue(){
-            var data = new Array();
-            $(_this).parent().find('.img-list').find('img').each(function(){
-                var path  = $(this).attr('src');
-                path  = path.substring(path.lastIndexOf("/")+1,path.length);
-                if(path != 'nd.jpg'){
-                    data[data.length] = path.substring(path.lastIndexOf("/")+1,path.length);
-                }
-            })
-
-            var content = '<input type="hidden" name="'+name+'" value="'+data.join(',')+'" />';
-            $('input[name='+name+']').remove();
-            $(_this).parent().append(content);
-        }
-    })
-
     //渲染编辑器
     $('.ue-editor').each(function(){
-        /*if($(this).index() == 0){
-            $.getScript("/vendor/ueditor/ueditor.config.js"); 
-            $.getScript("/vendor/ueditor/ueditor.all.js"); 
-        }*/
         var id = $(this).attr('id');
         UE.getEditor(id);
     })
@@ -491,6 +363,125 @@ $(function() {
         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
         parent.layer.close(index);
     });
+
+    //渲染图片上传插件
+    $('.btn-ablum').each(function(){
+        var _this   = this;
+        var name    = $(this).attr('data-name');
+        var maxNum  = Math.max($(this).attr('data-max'),1);
+        var path    = $(this).attr('data-path'); 
+        var content = '<input type="file" style="display:none;" id="'+name+'"  multiple="multiple"><div class="img-list" style="margin-top:20px;"><ul></ul></div>';
+        var progress = '<div class="progress" style="margin:0px; margin-top:5px;"><div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 1%;">1%</div></div>';
+        var value   = $(this).attr('data-value');
+        if(value != '' && typeof(value) != 'undefined'){
+            value =  value.split(',');
+        }
+
+        if(maxNum == 1){
+            var ablum   = '';
+        }else{
+            var ablum   = new Array();
+        }
+       
+        $(_this).parent().append(content);
+
+        //渲染初始图片
+        for(var i=0;i<value.length;i++){
+            value[i] = '/uploadfile/'+path+'/'+value[i]
+            var content = '<li style="float:left;width:150px;height:100px;margin-left:10px;margin-top:10px;"><img src="'+value[i]+'" width="150" height="100" style="border:1px solid #ccc;"> <a style="float:right;margin-top:-100px;margin-right:2px;cursor: pointer;" class="btn-del-img"><i class="glyphicon glyphicon-remove"></i></a></li>';
+            $(_this).parent().find('.img-list ul').append(content);
+        }
+
+
+        //上传
+        $(_this).click(function(){
+            $('input[id='+name+']').wrap('<form>').closest('form').get(0).reset();
+            $('input[id='+name+']').trigger('click');
+        })
+
+        //转换图片url
+        $('#'+name).change(function(e){
+            var imgLength = $(_this).parent().find('.img-list ul img').length;
+            var files = e.target.files || e.dataTransfer.files;
+            if(maxNum  && maxNum < files.length + imgLength){
+                 return layer.msg('最多只能传'+maxNum+'张图片');
+            }
+
+            for(var i=0;i<files.length;i++){
+
+                var formData = new FormData();
+                formData.append('file', files[i]);
+                formData.append('path', path);
+                formData.append('max_size', 100);
+               
+                //ajax异步上传  
+                $.ajax({  
+                    url: '/common/upload/up_file',  
+                    type: 'POST',  
+                    data: formData,
+                    dataType: 'json',  
+                    contentType: false, //必须false才会自动加上正确的Content-Type  
+                    processData: false,  //必须false才会避开jQuery对 formdata 的默认处理  
+                    xhr: function(){ //获取ajaxSettings中的xhr对象，为它的upload属性绑定progress事件的处理函数
+                        //移除之前的上传进度条
+                        $(_this).parent().find('.progress').remove();
+                        //添加现在的进度条
+                        layer.alert(progress);  
+                        myXhr = $.ajaxSettings.xhr();  
+                        if(myXhr.upload){ 
+                            //检查upload属性是否存在  
+                            //绑定progress事件的回调函数  
+                
+                            myXhr.upload.addEventListener('progress',progressHandlingFunction, false);   
+                        }  
+                        return myXhr; //xhr对象返回给jQuery使用  
+                    },  
+                    success: function(result){
+                        if(result.status){
+                            var url = '/uploadfile/'+path+'/'+result.data.name[0];
+                            var content = '<li style="float:left;width:150px;height:100px;margin-left:10px;margin-top:10px;"><img src="'+url+'" width="150" height="100" style="border:1px solid #ccc;"> <a style="float:right;margin-top:-100px;margin-right:2px;cursor: pointer;" class="btn-del-img"><i class="glyphicon glyphicon-remove"></i></a></li>';
+                            $(_this).parent().find('.img-list ul').append(content);  
+                        }
+                        bindValue();    
+                        return layer.msg(result.msg);            
+                    },  
+                });  
+
+                //上传进度回调函数：  
+                function progressHandlingFunction(e) {
+                    if (e.lengthComputable) {  
+                        $('progress').attr({value : e.loaded, max : e.total}); //更新数据到进度条  
+                        var percent = e.loaded/e.total*100; 
+                        $('.progress-bar').css('width',percent+'%');
+                        $('.progress-bar').text(percent+'%'); 
+                    }  
+                } 
+            }
+        })
+        //绑定初始值
+        bindValue();
+
+        //删除照片
+        $('body').on('click','.btn-del-img',function(){
+            $(this).parent().remove();
+            bindValue();
+        })
+       
+        function bindValue(){
+            var data = new Array();
+            $(_this).parent().find('.img-list').find('img').each(function(){
+                var path  = $(this).attr('src');
+                path  = path.substring(path.lastIndexOf("/")+1,path.length);
+                if(path != 'nd.jpg'){
+                    data[data.length] = path.substring(path.lastIndexOf("/")+1,path.length);
+                }
+            })
+
+            var content = '<input type="hidden" name="'+name+'" value="'+data.join(',')+'" />';
+            $('input[name='+name+']').remove();
+            $(_this).parent().append(content);
+        }
+    })
 
     //上传文件
     $('.btn-files').each(function(){  
@@ -587,8 +578,9 @@ $(function() {
                 },  
                 success: function(result){
                     if(result.status){
-                        value  = value +','+ result.data.name[0];
-                        $(_this).parent().parent().find('.col-sm-8').append(fileHtml(result.data.name[0]));
+                        var url = '/uploadfile/'+path+'/'+result.data.name[0];
+                        value  = value +','+ url;
+                        $(_this).parent().parent().find('.col-sm-8').append(fileHtml(url));
                         initValue();
                     }
 

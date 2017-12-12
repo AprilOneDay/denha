@@ -26,9 +26,20 @@ class Index extends Init
 
     public function content()
     {
+        $keyword = get('keyword', 'text', '');
+        $filesId = get('files_id', 'text', '');
+
         $map               = array();
         $map['uid']        = $this->uid;
         $map['del_status'] = 0;
+
+        if ($filesId) {
+            $map['files_id'] = $filesId;
+        }
+
+        if ($keyword) {
+            $map['title'] = array('instr', $keyword);
+        }
 
         $data['contentList'] = table('NoteData')->where($map)->field('id,title,content,modifyd,created')->find('array');
 
@@ -36,6 +47,9 @@ class Index extends Init
             $data['contentList'][$key]['listContent'] = explode(PHP_EOL, str_replace(' ', '', $value['content']));
         }
 
+        $data['fiels'] = table('NoteFiles')->where('id', (int) $filesId)->field('id,name')->find();
+
+        $this->assign('filesId', $filesId);
         $this->assign('data', $data);
 
         $this->show();
@@ -75,14 +89,15 @@ class Index extends Init
      */
     public function detail()
     {
-        $id = get('id', 'intval', 0);
+        $id      = get('id', 'intval', 0);
+        $filesId = get('files_id', 'intval', 0);
 
         if ($id) {
             $map['uid'] = $this->uid;
             $map['id']  = $id;
             $data       = table('NoteData')->where($map)->find();
         } else {
-            $data = array('title' => '新建文件');
+            $data = array('files_id' => $filesId);
         }
 
         $this->assign('data', $data);
@@ -93,11 +108,13 @@ class Index extends Init
     {
         $id = get('id', 'intval', 0);
 
+        $title   = post('title', 'text', '新建文件');
         $content = post('content', 'text', '');
 
         $data['uid']     = $this->uid;
         $data['title']   = '新建文档';
         $data['content'] = $content;
+        $data['title']   = $title;
 
         if ($id) {
 
@@ -134,5 +151,21 @@ class Index extends Init
         }
 
         $this->appReturn(array('msg' => '操作成功'));
+    }
+
+    public function delDocument()
+    {
+        $id = post('id', 'text', '');
+
+        $map['uid'] = $this->uid;
+        $map['id']  = array('in', $id);
+
+        $result = table('NoteData')->where($map)->save('del_status', 1);
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '操作失败'));
+        }
+
+        $this->appReturn(array('msg' => '操作成功'));
+
     }
 }

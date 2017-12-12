@@ -3,30 +3,52 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
 <title>记事本</title>
 {include /public/global_css}
 </head>
 <body>
 <div class="content pull-right">
-	<div class="location">
-		<div class="tips">
-			<a href="">全部</a> > <a href=""> xxxxx</a> > xxxxxxx
+	<div class="location container-fluid">
+		<div class="row">
+			<div class="function col-md-8">
+				<ul>
+					<li><a class="btn btn-default btn-open" config-href="{F:url('detail',array('files_id'=>$filesId))}" config-title="文档编辑" href="javascript:;" role="button">新建文档</a></li>
+				</ul>
+			</div>
+			<div class="search col-md-3 pull-right">
+				<form action="{F:url('')}" method="get">
+					<div class="form-group">
+					    <label class="sr-only" for="exampleInputAmount">搜索文档</label>
+					    <div class="input-group"> 
+					      <input type="text" class="form-control" id="exampleInputAmount" placeholder="搜索文档">
+					      <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+					    </div>
+					  </div>
+				</form>
+			</div>
 		</div>
-
-		<div class="search">
-			
+		<div class="tips row">
+			<a href="{F:url('content')}">全部文件</a> {if $data['fiels']}> {$data['fiels']['name']}{/if}
 		</div>
 	</div>
+
 	<div class="note">
-		<ul>
+		<ul style="width: 100%;">
 			{loop $data['contentList'] $value}
 			<li draggable="true">
-				<a class="btn-open" config-href="{F:url('detail',array('id'=>$value['id']))}"><h2>{$value['title']}</h2></a>
-				{loop $value['listContent'] $k $v}
-					{if $v}
-						<p>{$v} <label class="copy">复制</label></p>
-					{/if}
-				{/loop}
+				<a class="btn-open" config-href="{F:url('detail',array('id'=>$value['id'],'files_id'=>$filesId))}" config-title="文档编辑"><h2>{$value['title']}</h2></a>
+				<div class="note-des">
+					{loop $value['listContent'] $k $v}
+						{if $v}
+							<p>{$v} <label data-clipboard-text="{$v}" class="copy btn-copy">复制</label></p>
+						{/if}
+					{/loop}
+				</div>
+				<div class="note-function">
+					<label><a href="javascript:;" class="btn-ajax-post" config-href="{F:url('del_document')}" data-id="{$value['id']}" config-tips="确定删除[{$value['title']}]?删除后不可恢复">删除</a></label>
+					<label><a href="javascript:;">分享</a></label>
+				</div>
 			</li>
 			{/loop}
 		</ul>
@@ -34,4 +56,11 @@
 </div>
 </body>
 	{include /public/global_js}
+	<script type="text/javascript" src="{F:getConfig('config','vendor')}/clipboard/dist/clipboard.min.js"></script>
+	<script type="text/javascript">
+	 	var clipboard = new Clipboard('.btn-copy');
+	 	clipboard.on('success', function(e) {
+	        return layer.msg('复制成功');
+	    });
+		</script>
 </html>

@@ -1,7 +1,10 @@
 html,body{height: 100%;width: 100%; overflow-y:hidden;}
-.top{ width: 100%; background: #3b8cff; line-height: 25px; height: 55px; color: #fff; }
+.top{ width: 100%; background: #3b8cff; line-height: 25px; height: 6%; color: #fff;  min-height: 50px;  }
 .top .logo{ font-size: 27px; line-height: 50px; padding-left: 25px; }
 .top .member li{ float: left; }
+
+.member li{ float: right; width: 100px;  height: 100%; text-align: center; line-height: 25px;line-height: 50px;  }
+.member li:hover{ background: #e1e1e1;  color: #000; cursor: pointer;}
 
 .main{ width: 100%; height: 100%; }
 .menus{ padding-left: 20px; padding-top: 20px; width: 20%;  height:inherit;  }
@@ -15,5 +18,14 @@ html,body{height: 100%;width: 100%; overflow-y:hidden;}
 
 .content-iframe{ width: 80%;  height: 100%; }
 
-.content{ width: 100%; height: 100%;  padding-left: 10px; background: #e1e1e1; }
-.note-content{ padding: 5px; min-height: 300px; line-height: 25px; border: none; resize:none; outline:none;  text-align: left;}
+.content{ width: 100%; height: 100%;  padding-left: 10px; background: #f2f2f2; }
+
+
+.location{ background: #fff; width: 100%; padding-top: 10px; }
+.location .tips{ line-height: 25px; font-size: 14px; padding-top: 5px; padding-bottom: 5px;  padding-left: 15px;}
+.location .tips a{ color: #4287ed; }
+.location .tips a:hover{color: red;}
+.note-detail-title{ border-bottom: 1px solid #ccc; height: 50px; }
+.note-detail-title input{ margin-top: 10px; margin-left: 15px; height: 30px; line-height: 30px; width: 160px; padding-left: 5px; }
+.note-content{ width: 100%; height: 450px; padding: 5px; line-height: 25px; border: none; resize:none; outline:none;  text-align: left;}
+.note-content .function{ position: absolute; }

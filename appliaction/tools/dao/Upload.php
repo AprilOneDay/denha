@@ -19,7 +19,6 @@ class Upload
             $path = 'uploadfile' . DS;
         }
 
-        //echo $path;die;
         if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $data, $match)) {
             $type = $match[2];
             if (!file_exists($path)) {
@@ -75,9 +74,9 @@ class Upload
                 return array('status' => false, 'msg' => '请上传小于' . $size . 'M的文件');
             }
 
-            $ext = ltrim($value['type'], substr($value['type'], 0, stripos($value['type'], '/') + 1));
+            $ext = str_replace(substr($value['type'], 0, stripos($value['type'], '/') + 1), '', $value['type']);
 
-            $ext != 'et-stream' ?: $ext = pathinfo($value['name'], PATHINFO_EXTENSION);
+            !($ext == 'et-stream' || $ext == 'octet-stream') ?: $ext = strtolower(pathinfo($value['name'], PATHINFO_EXTENSION));
 
             if (stripos($type, $ext) === false) {
                 return array('status' => false, 'msg' => $ext . '文件禁止上传');
@@ -103,6 +102,26 @@ class Upload
         }
 
         return array('status' => true, 'msg' => '上传成功', 'data' => $data);
+    }
+
+    /** 保存临时文件 */
+    public function uploadfileTmp($files)
+    {
+
+    }
+
+    /**
+     * 合并分片上传数据
+     * @date   2017-12-12T11:23:00+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $name [description]
+     * @param  [type]                   $path [description]
+     * @param  [type]                   $max  [description]
+     * @return [type]                         [description]
+     */
+    public function uploadfileMerge($name, $path, $max)
+    {
+
     }
 
     /** 保存附件记录 */

@@ -1,12 +1,13 @@
 <?php
 namespace app\admin\controller\index;
 
+use app\admin\controller\Init;
+
 class Login extends \app\admin\controller\Init
 {
     //登录
     public function index()
     {
-
         $this->show();
     }
 
@@ -57,8 +58,8 @@ class Login extends \app\admin\controller\Init
      */
     public function loginOut()
     {
-        session('token', null);
-        header('Location:/login');
+        session('console', null);
+        header('Location:/index/login');
     }
 
     //检测是否登录
