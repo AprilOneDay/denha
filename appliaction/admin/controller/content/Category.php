@@ -61,7 +61,10 @@ class Category extends Init
         $data['sort']     = post('sort', 'intval', 0);
         $data['is_show']  = post('is_show', 'intval', 1);
 
-        $data['name']  = post('name', 'text', '');
+        $data['name']    = post('name', 'text', '');
+        $data['name_en'] = post('name_en', 'text', '');
+        $data['name_jp'] = post('name_jp', 'text', '');
+
         $data['bname'] = post('bname', 'text', '');
         $data['thumb'] = post('thumb', 'img', '');
 

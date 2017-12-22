@@ -17,7 +17,7 @@ class Index extends Init
 
         $data['fliesList'] = table('NoteFiles')->where($map)->field('id,name')->order('sort asc,id asc')->find('array');
 
-        $data['user'] = dao('User')->getUserInfo($this->uid, 'nickname,uid');
+        $data['user'] = dao('User')->getInfo($this->uid, 'nickname,uid');
 
         $this->assign('data', $data);
 

@@ -9,7 +9,7 @@ class Init extends denha\Controller
     public $uid   = 0;
     public $version;
     public $group;
-    public $lg; //返货提示信息语音版本
+    public $lg = 'zh'; //返回提示信息语言版本
     public $imei;
 
     public function __construct()
@@ -21,7 +21,7 @@ class Init extends denha\Controller
 
         if ($this->token) {
             $map['token'] = $this->token;
-            $user         = table('User')->where($map)->field('id,type,imei,time_out')->find();
+            $user         = table('User')->where($map)->field('id,uid,type,imei,time_out')->find();
             if ($user) {
                 if ($user['imei'] != $this->imei && $this->imei) {
                     $this->appReturn(array('status' => false, 'msg' => '你的账户已在其他手机登录,请重新登录', 'code' => 501));
@@ -32,30 +32,12 @@ class Init extends denha\Controller
                 $this->appReturn(array('status' => false, 'msg' => '登录超时,请重新登录', 'code' => 501));
                 }*/
 
-                $this->uid        = $user['id'];
+                $this->uid        = $user['uid'];
                 $this->group      = $user['type'];
                 $data['time_out'] = TIME + 3600 * 24 * 2;
                 $reslut           = table('User')->where(array('id' => $user['id']))->save($data);
             }
         }
-    }
-
-    /**
-     * 必须是商户用户登录
-     * @date   2017-09-15T09:32:09+0800
-     * @author ChenMingjiang
-     * @return [type]                   [description]
-     */
-    public function checkShop()
-    {
-        if (!$this->uid) {
-            $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
-        }
-
-        if ($this->group != 2) {
-            $this->appReturn(array('status' => false, 'msg' => '权限不足'));
-        }
-
     }
 
     public function checkIndividual()
@@ -98,9 +80,10 @@ class Init extends denha\Controller
         );
 
         $value = array_merge($array, $value);
-        if ($this->lg) {
+        if ($this->lg != 'zh') {
             $value['msg'] = dao('BaiduTrans')->baiduTrans($value['msg'], $this->lg);
         }
+
         exit(json_encode($value));
     }
 

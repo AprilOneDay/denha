@@ -205,7 +205,7 @@ class User
     public function createUid()
     {
         $id  = table('User')->order('id desc')->field('id')->find('one');
-        $uid = rand(1000, 9999) . $id + 1;
+        $uid = /*rand(1000, 9999) .*/$id + 1;
         return $uid;
     }
 
@@ -233,7 +233,7 @@ class User
         $data['login_time'] = TIME;
         $data['imei']       = $imei;
 
-        $reslut = table('User')->where(array('id' => $uid))->save($data);
+        $reslut = table('User')->where(array('uid' => $uid))->save($data);
 
         if (!$reslut) {
             return array('status' => false, 'msg' => '登录失败');
@@ -279,7 +279,7 @@ class User
         $data['login_time']     = TIME;
         !$imei ?: $data['imei'] = (string) $imei;
 
-        $reslut      = table('User')->where(array('id' => $user['id']))->save($data);
+        $reslut      = table('User')->where(array('uid' => $user['id']))->save($data);
         $data['uid'] = $user['id'];
 
         if (!$reslut) {
@@ -331,7 +331,7 @@ class User
             return false;
         }
 
-        $data = (int) table('User')->where(array('id' => $uid))->field('integral')->find('one');
+        $data = (int) table('User')->where(array('uid' => $uid))->field('integral')->find('one');
 
         return $data;
     }
@@ -345,23 +345,6 @@ class User
      * @return [type]                          [description]
      */
     public function getInfo($uid = 0, $field = '*')
-    {
-        $data = table('User')->where(array('id' => $uid))->field($field)->find();
-        if (count($data) == 1) {
-            return $data[$field];
-        }
-        return $data;
-    }
-
-    /**
-     * 根据uid获取用户信息
-     * @date   2017-10-25T16:28:32+0800
-     * @author ChenMingjiang
-     * @param  integer                  $uid   [description]
-     * @param  string                   $field [description]
-     * @return [type]                          [description]
-     */
-    public function getUserInfo($uid = 0, $field = '*')
     {
         $data = table('User')->where(array('uid' => $uid))->field($field)->find();
         if (count($data) == 1) {
@@ -379,7 +362,7 @@ class User
      */
     public function getNickname($uid)
     {
-        $data = (string) table('User')->where(array('id' => $uid))->field('nickname')->find('one');
+        $data = (string) table('User')->where(array('uid' => $uid))->field('nickname')->find('one');
 
         return $data;
     }

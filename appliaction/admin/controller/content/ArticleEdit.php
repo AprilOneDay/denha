@@ -65,9 +65,12 @@ class ArticleEdit extends Init
         $id = get('id', 'intval', 0);
 
         $data['title']          = post('title', 'text', '');
-        $data['btitle']         = post('btitle', 'text', '');
+        $data['title_en']       = post('title_en', 'text', '');
+        $data['title_jp']       = post('title_jp', 'text', '');
         $data['description']    = post('description', 'text', '');
         $data['description_en'] = post('description_en', 'text', '');
+        $data['description_jp'] = post('description_jp', 'text', '');
+        $data['btitle']         = post('btitle', 'text', '');
         $data['thumb']          = post('thumb', 'img', '');
         $data['origin']         = post('origin', 'text', '');
 
@@ -121,6 +124,8 @@ class ArticleEdit extends Init
         if (IS_POST) {
             $data['content']    = post('content', 'text', '');
             $data['content_en'] = post('content_en', 'text', '');
+            $data['content_jp'] = post('content_jp', 'text', '');
+            $data['video']      = post('video', 'text', '');
 
             //开启事务
             table('Article')->startTrans();

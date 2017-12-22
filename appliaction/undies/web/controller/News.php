@@ -34,7 +34,7 @@ class News extends Init
             $map['is_recommend'] = $isRecommend;
         }
 
-        $data = dao('Article')->getList($map, 'title,description,created,thumb,id', 1, $pageSize, $pageNo);
+        $data = dao('Article')->getList($map, 'title,description,created,thumb,id,video', 1, $pageSize, $pageNo);
 
         $data['list'] = $data['list'] ? $data['list'] : array();
 

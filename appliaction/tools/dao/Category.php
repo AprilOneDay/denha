@@ -20,13 +20,13 @@ class Category
 
         if (!isset($_category[$id])) {
             $map['parentid'] = $id;
-            $list            = table('Category')->where($map)->field('id,name,bname')->order('name asc,sort asc')->find('array');
+            $list            = table('Category')->where($map)->order('name asc,sort asc')->find('array');
 
             $_category[$id] = null;
 
             foreach ($list as $key => $value) {
-                if ($lg == 'en') {
-                    $_category[$id][$value['id']] = $value['bname'];
+                if ($lg != 'zh' && $lg) {
+                    $_category[$id][$value['id']] = $value['name_' . $lg];
                 } else {
                     $_category[$id][$value['id']] = $value['name'];
                 }
@@ -48,8 +48,8 @@ class Category
     {
 
         $map['id'] = array('in', $id);
-        if ($lg) {
-            $name = table('Category')->where($map)->field('bname')->find('one', true);
+        if ($lg && $lg != 'zh') {
+            $name = table('Category')->where($map)->field('name_' . $lg)->find('one', true);
         } else {
             $name = table('Category')->where($map)->field('name')->find('one', true);
         }

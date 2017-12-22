@@ -86,12 +86,13 @@ class Index extends Init
             $map['is_recommend'] = $isRecommend;
         }
 
-        $data = dao('Article')->getList($map, 'title,description,created,thumb,id', 1, $pageSize, $pageNo);
+        $data = dao('Article')->getList($map, 'title,description,created,thumb,id,video', 1, $pageSize, $pageNo);
 
         $data['list'] = $data['list'] ? $data['list'] : array();
 
         foreach ($data['list'] as $key => $value) {
             $data['list'][$key]['thumb'] = $this->appImg($value['thumb'], 'article');
+            $data['list'][$key]['video'] = $value['video'] ? Start::$config['h5Url'] . $value['video'] : '';
 
             $list[$key]['share'] = array(
                 'title'       => $value['title'],

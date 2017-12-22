@@ -721,16 +721,16 @@ class Mysqli
             is_dir($path) ? '' : mkdir($path, 0755, true);
             if (stripos($this->sqlInfo['sql'], 'select') === 0) {
                 $path .= 'select_' . date('Y_m_d_H', TIME) . '.text';
-                $content = $this->sqlInfo['sql'] . '|' . $this->sqlInfo['time'];
+                $content = $this->sqlInfo['sql'] . '|' . $this->sqlInfo['time'] . PHP_EOL;
             } elseif (stripos($this->sqlInfo['sql'], 'update') === 0) {
                 $path .= 'update_' . date('Y_m_d_H', TIME) . '.text';
-                $content = $this->sqlInfo['sql'] . ';';
+                $content = $this->sqlInfo['sql'] . ';' . PHP_EOL;
             } elseif (stripos($this->sqlInfo['sql'], 'delete') === 0) {
                 $path .= 'delete_' . date('Y_m_d_H', TIME) . '.text';
-                $content = $this->sqlInfo['sql'] . ';';
+                $content = $this->sqlInfo['sql'] . ';' . PHP_EOL;
             } elseif (stripos($this->sqlInfo['sql'], 'insert') === 0) {
                 $path .= 'add_' . date('Y_m_d_H', TIME) . '.text';
-                $content = $this->sqlInfo['sql'] . ';';
+                $content = $this->sqlInfo['sql'] . ';' . PHP_EOL;
             }
 
             $file = fopen($path, 'a');

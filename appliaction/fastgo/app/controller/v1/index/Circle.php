@@ -2,11 +2,12 @@
 /**
  * 车友圈模块
  */
-namespace app\app\controller\v1\index;
+namespace app\fastgo\app\controller\v1\index;
 
 use app\app\controller;
+use app\fastgo\app\controller\Init;
 
-class Circle extends \app\app\controller\Init
+class Circle extends Init
 {
     /**
      * 车友圈列表

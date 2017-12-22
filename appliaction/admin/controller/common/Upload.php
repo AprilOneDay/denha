@@ -26,7 +26,7 @@ class Upload extends denha\Controller
     {
         $files   = files('file');
         $path    = post('path', 'text', '');
-        $maxSize = post('max_size', 'intval', 10);
+        $maxSize = post('max_size', 'intval', 30);
 
         $reslut = dao('Upload')->uploadfile($files, $path, $maxSize, $type = 'apk,mp4,mp3,doc,docx,flv,zip,rar,jpg,gif,png,jpeg');
 

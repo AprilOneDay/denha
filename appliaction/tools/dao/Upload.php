@@ -50,6 +50,8 @@ class Upload
      */
     public function uploadfile($files, $path, $size = 10, $type = '')
     {
+        set_time_limit(0);
+
         if (!$files) {
             return array('status' => false, 'msg' => '上传信息为空');
         }
