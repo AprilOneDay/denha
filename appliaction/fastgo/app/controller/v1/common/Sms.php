@@ -5,7 +5,7 @@
 namespace app\fastgo\app\controller\v1\common;
 
 use app\app\controller;
-use app\fastgo\app\controller\Init;
+use app\fastgo\app\controller\v1\Init;
 
 class Sms extends Init
 {

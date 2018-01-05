@@ -2,22 +2,26 @@
 /**
  * 会员模块
  */
-namespace app\app\controller\v1\user;
+namespace app\fastgo\app\controller\v1\user;
 
 use app\app\controller;
-use app\app\controller\Init;
+use app\fastgo\app\controller\v1\Init;
 
 class Index extends Init
 {
     public function __construct()
     {
         parent::__construct();
-        $this->checkIndividual();
+        //检测用户登录权限
+        $this->checkIndividual('1,2');
     }
 
     public function index()
     {
-        $user = table('User')->where('id', $this->uid)->field('avatar,nickname,integral,moeny')->find();
+        $user = table('User')->where('id', $this->uid)->field('avatar,nickname,is_bind_mail,integral,moeny,mail,sex,country')->find();
+
+        $user['country_copy'] = dao('Category')->getName($user['country']);
+        $user['sex_copy']     = dao('Category')->getName($user['sex']);
 
         $map             = array();
         $map['uid']      = $this->uid;
@@ -31,84 +35,6 @@ class Index extends Init
     }
 
     /**
-     * 我的收藏
-     */
-    public function collection()
-    {
-        $map['type']       = 1;
-        $map['uid']        = $this->uid;
-        $map['del_status'] = 0;
-
-        $pageNo   = get('pageNo', 'intval', 1);
-        $pageSize = get('pageSize', 'intval', 10);
-        $offer    = max(($pageNo - 1), 0) * $pageSize;
-
-        $idArray = table('Collection')->where($map)->field('value')->find('one', true);
-
-        $mapCar['status']  = 1;
-        $mapCar['is_show'] = 1;
-        $mapCar['id']      = array('in', implode(',', $idArray));
-        $list              = table('GoodsCar')->where($mapCar)->field('title,type,id,thumb,price,mileage,produce_time,is_lease')->limit($offer, $pageSize)->order('id desc')->find('array');
-        foreach ($list as $key => $value) {
-            if ($value['is_lease'] || stripos($value['guarantee'], 3) !== false) {
-                $list[$key]['title'] = "【lease】" . $value['title'];
-            }
-
-            $list[$key]['price']   = dao('Number')->price($value['price']);
-            $list[$key]['mileage'] = $value['mileage'] . '公里';
-            $list[$key]['thumb']   = $this->appImg($value['thumb'], 'car');
-        }
-
-        $data = $list ? $list : array();
-
-        $this->appReturn(array('data' => $data));
-    }
-
-    /**
-     *  我的足迹
-     */
-    public function footprints()
-    {
-
-        $pageNo   = get('pageNo', 'intval', 1);
-        $pageSize = get('pageSize', 'intval', 10);
-        $offer    = max(($pageNo - 1), 0) * $pageSize;
-
-        $footprints = table('Footprints')->tableName();
-        $goodsCar   = table('GoodsCar')->tableName();
-
-        $map[$footprints . '.uid']        = $this->uid;
-        $map[$footprints . '.type']       = 1;
-        $map[$footprints . '.del_status'] = 0;
-
-        $map[$goodsCar . '.status']  = 1;
-        $map[$goodsCar . '.is_show'] = 1;
-
-        $field = "$goodsCar.title,$goodsCar.type,$goodsCar.id,$goodsCar.thumb,$goodsCar.price,$goodsCar.mileage,$goodsCar.produce_time,$goodsCar.is_lease,$goodsCar.guarantee,$footprints.created";
-        $list  = table('GoodsCar')->join($footprints, "$goodsCar.id = $footprints.value")->where($map)->limit($offer, $pageSize)->field($field)->order("$footprints.created desc")->find('array');
-        foreach ($list as $key => $value) {
-            $time = date('Y/m/d', $value['created']);
-            if ($value['is_lease'] || stripos($value['guarantee'], 3) !== false) {
-                $value['title'] = "【lease】" . $value['title'];
-            }
-
-            $value['price']   = dao('Number')->price($value['price']);
-            $value['mileage'] = $value['mileage'] . '公里';
-            $value['thumb']   = $this->appImg($value['thumb'], 'car');
-
-            $listTmp[$time][] = $value;
-        }
-
-        foreach ($listTmp as $key => $value) {
-            $data[$key]['time'] = $key;
-            $data[$key]['list'] = $value;
-        }
-
-        $data = $data ? array_values($data) : array();
-        $this->appReturn(array('data' => $data));
-    }
-
-    /**
      * 编辑个人信息
      * @date   2017-09-25T10:47:27+0800
      * @author ChenMingjiang
@@ -116,38 +42,42 @@ class Index extends Init
      */
     public function edit()
     {
-        if (IS_POST) {
 
-            $data['mail']       = post('mail', 'text', '');
-            $data['nickname']   = post('nickname', 'text', '');
-            $data['is_message'] = post('is_message', 'intval', 0);
+        $data = table('User')->where(array('id' => $this->uid))->field('uid,nickname,mail,avatar,mobile,is_message,type,sex,country')->find();
 
-            $files['avatar'] = files('avatar');
+        $data['country_copy'] = dao('Category')->getName($data['country']);
+        $data['sex_copy']     = dao('Category')->getName($data['sex']);
+        $data['avatar']       = $this->appImg($data['avatar'], 'avatar');
+        $data['mobile']       = substr_replace($data['mobile'], '*****', 4, 5);
+        $this->appReturn(array('data' => $data));
 
-            !$files['avatar'] ?: $data['avatar'] = $this->appUpload($files['avatar'], '', 'avatar');
+    }
 
-            if (!$data['nickname']) {
-                $this->appReturn(array('status' => false, 'msg' => '请输入昵称'));
-            }
+    public function editPost()
+    {
+        $data['sex']      = post('sex', 'intval', '');
+        $data['mail']     = post('mail', 'text', '');
+        $data['nickname'] = post('nickname', 'text', '');
 
-            /*if (!$data['mail']) {
-            $this->appReturn(array('status' => false, 'msg' => '请输入邮箱地址'));
-            }*/
+        $files['avatar'] = files('avatar');
 
-            $reslut = table('User')->where(array('id' => $this->uid))->save($data);
+        !$files['avatar'] ?: $data['avatar'] = $this->appUpload($files['avatar'], '', 'avatar');
 
-            if ($reslut) {
-                $this->appReturn(array('msg' => '保存成功'));
-            }
-
-            $this->appReturn(array('status' => false, 'msg' => '执行失败'));
-        } else {
-            $data           = table('User')->where(array('id' => $this->uid))->field('id,nickname,mail,avatar,mobile,is_message,type')->find();
-            $data['uid']    = $data['id'];
-            $data['avatar'] = $this->appImg($data['avatar'], 'avatar');
-            $data['mobile'] = substr_replace($data['mobile'], '*****', 4, 5);
-            $this->appReturn(array('data' => $data));
+        if (!$data['nickname']) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入昵称'));
         }
+
+        /*if (!$data['mail']) {
+        $this->appReturn(array('status' => false, 'msg' => '请输入邮箱地址'));
+        }*/
+
+        $reslut = table('User')->where(array('id' => $this->uid))->save($data);
+
+        if ($reslut) {
+            $this->appReturn(array('msg' => '保存成功'));
+        }
+
+        $this->appReturn(array('status' => false, 'msg' => '执行失败'));
     }
 
 }

@@ -5,7 +5,7 @@
 namespace app\fastgo\app\controller\v1\common;
 
 use app\app\controller;
-use app\fastgo\app\controller\Init;
+use app\fastgo\app\controller\v1\Init;
 
 class User extends Init
 {
@@ -35,8 +35,6 @@ class User extends Init
         $weixinId = post('weixin_id', 'text', '');
         $code     = post('code', 'text', '');
 
-        $code != '' ?: $code = post('Code', 'intval', 0);
-
         $password2 = post('password2', 'text', '');
         $isAgree   = post('is_agree', 'intval', 0);
 
@@ -48,9 +46,9 @@ class User extends Init
             $this->appReturn(array('status' => false, 'msg' => '请输入手机号'));
         }
 
-        if (!$code) {
-            $this->appReturn(array('status' => false, 'msg' => '请输入验证码'));
-        }
+        /*if (!$code) {
+        $this->appReturn(array('status' => false, 'msg' => '请输入验证码'));
+        }*/
 
         $thirdParty = array();
         if ($weixinId) {
@@ -95,6 +93,46 @@ class User extends Init
         $this->appReturn($result);
     }
 
+    /** 绑定邮箱 */
+    public function bindMail()
+    {
+        parent::__construct();
+
+        if (!$this->uid) {
+            $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
+        }
+
+        $time = 60 * 60 * 2;
+
+        $mail = post('mail', 'text', '');
+        $code = post('code', 'text', '');
+
+        $result = dao('User')->checkMailCode($mail, $code);
+        if (!$result) {
+            $this->appReturn($result);
+        }
+
+        $user = dao('User')->getInfo($this->uid, 'is_bind_mail,mail');
+        //解除绑定
+        if ($user['is_bind_mail']) {
+            $data['is_bind_mail'] = 0;
+        }
+        //增加绑定
+        else {
+            $data['mail']         = $mail;
+            $data['is_bind_mail'] = 1;
+        }
+
+        $result = table('User')->where('uid', $this->uid)->save($data);
+
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '邮箱已绑定失败,请稍后重试'));
+        }
+
+        $this->appReturn(array('msg' => '邮箱绑定成功'));
+
+    }
+
     /**
      * 修改用户密码
      * @date   2017-09-25T11:11:42+0800
@@ -109,15 +147,12 @@ class User extends Init
 
         $password  = post('password', 'text', '');
         $password2 = post('password2', 'text', '');
+        $type      = post('type', 'intval', 1);
 
-        $code = post('code', 'intval', 0);
+        $code = post('code', 'text', '');
 
         if (!$mobile) {
             $this->appReturn(array('status' => false, 'msg' => '请输入手机号'));
-        }
-
-        if (!$code) {
-            $this->appReturn(array('status' => false, 'msg' => '请输入验证码'));
         }
 
         $map['mobile'] = $mobile;
@@ -164,4 +199,209 @@ class User extends Init
         $this->appReturn($result);
     }
 
+    /** 发送验证码 */
+    public function sendMailCode()
+    {
+        $mail   = post('mail', 'text', '');
+        $result = dao('User')->sendMailCode($mail);
+        $this->appReturn($result);
+
+    }
+
+    /*修改手机号*/
+    public function updateMobile()
+    {
+
+        $password   = post('password', 'text', '');
+        $mobile     = post('mobile', 'text', '');
+        $mobileCode = post('code', 'intval', '');
+
+        $model = table('User');
+        $user  = $model->where(array('id' => $this->uid))->find();
+
+        if (md5($password . $user['salt']) != $user['password']) {
+            $this->appReturn(array('status' => false, 'msg' => '原密码输入有误' . $this->uid));
+        }
+        $res = $model->where(array('mobile' => $mobile))->field('id')->find();
+        if ($res) {
+
+            $this->appReturn(array('status' => false, 'msg' => '当前手机号已被注册'));
+
+        }
+        //未验证短信验证码
+
+        $result = $model->where('id', $this->uid)->save(array('mobile' => $mobile));
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '手机号修改失败,请稍后重试'));
+        }
+        $this->appReturn(array('msg' => '手机号修改成功'));
+    }
+
+    /*添加问题反馈*/
+    public function addProFeedback()
+    {
+
+        $data['priority']    = post('priority', 'intval', '');
+        $data['type']        = post('type', 'intval', '');
+        $data['number']      = post('number', 'text', '');
+        $data['uid']         = $this->uid;
+        $data['description'] = post('description', 'text', '');
+        $data['remark']      = post('remark', 'text', '');
+
+        if (!$data['priority']) {
+            $this->appReturn(array('status' => false, 'msg' => '请选择问题优先级'));
+        }
+        if (!$data['type']) {
+            $this->appReturn(array('status' => false, 'msg' => '请选择问题类型'));
+        }
+        if (!$data['number']) {
+            $this->appReturn(array('status' => false, 'msg' => '请填写运单号'));
+        }
+        if (!$data['description']) {
+            $this->appReturn(array('status' => false, 'msg' => '请填写问题描述'));
+        }
+
+        $files['file_name'] = files('file_name');
+
+        if ($files['file_name']) {
+            $data['file_name'] = $this->appUpload($files['file_name'], '', 'feedBack');
+        }
+
+        $data['create_time'] = time();
+        $result              = table('userFeedback')->add($data);
+
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '问题反馈失败,请稍后重试'));
+        }
+        $this->appReturn(array('msg' => '问题反馈成功，请等待回复'));
+
+    }
+
+    /*问题反馈列表*/
+    public function proFeedList()
+    {
+
+        $type        = post('type', 'intval', '');
+        $page        = post('page', 'intval', 1);
+        $limit       = post('limit', 'intval', 5);
+        $whe['uid']  = $this->uid;
+        $whe['type'] = $type;
+
+        $feedlist = table('userFeedback')->where($whe)->limit(($page - 1) * $limit, $limit)->field('id,number,description,status,create_time,file_name,result')->find('array');
+
+        if (empty($feedlist)) {
+
+            $this->appReturn(array('status' => false, 'msg' => '暂无问题反馈内容'));
+
+        }
+
+        foreach ($feedlist as $k => $v) {
+
+            $feedlist[$k]['create_time'] = date('Y-m-d', $v['create_time']);
+            $feedlist[$k]['file_name']   = $this->appImgArray($v['file_name'], 'feedBack');
+            $feedlist[$k]['stat_title']  = $v['status'] == 0 ? '待回复' : '已回复';
+
+        }
+
+        $this->appReturn(array('msg' => '获取数据成功', 'data' => $feedlist));
+
+    }
+
+    /*包裹统计*/
+    public function packageStatistics()
+    {
+
+        $page       = post('page', 'intval', 1);
+        $limit      = post('limit', 'intval', 5);
+        $start_time = post('start_time', 'text', '');
+        $end_time   = post('end_time', 'text', '');
+
+        if ($start_time && !$end_time) {
+
+            $arr['created'] = array('>=', strtotime($start_time));
+
+        }
+        if (!$start_time && $end_time) {
+
+            $arr['created'] = array('<=', strtotime($end_time));
+
+        }
+        if ($start_time && $end_time) {
+
+            $arr['created'] = array(array('>=', strtotime($start_time)), array('<=', strtotime($end_time)));
+
+        }
+
+        $arr['type']         = 4;
+        $arr['uid']          = $this->uid;
+        $arr['order_status'] = array('>=', 3);
+
+        $data = table('orders')->where($arr)->field("id,order_sn,acount,created")->limit(($page - 1) * $limit, $limit)->find('array');
+
+        if (empty($data)) {
+
+            $this->appReturn(array('status' => false, 'msg' => '暂无包裹信息'));
+
+        }
+        foreach ($data as $k => $v) {
+
+            $data[$k]['created'] = date('Y-m-d', $v['created']);
+
+        }
+        $total_price = array_sum(array_column($data, 'acount'));
+
+        $this->appReturn(array('msg' => '获取数据成功', 'data' => $data, 'total_price' => $total_price));
+
+    }
+
+    /*消费统计*/
+    public function consumeStatistics()
+    {
+
+        $ordersPackage = table('ordersPackage')->tableName();
+        $orders        = table('orders')->tableName();
+        $logistics     = table('logistics')->tableName();
+
+        $page       = post('page', 'intval', 1);
+        $limit      = post('limit', 'intval', 5);
+        $start_time = post('start_time', 'text', '');
+        $end_time   = post('end_time', 'text', '');
+
+        if ($start_time && !$end_time) {
+
+            $arr[$orders . '.created'] = array('>=', strtotime($start_time));
+
+        }
+        if (!$start_time && $end_time) {
+
+            $arr[$orders . '.created'] = array('<=', strtotime($end_time));
+
+        }
+        if ($start_time && $end_time) {
+
+            $arr[$orders . '.created'] = array(array('>=', strtotime($start_time)), array('<=', strtotime($end_time)));
+
+        }
+
+        $arr[$orders . '.type']         = 4;
+        $arr[$orders . '.uid']          = $this->uid;
+        $arr[$orders . '.order_status'] = array('>=', 3);
+
+        $data = table('ordersPackage')->join($orders, "$orders.order_sn = $ordersPackage.order_sn", 'left')->join($logistics, "$orders.order_sn = $logistics.order_sn", 'left')->where($arr)->field('$logistics.name as log_name,$ordersPackage.name,$ordersPackage.num,$ordersPackage.account,$orders.created')->limit(($page - 1) * $limit, $limit)->find('array');
+
+        if (empty($data)) {
+
+            $this->appReturn(array('status' => false, 'msg' => '暂无物品信息'));
+
+        }
+        foreach ($data as $k => $v) {
+
+            $data[$k]['created'] = date('Y-m-d', $v['created']);
+
+        }
+
+        $total_price = array_sum(array_column($statList, 'account'));
+        $this->appReturn(array('msg' => '获取数据成功', 'data' => $data, 'total_price' => $total_price));
+
+    }
 }

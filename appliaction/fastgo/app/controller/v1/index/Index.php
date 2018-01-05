@@ -5,7 +5,7 @@
 namespace app\fastgo\app\controller\v1\index;
 
 use app\app\controller;
-use app\fastgo\app\controller\Init;
+use app\fastgo\app\controller\v1\Init;
 
 class Index extends Init
 {

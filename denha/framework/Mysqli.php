@@ -8,11 +8,13 @@ class Mysqli
 
     private static $instance;
 
+    public static $link; //mysql链接信息
+
     public $dbConfig; //数据库连接信息
     public $tablepre; //表前缀
     public $sqlInfo; //执行sql记录
 
-    public $link;
+    public $linkId;
     public $result;
     public $querystring;
     public $isclose;
@@ -48,9 +50,12 @@ class Mysqli
             throw new Exception('接数据库信息有误！请查看是否配置正确');
         }
 
-        $this->link = $this->openMysql();
-        mysqli_query($this->link, 'set names utf8mb4');
-        mysqli_query($this->link, 'SET sql_mode =\'ANSI,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION\'');
+        Mysqli::$link = $this->openMysql();
+        mysqli_query(Mysqli::$link, 'set names utf8mb4');
+        mysqli_query(Mysqli::$link, 'SET sql_mode =\'ANSI,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION\'');
+
+        $this->linkId = Mysqli::$link;
+
     }
 
     //单例实例化 避免重复New暂用资源
@@ -59,6 +64,7 @@ class Mysqli
         if (is_null(self::$instance)) {
             self::$instance = new Mysqli($dbConfig);
         }
+
         return self::$instance;
 
     }
@@ -77,8 +83,8 @@ class Mysqli
         }
 
         if (!$res) {
-            if (!$this->link) {
-                throw new Exception('连接数据库失败，可能数据库密码不对或数据库服务器出错！' . print_r($this->dbConfig));
+            if (!$this->linkId) {
+                throw new Exception('连接数据库失败，可能数据库密码不对或数据库服务器出错！');
             }
 
         }
@@ -317,7 +323,7 @@ class Mysqli
     {
         if ($table == '') {$table = $this->table;}
         $sql                      = "SELECT COUNT(*) as total  FROM information_schema.TABLES WHERE TABLE_NAME='$table'";
-        $t                        = mysqli_fetch_array(mysqli_query($this->link, $sql));
+        $t                        = mysqli_fetch_array(mysqli_query($this->linkId, $sql));
         if ($t['total'] == 0) {return false;}
         return true;
     }
@@ -550,7 +556,7 @@ class Mysqli
         $this->_sql = 'INSERT INTO `' . $this->table . '` SET ' . $this->field;
         $result     = $this->query();
         if ($result) {
-            $result = max(mysqli_insert_id($this->link), 1);
+            $result = max(mysqli_insert_id($this->linkId), 1);
         }
         return $result;
     }
@@ -639,7 +645,7 @@ class Mysqli
     //开启事务
     public function startTrans()
     {
-        mysqli_query($this->link, 'begin');
+        mysqli_query($this->linkId, 'begin');
         /*$this->query('begin');*/
         return true;
     }
@@ -647,7 +653,7 @@ class Mysqli
     //回滚事务
     public function rollback()
     {
-        mysqli_query($this->link, 'rollback');
+        mysqli_query($this->linkId, 'rollback');
         /*$this->query('rollback');*/
         return true;
     }
@@ -655,7 +661,7 @@ class Mysqli
     //提交事务
     public function commit()
     {
-        mysqli_query($this->link, 'commit');
+        mysqli_query($this->linkId, 'commit');
         /* $this->query('commit');*/
         return true;
     }
@@ -671,7 +677,7 @@ class Mysqli
     {
         !$sql ?: $this->_sql = $sql;
         $_beginTime          = microtime(true);
-        $result              = mysqli_query($this->link, $this->_sql);
+        $result              = mysqli_query($this->linkId, $this->_sql);
         $_endTime            = microtime(true);
 
         $this->sqlInfo['time'] = $_endTime - $_beginTime; //获取执行时间
@@ -716,7 +722,8 @@ class Mysqli
             return false;
         }
 
-        if ($this->sqlInfo && $this->dbConfig['db_sqlLog']) {
+        //记录sql
+        if ($this->sqlInfo && $this->dbConfig['db_save_log']) {
             $path = DATA_PATH . 'sql_log' . DS . $this->dbConfig['db_name'] . DS;
             is_dir($path) ? '' : mkdir($path, 0755, true);
             if (stripos($this->sqlInfo['sql'], 'select') === 0) {
@@ -731,6 +738,14 @@ class Mysqli
             } elseif (stripos($this->sqlInfo['sql'], 'insert') === 0) {
                 $path .= 'add_' . date('Y_m_d_H', TIME) . '.text';
                 $content = $this->sqlInfo['sql'] . ';' . PHP_EOL;
+            }
+
+            //记录慢sql
+            if ($this->dbConfig['db_slow_save_log']) {
+                if ($this->sqlInfo['time'] > $this->dbConfig['db_slow_time']) {
+                    $path .= 'slow_' . date('Y_m_d_H', TIME) . '.text';
+                    $content = $this->sqlInfo['sql'] . '|' . $this->sqlInfo['time'] . PHP_EOL;
+                }
             }
 
             $file = fopen($path, 'a');

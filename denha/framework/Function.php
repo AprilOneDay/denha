@@ -199,12 +199,19 @@ function existsUrl($url)
 
 function table($name, $isTablepre = true)
 {
-    $do = denha\Mysqli::getInstance(); //单例实例化
-    if ($name) {
-        return $do->table($name, $isTablepre);
+    static $_do;
+
+    if (is_null($_do)) {
+        $_do = denha\Mysqli::getInstance(); //单例实例化
     }
 
-    return $do;
+    if ($name) {
+        $_do = $_do->table($name, $isTablepre);
+    } else {
+        $_do = $_do;
+    }
+
+    return $_do;
 }
 
 function dao($name, $app = '')

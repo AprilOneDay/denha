@@ -2,10 +2,10 @@
 /**
  * 车友圈模块
  */
-namespace app\app\controller\v1\common;
+namespace app\fastgo\app\controller\v1\common;
 
 use app\app\controller;
-use app\fastgo\app\controller\Init;
+use app\fastgo\app\controller\v1\Init;
 
 class Circle extends Init
 {

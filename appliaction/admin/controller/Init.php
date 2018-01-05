@@ -69,4 +69,12 @@ class Init extends Controller
 
         return false;
     }
+	
+	public function modelField($id,$model,$field){
+		
+		$result = table($model)->where(array('id' => $id))->field($field)->find();
+		
+		return $result[$field];
+		
+	}
 }

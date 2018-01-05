@@ -30,7 +30,7 @@ class Login extends Init
      */
     public function loginOut()
     {
-        session('token', null);
+        cookie('token', null);
         header('Location:/login');
     }
 }

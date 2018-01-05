@@ -131,6 +131,6 @@ class Init extends Controller
         session_start();
         unset($_SESSION['token']);
         session_write_close();
-        header('Location:/index/login/');
+        header('Location:/login');
     }
 }

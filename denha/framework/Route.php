@@ -87,8 +87,9 @@ class Route
 
             //转换参数
             if (isset($array[1])) {
-                $paramArray = array_values(array_filter(explode('/', $array[1])));
-                $total      = count($paramArray);
+                $paramArray = array_values(explode('/', $array[1]));
+
+                $total = count($paramArray);
 
                 for ($i = 0; $i < $total;) {
                     $_GET[$paramArray[$i]] = urldecode($paramArray[$i + 1]);

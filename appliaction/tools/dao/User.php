@@ -4,6 +4,8 @@
  */
 namespace app\tools\dao;
 
+use denha\Smtp;
+
 class User
 {
     /**
@@ -94,20 +96,24 @@ class User
             }
         }
 
-        $data['uid']      = $this->createUid();
+        //创建新账户
         $data['nickname'] = $data['username'];
         $data['salt']     = rand(10000, 99999);
         $data['password'] = md5($data['password'] . $data['salt']);
         $data['created']  = TIME;
         $data['ip']       = getIP();
+        if (!$data['uid']) {
+            $data['uid'] = $this->createUid();
+        }
 
         $reslut = table('User')->add($data);
         if (!$reslut) {
-            return array('status' => false, 'msg' => '注册失败');
+            return array('status' => false, 'msg' => '注册失败' . $data['ip']);
         }
 
+        //添加店铺信息
         if ($data['type'] == 2) {
-            table('UserShop')->add(array('uid' => $reslut, 'name' => $data['username'], 'credit_level' => 50));
+            table('UserShop')->add(array('uid' => $reslut, 'name' => $data['username'], 'avatar' => empty($data['avatar']) ? '' : $data['avatar'], 'credit_level' => 50));
         } else {
             //发送站内信
             dao('Message')->send($reslut, 'register_user');
@@ -288,8 +294,84 @@ class User
 
         //登录成功保存token
         cookie('token', $data['token'], $data['time_out']);
-
         return array('status' => true, 'msg' => '登录成功', 'data' => $data);
+    }
+
+    /**
+     * 发送邮箱验证码
+     * @date   2017-12-25T11:38:46+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $uid [description]
+     * @return [type]                        [description]
+     */
+    public function sendMailCode($mail, $title = '您的验证码信息', $group = 1)
+    {
+
+        if (!$mail) {
+            return array('status' => false, 'msg' => '请填写邮箱');
+        }
+
+        $code    = rand('10000', '99999');
+        $content = '您的邮箱验证：' . $code;
+
+        $smtp   = new Smtp($group);
+        $result = $smtp->sendmail($mail, $title, $content);
+
+        if (!$result) {
+            return array('status' => false, 'msg' => '验证码发送失败，请联系管理员', 'debug' => $result);
+        }
+
+        //保存验证码
+        $map['mail'] = $mail;
+        $mailVerify  = table('MailVerify')->where($map)->field('id,created')->find();
+        if ($mailVerify) {
+
+            $data['code']    = $code;
+            $data['created'] = TIME;
+            table('MailVerify')->where('id', $mailVerify['id'])->save($data);
+
+        } else {
+            $data['code']    = $code;
+            $data['created'] = TIME;
+            $data['mail']    = $mail;
+            table('MailVerify')->add($data);
+        }
+
+        return array('status' => true, 'msg' => '验证码发送成功');
+    }
+
+    /**
+     * 验证码匹配
+     * @date   2017-12-25T14:57:44+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $mail [邮箱号]
+     * @param  [type]                   $code [验证码]
+     * @return [type]                         [description]
+     */
+    public function checkMailCode($mail, $code)
+    {
+        if (!$mail) {
+            return array('status' => false, 'msg' => '请填写邮箱');
+        }
+
+        if (!$code) {
+            return array('status' => false, 'msg' => '请填写验证码');
+        }
+
+        $mailVerify = table('MailVerify')->where('mail', $mail)->field('code,created')->find();
+        if (!$mailVerify) {
+            return array('status' => false, 'msg' => '验证码不存在');
+        }
+
+        if (TIME - $mailVerify['created'] > $time) {
+            return array('status' => false, 'msg' => '验证码时间已过期');
+        }
+
+        if ($mailVerify['code'] != $code) {
+            return array('status' => false, 'msg' => '验证码错误');
+        }
+
+        return array('status' => true, 'msg' => '匹配成功');
     }
 
     /**

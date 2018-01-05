@@ -1,5 +1,5 @@
 <?php
-namespace app\fastgo\app\controller;
+namespace app\fastgo\app\controller\v1;
 
 use denha;
 
@@ -26,7 +26,6 @@ class Init extends denha\Controller
                 if ($user['imei'] != $this->imei && $this->imei) {
                     $this->appReturn(array('status' => false, 'msg' => '你的账户已在其他手机登录,请重新登录', 'code' => 501));
                 }
-
                 //超过token时间 重新登录
                 /*if ($user['time_out'] < TIME) {
                 $this->appReturn(array('status' => false, 'msg' => '登录超时,请重新登录', 'code' => 501));
@@ -40,14 +39,26 @@ class Init extends denha\Controller
         }
     }
 
-    public function checkIndividual()
+    /**
+     * 验证用户组权限
+     * @date   2017-11-23T16:45:03+0800
+     * @author ChenMingjiang
+     * @param  integer                  $group [description]
+     * @return [type]                          [description]
+     */
+    public function checkIndividual($group = 1)
     {
+        if (strpos($group, ',') !== false) {
+            $group = explode(',', $group);
+        }
+
+        $group = !is_array($group) ? (array) $group : $group;
         if (!$this->uid) {
             $this->appReturn(array('status' => false, 'msg' => '请登录', 'code' => 501));
         }
 
-        if ($this->group != 1) {
-            $this->appReturn(array('status' => false, 'msg' => '必须为个人用户'));
+        if (!in_array($this->group, $group)) {
+            $this->appReturn(array('status' => false, 'msg' => '权限不足'));
         }
     }
 
@@ -75,7 +86,7 @@ class Init extends denha\Controller
         $array = array(
             'code'   => 200,
             'status' => true,
-            'data'   => array(),
+            'data'   => array('list' => array()),
             'msg'    => '获取数据成功',
         );
 

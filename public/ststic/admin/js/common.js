@@ -90,6 +90,32 @@ $(function() {
         return;
     });
 
+    //下拉联动
+    $('.btn-linkage').change(function(){
+        var value = $(this).val();
+        var href = $(this).attr('config-href');
+        var el = $(this).attr('config-el');
+
+        console.log($(el).find('select').html());
+
+        $.post(href,{value:value},function(result){
+            if(!result.status){
+                return  layer.msg(result.msg);
+            }
+
+            if($(el).css('display') == 'none'){
+                $(el).css('display','block');
+            }
+
+            $(el).find('select').html('');
+
+            for(var key in result.data){
+                var content = '<option value="'+key+'">'+result.data[key]+'</option>';
+                $(el).find('select').append(content);
+            }
+        },"json");
+    })
+
    //打开弹出
     $('.btn-open').click(function() {
         var href = $(this).attr('config-href');
