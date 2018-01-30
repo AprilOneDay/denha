@@ -120,6 +120,7 @@ class Mysqli
         $this->join      = '';
         $this->chilidSql = false;
         $this->having    = '';
+
         return $this;
     }
 
@@ -155,9 +156,10 @@ class Mysqli
      * @param  [type]                   $where [description]
      * @return [type]                          [description]
      */
-    public function where($where, $value = '')
+    public function where($where, $value = null)
     {
-        if ($value !== '' && !is_array($where)) {
+
+        if ($value !== null && !is_array($where)) {
             $this->where = ' WHERE ' . $where . ' = \'' . $value . '\'';
         } else {
             if ($where) {
@@ -176,8 +178,22 @@ class Mysqli
                                 if (!$v[1]) {
                                     $newWhere .= $k . '  ' . $v[0] . ' (\'\') AND ';
                                 } else {
-                                    $v[1] = is_array($v[1]) ? implode(',', $v[1]) : $v[1];
-                                    $newWhere .= $k . '  ' . $v[0] . ' (' . $v[1] . ') AND ';
+
+                                    if (stripos($v[1], ',') !== false && !is_array($v[1])) {
+                                        $v[1] = explode(',', $v[1]);
+                                    }
+
+                                    $v[1] = is_array($v[1]) ? $v[1] : (array) $v[1];
+
+                                    $commonInValue = '';
+                                    foreach ($v[1] as $inValue) {
+
+                                        $commonInValue .= '\'' . $inValue . '\',';
+                                    }
+
+                                    $commonInValue = substr($commonInValue, 0, -1);
+
+                                    $newWhere .= $k . '  ' . $v[0] . ' (' . $commonInValue . ') AND ';
                                 }
                             } elseif ($v[0] == 'instr') {
                                 $newWhere .= $v[0] . '(' . $k . ',\'' . $v[1] . '\') AND ';
@@ -326,6 +342,35 @@ class Mysqli
         $t                        = mysqli_fetch_array(mysqli_query($this->linkId, $sql));
         if ($t['total'] == 0) {return false;}
         return true;
+    }
+
+    /** 查询数据表信息 */
+    public function fieldStatus($field)
+    {
+
+        $fieldArray = stripos($field, ',') !== false ? explode(',', $field) : (array) $field;
+
+        $this->_sql = "SHOW TABLE STATUS WHERE NAME = '{$this->table}'";
+        $result     = $this->query();
+
+        $this->total = mysqli_num_rows($result);
+        if ($this->total == 0) {return false;}
+
+        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+            $dataRow = $row;
+        }
+
+        if ($fieldArray) {
+            foreach ($fieldArray as $key => $value) {
+                if (isset($dataRow[$value])) {
+                    $data[$value] = $dataRow[$value];
+                }
+            }
+        } else {
+            $data = $dataRow;
+        }
+
+        return $data;
     }
 
     /**
@@ -480,8 +525,8 @@ class Mysqli
 
         //获取记录条数
         $this->total = mysqli_num_rows($result);
-
         if ($this->total == 0) {return false;}
+
         //单个字段模式
         if ($value == 'one' && !$isArray) {
             $row = mysqli_fetch_array($result, MYSQLI_NUM);
@@ -698,7 +743,7 @@ class Mysqli
     public function addErrorSqlLog()
     {
         //如果没有写入权限尝试修改权限 如果修改后还是失败 则跳过
-        if (isWritable(DATA_PATH . 'sql_log')) {
+        if (isWritable(DATA_PATH)) {
             $path = DATA_PATH . 'sql_log' . DS . $this->dbConfig['db_name'] . DS;
             is_dir($path) ? '' : mkdir($path, 0755, true);
             $path .= 'error_' . date('Y_m_d_H', TIME) . '.text';
@@ -718,9 +763,16 @@ class Mysqli
     public function addSqlLog()
     {
         //如果没有写入权限尝试修改权限 如果修改后还是失败 则跳过
-        if (!isWritable(DATA_PATH . 'sql_log')) {
+        if (!isWritable(DATA_PATH)) {
             return false;
         }
+
+        //创建文件夹
+        is_dir(DATA_PATH . 'sql_log') ? '' : mkdir(DATA_PATH . 'sql_log', 0755, true);
+
+        $time = &$this->sqlInfo['time'];
+        $info = '------ ' . $time . ' | ' . date('Y-m-d H:i:s', TIME) . ' | ip:' . getIP() . ' | ';
+        $info .= 'Url:' . URL . ' | Controller:' . CONTROLLER . ' | Action:' . ACTION . PHP_EOL;
 
         //记录sql
         if ($this->sqlInfo && $this->dbConfig['db_save_log']) {
@@ -728,7 +780,7 @@ class Mysqli
             is_dir($path) ? '' : mkdir($path, 0755, true);
             if (stripos($this->sqlInfo['sql'], 'select') === 0) {
                 $path .= 'select_' . date('Y_m_d_H', TIME) . '.text';
-                $content = $this->sqlInfo['sql'] . '|' . $this->sqlInfo['time'] . PHP_EOL;
+                $content = $this->sqlInfo['sql'] . PHP_EOL;
             } elseif (stripos($this->sqlInfo['sql'], 'update') === 0) {
                 $path .= 'update_' . date('Y_m_d_H', TIME) . '.text';
                 $content = $this->sqlInfo['sql'] . ';' . PHP_EOL;
@@ -744,12 +796,12 @@ class Mysqli
             if ($this->dbConfig['db_slow_save_log']) {
                 if ($this->sqlInfo['time'] > $this->dbConfig['db_slow_time']) {
                     $path .= 'slow_' . date('Y_m_d_H', TIME) . '.text';
-                    $content = $this->sqlInfo['sql'] . '|' . $this->sqlInfo['time'] . PHP_EOL;
+                    $content = $this->sqlInfo['sql'] . PHP_EOL;
                 }
             }
 
             $file = fopen($path, 'a');
-            fwrite($file, $content . PHP_EOL);
+            fwrite($file, $content . $info . PHP_EOL);
             fclose($file);
         }
     }

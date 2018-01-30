@@ -66,8 +66,9 @@ class Category extends Init
         $data['name_en'] = post('name_en', 'text', '');
         $data['name_jp'] = post('name_jp', 'text', '');
 
-        $data['bname'] = post('bname', 'text', '');
-        $data['thumb'] = post('thumb', 'img', '');
+        $data['bname']   = post('bname', 'text', '');
+        $data['bname_2'] = post('bname_2', 'text', '');
+        $data['thumb']   = post('thumb', 'img', '');
 
         $data['bname'] ?: $data['bname'] = $data['name'];
 

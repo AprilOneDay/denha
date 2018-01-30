@@ -13,7 +13,8 @@
 			<form class="form-horizontal" role="form" action="">
 				<div class="panel-body">
 					<fieldset>
-						<div class="form-group">
+					
+						<!-- <div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger">*</span>
 								<span>仓库国家</span>
@@ -22,11 +23,11 @@
 								<select name="country_id" class="form-control w160 btn-linkage" data-selected="{??$data['country_id']}" config-el=".house-2" config-href="{F:url('get_category')}">
 									<option value="">选择所属国家</option>
 									{loop $other['countryCopy'] $key $value}
-										<option value="{$key}">{$value}</option>
+										<option value="{$value['bname_2']}">{$value['name']}</option>
 									{/loop}
 								</select>
 							</div>
-						</div>
+						</div> -->
 	
 						<div class="form-group house-2" {if !$id}style="display: none;"{/if}>
 							<label class="control-label col-sm-3">
@@ -36,8 +37,8 @@
 						 	<div class="col-sm-8">
 								<select name="category_id"  class="form-control w160" data-selected="{??$data['category_id']}">
 									<option value="">选择仓库</option>
-									{loop $other['houseCopy'] $key $value}
-										<option value="{$key}">{$value}</option>
+									{loop $other['countryCopy'] $key $value}
+										<option value="{$value['bname_2']}">{$value['name']}</option>
 									{/loop}
 								</select>
 							</div>

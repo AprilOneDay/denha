@@ -49,7 +49,7 @@ class Category
     {
         $map['parentid'] = $id;
 
-        $field = 'id,name,bname';
+        $field = 'id,name,bname,bname_2';
         if ($lg && $lg != 'zh') {
             $field .= ',name_' . $lg;
         }
@@ -85,7 +85,7 @@ class Category
 
         $keyword = (string) $keyword;
 
-        $field = 'id,name,bname';
+        $field = 'id,name,bname,bname_2';
         if ($lg && $lg != 'zh') {
             $field .= ',name_' . $lg;
             if ($keyword) {

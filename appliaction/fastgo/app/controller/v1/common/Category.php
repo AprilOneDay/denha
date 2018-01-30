@@ -83,12 +83,52 @@ class Category extends Init
 
     }
 
-    public function warehouse()
+    /** 获取国际区号 */
+    public function country()
     {
-        $type = get('type', 'intval', 1);
-        $id   = get('id', 'intval', 0);
+        $data = $this->appArray(getVar('country', 'sms'));
+        $this->appReturn(array('data' => $data));
+    }
 
-        $country = get('country', 'text', '');
-        $keyword = get('keyword', 'text', '');
+    /** 获取物流类型 */
+    public function getLogisticsType()
+    {
+        $data = array(
+            'zh' => array(
+                array('id' => 1, 'value' => 'fastgo运单号'),
+                array('id' => 2, 'value' => '物流公司运单号'),
+            ),
+            'en' => array(
+                array('id' => 1, 'value' => 'fastgo运单号'),
+                array('id' => 2, 'value' => '物流公司运单号'),
+            ),
+            'jp' => array(
+                array('id' => 1, 'value' => 'fastgo运单号'),
+                array('id' => 2, 'value' => '物流公司运单号'),
+            ),
+        );
+
+        $this->appReturn(array('data' => $data[$this->lg]));
+    }
+
+    /** 获取支付货币类型 */
+    public function getCurrency()
+    {
+        $data = array(
+            'zh' => array(
+                array('id' => 'CNY', 'value' => '人民币'),
+                array('id' => 'AUD', 'value' => '澳币'),
+            ),
+            'en' => array(
+                array('id' => 'CNY', 'value' => '人民币'),
+                array('id' => 'AUD', 'value' => '澳币'),
+            ),
+            'jp' => array(
+                array('id' => 'CNY', 'value' => '人民币'),
+                array('id' => 'AUD', 'value' => '澳币'),
+            ),
+        );
+
+        $this->appReturn(array('data' => $data[$this->lg]));
     }
 }

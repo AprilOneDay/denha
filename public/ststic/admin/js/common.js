@@ -26,7 +26,7 @@ $(function() {
     //绑定radio值
     $(".radio").each(function(){
          //不进行渲染
-        var native = $(this).attr('data-native');
+        var native = $(this).attr('config-native');
         if(native){
             return true;
         }
@@ -54,21 +54,24 @@ $(function() {
     //绑定checkbox
     $('.checkbox').each(function(){
         //不进行渲染
-        var native = $(this).attr('data-native');
+        var native = $(this).attr('config-native');
         if(native){
             return true;
         }
 
         var data  = $(this).val();
-        var value = $(this).attr('data-checked');
+        var value = $(this).attr('config-checked');
+        var checkedValue = '';
         if(typeof(value) != 'undefined' && value != ''){
-            console.log(value)
-            value =  jQuery.parseJSON(value);
+            checkedValue  = value.split(",");
         }
 
-        if($.inArray(data,value) >= 0){
-            $(this).attr("checked","checked");
+        if(checkedValue){
+            if(jQuery.inArray(data,checkedValue) >= 0){
+                $(this).attr("checked","checked");
+            }
         }
+        
     })
 
     //checkBox单选
@@ -95,8 +98,6 @@ $(function() {
         var value = $(this).val();
         var href = $(this).attr('config-href');
         var el = $(this).attr('config-el');
-
-        console.log($(el).find('select').html());
 
         $.post(href,{value:value},function(result){
             if(!result.status){
@@ -127,7 +128,7 @@ $(function() {
             title = $(this).text();
         }
         if (!width) {
-            width = '890px';
+            width = '80%';
         }
         if (!height) {
             height = '80%';
@@ -159,11 +160,12 @@ $(function() {
 
         //处理checked 未选中不传值的问题
         $(form).find('input[type=checkbox]').each(function(){
-            if($(this).attr('data-native')){
+            if($(this).attr('config-native')){
                 return true;
             }
-            var  falseValue = typeof($(this).attr('data-false-value')) != 'undefined' ?  $(this).attr('data-false-value') : 0;
-            var  trueValue  = typeof($(this).attr('data-true-value')) != 'undefined' ?  $(this).attr('data-true-value') : 0;
+
+            var  falseValue = typeof($(this).attr('config-false-value')) != 'undefined' ?  $(this).attr('config-false-value') : 0;
+            var  trueValue  = typeof($(this).attr('config-true-value')) != 'undefined' ?  $(this).attr('config-true-value') : 0;
             if(!$(this).prop('checked')){
                 $(this).prop('checked',true);
                 $(this).val(falseValue);
@@ -186,11 +188,11 @@ $(function() {
             btnBlock = true; //恢复通道
             //恢复checkbox 未选中的样式
             $(form).find('input[type=checkbox]').each(function(){
-                if($(this).attr('data-native')){
+                if($(this).attr('config-native')){
                     return true;
                 }
-                var  falseValue = typeof($(this).attr('data-false-value')) != 'undefined' ?  $(this).attr('data-false-value') : 0;
-                var  trueValue  = typeof($(this).attr('data-true-value')) != 'undefined' ?  $(this).attr('data-true-value') : 0;
+                var  falseValue = typeof($(this).attr('config-false-value')) != 'undefined' ?  $(this).attr('config-false-value') : 0;
+                var  trueValue  = typeof($(this).attr('config-true-value')) != 'undefined' ?  $(this).attr('config-true-value') : 0;
                 if($(this).prop('checked',true) && $(this).val() == falseValue){
                     $(this).prop('checked',false);
                 }
@@ -221,18 +223,45 @@ $(function() {
 
     //提交post信息
     $('.btn-ajax-post').click(function(){
-        var attr     = $(this).context.attributes;  //获取执行参数
-        var tips     = $(this).attr('config-tips');   //预先提示文案
-        var url      = $(this).attr('config-href');   //执行地址
-        var isReload = $(this).attr('config-reload'); //是否刷新当前页面
-        var trueUrl  = $(this).attr('config-true-url'); //执行成功跳转地址
-        var falseUrl = $(this).attr('config-false-url'); //执行失败跳转地址
+        var tagName = $(this).get(0).tagName;
+
+        var attr        = $(this).context.attributes;  //获取执行参数
+        var tips        = $(this).attr('config-tips');   //预先提示文案
+        var url         = $(this).attr('config-href');   //执行地址
+        var isReload    = $(this).attr('config-reload'); //是否刷新当前页面
+        var trueUrl     = $(this).attr('config-true-url'); //执行成功跳转地址
+        var falseUrl    = $(this).attr('config-false-url'); //执行失败跳转地址
+
         var data = new Object();
         for (var i = 0; i < attr.length; i++) {
             if(attr[i].localName.indexOf('data') !== -1 ){
                 data[attr[i].localName.substr(5,attr[i].localName.length)] =  attr[i].value;
             }
         }
+
+        //获取默认值
+        if(tagName == 'INPUT' || tagName == 'SELECT'){
+            var inputName  = $(this).attr('name');
+            if(tagName == 'INPUT'){
+                var inputType = $(this).attr('type');
+                if(inputType == 'checkbox'){
+                    if($(this).prop('checked') == true){
+                        data[inputName] =  $(this).attr('config-true-value');
+                    }else{
+                        data[inputName] =  $(this).attr('config-false-value');
+                    }
+                    
+                }else{
+                    var inputValue = $(this).val();
+                    if(inputName){
+                        data[inputName] = inputValue;
+                    }   
+                }
+            }
+        }
+
+        console.log(data);
+
 
         if(tips){
             layer.confirm(tips, {
@@ -477,7 +506,7 @@ $(function() {
                 function progressHandlingFunction(e) {
                     if (e.lengthComputable) {  
                         $('progress').attr({value : e.loaded, max : e.total}); //更新数据到进度条  
-                        var percent = e.loaded/e.total*100; 
+                        var percent = parseInt(e.loaded/e.total*100); 
                         $('.progress-bar').css('width',percent+'%');
                         $('.progress-bar').text(percent+'%'); 
                     }  
@@ -618,7 +647,7 @@ $(function() {
             function progressHandlingFunction(e) {
                 if (e.lengthComputable) {  
                     $('progress').attr({value : e.loaded, max : e.total}); //更新数据到进度条  
-                    var percent = e.loaded/e.total*100; 
+                    var percent = parseInt(e.loaded/e.total*100); 
                     $('.progress-bar').css('width',percent+'%');
                     $('.progress-bar').text(percent+'%'); 
                 }  

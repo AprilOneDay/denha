@@ -38,6 +38,7 @@ class User extends Init
 
     }
 
+    /** 提交 */
     public function editPost()
     {
 
@@ -78,14 +79,6 @@ class User extends Init
 
         table('UserShop')->commit();
         $this->appReturn(array('msg' => '保存成功'));
-    }
-
-    public function del()
-    {
-        $id = post('id', 'intval', 0);
-
-        $map['uid'] = $this->uid;
-        $map['id']  = $Id;
     }
 
     /**

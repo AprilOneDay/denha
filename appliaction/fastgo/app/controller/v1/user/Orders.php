@@ -16,10 +16,11 @@ class Orders extends Init
         $this->checkIndividual('1,2');
     }
 
+    /** 订单列表 */
     public function lists()
     {
-        $type   = get('type', 'text', '');
-        $status = get('status', 'text', '');
+        $param['type']   = get('type', 'text', '1,2');
+        $param['status'] = get('status', 'text', '');
 
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 10);
@@ -28,82 +29,44 @@ class Orders extends Init
         $param['start_time'] = get('start_time', 'text', '');
         $param['end_time']   = get('end_time', 'text', '');
 
-        $offer = max(($pageNo - 1), 0) * $pageSize;
-
-        $ot = table('Orders')->tableName();
-        $lt = table('Logistics')->tableName();
-
-        if ($status != '') {
-            $map[$lt . '.status'] = $status;
-        }
-
-        if ($time) {
-            $map[$lt . '.created'] = array('between', $param['start_time'], $param['end_time']);
-        }
-
-        $map[$lt . '.type']         = array('in', $type);
-        $map[$ot . '.uid']          = $this->uid;
-        $map[$ot . '.order_status'] = 1;
-        $map[$ot . '.del_status']   = 0;
-
-        //合并搜索
-        if ($param['keyword']) {
-            $map['_string'] = "concat($lt.logistics_mobile,$lt.logistics_name,$lt.logistics_code) like '%$param[keyword]%'";
-        }
-
-        $field = "$lt.status,$lt.order_sn,$lt.outbound_transport_sn,$lt.outbound_transport_id,$lt.logistics_name,$lt.logistics_address";
-
-        $list = table('Orders')->join($lt, "$ot.order_sn = $lt.order_sn", 'right')->where($map)->field($field)->limit($offer, $pageSize)->find('array');
-
-        foreach ($list as $key => $value) {
-            $tips                         = '无运单号';
-            $list[$key]['title']          = !$value['status'] ? $tips : $value['order_sn'];
-            $list[$key]['package_status'] = 1;
-
-            $orders    = table('Orders')->where('order_sn', $value['order_sn'])->field('is_back,status')->find();
-            $goodsList = table('OrdersPackage')->where('order_sn', $value['order_sn'])->find('array');
-
-            //如果包裹商品有不存在的 则状态为 false
-            foreach ($goodsList as $k => $v) {
-                if (!$v['status']) {
-                    $list[$key]['package_status'] = 0;
-                }
-            }
-
-            //获取转运公司信息
-            $list[$key]['logisticsCompany'] = array();
-            if ($value['outbound_transport_id']) {
-                $logisticsCompany   = dao('Category')->getName($value['outbound_transport_id'], $this->lg);
-                $logisticsCompanyNC = dao('Category')->getBname($value['outbound_transport_id']);
-
-                $list[$key]['logisticsCompany'] = array('name' => $logisticsCompany, 'bname' => $logisticsCompanyNC, 'transport_sn' => $value['transport_sn']);
-            }
-
-            //是否上传包裹照
-            $list[$key]['is_update_ablum'] = $value['user_ablum'] ? 1 : 0;
-            //状态文案
-            $list[$key]['status_copy'] = $this->ordersStatusCopy($value['status'], $orders['is_back']);
-            //状态时间
-            $list[$key]['status_time_copy'] = date('Y-m-d H:i', $value['created']);
-
-            $list[$key]['goodsList'] = $goodsList;
-            $list[$key]['orders']    = $orders;
-        }
+        $data = dao('Orders', 'fastgo')->getList($this->uid, $param, $pageNo, $pageSize);
 
         $data['param'] = $param;
-        $data['list']  = $list ? $list : array();
 
         $this->appReturn(array('data' => $data));
     }
 
-    /** 包裹点击完成 */
+    /** 编辑查看 */
+    public function detail()
+    {
+        $orderSn = get('order_sn', 'text', '');
+
+        $map['order_sn']   = $orderSn;
+        $map['uid']        = $this->uid;
+        $map['del_status'] = 0;
+
+        $orders = table('Orders')->where($map)->field('id,order_sn,message')->find();
+        if (!$orders) {
+            $this->appReturn(array('status' => true, 'msg' => '订单信息不存在'));
+        }
+
+        $goodsList = table('OrdersPackage')->where('order_sn', $orders['order_sn'])->find('array');
+        $logistics = dao('Logistics', 'fastgo')->detail($orderSn);
+
+        $data['goodsList'] = $goodsList ? $goodsList : array();
+        $data['logistics'] = $logistics ? $logistics : array();
+        $data['orders']    = $orders ? $orders : array();
+
+        $this->appReturn(array('status' => true, 'msg' => '操作成功', 'data' => $data));
+    }
+
+    /** 本地直邮包裹点击完成 */
     public function ordersPackageFinish()
     {
         $orderSn = post('order_sn', 'text', '');
 
         $map['order_sn'] = $orderSn;
         $map['uid']      = $this->uid;
-        $map['status']   = 0;
         $map['type']     = 4;
 
         $id = table('Orders')->where($map)->field('id')->find('one');
@@ -119,6 +82,12 @@ class Orders extends Init
         $result = table('Orders')->where('id', $id)->save('status', 1);
         if (!$result) {
             $this->appReturn(array('status' => false, 'msg' => '操作失败,请稍后重试'));
+        }
+
+        //订单操作记录
+        $result = dao('OrdersLog')->add($this->uid, $orderSn, 2);
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '订单状态严重异常'));
         }
 
         $this->appReturn(array('status' => true, 'msg' => '操作成功'));
@@ -147,7 +116,6 @@ class Orders extends Init
         $map             = array();
         $map['uid']      = $this->uid;
         $map['order_sn'] = $orderSn;
-        $map['status']   = 0;
 
         $logistics = table('Logistics')->where('order_sn', $orderSn)->field('user_ablum,id')->find();
         if (!$logistics) {
@@ -171,27 +139,19 @@ class Orders extends Init
 
         $map['order_sn'] = $orderSn;
         $map['uid']      = $this->uid;
-        $map['status']   = array('in', '0,1');
 
-        $id = table('Logistics')->where($map)->field('id')->find('one');
-        if (!$id) {
-            $this->appReturn(array('status' => false, 'msg' => '可操作信息不存在'));
+        $status = dao('OrdersLog')->getNewStatus($orderSn);
+
+        if (!in_array($status, array(1, 2, 3, 4, 5, 6))) {
+            $this->appReturn(array('status' => false, 'msg' => '订单不可申请'));
         }
 
-        table('Logistics')->startTrans();
-        $result = table('Logistics')->where('id', $id)->save('status', 3);
+        //更新订单操作
+        $result = dao('OrdersLog')->add($this->uid, $orderSn, 18);
         if (!$result) {
-            table('Logistics')->rollback();
-            $this->appReturn(array('status' => false, 'msg' => '物流信息修改失败'));
+            $this->appReturn(array('status' => false, 'msg' => '操作失败了'));
         }
 
-        $result = table('Orders')->where('order_sn', $orderSn)->save('is_back', 1);
-        if (!$result) {
-            table('Logistics')->rollback();
-            $this->appReturn(array('status' => false, 'msg' => '订单信息修改失败'));
-        }
-
-        table('Logistics')->commit();
         $this->appReturn(array('status' => true, 'msg' => '操作成功'));
     }
 
@@ -202,17 +162,21 @@ class Orders extends Init
 
         $map['order_sn'] = $orderSn;
         $map['uid']      = $this->uid;
-        $map['status']   = array('in', '0, 1');
 
         $id = table('Logistics')->where($map)->field('id')->find('one');
         if (!$id) {
             $this->appReturn(array('status' => false, 'msg' => '可操作信息不存在'));
         }
 
+        $status = dao('OrdersLog')->getNewStatus($orderSn);
+        if (!in_array($status, array(1, 9))) {
+            $this->appReturn(array('status' => false, 'msg' => '包裹不可删除'));
+        }
+
         $data['del_uid']    = 1;
         $data['del_status'] = 1;
 
-        $result = table('Orders')->where('id', $id)->save($data);
+        $result = table('Orders')->where('order_sn', $orderSn)->save($data);
         if (!$result) {
             $this->appReturn(array('status' => false, 'msg' => '操作失败,请稍后重试'));
         }
@@ -221,22 +185,91 @@ class Orders extends Init
 
     }
 
-    /** 获取订单状态文案 */
-    private function ordersStatusCopy($status = 0, $isBack = 0)
+    /** 订单问题处理 */
+    public function ordersDeal()
     {
+        $orderSn = post('order_sn', 'text', '');
+        $status  = post('status', 'intval', 0);
 
-        if ($status == 0) {
-            return '待入库';
-        } elseif ($status == 1) {
-            return '已入库';
-        } elseif ($status == 2) {
-            return '已出库';
-        } elseif ($status == 3) {
-            if ($isBack) {
-                return '退件';
+        if (!$status || !$orderSn) {
+            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
+        }
+
+        if (!in_array($status, array(18, 1, 23))) {
+            $this->appReturn(array('status' => false, 'msg' => 'status参数错误'));
+        }
+
+        //更新完成
+        if ($status == 1) {
+            $map             = array();
+            $map['order_sn'] = $orderSn;
+            $map['is_new']   = 0;
+            $map['type']     = array('not in', '16,17,18,19,20,21,22,23');
+
+            $id = table('OrdersLog')->where($map)->field('id')->order('created desc')->find('one');
+            if (!$id) {
+                $this->appReturn(array('status' => false, 'msg' => '尚未获取到正常状态'));
+            }
+
+            $result = table('OrdersLog')->where('order_sn', $orderSn)->save('is_new', 0);
+            if (!$result) {
+                $this->appReturn(array('status' => false, 'msg' => '更新状态失败了'));
+            }
+
+            $result = table('OrdersLog')->where('id', $id)->save('is_new', 1);
+            if (!$result) {
+                $this->appReturn(array('status' => false, 'msg' => '更新状态失败'));
+            }
+
+        } else {
+            //更新订单操作
+            $result = dao('OrdersLog')->add($this->uid, $orderSn, $status);
+            if (!$result) {
+                $this->appReturn(array('status' => false, 'msg' => '操作失败了'));
             }
         }
 
-        return '';
+        $this->appReturn(array('status' => true, 'msg' => '操作成功'));
     }
+
+    /** 订单上传处理照片 */
+    public function ordersDealAlbum()
+    {
+        $orderSn    = post('order_sn', 'text', '');
+        $issueAlbum = files('issue_album');
+
+        if (!$orderSn || !$issueAlbum) {
+            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
+        }
+
+        $map['uid']      = $this->uid;
+        $map['order_sn'] = $orderSn;
+
+        $logistics = table('Logistics')->where($map)->field('id')->find();
+
+        if (!$logistics) {
+            $this->appReturn(array('status' => false, 'msg' => '运单不存在'));
+        }
+
+        $status = dao('OrdersLog')->getNewStatus($orderSn);
+        if ($status != 23) {
+            $this->appReturn(array('status' => false, 'msg' => '不需要上传照片'));
+        }
+
+        $data['issue_time']  = TIME;
+        $data['issue_album'] = $this->appUpload($issueAlbum, '', 'fastgo');
+
+        if (!$data['issue_album']) {
+            $this->appReturn(array('status' => false, 'msg' => '请上传图片'));
+        }
+
+        $result = table('Logistics')->where('order_sn', $orderSn)->save($data);
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '操作失败,请稍后重试'));
+        }
+
+        $this->appReturn(array('status' => true, 'msg' => '操作成功'));
+
+    }
+
 }

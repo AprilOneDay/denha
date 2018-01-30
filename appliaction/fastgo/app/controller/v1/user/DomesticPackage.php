@@ -16,17 +16,18 @@ class DomesticPackage extends Init
         $this->checkIndividual('1,2');
     }
 
+    /** 创建包裹 */
     public function saveOrder()
     {
 
-        $warehouseId = post('warehouse_id', 'intval', 0);
+        $warehouseId = post('warehouse_id', 'text', 0);
         $addressId   = post('address_id', 'text', '');
 
         $isBuySafe = post('is_buy_safe', 'intval', 0);
         $message   = post('message', 'text', '');
 
-        $sender     = array_filter(post('sender', 'json'));
-        $goodsArray = post('goods', 'json');
+        $shipAddressId = post('ship_address_id', 'intval');
+        $goodsArray    = post('goods', 'json');
 
         $type = post('type', 'intval', 4);
 
@@ -42,11 +43,7 @@ class DomesticPackage extends Init
             $this->appReturn(array('status' => false, 'msg' => '请添加商品信息'));
         }
 
-        if ($this->getMaxDim($sender) != 1) {
-            $this->appReturn(array('status' => false, 'msg' => 'sender结构只能有一层', 'data' => $sender));
-        }
-
-        if ($this->getMaxDim($goodsArray) != 2) {
+        if (getMaxDim($goodsArray) != 2) {
             $this->appReturn(array('status' => false, 'msg' => 'goods结构只能有两层', 'data' => $goodsArray));
         }
 
@@ -68,31 +65,46 @@ class DomesticPackage extends Init
             $this->appReturn(array('status' => false, 'msg' => '库房信息不存在'));
         }
 
-        if (!$sender) {
+        if ($shipAddressId) {
+            $map        = array();
+            $map['uid'] = $this->uid;
+            $map['id']  = $shipAddressId;
+
+            $sender = table('UserAddress')->where($map)->find();
+        } else {
             $sender = $warehouseInfo;
-            if (!$sender) {
-                $this->appReturn(array('status' => false, 'msg' => '发货人信息不存在'));
-            }
         }
 
-        //$this->appReturn(array('status' => false, 'msg' => '断点测试信息', 'data' => $sender));
+        if (!$sender) {
+            $this->appReturn(array('status' => false, 'msg' => '发货人信息不存在'));
+        }
 
         //创建临时订单号
-        $orderSn = dao('Orders')->createOrderSn();
+        //$orderSn = dao('Orders')->createOrderSn();
+        $result = dao('FastgoApi', 'fastgo')->createOrderSn($this->uid, $this->group, $warehouseId);
+        if (!$result['status']) {
+            $this->appReturn($result);
+        }
+        $orderSn = $result['data'];
+
         if (!$orderSn) {
             $this->appReturn(array('status' => false, 'msg' => '运单号创建失败,请联系管理员处理'));
         }
 
+        $unit = table('Category')->where('bname_2', $warehouseId)->field('bname')->find('one');
+        if (!$unit) {
+            $this->appReturn(array('status' => false, 'msg' => '订单货币单位异常'));
+        }
+
         //保存订单信息
-        $data                 = array();
-        $data['order_sn']     = $orderSn;
-        $data['type']         = $type;
-        $data['uid']          = $this->uid;
-        $data['message']      = $message;
-        $data['order_status'] = 1;
-        $data['unit']         = dao('Category')->getBname($warehouseInfo['country_id']);
-        $data['origin']       = $this->origin;
-        $data['created']      = TIME;
+        $data             = array();
+        $data['order_sn'] = $orderSn;
+        $data['type']     = $type;
+        $data['uid']      = $this->uid;
+        $data['message']  = $message;
+        $data['unit']     = $unit;
+        $data['origin']   = $this->origin;
+        $data['created']  = TIME;
 
         table('Orders')->startTrans();
 
@@ -184,13 +196,19 @@ class DomesticPackage extends Init
         $data['order_sn']      = $orderSn;
         $data['is_buy_safe']   = $isBuySafe;
         $data['warehouse_id']  = $warehouseId;
-        $data['status']        = 4;
         $data['created']       = TIME;
 
         $result = table('Logistics')->add($data);
         if (!$result) {
             table('Orders')->rollback();
             $this->appReturn(array('status' => false, 'msg' => '创建物流信息失败'));
+        }
+
+        //订单操作记录
+        $result = dao('OrdersLog')->add($this->uid, $orderSn, 1);
+        if (!$result) {
+            table('Orders')->rollback();
+            $this->appReturn(array('status' => false, 'msg' => '订单状态严重异常'));
         }
 
         table('Orders')->commit();
@@ -202,9 +220,8 @@ class DomesticPackage extends Init
     {
         $orderSn = get('order_sn', 'text', '');
 
-        $map['order_sn']     = $orderSn;
-        $map['uid']          = $this->uid;
-        $map['order_status'] = 1;
+        $map['order_sn'] = $orderSn;
+        $map['uid']      = $this->uid;
 
         $orders = table('Orders')->where($map)->field('id,order_sn,message')->find();
 
@@ -233,13 +250,14 @@ class DomesticPackage extends Init
         $sender     = post('sender', 'json');
         $goodsArray = post('goods', 'json');
 
+        $shipAddressId = post('ship_address_id', 'intval');
+
         $orderSn = post('order_sn', 'text', '');
 
         //查询物流信息
         $map             = array();
         $map['uid']      = $this->uid;
         $map['order_sn'] = $orderSn;
-        $map['status']   = array('in', '0,1');
 
         $logistics = table('Logistics')->where($map)->field('id,order_sn,warehouse_id')->find();
         if (!$logistics) {
@@ -268,16 +286,20 @@ class DomesticPackage extends Init
             $this->appReturn(array('status' => false, 'msg' => '请上传收货人身份证照片'));
         }
 
-        $warehouseInfo = table('WarehouseInfo')->where('category_id', $warehouseId)->find();
-        if (!$warehouseInfo) {
-            $this->appReturn(array('status' => false, 'msg' => '库房信息不存在'));
+        if ($shipAddressId) {
+            $map        = array();
+            $map['uid'] = $this->uid;
+            $map['id']  = $shipAddressId;
+
+            $sender = table('UserAddress')->where($map)->find();
+        } else {
+            //$sender = $warehouseInfo;
+            //获取fasto默认发货地址
+            $sender = dao('orders', 'fastgo')->fastgoAddress();
         }
 
         if (!$sender) {
-            $sender = $warehouseInfo;
-            if (!$sender) {
-                $this->appReturn(array('status' => false, 'msg' => '发货人信息不存在'));
-            }
+            $this->appReturn(array('status' => false, 'msg' => '发货人信息不存在'));
         }
 
         //保存订单信息
@@ -307,7 +329,8 @@ class DomesticPackage extends Init
         //删除原商品信息
         $result = table('OrdersPackage')->where('order_sn', $orderSn)->delete();
         if (!$result) {
-            $this->appReturn(array('status' => false, 'msg' => '商品信息保存失败了呢'));
+            table('Orders')->rollback();
+            $this->appReturn(array('status' => false, 'msg' => '商品信息操作失败了呢'));
         }
 
         //保存商品信息
@@ -380,8 +403,6 @@ class DomesticPackage extends Init
 
         $data['volume_weight'] = $volumeWeight;
         $data['address_id']    = $addressId;
-        $data['uid']           = $this->uid;
-        $data['order_sn']      = $orderSn;
         $data['is_buy_safe']   = $isBuySafe;
 
         $result = table('Logistics')->where('order_sn', $orderSn)->save($data);
@@ -401,16 +422,13 @@ class DomesticPackage extends Init
         $ot = table('Orders')->tableName();
         $lt = table('Logistics')->tableName();
 
-        $map[$ot . '.type']         = 4;
-        $map[$ot . '.uid']          = $this->uid;
-        $map[$ot . '.status']       = 1;
-        $map[$ot . '.del_status']   = 0;
-        $map[$ot . '.order_status'] = 1;
-        $map[$lt . '.status']       = 0;
+        $map[$ot . '.uid']        = $this->uid;
+        $map[$ot . '.status']     = 1;
+        $map[$ot . '.del_status'] = 0;
+        $map[$lt . '.type']       = 1;
 
-        $field = "$ot.order_sn,$ot.uid,$ot.is_back,$ot.created,$lt.logistics_name,$lt.logistics_mobile,$lt.logistics_address";
-
-        $list = table('Orders')->join($lt, "$ot.order_sn = $lt.order_sn")->where($map)->field($field)->find('array');
+        $field = "$ot.order_sn,$ot.uid,$ot.created,$lt.logistics_name,$lt.logistics_mobile,$lt.logistics_address";
+        $list  = dao('OrdersLog')->getOrdersList($map, 2, 0, 99, $field, array('logistics'));
 
         foreach ($list as $key => $value) {
             $list[$key]['title']     = '无运单号';
@@ -424,25 +442,26 @@ class DomesticPackage extends Init
         $this->appReturn(array('data' => $data));
     }
 
-    /** 去发货创建订单 */
+    /** 将包裹挂载到网点下 */
     public function shipPost()
     {
         $orderSnText = post('order_sn', 'text', '');
         $sellerUid   = post('seller_uid', 'intval', 0);
 
+        $orderSnArray = strpos($orderSnText, ',') !== false ? explode(',', $orderSnText) : (array) $orderSnText;
+
         if (!$orderSnText || !$sellerUid) {
             $this->appReturn(array('status' => false, 'msg' => '参数错误'));
         }
 
-        $map['order_sn'] = array('in', $orderSnText);
-        $ordersList      = table('Orders')->where($map)->field('uid,status,order_status')->find('array');
-        if (!$ordersList) {
-            $this->appReturn(array('status' => false, 'msg' => '包裹信息不存在'));
-        }
+        $ot = table('Orders')->tableName();
+        $lt = table('Logistics')->tableName();
 
-        foreach ($ordersList as $key => $value) {
-            if ($value['uid'] != $this->uid || $value['status'] != 1 || $value['order_status'] != 1) {
-                $this->appReturn(array('status' => false, 'msg' => '存在异常包裹'));
+        //批量检测处理
+        foreach ($orderSnArray as $key => $value) {
+            $status = dao('OrdersLog')->getNewStatus($value);
+            if ($status != 2) {
+                $this->appReturn(array('status' => false, 'msg' => '存在不可操作运单'));
             }
         }
 
@@ -450,15 +469,14 @@ class DomesticPackage extends Init
         $map             = array();
         $map['order_sn'] = array('in', $orderSnText);
 
-        $data['order_status'] = 2;
         //创建合并订单号
-        if (count($ordersList) > 1) {
-            $mergeSn = dao('Orders')->createOrderSn();
-            if (!$mergeSn) {
-                $this->appReturn(array('status' => false, 'msg' => '创建合并订单号失败'));
-            }
-            $data['merge_sn'] = $mergeSn;
+        $mergeSn = dao('Orders')->createOrderSn();
+        if (!$mergeSn) {
+            $this->appReturn(array('status' => false, 'msg' => '创建合并订单号失败'));
         }
+
+        $data['seller_uid'] = $sellerUid;
+        $data['merge_sn']   = $mergeSn;
 
         table('Orders')->startTrans();
         $result = table('Orders')->where($map)->save($data);
@@ -467,34 +485,145 @@ class DomesticPackage extends Init
             $this->appReturn(array('status' => false, 'msg' => '订单执行失败'));
         }
 
-        //更改物流状态
-        $map             = array();
-        $map['order_sn'] = array('in', $orderSnText);
-
-        $result = table('Logistics')->where($map)->save('status', 0);
+        //订单操作记录
+        $result = dao('OrdersLog')->add($this->uid, $orderSnArray, 3);
         if (!$result) {
             table('Orders')->rollback();
-            $this->appReturn(array('status' => false, 'msg' => '物流执行失败'));
+            $this->appReturn(array('status' => false, 'msg' => '订单状态严重异常'));
         }
 
         table('Orders')->commit();
         $this->appReturn(array('status' => true, 'msg' => '操作成功'));
     }
 
-    private function getMaxDim($vDim)
+    /** 合并订单查看 */
+    public function mergeSnOrdersList()
     {
-        if (!is_array($vDim)) {
-            return 0;
-        } else {
-            $max1 = 0;
-            foreach ($vDim as $item1) {
-                $t1 = $this->getmaxdim($item1);
-                if ($t1 > $max1) {
-                    $max1 = $t1;
-                }
+        $mergeSn = get('merge_sn', 'text', '');
 
-            }
-            return $max1 + 1;
+        $ot = table('Orders')->tableName();
+        $lt = table('Logistics')->tableName();
+
+        $map                      = array();
+        $map[$ot . '.uid']        = $this->uid;
+        $map[$ot . '.merge_sn']   = $mergeSn;
+        $map[$ot . '.del_status'] = 0;
+        $map[$lt . '.type']       = 1;
+
+        $field = "$ot.order_sn,$ot.uid,$ot.created,$lt.logistics_name,$lt.logistics_mobile,$lt.logistics_address";
+        $list  = table('Orders')->join($lt, "$ot.order_sn = $lt.order_sn")->where($map)->field($field)->find('array');
+        foreach ($list as $key => $value) {
+            $list[$key]['title']     = '无运单号';
+            $list[$key]['goodsList'] = table('OrdersPackage')->where('order_sn', $value['order_sn'])->find('array');
+
+            $status                         = dao('OrdersLog')->getNewStatus($value['order_sn']);
+            $list[$key]['status_copy']      = $status != 4 ? '待揽收' : '已揽收';
+            $list[$key]['status_time_copy'] = date('Y-m-d H:i', $value['created']);
         }
+
+        $data['list'] = $list ? $list : array();
+
+        $this->appReturn(array('data' => $data));
     }
+
+    /** 增加合并包裹 */
+    public function addMergeSnOrders()
+    {
+
+        $mergeSn     = post('merge_sn', 'text', '');
+        $orderSnText = post('order_sn', 'text', '');
+        $sellerUid   = post('seller_uid', 'text', '');
+
+        $orderSnArray = strpos($orderSnText, ',') !== false ? explode(',', $orderSnText) : (array) $orderSnText;
+
+        if (!$mergeSn || !$orderSnText || !$sellerUid) {
+            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
+        }
+
+        $ot = table('Orders')->tableName();
+        $lt = table('Logistics')->tableName();
+
+        //批量处理
+        foreach ($orderSnArray as $key => $value) {
+            $status = dao('OrdersLog')->getNewStatus($value);
+            if ($status != 2) {
+                $this->appReturn(array('status' => false, 'msg' => '存在不可操作运单'));
+            }
+        }
+
+        //增加合并订单号
+        $data['seller_uid'] = $sellerUid;
+        $data['merge_sn']   = $mergeSn;
+
+        $map             = array();
+        $map['order_sn'] = array('in', $orderSnText);
+
+        $result = table('Orders')->where($map)->save($data);
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '执行失败'));
+        }
+
+        //订单操作记录
+        $result = dao('OrdersLog')->add($this->uid, $orderSnArray, 3);
+        if (!$result) {
+            table('Orders')->rollback();
+            $this->appReturn(array('status' => false, 'msg' => '订单状态严重异常'));
+        }
+
+        $this->appReturn(array('status' => true, 'msg' => '操作成功'));
+
+    }
+
+    /** 删除合并订单 */
+    public function delMergeSnOrders()
+    {
+
+        $mergeSn     = post('merge_sn', 'text', '');
+        $orderSnText = post('order_sn', 'text', '');
+
+        $orderSnArray = strpos($orderSnText, ',') !== false ? explode(',', $orderSnText) : (array) $orderSnText;
+
+        $ot = table('Orders')->tableName();
+        $lt = table('Logistics')->tableName();
+
+        //批量处理
+        foreach ($orderSnArray as $key => $value) {
+            $status = dao('OrdersLog')->getNewStatus($value);
+            if ($status != 3) {
+                $this->appReturn(array('status' => false, 'msg' => '存在不可操作运单'));
+            }
+
+        }
+
+        //取消合并订单号
+        $map             = array();
+        $map['merge_sn'] = $mergeSn;
+        $map['order_sn'] = array('in', $orderSnText);
+
+        $data               = array();
+        $data['seller_uid'] = 0;
+        $data['merge_sn']   = '';
+
+        table('Orders')->startTrans();
+        $result = table('Orders')->where($map)->save($data);
+        if (!$result) {
+            table('Orders')->rollback();
+            $this->appReturn(array('status' => false, 'msg' => '取消合并订单,执行失败'));
+        }
+
+        //删除选择网点
+        $map             = array();
+        $map['order_sn'] = array('in', $orderSnText);
+        $map['type']     = 3;
+        $result          = table('OrdersLog')->where($map)->delete();
+        if (!$result) {
+            table('Orders')->rollback();
+            $this->appReturn(array('status' => false, 'msg' => '修改状态失败'));
+        }
+
+        table('Orders')->commit();
+        $this->appReturn(array('status' => true, 'msg' => '操作成功'));
+
+    }
+
 }

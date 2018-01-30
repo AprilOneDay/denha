@@ -69,7 +69,8 @@ class Upload
         is_dir($filePath) ? '' : mkdir($filePath, 0755, true);
 
         //获取最近附件记录id
-        $id = (int) table('UploadLog')->order('id desc')->field('id')->find('one') + 1;
+        $uploadLog = table('UploadLog')->fieldStatus('Auto_increment');
+        $id        = $uploadLog['Auto_increment'];
 
         foreach ($files as $key => $value) {
             if ($value['size'] >= $size * 1024 * 1024) {

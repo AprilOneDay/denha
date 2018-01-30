@@ -268,6 +268,9 @@ class User extends \app\app\controller\Init
         }
 
         $result = dao('User')->register($data, $password2, $isAgree, $code, $thirdParty);
+        if ($data['type'] == 2 && $result['status']) {
+
+        }
 
         $this->appReturn($result);
     }

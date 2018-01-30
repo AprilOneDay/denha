@@ -126,6 +126,7 @@ class ArticleEdit extends Init
             $data['content_en'] = post('content_en', 'text', '');
             $data['content_jp'] = post('content_jp', 'text', '');
             $data['video']      = post('video', 'text', '');
+            $data['depot_id']   = post('depot_id', 'text', '');
 
             //开启事务
             table('Article')->startTrans();
@@ -160,6 +161,7 @@ class ArticleEdit extends Init
             $other = array(
                 'tag'            => getVar('tags', 'admin.article'),
                 'columnListCopy' => dao('Column', 'admin')->columnList(),
+                'depotCopy'      => dao('Category')->getList(743),
             );
 
             $this->assign('data', $rs);

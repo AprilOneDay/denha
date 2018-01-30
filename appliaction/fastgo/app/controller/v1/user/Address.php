@@ -169,20 +169,29 @@ class Address extends Init
             $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
         }
 
-        $map         = array();
-        $map['type'] = $address['type'];
-        $map['sign'] = $address['sign'];
-        $map['uid']  = $this->uid;
-
         //取消默认
-        $result = table('UserAddress')->where($map)->save('is_default', 0);
-        if (!$result) {
-            $this->appReturn(array('status' => false, 'msg' => '操作失败,取消默认的时候中断了....'));
+        if ($address['is_default'] == 1) {
+            $result = table('UserAddress')->where('id', $id)->save('is_default', 0);
+            if (!$result) {
+                $this->appReturn(array('status' => false, 'msg' => '操作失败,取消默认的时候中断了....'));
+            }
         }
+        //设置默认
+        else {
+            //取消之前默认选项
+            $map         = array();
+            $map['type'] = $address['type'];
+            $map['sign'] = $address['sign'];
+            $map['uid']  = $this->uid;
+            $result      = table('UserAddress')->where($map)->save('is_default', 0);
+            if (!$result) {
+                $this->appReturn(array('status' => false, 'msg' => '操作失败,取消默认的时候中断了....'));
+            }
 
-        $result = table('UserAddress')->where('id', $id)->save('is_default', 1);
-        if (!$result) {
-            $this->appReturn(array('status' => false, 'msg' => '操作失败,请稍后重试'));
+            $result = table('UserAddress')->where('id', $id)->save('is_default', 1);
+            if (!$result) {
+                $this->appReturn(array('status' => false, 'msg' => '操作失败,请稍后重试'));
+            }
         }
 
         $this->appReturn(array('msg' => '操作成功'));

@@ -30,7 +30,12 @@ class Warehouse extends Init
         $abc = table('Column')->limit($offer, $pageSize)->find('array');
 
         foreach ($list as $key => $value) {
-            $list[$key]['house_name'] = implode('', dao('Category')->getName(array($value['country_id'], $value['category_id'])));
+            $map            = array();
+            $map['bname_2'] = array('in', "$value[country_id],$value[category_id]");
+
+            $house = table('Category')->where($map)->field('name')->find('one', true);
+
+            $list[$key]['house_name'] = $house[0] . ' ' . $house[1];
         }
 
         $other = array(
@@ -53,16 +58,12 @@ class Warehouse extends Init
 
         $id = get('id', 'intval', 0);
 
-        $data['country_id']  = post('country_id', 'intval', 0);
-        $data['category_id'] = post('category_id', 'intval', 0);
+        $data['country_id']  = post('country_id', 'text', 0);
+        $data['category_id'] = post('category_id', 'text', 0);
         $data['name']        = post('name', 'text', '');
         $data['mobile']      = post('mobile', 'text', '');
         $data['address']     = post('address', 'text', '');
         $data['zip_code']    = post('zip_code', 'text', '');
-
-        if (!$data['country_id']) {
-            $this->ajaxReturn(array('status' => false, 'msg' => '请选择国家'));
-        }
 
         if (!$data['category_id']) {
             $this->ajaxReturn(array('status' => false, 'msg' => '请选择仓库'));
@@ -105,8 +106,8 @@ class Warehouse extends Init
         $data = table('WarehouseInfo')->where(array('id' => $id))->find();
 
         $other = array(
-            'countryCopy' => dao('Category')->getList(585),
-            'houseCopy'   => dao('Category')->getList($data['country_id']),
+            'countryCopy' => dao('Category')->getListAllInfo(743),
+            'houseCopy'   => dao('Category')->getListAllInfo($data['country_id']),
         );
 
         $this->assign('data', $data);
@@ -121,7 +122,8 @@ class Warehouse extends Init
     {
         $id = post('value', 'intval', 0);
 
-        $data = dao('Category')->getList($id);
+        $id   = table('Category')->where('bname_2', $id)->id->find('one');
+        $data = dao('Category')->getListAllInfo($id);
 
         $this->ajaxReturn(array('status' => true, 'msg' => '操作成功', 'data' => $data));
     }

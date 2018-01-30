@@ -10,7 +10,7 @@ class Init extends Controller
     public $group;
     public $power;
     public $webType = 3; //站点标记
-    public $lg      = array('zh', 'en', 'jp'); //后台语言版本
+    public $lg      = array('zh', 'en', 'jp'); //后台语言版本 zh:中文 en：英文 jp：日文
 
     public function __construct()
     {
@@ -69,12 +69,13 @@ class Init extends Controller
 
         return false;
     }
-	
-	public function modelField($id,$model,$field){
-		
-		$result = table($model)->where(array('id' => $id))->field($field)->find();
-		
-		return $result[$field];
-		
-	}
+
+    public function modelField($id, $model, $field)
+    {
+
+        $result = table($model)->where(array('id' => $id))->field($field)->find();
+
+        return $result[$field];
+
+    }
 }

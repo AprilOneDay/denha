@@ -136,8 +136,8 @@ class Server extends \app\app\controller\Init
                 $this->appReturn(array('status' => false, 'msg' => '请上传主图'));
             }
 
-            if (count(explode(',', $data['banner'])) > 5) {
-                $this->appReturn(array('status' => false, 'msg' => '最多可传5张主图'));
+            if (count(explode(',', $data['banner'])) > 9) {
+                $this->appReturn(array('status' => false, 'msg' => '最多可传9张主图'));
             }
 
             $ablum['ablum'] = explode(',', $this->appUpload($files['ablum'], $ablum['ablum'], 'car'));
@@ -152,7 +152,7 @@ class Server extends \app\app\controller\Init
                 $data['title'] = dao('Category')->getName($data['brand'])
                 . ($data['produce_time'] != '' ? ' ' . $data['produce_time'] : '')
                 . ($data['style'] != '' ? ' ' . $data['style'] : '')
-                . ($data['displacement'] != '' ? ' ' . $data['displacement'] : '')
+                /* . ($data['displacement'] != '' ? ' ' . $data['displacement'] : '')*/
                 . ($data['model_remark'] != '' ? ' ' . $data['model_remark'] : '');
 
                 $result = table('GoodsCar')->add($data);

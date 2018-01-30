@@ -48,6 +48,7 @@ function parseName($name, $type = false)
 //POST过滤
 function post($name, $type = '', $default = '')
 {
+
     if ($name == 'all') {
         foreach ($_POST as $key => $val) {
             $val        = trim($val);
@@ -95,7 +96,6 @@ function post($name, $type = '', $default = '')
                 if (stripos($data, '-') !== false) {
                     $data = strtotime($data);
                 }
-                # code...
                 break;
             default:
                 # code...
@@ -117,7 +117,13 @@ function get($name, $type = '', $default = '')
         }
 
     } else {
-        $data = isset($_GET[$name]) ? $_GET[$name] : '';
+        //数组信息通过 xx.xxx 来获取
+        if (stripos($name, '.') !== false) {
+            $name = explode('.', $name);
+            $data = isset($_GET[$name[0]][$name[1]]) ? $_GET[$name[0]][$name[1]] : '';
+        } else {
+            $data = isset($_GET[$name]) ? $_GET[$name] : '';
+        }
     }
 
     if ($name != 'all' && !is_array($data)) {
@@ -145,12 +151,26 @@ function get($name, $type = '', $default = '')
             case 'img':
                 $data = stripos($data, 'default') !== false ? $default : $data;
                 break;
+            case 'time':
+                if (stripos($data, '-') !== false) {
+                    $data = strtotime($data);
+                }
+                break;
             default:
                 # code...
                 break;
         }
     }
     return $data;
+}
+
+function put($name, $type = '', $default = '')
+{
+    if (!post($name, $type, $default)) {
+        parse_str(file_get_contents('php://input'), $_POST);
+    }
+
+    return post($name, $type, $default);
 }
 
 function files($name)
@@ -170,6 +190,76 @@ function files($name)
     }
 
     return $data;
+}
+
+/**
+ * curl模拟GET/POST/PUT/DELETE
+ * @date   2018-01-11T14:24:16+0800
+ * @author ChenMingjiang
+ * @param  [type]                   $url    [请求网址]
+ * @param  string                   $method [请求类型 GET/POST/PUT/DELETE]
+ * @param  array                    $param  [请求超时]
+ * @param  array                    $header [头标记]
+ * @return [type]                           [description]
+ */
+function response($url, $method = 'GET', $param = array(), $headers = array(), $isJson = true)
+{
+
+    $ch = curl_init(); //初始化curl
+
+    curl_setopt($ch, CURLOPT_URL, $url); // 要访问的地址
+    curl_setopt($ch, CURLOPT_HEADER, 0); // 是否显示返回的Header区域内容
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); //设置请求头
+    curl_setopt($ch, CURLOPT_AUTOREFERER, 1); // 自动设置Referer
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // 获取的信息以文件流的形式返回
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); // 从证书中检查SSL加密算法是否存在
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0); // 对认证证书来源的检查
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30); // 请求超时时间
+
+    switch ($method) {
+        case 'GET':
+            foreach ($param as $key => $value) {
+                if (stripos($url, '?') !== fasle) {
+                    $url .= '?' . $key . '=' . $value;
+                } else {
+                    $url .= '&' . $key . '=' . $value;
+                }
+            }
+            break;
+        case 'POST':
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $param); //设置请求体，提交数据包
+            break;
+        case 'PUT':
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $param); //设置请求体，提交数据包
+            break;
+        case 'DELETE':
+            foreach ($param as $key => $value) {
+                if (stripos($url, '?') !== fasle) {
+                    $url .= '?' . $key . '=' . $value;
+                } else {
+                    $url .= '&' . $key . '=' . $value;
+                }
+            }
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+            break;
+    }
+
+    $data = curl_exec($ch);
+    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // 获取返回的状态码
+
+    curl_close($ch); // 关闭CURL会话
+
+    if ('200' == $code) {
+        if ($isJson) {
+            return json_decode($data, true);
+        }
+
+        return $data;
+    } else {
+        return curl_error($ch);
+    }
 }
 
 //判断文件是否存在
@@ -598,6 +688,31 @@ function mbDetectEncoding($content = '', $mbEncode = "UTF-8")
 }
 
 /**
+ * ping封装
+ * @date   2018-01-19T14:06:10+0800
+ * @author ChenMingjiang
+ * @param  [type]                   $address [description]
+ * @return [type]                            [description]
+ */
+function ping($address)
+{
+    $status = -1;
+    if (strcasecmp(PHP_OS, 'WINNT') === 0) {
+        // Windows 服务器下
+        $pingresult = exec("ping -n 1 {$address}", $outcome, $status);
+    } elseif (strcasecmp(PHP_OS, 'Linux') === 0) {
+        // Linux 服务器下
+        $pingresult = exec("ping -c 1 {$address}", $outcome, $status);
+    }
+    if (0 == $status) {
+        $status = true;
+    } else {
+        $status = false;
+    }
+    return $status;
+}
+
+/**
  * 字符串加密、解密函数
  *
  *
@@ -833,6 +948,24 @@ function tenxunToBaidu($lat, $lng)
     $lat   = $z * sin($theta) + 0.006;
     return array('lng' => $lng, 'lat' => $lat);
 
+}
+
+// 获取数组的维度
+function getMaxDim($vDim)
+{
+    if (!is_array($vDim)) {
+        return 0;
+    } else {
+        $max1 = 0;
+        foreach ($vDim as $item1) {
+            $t1 = getmaxdim($item1);
+            if ($t1 > $max1) {
+                $max1 = $t1;
+            }
+
+        }
+        return $max1 + 1;
+    }
 }
 
 //获取汉字首字母

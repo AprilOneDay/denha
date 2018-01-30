@@ -34,6 +34,10 @@ return array(
     'baidu_trans_appid' => '20170926000085221',
     'baidu_trans_key'   => 'dEmcRIqvTsUWa1greRa4',
 
+    /** 淘宝即时通讯API */
+    'taobao_key'        => '24777145',
+    'taobao_secret'     => '8dc19dc6731cbbb4a2a9ec026a166b32',
+
     /** 邮件发送配置 */
     'send_debug_mail'   => true, //错误信息是否发送邮箱
     'send_mail'         => '350375092@qq.com', //接收邮箱账户

@@ -9,6 +9,53 @@ use app\fastgo\app\controller\v1\Init;
 
 class Index extends Init
 {
+
+    public function testOrdersLog()
+    {
+        $result = table('OrdersLog')->add(123, 123, 9);
+        var_dump($result);
+    }
+
+    public function testAddOrders()
+    {
+        $result = dao('FastgoApi', 'fastgo')->addOrders('TEST00014KO');
+        $this->appReturn($result);
+    }
+
+    public function testPrice()
+    {
+        $result = dao('FastgoApi', 'fastgo')->getLogisticsPrice('', '9');
+        $this->appReturn($result);
+    }
+
+    public function testTaobao()
+    {
+
+        $result = dao('TaobaoUser')->add('123456', 'cmj', '123456789');
+        $this->appReturn($result);
+    }
+
+    public function testTaobao2()
+    {
+        dao('TaobaoUser')->index('imuser123,123456');
+    }
+
+    public function orderSn()
+    {
+        $result = dao('FastgoApi', 'fastgo')->createOrderSn($this->uid, $this->group, 'FG01');
+
+        $this->appReturn($result);
+
+        $orderSn = $result['data'];
+    }
+
+    public function siteUpdate()
+    {
+        $result = dao('FastgoApi', 'fastgo')->updateSite();
+
+        $this->appReturn($result);
+    }
+
     /**
      * 接口测试
      */
@@ -24,9 +71,28 @@ class Index extends Init
             'is_agree' => 1,
 
         );
+
         //var_dump(json_encode($data));die();
         $result = $this->http_post_json('http://192.168.0.254:8092/v1/user/Operation/register', json_encode($data));
         var_dump($result);
+    }
+
+    public function testShow()
+    {
+        $test = post('test', 'text', '');
+        $abc  = post('abc', 'text', '');
+
+        echo '测试post参数获取:';
+        echo $test . PHP_EOL;
+        echo $abc . PHP_EOL;
+    }
+
+    public function testPost()
+    {
+        $url    = 'http://fastgo.59156.cn/v1/index/index/testShow';
+        $result = response($url, 'POST', array('test' => '124', 'abc' => 'aaaa'));
+
+        var_dump($result);die;
     }
 
     //HTTP JSON请求

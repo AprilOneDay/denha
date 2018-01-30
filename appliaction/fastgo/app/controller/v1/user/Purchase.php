@@ -18,9 +18,8 @@ class Purchase extends Init
 
     public function lists()
     {
-        $map['uid']          = $this->uid;
-        $map['order_status'] = 1;
-        $map['type']         = 4;
+        $map['uid']  = $this->uid;
+        $map['type'] = 4;
 
         $list = table('Orders')->where($map)->field('id,order_sn,tags')->find('array');
 
@@ -63,10 +62,9 @@ class Purchase extends Init
             $this->appReturn(array('status' => false, 'msg' => '请输入名称'));
         }
 
-        $map['uid']          = $this->uid;
-        $map['order_status'] = 1;
-        $map['type']         = 4;
-        $map['id']           = $id;
+        $map['uid']  = $this->uid;
+        $map['type'] = 4;
+        $map['id']   = $id;
 
         $isOrders = table('Orders')->where($map)->field('id')->find();
         if (!$isOrders) {
@@ -87,10 +85,9 @@ class Purchase extends Init
         $id      = post('orders_id', 'intval', 0);
         $goodsId = post('goods_id', 'intval', 0);
 
-        $map['uid']          = $this->uid;
-        $map['order_status'] = 1;
-        $map['type']         = 4;
-        $map['id']           = $id;
+        $map['uid']  = $this->uid;
+        $map['type'] = 4;
+        $map['id']   = $id;
 
         $isOrders = table('Orders')->where($map)->field('id')->find();
         if (!$isOrders) {

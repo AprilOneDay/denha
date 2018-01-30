@@ -19,7 +19,9 @@ class Sms extends \app\app\controller\Init
         $country = post('country_id', 'text', '');
         $mobile  = post('mobile', 'text', '');
 
-        /*$this->appReturn(array('status' => false, 'msg' => json_encode($_POST), 'mobile' => $_POST['mobile'], ',mobile_2' => $mobile, 'post_array' => implode(',', $_POST)));*/
+        if (!in_array($country, array(01, 86))) {
+            $this->appReturn(array('status' => false, 'msg' => '暂不支持该国家短信'));
+        }
 
         if (!$mobile) {
             $this->appReturn(array('status' => false, 'msg' => '请输入电话号码'));
@@ -62,8 +64,4 @@ class Sms extends \app\app\controller\Init
         $this->appReturn(array('data' => $data));
     }
 
-    public function sendMail()
-    {
-        dao('1234');
-    }
 }

@@ -33,9 +33,9 @@ class User extends Init
         $data['type']     = 1;
 
         $weixinId = post('weixin_id', 'text', '');
-        $code     = post('code', 'text', '');
+        $code     = '';
 
-        $password2 = post('password2', 'text', '');
+        $password2 = $data['password'];
         $isAgree   = post('is_agree', 'intval', 0);
 
         if (!$data['country']) {
@@ -45,10 +45,6 @@ class User extends Init
         if (!$data['mobile']) {
             $this->appReturn(array('status' => false, 'msg' => '请输入手机号'));
         }
-
-        /*if (!$code) {
-        $this->appReturn(array('status' => false, 'msg' => '请输入验证码'));
-        }*/
 
         $thirdParty = array();
         if ($weixinId) {
@@ -72,8 +68,7 @@ class User extends Init
         $password = post('password', 'text', '');
         $type     = post('type', 'intval', 0);
 
-        $typeCopy = array('1' => '个人', '2' => '商家');
-
+        $typeCopy = array_flip(getVar('type', 'admin.user'));
         if (!$type) {
             $this->appReturn(array('status' => false, 'msg' => '请选择登录方式'));
         }
@@ -86,8 +81,8 @@ class User extends Init
             }
         }
 
-        if ($result['data']['type'] == 2) {
-            $result['data']['is_ide'] = (int) table('UserShop')->where('uid', $result['data']['uid'])->field('is_ide')->find('one');
+        if ($result['status']) {
+            dao('User')->updateLevel($result['data']['uid']);
         }
 
         $this->appReturn($result);
@@ -332,9 +327,9 @@ class User extends Init
 
         }
 
-        $arr['type']         = 4;
-        $arr['uid']          = $this->uid;
-        $arr['order_status'] = array('>=', 3);
+        $arr['type']   = 4;
+        $arr['uid']    = $this->uid;
+        $arr['is_pay'] = 1;
 
         $data = table('orders')->where($arr)->field("id,order_sn,acount,created")->limit(($page - 1) * $limit, $limit)->find('array');
 
@@ -368,26 +363,18 @@ class User extends Init
         $end_time   = post('end_time', 'text', '');
 
         if ($start_time && !$end_time) {
-
             $arr[$orders . '.created'] = array('>=', strtotime($start_time));
-
-        }
-        if (!$start_time && $end_time) {
-
+        } elseif (!$start_time && $end_time) {
             $arr[$orders . '.created'] = array('<=', strtotime($end_time));
-
-        }
-        if ($start_time && $end_time) {
-
-            $arr[$orders . '.created'] = array(array('>=', strtotime($start_time)), array('<=', strtotime($end_time)));
-
+        } elseif ($start_time && $end_time) {
+            $arr[$orders . '.created'] = array('between', strtotime($start_time), strtotime($end_time));
         }
 
-        $arr[$orders . '.type']         = 4;
-        $arr[$orders . '.uid']          = $this->uid;
-        $arr[$orders . '.order_status'] = array('>=', 3);
+        $arr[$orders . '.type']   = 4;
+        $arr[$orders . '.uid']    = $this->uid;
+        $arr[$orders . '.is_pay'] = 1;
 
-        $data = table('ordersPackage')->join($orders, "$orders.order_sn = $ordersPackage.order_sn", 'left')->join($logistics, "$orders.order_sn = $logistics.order_sn", 'left')->where($arr)->field('$logistics.name as log_name,$ordersPackage.name,$ordersPackage.num,$ordersPackage.account,$orders.created')->limit(($page - 1) * $limit, $limit)->find('array');
+        $data = table('ordersPackage')->join($orders, "$orders.order_sn = $ordersPackage.order_sn", 'left')->join($logistics, "$orders.order_sn = $logistics.order_sn", 'left')->where($arr)->field("$logistics.name as log_name,$ordersPackage.name,$ordersPackage.num,$ordersPackage.account,$orders.created")->limit(($page - 1) * $limit, $limit)->find('array');
 
         if (empty($data)) {
 

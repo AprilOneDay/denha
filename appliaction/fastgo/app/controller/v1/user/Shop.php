@@ -16,6 +16,7 @@ class Shop extends Init
         $this->checkIndividual('1,2');
     }
 
+    /** 网点列表 */
     public function lists()
     {
 
@@ -29,6 +30,7 @@ class Shop extends Init
         $pageSize = get('pageSize', 'intval', 10);
         $offer    = max(($pageNo - 1), 0) * $pageSize;
 
+        $map           = array();
         $map['status'] = 1;
 
         if ($param['city_id']) {
@@ -62,11 +64,16 @@ class Shop extends Init
             $map['uid']        = $this->uid;
             $map['status']     = 1;
 
-            $ordersNum = (int) table('Orders')->where($map)->count();
-
             $ordersList = array();
-            if ($ordersNum > 0) {
-                $ordersList = array_merge($user, array('num' => $ordersNum, '2wm' => ''));
+            $ordersList = table('Orders')->where($map)->group('merge_sn')->field('count(order_sn) as num,merge_sn,uid')->find('array');
+
+            //创建二维码
+            foreach ($ordersList as $k => $v) {
+                $user = dao('User')->getInfo($v['uid'], 'nickname,mobile');
+
+                $ordersList[$k]['qr']     = '';
+                $ordersList[$k]['name']   = $user['nickname'];
+                $ordersList[$k]['mobile'] = $user['mobile'];
             }
 
             if ($value['km'] !== null) {
@@ -77,9 +84,14 @@ class Shop extends Init
                 $list[$key]['km'] = '距离太过遥远';
             }
 
-            $list[$key]['news'] = array(array('title' => '测试通知信息'));
+            //滚动通知列表
+            $map        = array();
+            $map['uid'] = $this->uid;
+            $newList    = table('ShopNotice')->where($map)->find('array');
 
-            $list[$key]['ordersList'] = $ordersList;
+            $list[$key]['news'] = $newList ? $newList : array();
+
+            $list[$key]['ordersList'] = $ordersList ? $ordersList : array();
 
         }
 
