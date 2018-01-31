@@ -109,10 +109,9 @@ class IntBale extends Init
                 $this->appReturn(array('status' => false, 'msg' => '请先上传图片'));
             }
 
-            $result = table('Logistics')->where('order_sn', $orderSn)->save('status', 1);
             if ($result) {
                 //订单操作记录
-                $result = dao('OrdersLog')->add($this->uid, $addOrderSnArray, 12);
+                $result = dao('OrdersLog')->add($this->uid, $orderSn, 12);
                 if (!$result) {
                     $this->appReturn(array('status' => false, 'msg' => '订单状态严重异常'));
                 }

@@ -32,12 +32,18 @@ class UserMaterial extends Init
 
         $userArray = table('User')->where($map)->field('uid')->find('one', true);
 
+        //debug
+        //var_dump($userArray);die;
+
         //获取当日需要分配的任务
         $map               = array();
         $map['uid']        = array('in', $userArray);
         $map['apply_time'] = array('between', $beginToday, $endToday);
 
+        //print_r($map);die;
+
         $list = table('Material')->where($map)->find('array');
+
         foreach ($list as $key => $value) {
             $shop = table('UserShop')->where('uid', $value['uid'])->field('name')->find();
 

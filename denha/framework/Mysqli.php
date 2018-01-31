@@ -747,9 +747,14 @@ class Mysqli
             $path = DATA_PATH . 'sql_log' . DS . $this->dbConfig['db_name'] . DS;
             is_dir($path) ? '' : mkdir($path, 0755, true);
             $path .= 'error_' . date('Y_m_d_H', TIME) . '.text';
+
+            $time = &$this->sqlInfo['time'];
+            $info = '------ ' . $time . ' | ' . date('Y-m-d H:i:s', TIME) . ' | ip:' . getIP() . ' | ';
+            $info .= 'Url:' . URL . ' | Controller:' . CONTROLLER . ' | Action:' . ACTION . PHP_EOL;
+
             $content = $this->sqlInfo['sql'] . ';' . PHP_EOL . '来源：' . getSystem() . getBrowser() . PHP_EOL . '--------------' . PHP_EOL;
             $file    = fopen($path, 'a');
-            fwrite($file, $content . PHP_EOL);
+            fwrite($file, $content . $info . PHP_EOL);
             fclose($file);
         }
     }

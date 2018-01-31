@@ -20,6 +20,8 @@ return array(
     /** 基础配置 */
     'debug'             => true, // 是否开启调试
     'trace'             => true, // 是否显示页面Trace信息
+    'tag_trans'         => true, //是否开启标签翻译功能
+    'app_debug'         => false, //app接口调试模式
 
     /** 微信api */
     'weixin_appid'      => 'wxeec81ef588a9214a',

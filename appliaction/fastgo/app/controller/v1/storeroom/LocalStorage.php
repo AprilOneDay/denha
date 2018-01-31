@@ -38,7 +38,7 @@ class LocalStorage extends Init
 
         $list = table('Material')->where($map)->order('status asc')->find('array');
         foreach ($list as $key => $value) {
-            $shop = dao('User')->getInfo($value['uid'], 'uid,name,mobile');
+            $shop = table('UserShop')->where('uid', $value['uid'])->field('name,mobile')->find();
 
             $list[$key]['shop']       = $shop;
             $list[$key]['success_sn'] = explode(',', $value['success_sn']);
@@ -135,9 +135,10 @@ class LocalStorage extends Init
             $pushData['nickname'] = $user['username'];
             $pushData['cid']      = $user['cid'];
 
-            dao('FastgoApi')->updateOrders($pushData, 03);
+            dao('FastgoApi', 'fastgo')->updateOrders($pushData, 03);
         }
 
+        table('Material')->commit();
         $this->appReturn(array('msg' => '入库操作完成'));
     }
 }

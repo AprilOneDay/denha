@@ -16,21 +16,21 @@
 						<div class="pull-left">
 							<h5>店铺列表</h5>
 						</div>
-						<div class="pull-right">
-							<a class="btn btn-primary btn-open" config-href="{F:url('edit')}" config-width="40%" config-height="70%">添加</a>
-						</div>
+						<!-- <div class="pull-right">
+							<a class="btn btn-primary btn-open" config-href="{F:url('edit')}" config-width="40%" config-height="70%">导出Excel</a>
+						</div> -->
 					</div>
-					<form class="form-inline ng-pristine ng-valid" action=""  method="get">
+					<form class="form-horizontal form-inline ng-pristine ng-valid" action=""  method="get">
                         <div class="form-group">
 
-                        	<select class="form-control" data-selected="{$param['type']}" name="param[type]">
+                        	<select class="form-control" data-selected="{??$param['type']}" name="param[type]">
                                 <option value="">类型</option>
                                 {loop $other['typeCopy'] $key $value}
                                		<option value="{$key}">{$value}</option>
                             	{/loop}
                             </select>
 
-                        	<select class="form-control" data-selected="{$param['issue_status']}" name="param[issue_status]">
+                        	<select class="form-control" data-selected="{??$param['issue_status']}" name="param[issue_status]">
                                 {loop $other['issueStatusCopy'] $key $value}
                                		<option value="{$key}">{$value}</option>
                             	{/loop}
@@ -48,6 +48,8 @@
                             <input type="text" value="{??$param['end_time']}" name="param[end_time]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" data-type="datetime" placeholder="结束时间"  data-isnull='1'>
 
                             <button type="submit" class="btn btn-default" @click="search()">搜索</button>
+
+                            <a class="btn btn-primary btn-ajax-get" config-href="{F:url('excel')}" config-from="true">导出Excel</a>
                         </div>
                     </form>
 					<div class="console-form">
@@ -81,14 +83,6 @@
 											<td>{$value['user']['nickname']} / {$value['uid']}</td>
 											<td>{F:date('Y-m-d H:i:s',$value['created'])}</td>
 											<td>{$other['issueStatusCopy'][$value['issue_status']]}</td>
-											<td>
-												{if $value['status'] == 1}
-													<b style="color: green">营业中</b>
-												{elseif $value['status'] == 2}
-													<b style="color: red">已打烊</b>
-												{/if}
-											</td>
-											
 										</tr>
 										{/loop}
 									</tbody>

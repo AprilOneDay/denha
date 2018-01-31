@@ -30,7 +30,7 @@ class Index extends Init
         }
 
         $this->assign('list', $list);
-        $this->show();
+        $this->show('', false, false);
     }
 
     //二级导航显示

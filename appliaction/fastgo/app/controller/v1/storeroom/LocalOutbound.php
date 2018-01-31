@@ -37,8 +37,9 @@ class LocalOutbound extends Init
             $list                   = table('Logistics')->join($olt, "$olt.order_sn = $lt.order_sn")->where($map)->field($field)->find('array');
 
             foreach ($list as $key => $value) {
-                $value['status']                  = dao('OrdersLog')->getNewStatus($value['order_sn']);
-                $tmpList[$value['position_sn']][] = $value;
+                $value['status']                               = dao('OrdersLog')->getNewStatus($value['order_sn']);
+                $tmpList[$value['position_sn']]['position_sn'] = $value['position_sn'];
+                $tmpList[$value['position_sn']]['list'][]      = $value;
             }
         }
 
@@ -79,7 +80,7 @@ class LocalOutbound extends Init
     public function update()
     {
         $orderSnText = post('order_sn', 'text', '');
-        if (!$orderSn) {
+        if (!$orderSnText) {
             $this->appReturn(array('status' => false, 'msg' => '参数错误'));
         }
 
@@ -111,7 +112,7 @@ class LocalOutbound extends Init
 
     public function add()
     {
-        $batchSn = get('batchSn', 'text', '');
+        $batchSn = get('batch_sn', 'text', '');
         if (!$batchSn) {
             $this->appReturn(array('status' => false, 'msg' => '请输入批次号'));
         }
@@ -130,6 +131,6 @@ class LocalOutbound extends Init
             $this->appReturn(array('status' => false, 'msg' => '操作失败'));
         }
 
-        $this->appReturn(array('msg' => '操作成功'));
+        return true;
     }
 }

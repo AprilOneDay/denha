@@ -14,10 +14,9 @@ $(function() {
         return true;
     }
 
-
     //绑定初试信息
     $('select').each(function() {
-        var data = $(this).attr('data-selected');
+        let data = $(this).attr('data-selected');
         if (data) {
             $(this).val(data);
         }
@@ -26,12 +25,12 @@ $(function() {
     //绑定radio值
     $(".radio").each(function(){
          //不进行渲染
-        var native = $(this).attr('config-native');
+        let native = $(this).attr('config-native');
         if(native){
             return true;
         }
 
-        var data = $(this).attr('data-radio');
+        let data = $(this).attr('data-radio');
         $(this).find('input[type=radio]').each(function(){
             if($(this).attr('value') == data){
                 $(this).attr("checked","checked");
@@ -41,7 +40,7 @@ $(function() {
 
     //tips提示
     $('[config-tooltip]').mouseover(function(){
-        var msg = $(this).attr('config-tooltip');
+        let msg = $(this).attr('config-tooltip');
         layer.tips(msg, this, {
           tips: [1, '#3595CC'],
           time: 10000
@@ -54,14 +53,14 @@ $(function() {
     //绑定checkbox
     $('.checkbox').each(function(){
         //不进行渲染
-        var native = $(this).attr('config-native');
+        let native = $(this).attr('config-native');
         if(native){
             return true;
         }
 
-        var data  = $(this).val();
-        var value = $(this).attr('config-checked');
-        var checkedValue = '';
+        let data  = $(this).val();
+        let value = $(this).attr('config-checked');
+        let checkedValue = '';
         if(typeof(value) != 'undefined' && value != ''){
             checkedValue  = value.split(",");
         }
@@ -76,8 +75,8 @@ $(function() {
 
     //checkBox单选
     $('.btn-checkbox-radio').each(function(){
-        var _this = this;
-        var name = $(this).attr('name');
+        let _this = this;
+        let name = $(this).attr('name');
         $(this).click(function(){
             $('input[name="'+name+'"]').prop('checked',false);
             $(this).prop('checked',true);
@@ -86,7 +85,7 @@ $(function() {
 
     //前置触发事件
     $('.btn-before').on('mousedown',function(){
-        var eventString = $(this).attr('config-event'); 
+        let eventString = $(this).attr('config-event'); 
         console.log(eventString);
         $('.form-horizontal').unbind();
         //eventString.preventDefault();
@@ -95,9 +94,9 @@ $(function() {
 
     //下拉联动
     $('.btn-linkage').change(function(){
-        var value = $(this).val();
-        var href = $(this).attr('config-href');
-        var el = $(this).attr('config-el');
+        let value = $(this).val();
+        let href = $(this).attr('config-href');
+        let el = $(this).attr('config-el');
 
         $.post(href,{value:value},function(result){
             if(!result.status){
@@ -110,8 +109,8 @@ $(function() {
 
             $(el).find('select').html('');
 
-            for(var key in result.data){
-                var content = '<option value="'+key+'">'+result.data[key]+'</option>';
+            for(let key in result.data){
+                let content = '<option value="'+key+'">'+result.data[key]+'</option>';
                 $(el).find('select').append(content);
             }
         },"json");
@@ -119,10 +118,10 @@ $(function() {
 
    //打开弹出
     $('.btn-open').click(function() {
-        var href = $(this).attr('config-href');
-        var title = $(this).attr('config-title');
-        var width = $(this).attr('config-width');
-        var height = $(this).attr('config-height');
+        let href = $(this).attr('config-href');
+        let title = $(this).attr('config-title');
+        let width = $(this).attr('config-width');
+        let height = $(this).attr('config-height');
 
         if (!title) {
             title = $(this).text();
@@ -152,56 +151,37 @@ $(function() {
 
     //提交信息
     $('.btn-comply').click(function(){
-        var form     = $(this).parents('.form-horizontal');
-        var url      = form.attr('action');
-        var trueUrl  = $(this).attr('config-true-url'); //执行成功跳转地址
-        var falseUrl = $(this).attr('config-false-url'); //执行失败跳转地址
-        var before   = $(this).attr('config-before');
+        let form     = $(this).parents('.form-horizontal');
+        let url      = form.attr('action');
+        let trueUrl  = $(this).attr('config-true-url'); //执行成功跳转地址
+        let falseUrl = $(this).attr('config-false-url'); //执行失败跳转地址
+        let before   = $(this).attr('config-before');
+        let falseValue,trueValue,data;
 
-        //处理checked 未选中不传值的问题
-        $(form).find('input[type=checkbox]').each(function(){
-            if($(this).attr('config-native')){
-                return true;
-            }
-
-            var  falseValue = typeof($(this).attr('config-false-value')) != 'undefined' ?  $(this).attr('config-false-value') : 0;
-            var  trueValue  = typeof($(this).attr('config-true-value')) != 'undefined' ?  $(this).attr('config-true-value') : 0;
-            if(!$(this).prop('checked')){
-                $(this).prop('checked',true);
-                $(this).val(falseValue);
-            }else{
-                $(this).val(trueValue);
-            }
-        })
-
-        var data     = form.serializeArray();
+        data     = form.serializeArray();
         if(data.length < 1){
             return layer.msg('请上传参数');
         }
-
+        
         //处理通讯堵塞
         if(!checkBtnBlock()){
             return false;
         } 
 
         $.post(url,data,function(result){
+           submitThen(result);
+        },"json")
+
+        function submitThen(result){
             btnBlock = true; //恢复通道
+            
             //恢复checkbox 未选中的样式
-            $(form).find('input[type=checkbox]').each(function(){
-                if($(this).attr('config-native')){
-                    return true;
-                }
-                var  falseValue = typeof($(this).attr('config-false-value')) != 'undefined' ?  $(this).attr('config-false-value') : 0;
-                var  trueValue  = typeof($(this).attr('config-true-value')) != 'undefined' ?  $(this).attr('config-true-value') : 0;
-                if($(this).prop('checked',true) && $(this).val() == falseValue){
-                    $(this).prop('checked',false);
-                }
-            })
+            checkBoxChecked();
 
             layer.msg(result.msg);
             if(result.status){
                 setTimeout(function(){
-                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    let index = parent.layer.getFrameIndex(window.name); //获取窗口索引
                     if(index){
                         parent.location.reload();
                         parent.layer.close(index);
@@ -218,22 +198,40 @@ $(function() {
                     window.location.href= falseUrl;
                 },1000);
             }
-        },"json")
+        }
+
+        //处理checked 未选中不传值的问题
+        function checkBoxChecked(){
+            $(form).find('input[type=checkbox]').each(function(){
+                if($(this).attr('config-native')){
+                    return true;
+                }
+                falseValue = typeof($(this).attr('config-false-value')) != 'undefined' ?  $(this).attr('config-false-value') : 0;
+                trueValue  = typeof($(this).attr('config-true-value')) != 'undefined' ?  $(this).attr('config-true-value') : 0;
+                if(!$(this).prop('checked')){
+                    $(this).prop('checked',true);
+                    $(this).val(falseValue);
+                }else{
+                    $(this).val(trueValue);
+                }
+            })
+        }
     })
 
     //提交post信息
     $('.btn-ajax-post').click(function(){
-        var tagName = $(this).get(0).tagName;
+        let tagName = $(this).get(0).tagName;
 
-        var attr        = $(this).context.attributes;  //获取执行参数
-        var tips        = $(this).attr('config-tips');   //预先提示文案
-        var url         = $(this).attr('config-href');   //执行地址
-        var isReload    = $(this).attr('config-reload'); //是否刷新当前页面
-        var trueUrl     = $(this).attr('config-true-url'); //执行成功跳转地址
-        var falseUrl    = $(this).attr('config-false-url'); //执行失败跳转地址
+        let attr        = $(this).context.attributes;  //获取执行参数
+        let tips        = $(this).attr('config-tips');   //预先提示文案
+        let url         = $(this).attr('config-href');   //执行地址
+        let isReload    = $(this).attr('config-reload'); //是否刷新当前页面
+        let trueUrl     = $(this).attr('config-true-url'); //执行成功跳转地址
+        let falseUrl    = $(this).attr('config-false-url'); //执行失败跳转地址
+        let data,inputName,inputType,inputValue;
 
         var data = new Object();
-        for (var i = 0; i < attr.length; i++) {
+        for (let i = 0; i < attr.length; i++) {
             if(attr[i].localName.indexOf('data') !== -1 ){
                 data[attr[i].localName.substr(5,attr[i].localName.length)] =  attr[i].value;
             }
@@ -241,9 +239,9 @@ $(function() {
 
         //获取默认值
         if(tagName == 'INPUT' || tagName == 'SELECT'){
-            var inputName  = $(this).attr('name');
+            inputName  = $(this).attr('name');
             if(tagName == 'INPUT'){
-                var inputType = $(this).attr('type');
+                inputType = $(this).attr('type');
                 if(inputType == 'checkbox'){
                     if($(this).prop('checked') == true){
                         data[inputName] =  $(this).attr('config-true-value');
@@ -252,7 +250,7 @@ $(function() {
                     }
                     
                 }else{
-                    var inputValue = $(this).val();
+                    inputValue = $(this).val();
                     if(inputName){
                         data[inputName] = inputValue;
                     }   
@@ -260,88 +258,107 @@ $(function() {
             }
         }
 
-        console.log(data);
-
-
         if(tips){
             layer.confirm(tips, {
               btn: ['确定','取消'] //按钮
             }, function(){
-                //处理通讯堵塞
-                if(!checkBtnBlock()){
-                    return false;
-                } 
-
-                $.post(url,data,function(result){
-                    btnBlock = true; //恢复通道
-                    layer.msg(result.msg);
-                    if(result.status){
-                        setTimeout(function(){
-                            if(trueUrl){
-                                window.location.href= trueUrl;
-                            }else{
-                                location.reload();
-                            }
-                        },1000);
-                        
-                    }else if(!result.status && falseUrl){
-                        setTimeout(function(){
-                            window.location.href= falseUrl;
-                        },1000);
-                    }
-
-                    if(isReload){
-                        setTimeout(function(){
-                            location.reload();
-                        },1000);
-                    }   
-                },"json")
+                submit();
             }, function(){});
         }else{
+            submit();
+        }
+
+        function submit(){
             //处理通讯堵塞
             if(!checkBtnBlock()){
                 return false;
             } 
 
             $.post(url,data,function(result){
-                btnBlock = true; //恢复通道
-                if(result.msg){
-                    layer.msg(result.msg);
-                }
-
-                if(result.status){
-                    setTimeout(function(){
-                        if(trueUrl){
-                            window.location.href= trueUrl;
-                        }else{
-                            location.reload();
-                        }
-                    },1000);
-                }else if(!result.status && falseUrl){
-                    setTimeout(function(){
-                        window.location.href= falseUrl;
-                    },1000);
-                }
-
-                if(isReload){
-                    setTimeout(function(){
-                        location.reload();
-                    },1000);
-                }
+                submitThen(result);
             },"json")
+        }
+
+        function submitThen(result){
+            btnBlock = true; //恢复通道
+            layer.msg(result.msg);
+            if(result.status){
+                setTimeout(function(){
+                    if(trueUrl){
+                        window.location.href= trueUrl;
+                    }else{
+                        location.reload();
+                    }
+                },1000);
+                
+            }else if(!result.status && falseUrl){
+                setTimeout(function(){
+                    window.location.href= falseUrl;
+                },1000);
+            }
+
+            if(isReload){
+                setTimeout(function(){
+                    location.reload();
+                },1000);
+            }   
         }
 
     })
 
     //get提交
     $('.btn-ajax-get').click(function(){
-        var url = $(this).attr('config-href');
-        $.get(url,function(result){
-            layer.msg(result.msg);
-            if(result.status){
-                location.reload();
+        let _this    = this;
+        let tips     = $(this).attr('config-tips');   //预先提示文案
+        if(tips){
+            layer.confirm(tips, {
+              btn: ['确定','取消'] //按钮
+            }, function(){
+                submit(); 
+            }, function(){});  
+        }else{
+            submit();   
+        }
+
+        //提交处理
+        function submit(){
+            let isFrom   = Boolean($(_this).attr('config-from'));
+            let isAsync  = Boolean($(_this).attr('config-async'));
+            let form     = $(_this).parents('.form-horizontal');
+            let url      = $(_this).attr('config-href');
+            let falseValue,trueValue,param;
+        
+            //处理checked 未选中不传值的问题
+            $(form).find('input[type=checkbox]').each(function(){
+                if($(this).attr('config-native')){
+                    return true;
+                }
+
+                falseValue = typeof($(this).attr('config-false-value')) != 'undefined' ?  $(this).attr('config-false-value') : 0;
+                trueValue  = typeof($(this).attr('config-true-value')) != 'undefined' ?  $(this).attr('config-true-value') : 0;
+                if(!$(this).prop('checked')){
+                    $(this).prop('checked',true);
+                    $(this).val(falseValue);
+                }else{
+                    $(this).val(trueValue);
+                }
+            })
+
+            param     = form.serialize();
+            url       +='?'+param;
+
+            if(isAsync){
+                $.get(url,function(result){
+                    layer.msg(result.msg);
+                    if(result.status){
+                        layer.closeAll();
+                    }
+                },"json");
+            }else{
+                layer.closeAll();
+                window.open(url);
             }
-        },"json");
+        }    
     })
 
     //渲染编辑器

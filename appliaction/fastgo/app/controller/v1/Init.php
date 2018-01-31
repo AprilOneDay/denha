@@ -88,33 +88,7 @@ class Init extends Controller
 
     protected function appReturn($value)
     {
-        header("Content-Type:application/json; charset=utf-8");
-        $array = array(
-            'code'   => 200,
-            'status' => true,
-            'data'   => array('list' => array()),
-            'msg'    => '获取数据成功',
-
-        );
-
-        $debug = array(
-            'debug' => array(
-                'param' => array(
-                    'post'  => (array) post('all'),
-                    'get'   => (array) get('all'),
-                    'files' => $_FILES,
-                ),
-                'ip'    => getIP(),
-            ),
-        );
-        $array = array_merge($array, $debug);
-
-        $value = array_merge($array, $value);
-        if ($this->lg != 'zh') {
-            $value['msg'] = dao('BaiduTrans')->baiduTrans($value['msg'], $this->lg);
-        }
-
-        exit(json_encode($value));
+        parent::appReturn($value, $this->lg);
     }
 
     /**
@@ -146,9 +120,6 @@ class Init extends Controller
             }
             //替换数组
             $data = implode(',', array_filter(array_replace($merge, $reslut['data']['name'])));
-/*                var_dump($merge);
-var_dump($reslut['data']['name']);
-var_dump($data);die;*/
         } else {
             $data = implode(',', $reslut['data']['name']);
         }

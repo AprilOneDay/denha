@@ -39,6 +39,35 @@ class Orders extends Init
         $this->show();
     }
 
+    /** 导出 */
+    public function excel()
+    {
+
+        $param = get('param', 'text');
+
+        $map   = $this->getMap();
+        $list  = table('FinanceLog')->where($map)->order('id desc')->find('array');
+        $total = table('FinanceLog')->where($map)->count();
+
+        foreach ($list as $key => $value) {
+            $user               = dao('User')->getInfo($value['uid'], 'nickname,uid');
+            $list[$key]['user'] = $user;
+        }
+
+        $other = array(
+            'typeCopy'        => getVar('type', 'admin.finance'),
+            'issueStatusCopy' => getVar('issue_status', 'admin.finance'),
+        );
+
+        $filename = 'finance_orders' . time();
+        header("Content-type:application/vnd.ms-excel");
+        header("Content-Disposition:attachment;filename=$filename.xls");
+
+        $this->assign('list', $list);
+        $this->assign('other', $other);
+        $this->show();
+    }
+
     /** 获取查询参数 */
     private function getMap()
     {

@@ -122,11 +122,13 @@ class Recipient extends Init
         }
 
         //订单操作记录
-        $result = dao('OrdersLog')->add($this->uid, $recipientSnArray, 4);
+        $result = dao('OrdersLog')->add($this->uid, $recipientSnArray, 6);
         if (!$result) {
             table('Logistics')->rollback();
             $this->appReturn(array('status' => false, 'msg' => '订单状态严重异常'));
         }
+
+        table('Logistics')->commit();
 
         //发送状态推送
         foreach ($successLogistics as $key => $value) {
@@ -138,7 +140,7 @@ class Recipient extends Init
             $pushData['nickname'] = $user['username'];
             $pushData['cid']      = $user['cid'];
 
-            dao('FastgoApi')->updateOrders($pushData, 02);
+            dao('FastgoApi', 'fastgo')->updateOrders($pushData, 02);
         }
 
         $this->appReturn(array('status' => true, 'msg' => '操作成功'));
@@ -165,6 +167,7 @@ class Recipient extends Init
 
         $status = dao('OrdersLog')->getNewStatus($orderSn);
 
+        $data['order_sn'] = $orderSn;
         if ($status == 18) {
             $data['status'] = 2;
         } elseif ($status == 4 || $status == 5) {
