@@ -437,7 +437,7 @@ class User
 
         //获取可达等级
         $map          = array();
-        $map['value'] = array('>=', $value);
+        $map['value'] = array('>=', (int) $value);
 
         $rule = table('UserLevelRule')->where($map)->order('value desc')->find();
         if (!$rule) {

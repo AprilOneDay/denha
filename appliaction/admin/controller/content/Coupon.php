@@ -4,9 +4,10 @@
  */
 namespace app\admin\controller\content;
 
-use denha;
+use app\admin\controller\Init;
+use denha\Pages;
 
-class Coupon extends \app\admin\controller\Init
+class Coupon extends Init
 {
     /**
      * 模板列表
@@ -51,7 +52,7 @@ class Coupon extends \app\admin\controller\Init
 
         $list  = table('Coupon')->where($map)->limit($offer, $pageSize)->order('id desc')->find('array');
         $total = table('Coupon')->where($map)->count();
-        $page  = new denha\Pages($total, $pageNo, $pageSize, url('', $param));
+        $page  = new Pages($total, $pageNo, $pageSize, url('', $param));
 
         foreach ($list as $key => $value) {
             $seller = dao('User')->getInfo($value['uid'], 'nickname,mobile');

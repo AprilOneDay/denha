@@ -120,6 +120,7 @@ class DomesticPackage extends Init
         }
 
         //保存商品信息
+        $volumeWeight = 0;
         foreach ($goodsArray as $key => $value) {
 
             if (array_diff(array_keys($value), array('name', 'spec', 'num', 'price', 'category', 'brand', 'warehouse_id'))) {
@@ -163,7 +164,7 @@ class DomesticPackage extends Init
             }
 
             //包裹重总量
-            $volumeWeight += $value['spec'];
+            $volumeWeight += $value['spec'] * $value['num'];
 
             $result = table('OrdersPackage')->add($value);
             if (!$result) {
