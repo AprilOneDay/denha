@@ -51,7 +51,7 @@ class Orders
                 $ordersLogType = '1,2,3,4,5,6,9';
                 break;
             case '1': //预报包裹入库
-                $ordersLogType = '1,10';
+                $ordersLogType = '7,10';
                 break;
             case '2': //已出库/出库包裹
                 $ordersLogType = '8,15';

@@ -46,6 +46,7 @@ class Circle extends Init
         $data['created'] = TIME;
         $data['uid']     = $this->uid;
         $data['type']    = 1;
+        $data['status']  = 0;
 
         $reslut = table('Circle')->add($data);
         if (!$reslut) {
@@ -63,7 +64,7 @@ class Circle extends Init
             $result = dao('Integral')->add($this->uid, 'user_share');
         }
 
-        $this->appReturn(array('msg' => '分享成功'));
+        $this->appReturn(array('msg' => '发布成功,等待审核后将会显示'));
     }
 
     /**

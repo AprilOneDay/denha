@@ -53,6 +53,8 @@ class IntOutbound extends Init
         $feeWeight           = post('fee_weight', 'text', '');
         $outboundTransportSn = post('outbound_transport_sn', 'text', '');
 
+        $outboundAblum = files('outbound_ablum');
+
         if (!$orderSn) {
             $this->appReturn(array('status' => false, 'msg' => '运单号错误'));
         }
@@ -63,7 +65,7 @@ class IntOutbound extends Init
         $map['type']         = 2;
         $map['del_status']   = 0;
 
-        $logistics = table('Logistics')->where($map)->field('uid,id,console_ablum')->find();
+        $logistics = table('Logistics')->where($map)->field('uid,id,outbound_ablum,fee_weight,outbound_transport_sn')->find();
         if (!$logistics) {
             $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
         }
@@ -73,9 +75,15 @@ class IntOutbound extends Init
             $this->appReturn(array('status' => false, 'msg' => '信息不可操作'));
         }
 
-        $data               = array();
-        $data['fee_weight'] = $feeWeight;
-        $result             = table('Logistics')->where('order_sn', $orderSn)->save($data);
+        $data                          = array();
+        $data['outbound_transport_sn'] = $outboundTransportSn;
+        $data['fee_weight']            = $feeWeight;
+
+        if ($outboundAblum) {
+            $data['outbound_ablum'] = $this->appUpload($outboundAblum, '', 'fastgo');
+        }
+
+        $result = table('Logistics')->where('order_sn', $orderSn)->save($data);
 
         if ($status) {
             if (!$logistics['fee_weight']) {
@@ -84,6 +92,10 @@ class IntOutbound extends Init
 
             if (!$logistics['outbound_transport_sn']) {
                 $this->appReturn(array('status' => false, 'msg' => '请先上传运单号'));
+            }
+
+            if (!$logistics['outbound_ablum']) {
+                $this->appReturn(array('status' => false, 'msg' => '请上传拍照'));
             }
 
             //订单操作记录

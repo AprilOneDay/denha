@@ -30,14 +30,15 @@ class Index extends Init
 
     public function testTaobao()
     {
-
-        $result = dao('TaobaoUser')->add('123456', 'cmj', '123456789');
+        $g      = get('g', 'text', '123456');
+        $result = dao('TaobaoUser')->add($g, 'cmj', '123456789');
         $this->appReturn($result);
     }
 
     public function testTaobao2()
     {
-        dao('TaobaoUser')->index('imuser123,123456');
+        $g = get('g', 'text', 'imuser123,123456');
+        dao('TaobaoUser')->index($g);
     }
 
     public function orderSn()

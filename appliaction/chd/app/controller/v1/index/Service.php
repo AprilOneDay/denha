@@ -25,11 +25,23 @@ class Service extends Init
         }
         $field .= ",id,thumb,is_show,parentid";
 
-        $list = dao('Column', 'undies')->getList($map, $field);
+        $list = table('Column')->where($map)->field($field)->find('array');
         foreach ($list as $key => $value) {
             $list[$key]['finally_name']  = dao('Article')->getLgValue($value, 'name', $this->lg);
             $list[$key]['finally_bname'] = dao('Article')->getLgValue($value, 'bname', $this->lg);
             $list[$key]['thumb']         = $this->appImg($value['thumb'], 'column');
+
+            //获取栏目学习状态
+            $status = 0;
+            if (!$this->uid) {
+                $status = 0;
+            } else {
+                $map              = array();
+                $map['uid']       = $this->uid;
+                $map['column_id'] = $value['id'];
+                $status           = (int) table('ChdUser')->where($map)->field('status')->find('one');
+            }
+            $list[$key]['user_status'] = $status;
         }
 
         $data['list'] = (array) $list;
@@ -72,27 +84,18 @@ class Service extends Init
 
         $data = dao('Article')->getList($map, $field, 1, $pageSize, $pageNo);
 
-        $data['list'] = $data['list'] ? $data['list'] : array();
+        $list = $data['list'] ? $data['list'] : array();
 
-        foreach ($data['list'] as $key => $value) {
-            $data['list'][$key]['thumb'] = $this->appImg($value['thumb'], 'article');
-            $data['list'][$key]['video'] = $value['video'] ? Start::$config['h5Url'] . $value['video'] : '';
+        foreach ($list as $key => $value) {
+            $list[$key]['thumb'] = $this->appImg($value['thumb'], 'article');
+            $list[$key]['video'] = $value['video'] ? Start::$config['h5Url'] . $value['video'] : '';
 
-            $data['list'][$key]['finally_title']       = dao('Article')->getLgValue($value, 'title', $this->lg);
-            $data['list'][$key]['finally_description'] = dao('Article')->getLgValue($value, 'description', $this->lg);
+            $list[$key]['finally_title']       = dao('Article')->getLgValue($value, 'title', $this->lg);
+            $list[$key]['finally_description'] = dao('Article')->getLgValue($value, 'description', $this->lg);
 
-            //获取栏目学习状态
-            $status = 0;
-            if (!$this->uid) {
-                $status = 0;
-            } else {
-                $map              = array();
-                $map['uid']       = $this->uid;
-                $map['column_id'] = $value['id'];
-                $status           = (int) table('ChdUser')->where($map)->field('status')->find('one');
-            }
-            $data['list'][$key]['user_status'] = $status;
         }
+
+        $data['list'] = $list ? $list : array();
 
         $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));
     }

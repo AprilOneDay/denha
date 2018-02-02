@@ -116,7 +116,7 @@ class Coupon extends Init
 
         $list  = table('CouponExchangeRule')->where($map)->limit($offer, $pageSize)->order('sort asc')->find('array');
         $total = table('CouponExchangeRule')->where($map)->count();
-        $page  = new denha\Pages($total, $pageNo, $pageSize, url('', $param));
+        $page  = new Pages($total, $pageNo, $pageSize, url('', $param));
 
         $other = array(
             'categoryCopy' => dao('Category')->getList(19),

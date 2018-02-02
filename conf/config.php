@@ -21,7 +21,7 @@ return array(
     'debug'             => true, // 是否开启调试
     'trace'             => true, // 是否显示页面Trace信息
     'tag_trans'         => true, //是否开启标签翻译功能
-    'app_debug'         => false, //app接口调试模式
+    'app_debug'         => true, //app接口调试模式
 
     /** 微信api */
     'weixin_appid'      => 'wxeec81ef588a9214a',
@@ -44,4 +44,7 @@ return array(
     'send_debug_mail'   => true, //错误信息是否发送邮箱
     'send_mail'         => '350375092@qq.com', //接收邮箱账户
 
+    /** 微信小程序 */
+    'wxs_appid'         => 'wxe0d222cdc04d130a',
+    'wxs_secret'        => '8ca3f1386e188315ce2247ea58fed323',
 );

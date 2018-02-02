@@ -24,6 +24,7 @@ class Circle extends Init
         $offer = max(($pageNo - 1), 0) * $pageSize;
 
         $map['del_status'] = 0;
+        $map['status']     = 1;
 
         !$filterId ?: $filterId = explode(',', $filterId);
 
