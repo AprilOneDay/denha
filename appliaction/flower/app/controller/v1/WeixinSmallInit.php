@@ -2,8 +2,9 @@
 namespace app\flower\app\controller\v1;
 
 use denha\Controller;
+use denha\Start;
 
-class Init extends Controller
+class WeixinSmallInit extends Controller
 {
     public $token = '';
     public $uid   = 0;
@@ -14,33 +15,10 @@ class Init extends Controller
 
     public function __construct()
     {
-        !isset($_SERVER['HTTP_TOKEN']) ?: $this->token     = (string) $_SERVER['HTTP_TOKEN'];
-        !isset($_SERVER['HTTP_VERSION']) ?: $this->version = (string) $_SERVER['HTTP_VERSION'];
-        !isset($_SERVER['HTTP_LG']) ?: $this->lg           = (string) $_SERVER['HTTP_LG'];
-        !isset($_SERVER['HTTP_IMEI']) ?: $this->imei       = (string) $_SERVER['HTTP_IMEI'];
-
-        if ($this->token) {
-            $map['token'] = $this->token;
-            $user         = table('User')->where($map)->field('id,uid,type,imei,time_out')->find();
-            if ($user) {
-                if ($user['imei'] != $this->imei && $this->imei) {
-                    $this->appReturn(array('status' => false, 'msg' => '你的账户已在其他手机登录,请重新登录', 'code' => 501));
-                }
-
-                //超过token时间 重新登录
-                /*if ($user['time_out'] < TIME) {
-                $this->appReturn(array('status' => false, 'msg' => '登录超时,请重新登录', 'code' => 501));
-                }*/
-
-                $this->uid   = $user['uid'];
-                $this->group = $user['type'];
-
-                //小于N天后 更新退出时间戳
-                if ($user['time_out'] - TIME <= 3600 * 24 * 2) {
-                    $data['time_out'] = TIME + 3600 * 24 * 20;
-                    $reslut           = table('User')->where(array('id' => $user['id']))->save($data);
-                }
-            }
+        $token = get('token', 'text', '');
+        if ($token) {
+            $this->uid   = auth($token, 'DECODE');
+            $this->group = 1;
         }
     }
 
@@ -156,14 +134,14 @@ class Init extends Controller
      */
     public function appImgArray($data = '', $path = '', $size = 0)
     {
-        $data = $data ? (array) imgUrl($data, $path, 0, getConfig('config.app', 'imgUrl')) : array();
+        $data = $data ? (array) imgUrl($data, $path, 0, Start::$config['imgUrl']) : array();
         return (array) $data;
     }
 
     public function appImg($data = '', $path = '', $size = 0)
     {
 
-        $data = imgUrl($data, $path, 0, getConfig('config.app', 'imgUrl'));
+        $data = imgUrl($data, $path, 0, Start::$config['imgUrl']);
         return (string) $data;
     }
 }

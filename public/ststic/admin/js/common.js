@@ -228,9 +228,7 @@ $(function() {
         let isReload    = $(this).attr('config-reload'); //是否刷新当前页面
         let trueUrl     = $(this).attr('config-true-url'); //执行成功跳转地址
         let falseUrl    = $(this).attr('config-false-url'); //执行失败跳转地址
-        let data,inputName,inputType,inputValue;
-
-        var data = new Object();
+        let data = new Object(),inputName,inputType,inputValue;
         for (let i = 0; i < attr.length; i++) {
             if(attr[i].localName.indexOf('data') !== -1 ){
                 data[attr[i].localName.substr(5,attr[i].localName.length)] =  attr[i].value;

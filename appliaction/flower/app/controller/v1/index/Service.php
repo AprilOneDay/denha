@@ -5,10 +5,10 @@
 namespace app\flower\app\controller\v1\index;
 
 use app\app\controller;
-use app\flower\app\controller\v1\Init;
+use app\flower\app\controller\v1\WeixinSmallInit;
 use denha\Start;
 
-class Service extends Init
+class Service extends WeixinSmallInit
 {
 
     /** 栏目分类 */
@@ -68,7 +68,7 @@ class Service extends Init
         if ($this->lg != 'zh') {
             $field = "title_{$this->lg},description_{$this->lg}";
         }
-        $field .= ",id,thumb,thumb,video,created";
+        $field .= ",id,thumb,video,created";
 
         $data = dao('Article')->getList($map, $field, 1, $pageSize, $pageNo);
 
@@ -80,6 +80,70 @@ class Service extends Init
 
             $data['list'][$key]['finally_title']       = dao('Article')->getLgValue($value, 'title', $this->lg);
             $data['list'][$key]['finally_description'] = dao('Article')->getLgValue($value, 'description', $this->lg);
+
+            //获取栏目学习状态
+            $status = 0;
+            if (!$this->uid) {
+                $status = 0;
+            } else {
+                $map              = array();
+                $map['uid']       = $this->uid;
+                $map['column_id'] = $value['id'];
+                $status           = (int) table('ChdUser')->where($map)->field('status')->find('one');
+            }
+            $data['list'][$key]['user_status'] = $status;
+        }
+
+        $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));
+    }
+
+    /**
+     * 列表内容
+     * @date   2017-12-04T10:46:16+0800
+     * @author ChenMingjiang
+     * @return [type]                   [description]
+     */
+    public function lists_5()
+    {
+        $pageNo   = get('pageNo', 'intval', 1);
+        $pageSize = get('pageSize', 'intval', 10);
+        $offer    = max(($pageNo - 1), 0) * $pageSize;
+
+        $columnId = get('cid', 'intval', 0);
+        $keyword  = get('keyword', 'text', '');
+
+        if (!$columnId) {
+            $this->appReturn(array('stauts' => false, 'msg' => '参数错误'));
+        }
+
+        $map['column_id'] = $columnId;
+
+        if ($keyword) {
+            $field            = $this->lg != 'zh' ? 'title_' . $this->lg : 'title';
+            $map[$field]      = array('instr', $keyword);
+            $map['column_id'] = array('not in', '61,62,63,64,65');
+        }
+
+        $field = 'title,description,address';
+        if ($this->lg != 'zh') {
+            $field = "title_{$this->lg},description_{$this->lg},address_{$this->lg}";
+        }
+        $field .= ",id,created,lng,lat";
+
+        $data = dao('Article')->getList($map, $field, 5, $pageSize, $pageNo);
+
+        $data['list'] = $data['list'] ? $data['list'] : array();
+
+        foreach ($data['list'] as $key => $value) {
+
+            $point = baiduToTenxun($value['lat'], $value['lng']);
+
+            $data['list'][$key]['lat'] = $point['lat'];
+            $data['list'][$key]['lng'] = $point['lng'];
+
+            $data['list'][$key]['finally_title']       = dao('Article')->getLgValue($value, 'title', $this->lg);
+            $data['list'][$key]['finally_description'] = dao('Article')->getLgValue($value, 'description', $this->lg);
+            $data['list'][$key]['finally_address']     = dao('Article')->getLgValue($value, 'address', $this->lg);
 
             //获取栏目学习状态
             $status = 0;
@@ -120,7 +184,7 @@ class Service extends Init
         if ($this->lg != 'zh') {
             $field = "title_{$this->lg},content_{$this->lg},description_{$this->lg}";
         }
-        $field .= ',created,column_id,id';
+        $field .= ',created,column_id,id,btitle';
 
         $data = dao('Article')->getRowContent($map, $field, 1);
 
