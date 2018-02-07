@@ -122,7 +122,7 @@ class LocalStorage extends Init
         //推送站内信
         foreach ($successLogistics as $key => $value) {
             $sendData['order_sn'] = $value['order_sn'];
-            dao('Message')->send($value['uid'], 'user_logistics_3', $sendData, array(), 0, 2);
+            dao('Message')->send($value['uid'], 'user_logistics_3', $sendData, 0, 2, $this->lg);
         }
 
         //推送Fastgo系统

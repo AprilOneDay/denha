@@ -119,7 +119,7 @@ class Orders extends Init
         foreach ($logisticsArray as $key => $value) {
             $sendData['shop_name'] = $shopName;
             $sendData['order_sn']  = $value['order_sn'];
-            dao('Message')->send($value['uid'], 'user_logistics_2', $sendData, array(), 0, $value['type']);
+            dao('Message')->send($value['uid'], 'user_logistics_2', $sendData, 0, $value['type'], $this->lg);
 
             //推送FastGo系统
             $pushData['order_sn'] = $value['order_sn'];

@@ -56,10 +56,6 @@ class DomesticPackage extends Init
             $this->appReturn(array('status' => false, 'msg' => '地址信息不存在'));
         }
 
-        if (!$address['back_code'] || !$address['positive_code']) {
-            $this->appReturn(array('status' => false, 'msg' => '请上传收货人身份证照片'));
-        }
-
         $warehouseInfo = table('WarehouseInfo')->where('category_id', $warehouseId)->find();
         if (!$warehouseInfo) {
             $this->appReturn(array('status' => false, 'msg' => '库房信息不存在'));
@@ -105,6 +101,11 @@ class DomesticPackage extends Init
         $data['unit']     = $unit;
         $data['origin']   = $this->origin;
         $data['created']  = TIME;
+
+        //如果是网点则直挂载当前网点下
+        if ($this->group == 2) {
+            $data['seller_uid'] = $this->uid;
+        }
 
         table('Orders')->startTrans();
 
@@ -281,10 +282,6 @@ class DomesticPackage extends Init
         $address    = table('UserAddress')->where($map)->find();
         if (!$address) {
             $this->appReturn(array('status' => false, 'msg' => '地址信息不存在'));
-        }
-
-        if (!$address['back_code'] || !$address['positive_code']) {
-            $this->appReturn(array('status' => false, 'msg' => '请上传收货人身份证照片'));
         }
 
         if ($shipAddressId) {

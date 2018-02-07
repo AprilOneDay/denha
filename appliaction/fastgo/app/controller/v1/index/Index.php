@@ -10,6 +10,18 @@ use app\fastgo\app\controller\v1\Init;
 class Index extends Init
 {
 
+    public function testIDCard()
+    {
+        $g      = get('g', 'text', '');
+        $result = dao('Regular')->isIDCard($g);
+        var_dump($result);
+    }
+
+    public function repairFieldIsNew()
+    {
+        dao('OrdersLog')->repairFieldIsNew();
+    }
+
     public function testOrdersLog()
     {
         $result = table('OrdersLog')->add(123, 123, 9);
@@ -30,8 +42,11 @@ class Index extends Init
 
     public function testTaobao()
     {
-        $g      = get('g', 'text', '123456');
-        $result = dao('TaobaoUser')->add($g, 'cmj', '123456789');
+        $uid  = get('uid', 'text', '123456');
+        $name = get('name', 'text', 'cmj');
+        $psd  = get('psd', 'text', '123456789');
+
+        $result = dao('TaobaoUser')->add($uid, $name, $psd);
         $this->appReturn($result);
     }
 

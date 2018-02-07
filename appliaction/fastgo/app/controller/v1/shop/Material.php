@@ -42,13 +42,14 @@ class Material extends Init
     /** 申请上门取件 */
     public function apply()
     {
-        $applyTime = post('apply_time', 'intval', 0);
+        $startTime = post('start_time', 'time', 0);
+        $endTime   = post('end_time', 'time', 0);
         $num       = post('num', 'intval', 0);
         $message   = post('message', 'text', '');
 
         $goods = post('goods', 'json');
 
-        if (!$applyTime || $applyTime < TIME) {
+        if (!$startTime || !$endTime) {
             $this->appReturn(array('status' => false, 'msg' => '请选择正确的上门取件时间'));
         }
 
@@ -71,7 +72,8 @@ class Material extends Init
         //保存申请
         $orderSn = dao('Orders')->createOrderSn();
 
-        $data['apply_time']  = $applyTime;
+        $data['start_time']  = $startTime;
+        $data['end_time']    = $endTime;
         $data['num']         = $num;
         $data['message']     = $message;
         $data['material_sn'] = $orderSn;

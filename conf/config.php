@@ -38,8 +38,8 @@ return array(
     'baidu_trans_key'   => 'dEmcRIqvTsUWa1greRa4',
 
     /** 淘宝即时通讯API */
-    'taobao_key'        => '24777145',
-    'taobao_secret'     => '8dc19dc6731cbbb4a2a9ec026a166b32',
+    'taobao_key'        => '24781173',
+    'taobao_secret'     => '440456bd39cf4d66bd9ffe70dae68c6d',
 
     /** 邮件发送配置 */
     'send_debug_mail'   => true, //错误信息是否发送邮箱

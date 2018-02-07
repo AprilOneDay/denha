@@ -108,7 +108,7 @@ class IntOutbound extends Init
             $sendData             = array();
             $sendData['order_sn'] = $orderSn;
 
-            dao('Message')->send($logistics['uid'], 'user_logistics_4', $sendData, array(), 0, 3);
+            dao('Message')->send($logistics['uid'], 'user_logistics_4', $sendData, 0, 3, $this->lg);
 
         }
 

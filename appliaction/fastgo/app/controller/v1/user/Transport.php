@@ -13,7 +13,7 @@ class Transport extends Init
     {
         parent::__construct();
         //检测用户登录权限
-        $this->checkIndividual('1,2');
+        $this->checkIndividual('1');
     }
 
     /** 设置默认中转地址 */

@@ -38,7 +38,7 @@ class UserMaterial extends Init
         //获取当日需要分配的任务
         $map               = array();
         $map['uid']        = array('in', $userArray);
-        $map['apply_time'] = array('between', $beginToday, $endToday);
+        $map['start_time'] = array('between', $beginToday, $endToday);
 
         //print_r($map);die;
 
@@ -78,7 +78,7 @@ class UserMaterial extends Init
         //批量预检测
         foreach ($materialSnArray as $key => $value) {
             $map               = array();
-            $map['apply_time'] = array('between', $beginToday, $endToday);
+            $map['start_time'] = array('between', $beginToday, $endToday);
             $map['status']     = 1;
 
             $isMaterial = table('Material')->where($map)->field('id')->find();

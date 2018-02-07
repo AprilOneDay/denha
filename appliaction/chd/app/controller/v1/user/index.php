@@ -19,7 +19,7 @@ class Index extends Init
     /** 会员中心 */
     public function index()
     {
-        $user = table('User')->where('id', $this->uid)->field('username,avatar,nickname,mail,sex')->find();
+        $user = table('User')->where('id', $this->uid)->field('username,avatar,mobile,nickname,mail,sex')->find();
 
         $user['country_copy'] = dao('Category')->getName($user['country']);
         $user['sex_copy']     = dao('Category')->getName($user['sex']);

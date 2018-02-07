@@ -507,10 +507,6 @@ class Mysqli
             $this->limit(1);
         }
 
-        if ($value == 'array' || ($value == 'one' && $isArray)) {
-            if ($this->limit == '') {$this->limit(1000);}
-        }
-
         $this->_sql = 'SELECT ' . $this->field . ' FROM ' . $this->table;
 
         empty($this->join) ?: $this->_sql .= $this->join;

@@ -73,4 +73,19 @@ class File
         return array('status' => file_exists($destination), 'msg' => '操作完成', 'data' => $data);
 
     }
+
+    /**
+     * xls文件导入数据库
+     * @date   2018-02-07T17:12:53+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $file      [文件]
+     * @param  string                   $tableName [数据库名称]
+     * @return [type]                              [description]
+     */
+    public function xlsImport($file, $tableName = '')
+    {
+        if (!$tableName) {
+            return false;
+        }
+    }
 }
