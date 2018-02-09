@@ -15,4 +15,6 @@
     RewriteCond %{HTTP_HOST} ^jkadmin.59156.cn [NC]
     RewriteCond %{REQUEST_URI} !^(\/vendor|\/ststic|\/uploadfile)(.*)$ [NC]
     RewriteRule ^ admin.host.php [L]
+
+    # ^http://shiyousan.com/((?!vendor|ststic|uploadfile).)*$
 </IfModule>

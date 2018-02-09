@@ -331,7 +331,11 @@ class Mysqli
         } else {
             $newValue = $value;
         }
-        $this->order = ' ORDER BY ' . $newValue;
+
+        if ($newValue) {
+            $this->order = ' ORDER BY ' . $newValue;
+        }
+
         return $this;
     }
 

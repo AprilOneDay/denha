@@ -27,7 +27,7 @@ class Orders extends Init
         //推送新订单
         dao('Orders', 'fastgo')->pushOrders();
         //将不存在照片的订单 移动到问题状态中去
-        dao('Orders', 'fastgo')->removeOrdersLogType25($this->uid);
+        //dao('Orders', 'fastgo')->removeOrdersLogType25($this->uid);
 
         $param['type']   = get('type', 'text', '1,2');
         $param['status'] = get('status', 'text', '');

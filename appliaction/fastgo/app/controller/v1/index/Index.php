@@ -42,18 +42,29 @@ class Index extends Init
 
     public function testTaobao()
     {
-        $uid  = get('uid', 'text', '123456');
-        $name = get('name', 'text', 'cmj');
-        $psd  = get('psd', 'text', '123456789');
+        $param['uid']      = get('uid', 'text', '123456');
+        $param['nickname'] = get('name', 'text', 'cmj');
+        $param['password'] = get('psd', 'text', '123456789');
 
-        $result = dao('TaobaoUser')->add($uid, $name, $psd);
+        $result = dao('TaobaoUser')->add($param);
         $this->appReturn($result);
     }
 
     public function testTaobao2()
     {
-        $g = get('g', 'text', 'imuser123,123456');
-        dao('TaobaoUser')->index($g);
+        $g      = get('g', 'text', 'imuser123,123456');
+        $result = dao('TaobaoUser')->index($g);
+        $this->appReturn($result);
+    }
+
+    public function testTaobao3()
+    {
+        $param['uid']      = get('uid', 'text', '123456');
+        $param['nickname'] = get('name', 'text', 'cmj');
+        $param['password'] = get('psd', 'text', '123456789');
+
+        $result = dao('TaobaoUser')->update($param);
+        $this->appReturn($result);
     }
 
     public function orderSn()

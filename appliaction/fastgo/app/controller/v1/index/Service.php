@@ -112,8 +112,8 @@ class Service extends Init
         $data['finally_content']     = dao('Article')->getLgValue($data, 'content', $this->lg);
         $data['finally_title']       = dao('Article')->getLgValue($data, 'title', $this->lg);
         $data['finally_description'] = dao('Article')->getLgValue($data, 'description', $this->lg);
+        $data['finally_content']     = dao('Article')->appContent($data['finally_content']);
 
-        $data['content'] = str_replace('src="', 'src="' . Start::$config['h5Url'], $data['content']);
         $this->assign('data', $data);
 
         $this->appReturn(array('msg' => '获取数据成功', 'data' => $data));

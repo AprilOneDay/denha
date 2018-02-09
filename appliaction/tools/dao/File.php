@@ -6,6 +6,11 @@ namespace app\tools\dao;
 
 class File
 {
+    public function __construct()
+    {
+        //set_time_limit(0);
+    }
+
     /**
      * 将多个文件压缩成一个zip文件的函数
      * @date   2017-11-15T10:12:02+0800
@@ -82,10 +87,36 @@ class File
      * @param  string                   $tableName [数据库名称]
      * @return [type]                              [description]
      */
-    public function xlsImport($file, $tableName = '')
+    public function xlsImport($path)
     {
-        if (!$tableName) {
-            return false;
+        ini_set('memory_limit', '2044M');
+        //包含类文件
+        require_once APP_PATH . 'tools' . DS . 'vendor' . DS . 'PHPExcel' . DS . 'Classes' . DS . 'PHPExcel' . DS . 'IOFactory.php';
+
+        if (!is_file($path)) {
+            return array('status' => false, 'msg' => '文件不存在');
         }
+
+        $reader        = \PHPExcel_IOFactory::createReader('Excel5');
+        $PHPExcel      = $reader->load($path); // 载入excel文件
+        $sheet         = $PHPExcel->getSheet(0); // 读取第一個工作表
+        $highestRow    = $sheet->getHighestRow(); // 取得总行数
+        $highestColumm = $sheet->getHighestColumn(); // 取得总列数
+
+        //var_dump($PHPExcel);
+        //var_dump($highestRow);
+        //var_dump($highestColumm);
+
+        //行数是以第1行开始
+        for ($row = 1; $row <= 1000; $row++) {
+            $dataColumn = array();
+            for ($column = 'A'; $column <= $highestColumm; $column++) {
+                $dataColumn[] = $sheet->getCell($column . $row)->getValue();
+            }
+
+            $data[] = $dataColumn;
+        }
+
+        return $data;
     }
 }

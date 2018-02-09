@@ -114,15 +114,6 @@ class Address extends Init
             if (preg_match("/[\x7f-\xff]/", $checkContent)) {
                 $this->appReturn(array('status' => false, 'msg' => '国际转运必须输入英文信息'));
             }
-        } elseif ($data['type'] == 1) {
-            if (strlen($data['mobile']) != 11 || !is_numeric($data['mobile'])) {
-                $this->appReturn(array('status' => false, 'msg' => '请输入正确的手机号'));
-            }
-
-            if (!dao('Regular')->isIDCard($data['code'])) {
-                $this->appReturn(array('status' => false, 'msg' => '请输入正确的身份证号'));
-            }
-
         }
 
         if ($id) {

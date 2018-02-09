@@ -50,10 +50,6 @@ class Transport extends Init
             $this->appReturn(array('status' => false, 'msg' => '请上传订单编号'));
         }
 
-        if (!$volumeWeight) {
-            $this->appReturn(array('status' => false, 'msg' => '请输入预估重量'));
-        }
-
         if (!$storageTransportSn) {
             $this->appReturn(array('status' => false, 'msg' => '请填写转运单号'));
         }

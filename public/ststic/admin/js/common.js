@@ -553,18 +553,6 @@ $(function() {
         }
     })
 
-    //隐式上传
-    $('.btn-files-none').each(function(){
-        let _this    = this;
-        let name     = $(this).attr('config-name');
-        let content  = '<input type="file" style="display:none;" id="'+name+'"  multiple="multiple">';
-        $(_this).after(content);
-
-        $(this).click(function(){
-            console.log(name);
-            $('input[id="'+name+'"]').trigger('click');
-        })
-    })
 
     //上传文件
     $('.btn-files').each(function(){  

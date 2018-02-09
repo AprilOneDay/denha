@@ -21,6 +21,7 @@ class Category extends Init
         $id = get('id', 'intval', 0);
 
         $data = $this->appArray(dao('Category')->getList($id, $this->lg));
+
         $this->appReturn(array('data' => $data));
     }
 
@@ -32,9 +33,35 @@ class Category extends Init
      */
     public function getAllList()
     {
-        $id = get('id', 'intval', 0);
+        $id      = get('id', 'intval', 0);
+        $alias_2 = get('alias_2', 'text', '');
 
-        $data = dao('Category')->getListAllInfo($id, '', $this->lg);
+        if ($alias_2) {
+
+            $map['parentid'] = $id;
+            $map['alias_2']  = $alias_2;
+
+            $field = 'id,thumb,name,bname,bname_2';
+            if ($this->lg && $this->lg != 'zh') {
+                $field .= ',name_' . $this->lg;
+            }
+
+            $field .= $fieldValue ? $fieldValue : '';
+            $list = table('Category')->where($map)->field($field)->order('bname asc,sort asc')->find('array');
+
+            foreach ($list as $key => $value) {
+                if ($this->lg != 'zh' && $this->lg) {
+                    $list[$key]['value'] = $value['name_' . $this->lg];
+                } else {
+                    $list[$key]['value'] = $value['name'];
+                }
+            }
+
+            $data = $list ? $list : array();
+
+        } else {
+            $data = dao('Category')->getListAllInfo($id, '', $this->lg);
+        }
         $this->appReturn(array('data' => $data));
     }
 
