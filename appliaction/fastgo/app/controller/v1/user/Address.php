@@ -19,12 +19,17 @@ class Address extends Init
     /** 我的地址列表 */
     public function lists()
     {
-        $type = get('type', 'intval', 1);
-        $sign = get('sign', 'intval', 1);
+        $type    = get('type', 'intval', 1);
+        $sign    = get('sign', 'intval', 1);
+        $keyword = get('keyword', 'text', '');
 
         $map['uid']  = $this->uid;
         $map['type'] = $type;
         $map['sign'] = $sign;
+
+        if ($keyword != '') {
+            $map["_string"] = " ( instr(name,'$keyword') or instr(address,'$keyword') or instr(mobile,'$keyword') )";
+        }
 
         $list = table('UserAddress')->where($map)->order('is_default desc')->find('array');
         foreach ($list as $key => $value) {
@@ -175,6 +180,7 @@ class Address extends Init
             if (!$result) {
                 $this->appReturn(array('status' => false, 'msg' => '操作失败,取消默认的时候中断了....'));
             }
+
         }
         //设置默认
         else {
@@ -196,4 +202,5 @@ class Address extends Init
 
         $this->appReturn(array('msg' => '操作成功'));
     }
+
 }

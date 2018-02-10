@@ -38,10 +38,6 @@ class User extends Init
         $password2 = $data['password'];
         $isAgree   = post('is_agree', 'intval', 0);
 
-        if (!$data['country']) {
-            $this->appReturn(array('status' => false, 'msg' => '请输入国家'));
-        }
-
         if (!$data['mobile']) {
             $this->appReturn(array('status' => false, 'msg' => '请输入手机号'));
         }

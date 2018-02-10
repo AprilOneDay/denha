@@ -10,6 +10,18 @@ use app\fastgo\app\controller\v1\Init;
 class Index extends Init
 {
 
+    public function testIDCard()
+    {
+        $g      = get('g', 'text', '');
+        $result = dao('Regular')->isIDCard($g);
+        var_dump($result);
+    }
+
+    public function repairFieldIsNew()
+    {
+        dao('OrdersLog')->repairFieldIsNew();
+    }
+
     public function testOrdersLog()
     {
         $result = table('OrdersLog')->add(123, 123, 9);
@@ -30,15 +42,29 @@ class Index extends Init
 
     public function testTaobao()
     {
-        $g      = get('g', 'text', '123456');
-        $result = dao('TaobaoUser')->add($g, 'cmj', '123456789');
+        $param['uid']      = get('uid', 'text', '123456');
+        $param['nickname'] = get('name', 'text', 'cmj');
+        $param['password'] = get('psd', 'text', '123456789');
+
+        $result = dao('TaobaoUser')->add($param);
         $this->appReturn($result);
     }
 
     public function testTaobao2()
     {
-        $g = get('g', 'text', 'imuser123,123456');
-        dao('TaobaoUser')->index($g);
+        $g      = get('g', 'text', 'imuser123,123456');
+        $result = dao('TaobaoUser')->index($g);
+        $this->appReturn($result);
+    }
+
+    public function testTaobao3()
+    {
+        $param['uid']      = get('uid', 'text', '123456');
+        $param['nickname'] = get('name', 'text', 'cmj');
+        $param['password'] = get('psd', 'text', '123456789');
+
+        $result = dao('TaobaoUser')->update($param);
+        $this->appReturn($result);
     }
 
     public function orderSn()

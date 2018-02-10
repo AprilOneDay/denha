@@ -23,8 +23,9 @@ class DomesticPackage extends Init
         $warehouseId = post('warehouse_id', 'text', 0);
         $addressId   = post('address_id', 'text', '');
 
-        $isBuySafe = post('is_buy_safe', 'intval', 0);
-        $message   = post('message', 'text', '');
+        $isBuySafe          = post('is_buy_safe', 'intval', 0);
+        $message            = post('message', 'text', '');
+        $storageTransportSn = post('storage_transport_sn', 'text', '');
 
         $shipAddressId = post('ship_address_id', 'intval');
         $goodsArray    = post('goods', 'json');
@@ -54,10 +55,6 @@ class DomesticPackage extends Init
         $address = table('UserAddress')->where($map)->find();
         if (!$address) {
             $this->appReturn(array('status' => false, 'msg' => '地址信息不存在'));
-        }
-
-        if (!$address['back_code'] || !$address['positive_code']) {
-            $this->appReturn(array('status' => false, 'msg' => '请上传收货人身份证照片'));
         }
 
         $warehouseInfo = table('WarehouseInfo')->where('category_id', $warehouseId)->find();
@@ -105,6 +102,11 @@ class DomesticPackage extends Init
         $data['unit']     = $unit;
         $data['origin']   = $this->origin;
         $data['created']  = TIME;
+
+        //如果是网点则直挂载当前网点下
+        if ($this->group == 2) {
+            $data['seller_uid'] = $this->uid;
+        }
 
         table('Orders')->startTrans();
 
@@ -175,6 +177,7 @@ class DomesticPackage extends Init
 
         //保存物流信息
         $data                            = array();
+        $data['storage_transport_sn']    = $storageTransportSn;
         $data['logistics_name']          = $address['name'];
         $data['logistics_mobile']        = $address['mobile'];
         $data['logistics_country']       = $address['country'];
@@ -225,6 +228,9 @@ class DomesticPackage extends Init
         $map['uid']      = $this->uid;
 
         $orders = table('Orders')->where($map)->field('id,order_sn,message')->find();
+        if (!$orders) {
+            $this->appReturn(array('status' => false, 'msg' => '信息不存在'));
+        }
 
         $data['orders']    = $orders;
         $data['goodsList'] = table('OrdersPackage')->where('order_sn', $orders['order_sn'])->find('array');
@@ -243,7 +249,8 @@ class DomesticPackage extends Init
     public function editOrderPost()
     {
 
-        $addressId = post('address_id', 'text', '');
+        $storageTransportSn = post('storage_transport_sn', 'text', '');
+        $addressId          = post('address_id', 'text', '');
 
         $isBuySafe = post('is_buy_safe', 'intval', 0);
         $message   = post('message', 'text', '');
@@ -254,6 +261,10 @@ class DomesticPackage extends Init
         $shipAddressId = post('ship_address_id', 'intval');
 
         $orderSn = post('order_sn', 'text', '');
+
+        if (!$orderSn) {
+            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
+        }
 
         //查询物流信息
         $map             = array();
@@ -283,10 +294,6 @@ class DomesticPackage extends Init
             $this->appReturn(array('status' => false, 'msg' => '地址信息不存在'));
         }
 
-        if (!$address['back_code'] || !$address['positive_code']) {
-            $this->appReturn(array('status' => false, 'msg' => '请上传收货人身份证照片'));
-        }
-
         if ($shipAddressId) {
             $map        = array();
             $map['uid'] = $this->uid;
@@ -296,7 +303,7 @@ class DomesticPackage extends Init
         } else {
             //$sender = $warehouseInfo;
             //获取fasto默认发货地址
-            $sender = dao('orders', 'fastgo')->fastgoAddress();
+            $sender = dao('Orders', 'fastgo')->fastgoAddress();
         }
 
         if (!$sender) {
@@ -387,16 +394,17 @@ class DomesticPackage extends Init
         }
 
         //保存物流信息
-        $data                       = array();
-        $data['logistics_name']     = $address['name'];
-        $data['logistics_mobile']   = $address['mobile'];
-        $data['logistics_country']  = $address['country'];
-        $data['logistics_province'] = $address['province'];
-        $data['logistics_city']     = $address['city'];
-        $data['logistics_area']     = $address['area'];
-        $data['logistics_zip_code'] = $address['zip_code'];
-        $data['logistics_address']  = $address['address'];
-        $data['logistics_code']     = $address['code'];
+        $data                         = array();
+        $data['storage_transport_sn'] = $storageTransportSn;
+        $data['logistics_name']       = $address['name'];
+        $data['logistics_mobile']     = $address['mobile'];
+        $data['logistics_country']    = $address['country'];
+        $data['logistics_province']   = $address['province'];
+        $data['logistics_city']       = $address['city'];
+        $data['logistics_area']       = $address['area'];
+        $data['logistics_zip_code']   = $address['zip_code'];
+        $data['logistics_address']    = $address['address'];
+        $data['logistics_code']       = $address['code'];
 
         $data['name']    = $sender['name'];
         $data['mobile']  = $sender['mobile'];

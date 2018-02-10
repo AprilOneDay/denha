@@ -77,8 +77,9 @@ class IntStorage extends Init
     /** 操作状态 上传图片 */
     public function update()
     {
-        $status  = post('status', 'intval', 0);
-        $orderSn = post('order_sn', 'text', '');
+        $status       = post('status', 'intval', 0);
+        $orderSn      = post('order_sn', 'text', '');
+        $volumeWeight = post('volume_weight', 'text', '');
 
         $consoleAblum = files('console_ablum');
 
@@ -106,11 +107,19 @@ class IntStorage extends Init
             $this->appReturn(array('status' => false, 'msg' => '信息不可操作'));
         }
 
+        //上传重量
+        if ($volumeWeight) {
+            $data['volume_weight'] = $volumeWeight;
+        }
+
         //上传照片
         if ($consoleAblum) {
-            $data                  = array();
             $data['console_ablum'] = $this->appUpload($consoleAblum, '', 'fastgo');
-            $result                = table('Logistics')->where('order_sn', $orderSn)->save($data);
+        }
+
+        //保存
+        if ($consoleAblum || $volumeWeight) {
+            $result = table('Logistics')->where('order_sn', $orderSn)->save($data);
         }
 
         if ($status) {
@@ -126,11 +135,10 @@ class IntStorage extends Init
                     $this->appReturn(array('status' => false, 'msg' => '订单状态严重异常'));
                 }
 
-                //发送入库通知
+                //发送入库站内信通知
                 $sendData             = array();
                 $sendData['order_sn'] = $orderSn;
-
-                dao('Message')->send($logistics['uid'], 'user_logistics_3', $sendData, array(), 0, 3);
+                dao('Message')->send($logistics['uid'], 'user_logistics_3', $sendData, 0, 3, $this->lg);
 
             }
         }

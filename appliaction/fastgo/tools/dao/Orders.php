@@ -48,7 +48,7 @@ class Orders
 
         switch ($param['status']) {
             case '0': //待入库
-                $ordersLogType = '1,2,3,4,5,6,9';
+                $ordersLogType = '1,2,3,4,5,6,7,9,10';
                 break;
             case '1': //预报包裹入库
                 $ordersLogType = '7,10';
@@ -57,7 +57,7 @@ class Orders
                 $ordersLogType = '8,15';
                 break;
             case '3': //问题包裹
-                $ordersLogType = '16,17,18,19,20,21,22,23';
+                $ordersLogType = '16,17,18,19,20,21,22,23,25';
                 break;
             case '4': //包裹预报/本地直邮
                 $ordersLogType = '1,2,9';
@@ -72,7 +72,7 @@ class Orders
                 $ordersLogType = '13';
                 break;
             case '8': //已付款
-                $ordersLogType = '14';
+                $ordersLogType = '14,15';
                 break;
             case '9': //退件
                 $ordersLogType = '18,17,20';
@@ -98,12 +98,11 @@ class Orders
             $map['_string'] = "concat($lt.logistics_mobile,$lt.logistics_name,$lt.logistics_code) like '%$param[keyword]%'";
         }
 
-        $field = "lt.type,lt.order_sn,lt.outbound_transport_sn,lt.outbound_transport_id,lt.logistics_name,lt.logistics_address,lt.issue_album,lt.user_ablum,ot.created";
+        $field = "lt.type,lt.order_sn,lt.storage_transport_sn,lt.outbound_transport_sn,lt.outbound_transport_id,lt.logistics_name,lt.logistics_address,lt.issue_album,lt.user_ablum,ot.created,lt.outbound_company";
 
         $list = dao('OrdersLog')->getOrdersList($map, $ordersLogType, $pageNo, $pageSize, $field, 'logistics');
 
         foreach ($list as $key => $value) {
-            $tips = '无运单号';
 
             //状态文案
             $map             = array();
@@ -113,10 +112,10 @@ class Orders
 
             //获取订单type
             $list[$key]['status_type'] = (int) $ordersLog['type'];
-            $list[$key]['title']       = $value['order_sn'];
-
-            if ($ordersLog['type'] == 1 || $ordersLog['type'] == 9) {
-                $list[$key]['title'] = $tips;
+            //显示订单编号
+            $list[$key]['title'] = $value['order_sn'];
+            if ($value['type'] == 2 && $ordersLog['type'] == 9) {
+                $list[$key]['title'] = $value['storage_transport_sn'];
             }
 
             $list[$key]['package_status'] = 1;
@@ -185,6 +184,46 @@ class Orders
         $data['list'] = $list ? $list : array();
 
         return $data;
+    }
+
+    /** 剔除非问题的本地直邮不带身份信息 */
+    public function removeOrdersLogType25($uid = 0)
+    {
+        if (!$uid) {
+            return false;
+        }
+
+        $lt  = table('Logistics')->tableName();
+        $olt = table('OrdersLog')->tableName();
+
+        $map                   = array();
+        $map[$lt . '.type']    = 1;
+        $map[$olt . '.type']   = array('!=', 25);
+        $map[$olt . '.is_new'] = 1;
+        $map['_string']        = "( $lt.logistics_back_code = '' or $lt.logistics_positive_code = '' or $lt.logistics_code = '' )";
+
+        $notIDCardArray = table('Logistics')->join($olt, "$olt.order_sn = $lt.order_sn", 'left')->where($map)->field("distinct $lt.order_sn")->find('one', true);
+
+        //更改状态
+        if ($notIDCardArray) {
+            $result = dao('OrdersLog')->add($uid, $notIDCardArray, 25);
+        }
+    }
+
+    /** 推送订单 */
+    public function pushOrders()
+    {
+        $map['is_pull']    = 0;
+        $map['del_status'] = 0;
+
+        $list = table('Logistics')->where($map)->limit(0, 2)->field('order_sn')->find('one', true);
+        foreach ($list as $key => $value) {
+            $result = dao('FastgoApi', 'fastgo')->addOrders($value);
+            if ($result['status']) {
+                $result = table('Logistics')->where('order_sn', $value)->save('is_pull', 1);
+            }
+
+        }
     }
 
     public function changeIssueStatus($param)
@@ -279,6 +318,9 @@ class Orders
                 break;
             case '24':
                 $msgCopy = '国内派件';
+                break;
+            case '25':
+                $msgCopy = '身份证信息缺失';
                 break;
             default:
                 # code...

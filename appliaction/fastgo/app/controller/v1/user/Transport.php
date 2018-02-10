@@ -13,7 +13,7 @@ class Transport extends Init
     {
         parent::__construct();
         //检测用户登录权限
-        $this->checkIndividual('1,2');
+        $this->checkIndividual('1');
     }
 
     /** 设置默认中转地址 */
@@ -48,10 +48,6 @@ class Transport extends Init
 
         if (!$orderSn) {
             $this->appReturn(array('status' => false, 'msg' => '请上传订单编号'));
-        }
-
-        if (!$volumeWeight) {
-            $this->appReturn(array('status' => false, 'msg' => '请输入预估重量'));
         }
 
         if (!$storageTransportSn) {
