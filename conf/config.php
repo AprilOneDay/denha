@@ -46,6 +46,6 @@ return array(
     'send_mail'         => '350375092@qq.com', //接收邮箱账户
 
     /** 微信小程序 */
-    'wxs_appid'         => 'wxe0d222cdc04d130a',
-    'wxs_secret'        => '8ca3f1386e188315ce2247ea58fed323',
+    'wxs_appid'         => 'wx8ae62b0d8ad31d28', //wx8ae62b0d8ad31d28
+    'wxs_secret'        => 'bef08514721db1f7250409a86d44a66d', //8ca3f1386e188315ce2247ea58fed323
 );
