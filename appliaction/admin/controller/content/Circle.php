@@ -69,6 +69,19 @@ class Circle extends Init
             $data = table('Circle')->where('id', $id)->find();
         }
 
+        $this->assign('data', $data);
         $this->show();
+    }
+
+    /** 更新状态 */
+    public function changeStatus()
+    {
+        $id    = post('id', 'intval', 0);
+        $value = post('value', 'text', '');
+
+        //print_r($id);
+        //print_r($value);
+
+        $this->ajaxReturn(array('status' => true, 'msg' => '请求错误', 'data' => $id));
     }
 }

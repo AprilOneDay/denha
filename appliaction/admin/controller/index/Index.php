@@ -17,6 +17,18 @@ class Index extends Init
         if ($this->thisConsoleMenusId) {
             $this->thisConsoleMenusTopId = table('ConsoleMenus')->where('id', $this->thisConsoleMenusId)->field('parentid')->find('one');
         }
+
+        // $map['uid >']       = 1;
+        // $map['id']          = 0;
+        // $map['time in']     = array(1, 2, 3, 45, 5);
+        // $map['abc between'] = array(1111, 22222);
+        // $map['time2 in']    = '1,2,3,4,5,6,7';
+        // $map['time3 in']    = '';
+        // $map['_string']     = 'abc != 1 or abc != 2';
+
+        // $a = Database::getInstance();
+        // $b = $a->table('user')->where('id not in', '1,2,3,4')->where('uid !=', 0)->whereMap($map)->field()->select();
+
     }
 
     public function index()

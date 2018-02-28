@@ -113,7 +113,13 @@ class Category extends Init
     /** 获取国际区号 */
     public function country()
     {
-        $data = $this->appArray(getVar('country', 'sms'));
+
+        $tmpList = dao('Category')->getListAllInfo('1061', '', $this->lg);
+        foreach ($tmpList as $key => $value) {
+            $list[$value['bname']] = $value['value'];
+        }
+
+        $data = $list ? $list : array();
         $this->appReturn(array('data' => $data));
     }
 

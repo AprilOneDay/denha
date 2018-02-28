@@ -15,6 +15,7 @@ class ValidateCode
     private $font; //指定的字体
     private $fontsize = 20; //指定字体大小
     private $fontcolor; //指定字体颜色
+
     //构造方法初始化
     public function __construct()
     {

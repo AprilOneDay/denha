@@ -38,9 +38,6 @@ class Route
             self::$route();
         }
 
-        //debug
-        //print_r(self::$path);die;
-
     }
 
     //app 路由结构

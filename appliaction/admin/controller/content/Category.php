@@ -26,7 +26,7 @@ class Category extends Init
 
         $list = table('Category')->where($map)->order('sort asc')->find('array');
         foreach ($list as $key => $value) {
-            $list[$key]['is_show'] = $value['is_show'] ? '√' : '×';
+            $list[$key]['is_show_copy'] = $value['is_show'] ? '√' : '×';
         }
 
         $this->assign('parentid', $parentid);
@@ -70,8 +70,6 @@ class Category extends Init
         $data['bname_2'] = post('bname_2', 'text', '');
         $data['thumb']   = post('thumb', 'img', '');
 
-        $data['bname'] ?: $data['bname'] = $data['name'];
-
         if ($add == 1 && !$data['name']) {
             $this->ajaxReturn(array('status' => false, 'msg' => '请输入分类名称'));
         }
@@ -90,7 +88,7 @@ class Category extends Init
                         $data['name']  = trim($value[0]);
                         $data['bname'] = $value[1];
                     } else {
-                        $data['name'] = $data['bname'] = $value;
+                        $data['name'] = $value;
                     }
                     $result = table('Category')->add($data);
                 }
@@ -111,25 +109,7 @@ class Category extends Init
     {
         $chlid = post('id', 'intval');
 
-        //删除所有下级分类 引用 &很重要 不然返回不了完整信息
-        $delCategory = function ($chlid, &$idArray) use (&$delCategory) {
-            $idArray[] = $chlid;
-            //获取下级分类
-            $chlidList = table('Category')->where('parentid', $chlid)->field('id')->find('one', true);
-
-            //递归条件
-            if ($chlidList) {
-                foreach ($chlidList as $key => $value) {
-                    $i++;
-                    $delCategory((int) $value, $idArray);
-                }
-            }
-            //返回需要删除的id
-            return $idArray;
-        }; //记得这里必须加``;``分号，不加分号php会报错，闭包函数
-
-        //执行闭包函数
-        $idArray = $delCategory($chlid);
+        $idArray = $this->getChildIdArray($chlid);
 
         //执行删除操作
         $map['id'] = array('in', $idArray);
@@ -139,6 +119,72 @@ class Category extends Init
         }
 
         $this->appReturn(array('status' => true, 'msg' => '删除成功'));
+    }
+
+    /** 快速修改参数 */
+    public function changeData()
+    {
+        $id    = post('id', 'intval', 0);
+        $field = post('field', 'text', '');
+        $value = post('name', 'text', '');
+
+        if (!$id || !in_array($field, array('name', 'name_en', 'name_jp', 'bname'))) {
+            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
+        }
+
+        $result = table('Category')->where('id', $id)->save($field, $value);
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '修改失败'));
+        }
+
+        $this->appReturn(array('status' => true, 'msg' => '修改成功'));
+    }
+
+    /** 修改分类显示状态 */
+    public function changeShow()
+    {
+        $id           = post('id', 'intval', 0);
+        $childIdArray = $this->getChildIdArray($id);
+
+        $isShow = table('Category')->where('id', $id)->field('is_show')->find('one');
+
+        $map       = array();
+        $map['id'] = array('in', $childIdArray);
+
+        $data            = array();
+        $data['is_show'] = $isShow == 1 ? 0 : 1;
+
+        $result = table('Category')->where($map)->save($data);
+        if (!$result) {
+            $this->appReturn(array('status' => false, 'msg' => '修改失败'));
+        }
+
+        $this->appReturn(array('status' => true, 'msg' => '修改成功'));
+
+    }
+
+    private function getChildIdArray($id)
+    {
+        //删除所有下级分类 引用 &很重要 不然返回不了完整信息
+        $childIdArray = function ($chlid, &$idArray) use (&$childIdArray) {
+            $idArray[] = $chlid;
+            //获取下级分类
+            $chlidList = table('Category')->where('parentid', $chlid)->field('id')->find('one', true);
+
+            //递归条件
+            if ($chlidList) {
+                foreach ($chlidList as $key => $value) {
+                    $i++;
+                    $childIdArray((int) $value, $idArray);
+                }
+            }
+            //返回需要删除的id
+            return $idArray;
+        }; //记得这里必须加``;``分号，不加分号php会报错，闭包函数
+
+        $idArray = $childIdArray($id);
+
+        return $idArray;
     }
 
     /**
@@ -157,7 +203,7 @@ class Category extends Init
         $pageSize = get('pageSize', 'intval', 10);
         $offer    = max(($pageNo - 1), 0) * $pageSize;
 
-        if ($param['parentid']) {
+        if ($param['parentid'] != '') {
             $map['parentid'] = array('in', $param['parentid']);
         } elseif ($param['id']) {
             $map['id'] = array('in', $param['id']);
@@ -175,7 +221,7 @@ class Category extends Init
                 if (isset($value['name_' . $param['to']]) && $transValue) {
                     $result = table('Category')->where('id', $value['id'])->save('name_' . $param['to'], $transValue);
                     if ($result) {
-                        echo '翻译 ' . $value['name'] . ' 为 ' . $transValue . ' 更改成功' . PHP_EOL;
+                        echo '翻译 ' . $value['name'] . ' 为 ' . $transValue . ' 更改成功<br/>' . PHP_EOL;
                     }
                 }
             }

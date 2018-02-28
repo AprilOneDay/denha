@@ -26,7 +26,7 @@ class Recipient extends Init
 
         $map               = array();
         $map['assign_uid'] = $this->uid;
-        $map['apply_time'] = array('between', $beginToday, $endToday);
+        $map['start_time'] = array('between', $beginToday, $endToday);
 
         if ($keyword) {
             $map             = array();

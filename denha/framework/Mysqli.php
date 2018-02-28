@@ -339,6 +339,11 @@ class Mysqli
         return $this;
     }
 
+    protected function parseField()
+    {
+
+    }
+
     /**
      * 判断是否存在该数据表
      * @date   2017-03-19T16:18:01+0800
@@ -633,14 +638,14 @@ class Mysqli
      * @param  string                   $data [description]
      * @return [type]                         [description]
      */
-    public function save($data = '', $value = '')
+    public function save($data = '', $value = null)
     {
         if (!$this->where) {
             return false;
         }
 
         $newField = '';
-        if ($value !== '' && !is_array($data)) {
+        if ($value !== null && !is_array($data)) {
             $value    = str_replace('\\', '\\\\', $value);
             $value    = str_replace('\'', '\\\'', $value);
             $newField = '`' . $data . '`=\'' . $value . '\'';
