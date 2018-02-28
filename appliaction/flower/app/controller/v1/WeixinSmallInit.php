@@ -11,14 +11,18 @@ class WeixinSmallInit extends Controller
     public $version;
     public $group;
     public $lg = 'zh'; //返回提示信息语言版本
-    public $imei;
+    public $familySn;
 
     public function __construct()
     {
         $token = get('token', 'text', '');
         if ($token) {
-            $this->uid   = auth($token, 'DECODE');
-            $this->group = 1;
+            $this->group    = 1;
+            $this->uid      = auth($token, 'DECODE');
+            $this->familySn = table('BillFamily')->where('uid', $this->uid)->field('family_sn')->find('one');
+            if (!$this->familySn) {
+                $this->appReturn(array('status' => false, 'msg' => '账户信息异常', 'code' => 501));
+            }
         }
     }
 
