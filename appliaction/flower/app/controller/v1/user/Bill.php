@@ -97,29 +97,35 @@ class Bill extends WeixinSmallInit
 
     public function add()
     {
-        $money = get('money', 'text', '');
-        $type  = get('type', 'text', '');
-        $sign  = get('sign', 'text', '');
-        $time  = get('time', 'time', '');
-
-        if (!in_array($type, array(1055, 1056))) {
-            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
-        }
+        $money  = get('money', 'float', 0.00);
+        $sign   = get('sign', 'text', '');
+        $time   = get('time', 'time', '');
+        $remark = get('remark', 'text', '');
 
         if (!$sign) {
             $this->appReturn(array('status' => false, 'msg' => '请选择收支项目'));
         }
 
-        if (!$money || !is_numeric($money)) {
-            $this->appReturn(array('status' => false, 'msg' => '金额有误'));
+        if (!is_numeric($money)) {
+            $this->appReturn(array('status' => false, 'msg' => '请输入金额'));
+        }
+
+        $map['uid']     = $this->uid;
+        $map['money']   = abs($money);
+        $map['sign']    = $sign;
+        $map['created'] = array('between', TIME - 60 * 60, TIME);
+        $isLog          = table('BillLog')->where($map)->field('id')->find();
+        if ($isLog) {
+            $this->appReturn(array('status' => false, 'msg' => '请勿重复提交记录'));
         }
 
         $data['family_sn'] = $this->familySn;
         $data['uid']       = $this->uid;
-        $data['money']     = $money;
+        $data['money']     = abs($money);
         $data['sign']      = $sign;
-        $data['type']      = $type == 1056 ? 1 : 2;
+        $data['type']      = $money >= 0 ? 1 : 2;
         $data['created']   = $time ? $time : TIME;
+        $data['remark']    = $remark;
 
         $result = table('BillLog')->add($data);
         if (!$result) {
