@@ -54,7 +54,7 @@
 									<thead>
 										<tr>
 											<th style="width:75px;">ID</th>
-											<th style="width:120px;">图集</th>
+											<th>图集</th>
 											<th>摘要</th>
 											<th style="width:120px;">用户昵称</th>
 											<th style="width:120px;">发布时间</th>
@@ -69,13 +69,16 @@
 											<td>{$value['id']}</td>
 											<td>
 												{loop $value['ablum'] $v}
-													<img src="{F:imgUrl($v,'circle')}" width="50" />
+													<img src="{F:imgUrl($v,'circle')}" width="50" style="margin-right:10px; " />
 												{/loop}
 											</td>
 											<td>{$value['description']}</td>
 											<td>{$value['user']['nickname']}</td>
 											<td>{F:date('Y-m-d H:i',$value['created'])}</td>
-											<td>{$other['statusCopy'][$value['status']]}</td>
+											<td>
+												<a class="btn-ajax" dh-method="POST" dh-url="{F:url('changeStatus')}" data-id="{$value['id']}" data-value="{$value['status']}">{$other['statusCopy'][$value['status']]}
+												</a>
+											</td>
 											<td>{$other['delStatusCopy'][$value['del_status']]}</td>
 											<td align='center'>
 												<a config-href="{F:url('edit',array('column_id'=>$value['column_id'],'id'=>$value['id']))}" config-title="编辑文章" config-width="90%"  config-height="90%" class="btn-open">编辑</a>

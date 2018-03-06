@@ -14,6 +14,190 @@ $(function() {
         return true;
     }
 
+    function dhAjax(event){
+        let config       = new Object();
+        let tagName      = $(event).get(0).tagName;               //获取元素类型
+        let attr         = $(event).context.attributes;           //获取执行参数
+        let form         = $(event).parents('.dh-from');          //执行from范围
+        let debug        = bool($(event).attr('dh-debug'));
+        let data = new Object(),inputName,inputType,inputValue;
+
+        config.confim_tips  = $(event).attr('dh-confim');              //预先提示文案
+        config.url          = $(event).attr('dh-url');                 //执行地址
+        config.true_reload  = $(event).attr('dh-true-reload');        //是否刷新当前页面
+        config.true_url     = $(event).attr('dh-true-url');            //执行成功跳转地址
+        config.false_url    = $(event).attr('dh-false-url');           //执行失败跳转地址
+        config.is_async     = $(event).attr('dh-async');         //是否弹出新窗口 true新窗口执行 false当前页面执行
+        config.alert_time   = Number($(event).attr('dh-alert-time'));  //弹框显示时间
+        config.method       = $(event).attr('dh-method');            //请求方式 POST GET PUT DELETE
+
+        //method默认GET
+        config.method      =  !config.method ? 'GET' : config.method.toUpperCase(); 
+        //默认显示1秒
+        config.alert_time  =  !config.alert_time ? 1000 : config.alert_time; 
+        //默认执行成功刷新
+        config.true_reload =  !config.true_reload ? true : bool(config.true_reload);
+        //默认不弹新窗口
+        config.is_async     = !config.is_async ? false : bool(config.is_async);
+
+
+        if(!config.url){
+            return layer.msg('请求URL不能为空');
+        }
+
+        function bool (value){
+            if(!value ||  value == '' || value == 0 || value == '0' || value == 'false' || value == false){
+                return false;
+            }
+
+            return true;
+        }
+
+        //获取参数
+        for (let i = 0; i < attr.length; i++) {
+            if(attr[i].localName.indexOf('data') !== -1 ){
+                data[attr[i].localName.substr(5,attr[i].localName.length)] =  attr[i].value;
+            }
+        }
+
+        //获取默认值
+        if(tagName == 'INPUT' || tagName == 'SELECT'){
+            inputName  = $(event).attr('name');
+            if(tagName == 'INPUT'){
+                inputType = $(event).attr('type');
+                if(inputType == 'checkbox'){
+                    if($(event).prop('checked') == true){
+                        data[inputName] =  $(event).attr('config-true-value');
+                    }else{
+                        data[inputName] =  $(event).attr('config-false-value');
+                    }
+                    
+                }else{
+                    inputValue = $(event).val();
+                    if(inputName){
+                        data[inputName] = inputValue;
+                    }   
+                }
+            }
+        }
+
+        if(debug){
+            console.log('-----执行时间-------');
+            console.log(new Date());
+            console.log('-----获取debug状态-------');
+            console.log(debug);
+            console.log('-----获取参数信息-------');
+            console.log(config);
+            console.log('-----DATA信息-------');
+            console.log(data);
+            console.log('-----END-------');
+            return;
+        }
+
+        if(config.confim_tips){
+            layer.confirm(config.confim_tips, {
+              btn: ['确定','取消'] //按钮
+            }, function(){
+                submit();
+            }, function(){});
+        }else{
+            submit();
+        }
+
+        function submit(){
+
+            //直接弹出信息窗口
+            if(config.is_async){
+                layer.closeAll();
+
+                 //附带参数
+                let asyncParam = '';
+                for(let key in data){
+                    asyncParam += key+'='+data[key]+'&';
+                }
+
+                asyncParam = asyncParam.length > 1 ? asyncParam.substr(0,asyncParam.length-1) : '';
+                if(asyncParam){
+                     config.url += config.url.indexOf('?') !== '-1' ?  '?' + asyncParam : '&'+asyncParam; 
+                } 
+
+                window.open(config.url);
+                return;
+            }
+
+            //处理通讯堵塞
+            if(!checkBtnBlock()){
+                return false;
+            } 
+
+            //处理checked 未选中不传值的问题
+            $(form).find('input[type=checkbox]').each(function(){
+                if($(this).attr('dh-native')){
+                    return true;
+                }
+
+                falseValue = typeof($(this).attr('dh-false-value')) != 'undefined' ?  $(this).attr('dh-false-value') : 0;
+                trueValue  = typeof($(this).attr('dh-true-value')) != 'undefined' ?  $(this).attr('dh-true-value') : 0;
+                if(!$(this).prop('checked')){
+                    $(this).prop('checked',true);
+                    $(this).val(falseValue);
+                }else{
+                    $(this).val(trueValue);
+                }
+            })
+
+            let xhr      = new XMLHttpRequest();
+            let formData = new FormData();
+
+
+            xhr.open(config.method, config.url, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 304)) {  // 304未修改
+                    submitThen(xhr.responseText);
+                }
+            };
+
+            if(data){
+                for(let key in data){
+                    formData.append(key,data[key]);
+            　　};
+            }
+
+            xhr.send(formData);
+
+        }
+
+        function submitThen(result){
+            btnBlock = true; //恢复通道
+
+            try {  
+                result = JSON.parse(result);
+            } catch(e) {  
+                return layer.msg('返回结果非JSON格式:'+result);
+            }
+           
+            layer.msg(result.msg);
+            //成功跳转地址
+            if(result.status  && config.true_url){
+                setTimeout(function(){
+                    window.location.href= config.true_url;
+                },config.alert_time);
+                
+            }//成功后刷新当前页面
+            else if(result.status && config.true_reload){
+                setTimeout(function(){
+                    location.reload();
+                },config.alert_time);
+            }
+            //错误信息跳转地址
+            else if(!result.status && config.false_url){
+                setTimeout(function(){
+                    window.location.href= config.false_url;
+                },config.alert_time);
+            }
+        }
+    }
+
     //绑定初试信息
     $('select').each(function() {
         let data = $(this).attr('data-selected');
@@ -219,6 +403,22 @@ $(function() {
     })
 
     //提交post信息
+    $('.btn-ajax').click(function(){
+        dhAjax(this);
+    })
+
+    //提交post信息
+    $('.change-ajax').change(function(){
+        dhAjax(this);
+    })
+
+    //提交post信息
+    $('.focus-ajax').focus(function(){
+        dhAjax(this);
+    })
+
+
+    //提交post信息
     $('.btn-ajax-post').click(function(){
         let tagName = $(this).get(0).tagName;
 
@@ -228,6 +428,7 @@ $(function() {
         let isReload    = $(this).attr('config-reload'); //是否刷新当前页面
         let trueUrl     = $(this).attr('config-true-url'); //执行成功跳转地址
         let falseUrl    = $(this).attr('config-false-url'); //执行失败跳转地址
+        let isAsync     = Boolean($(_this).attr('config-async')); //是否弹出新窗口 true新窗口执行 false当前页面执行
         let data = new Object(),inputName,inputType,inputValue;
         for (let i = 0; i < attr.length; i++) {
             if(attr[i].localName.indexOf('data') !== -1 ){
@@ -256,6 +457,7 @@ $(function() {
             }
         }
 
+
         if(tips){
             layer.confirm(tips, {
               btn: ['确定','取消'] //按钮
@@ -271,6 +473,7 @@ $(function() {
             if(!checkBtnBlock()){
                 return false;
             } 
+
 
             $.post(url,data,function(result){
                 submitThen(result);

@@ -20,7 +20,9 @@ class Category
 
         if (!isset(self::$category[$id])) {
             $map['parentid'] = $id;
-            $list            = table('Category')->where($map)->order('name asc,sort asc')->find('array');
+            $map['is_show']  = 1;
+
+            $list = table('Category')->where($map)->order('name asc,sort asc')->find('array');
 
             self::$category[$id] = null;
 
@@ -47,8 +49,13 @@ class Category
      */
     public function getListAllInfo($id = 0, $fieldValue = '', $lg = '')
     {
+<<<<<<< HEAD
 
         $map['parentid'] = array('in', $id);
+=======
+        $map['parentid'] = $id;
+        $map['is_show']  = 1;
+>>>>>>> 451358e657e979939c5042afab125d67041ab0a5
 
         $field = 'id,thumb,name,bname,bname_2';
         if ($lg && $lg != 'zh') {
@@ -56,7 +63,11 @@ class Category
         }
 
         $field .= $fieldValue ? $fieldValue : '';
+<<<<<<< HEAD
         $list = table('Category')->where($map)->field($field)->order('parentid asc,sort asc,name asc')->find('array');
+=======
+        $list = table('Category')->where($map)->field($field)->order('sort asc,bname asc')->find('array');
+>>>>>>> 451358e657e979939c5042afab125d67041ab0a5
 
         foreach ($list as $key => $value) {
             if ($lg != 'zh' && $lg) {
