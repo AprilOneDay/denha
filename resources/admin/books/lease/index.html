@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+    <title>后台管理</title>
+    {include /admin/public/global_css}
+</head>
+
+<body>
+    <div id="console-setting-menus-edit">
+        <div class="modal-content">
+            <div class="modal-body clearfix">
+                <form class="form-horizontal" action="">
+                    <input type="hidden" value="{??$data['id']}" name="id">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">
+                                        <span class="text-danger">*</span>
+                                        <span>会员卡/手机号</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <div class="col-sm-8">
+                                            <select class="form-control">
+                                                <option dh-for="lists">{{v.goods_sn}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">
+                                        <span class="text-danger">*</span>
+                                        <span>会员卡/手机号</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <div class="col-sm-8">
+                                            <input type="hidden" dh-bulid="uid">
+                                            <input type="text" dh-oninput="getUser" dh-event="oninput:getUser" placeholder="输入会员卡/手机号" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">
+                                        <span class="text-danger">*</span>
+                                        <span>会员姓名</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <div class="col-sm-8">
+                                            <input type="text" dh-bulid="real_name" placeholder="会员姓名" disabled class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">
+                                        <span class="text-danger">*</span>
+                                        <span>图书编号</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <div class="col-sm-8">
+                                            <input type="text" dh-bulid="goods_sn" dh-oninput="getBook" dh-event="oninput:getBook" placeholder="扫码/输入图书编号" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div class="console-form">
+                                <div class="mt8">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>商品编号</th>
+                                                <th>商品名称</th>
+                                                <th>价格</th>
+                                                <th width="160">租借天数</th>
+                                                <th width="160">预估价格</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr dh-for="lists" dh-key="key" dh-val="v">
+                                                <td>{{v.goods_sn}}</td>
+                                                <td>{{v.title}}</td>
+                                                <td>¥ {{v.price}}</td>
+                                                <td>
+                                                    <input type="text" value="{??$data['name']}" name="name" placeholder="会员姓名" class="form-control w160">
+                                                </td>
+                                                <td>
+                                                    <input type="text" value="{??$data['name']}" name="name" placeholder="会员姓名" class="form-control w160">
+                                                </td>
+                                                <td><a href="javascript:;" data-id="{{key}}" dh-event="onclick:del">删除</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" dh-event="onclick:del" data-id="0" class="btn btn-primary btn-comply">确定</button>
+                        <button type="button" class="btn btn-default" id="btn-close">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {include /admin/public/global_js}
+    <script type="text/javascript" src="__PUBLIC__/ststic/admin/js/twoWay.js?version={$version}"></script>
+    <script type="text/javascript">
+    var app = new DenHa({
+        data: {
+            goods_sn: '',
+            real_name: '',
+            uid: 0,
+            lists: [],
+        },
+
+        del: function() {
+             var _this = this;
+             var id = _this.el.dataset.id;
+             _this.data.lists.splice(id);
+        },
+
+        getUser: function() {
+            var _this = this;
+            console.log(_this)
+            $.post("{:url('getUser')}", { account: _this.el.value }, function(res) {
+                if (res.status) {
+                    app.data.real_name = res.data.real_name;
+                    app.data.uid = res.data.uid;
+                } else {
+                    if (app.data.real_name && app.data.uid) {
+                        app.data.real_name = '';
+                        app.data.uid = 0;
+                    }
+                }
+            });
+        },
+
+        getBook: function() {
+            var _this = this;
+            console.log(_this)
+            $.post("{:url('getBook')}", { goods_sn: _this.el.value }, function(res) {
+                if (res.status) {
+                    _this.data.goods_sn = '';
+                    _this.data.lists.push(res.data);
+                }
+            }, "json");
+        }
+    })
+    </script>
+</body>
+
+</html>

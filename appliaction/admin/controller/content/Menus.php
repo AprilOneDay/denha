@@ -82,7 +82,7 @@ class Menus extends Init
         $data['bname_en'] = post('bname_en', 'text', '');
         $data['bname_jp'] = post('bname_jp', 'text', '');
 
-        $data['url']      = post('url', 'text', '');
+        $data['url']      = post('url', 'text', 'content/article_list/lists');
         $data['jump_url'] = post('jump_url', 'text', '');
 
         $data['model_id'] = post('model_id', 'intval', 0);

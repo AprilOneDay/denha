@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>导出Excel</title>
+</head> 
+<body>  
+<table width="100%" cellspacing="0" border="1">
+	<thead>
+		<tr>
+			<th align="left">昵称</th>
+			<th align="left">姓名</th>
+			<th align="left">电话</th>	
+			<th align="left">地址</th>
+			<th align="left">总分</th>
+			<th align="left">得分</th>
+			<th align="left">开考时间</th>
+			<th align="left">用时</th>
+			<th align="left">openid</th>
+			
+		</tr>
+	</thead>
+	<tbody>
+		{loop $list $key $value}
+	 	<tr>
+			<td>{$value['user']['nickname']}</td>
+			<td>{$value['user']['real_name']}</td>
+			<td>{$value['user']['mobile']}</td>
+			<td>{$value['user']['address']}</td>
+			<td>{$value['total_score']}</td>
+			<td>{$value['score']}</td>
+			<td>{:date('Y-m-d H:i:s',$value['start_time'])}</td>
+			<td>大约{:reset($value['use_time'])}{$other['timeCopy'][key($value['use_time'])]}</td>
+			<td>{$value['user']['username']}</td>
+		</tr>
+		{/loop}
+	</tbody>
+</table>
+</body>  
+</html>

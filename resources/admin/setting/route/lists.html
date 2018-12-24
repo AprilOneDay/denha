@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <meta name="keywords" content="" />
+    <title>后台管理</title>
+    {include /admin/public/global_css}
+</head>
+
+<body>
+    <div id="console-admin-index">
+        <div class="view-content-container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="console-title console-title-border clearfix">
+                        <div class="pull-left">
+                            <h5>路由规则</h5>
+                        </div>
+                        <div class="pull-right">
+                            <a class="btn btn-primary btn-open" dh-url="{:url('edit')}" dh-height="60%" dh-width="80%">添加规则</a>
+                        </div>
+                    </div>
+                    <div class="console-form">
+                        <div class="mt8">
+                            <form>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>规则名称</th>
+                                            <th>原路由地址</th>
+                                            <th>新路由地址</th>
+                                            <th>后缀限制</th>
+                                            <th style="width:200px;text-align:center;">状态</th>
+                                            <th style="text-align:center;">编辑/操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {loop $list $key $value}
+                                        <tr>
+                                            <td>{$value['id']}</td>
+                                            <td>{$value['name']}</td>
+                                            <td>{$value['url']}/{$value['params']}</td>
+                                            <td>/{$value['change_url']}{if $value['suffix'] == '/'}/{elseif $value['suffix'] != ''}.{$value['suffix']}{/if}
+                                            </td>
+                                            <td>{if $value['limit_suffix']}{$value['limit_suffix']}{else}无限制{/if}</td>
+                                            <td align='center'>
+                                                <input type="checkbox" name="status" {if $value['status'] == 1}checked{/if}  data-size="small" data-on-text="开启" data-off-text="关闭" data-handle-width="150" data-id="{$value['id']}" class="btn-ajax btn-checkbox-switch" dh-method="post" dh-url="{:url('changeStatus')}" dh-true-reload="false" data-true-value="1" data-false-value="0" data-id="{$value['id']}"  />
+                                            </td>
+                                            
+                                            </td>
+                                            <td align='center'>
+                                                <a dh-title="编辑路由规则" class="btn-open" dh-url="{:url('edit',array('id'=>$value['id']))}" dh-height="60%" dh-width="80%">编辑</a>
+                                                <span class="text-explode">|</span>
+                                                <a dh-url="{:url('delete')}" class="btn-ajax" dh-method="post" dh-confirm="确定删除路由:【{$value['name']}】?" data-id="{$value['id']}">删除</a>
+                                            </td>
+                                        </tr>
+                                        {/loop}
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {include /admin/public/global_js}
+    <script type="text/javascript">
+    $('.btn-checkbox-switch').each(function() {
+        $(this).bootstrapSwitch({
+            // onSwitchChange: function(event, state) {
+            //     // console.log(state, event.isDefaultPrevented());
+            //     // return console.log(state, event.isDefaultPrevented())
+            // }
+        });
+    })
+    </script>
+</body>
+
+</html>

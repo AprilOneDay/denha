@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <meta name="keywords" content="" />
+    <title>后台管理</title>
+    {include /admin/public/global_css}
+</head>
+
+<body>
+    <div id="console-setting-menus-edit">
+        <div class="modal-content">
+            <form class="form-horizontal" role="form" action="">
+                <input type="hidden" value="{??$data['id']}" name="id">
+                <div class="panel-body">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">
+                                <span class="text-danger">*</span>
+                                <span>缩略图</span>
+                            </label>
+                            <div class="col-sm-8">
+                                <a class="btn btn-primary btn-ablum" dh-name="info[path]" dh-value="{??$data['path']}" dh-path="banner" data-max="1">添加图片</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">
+                                <span class="text-danger"></span>
+                                <span>简介</span>
+                            </label>
+                            <div class="col-sm-8">
+                                <textarea name="info[description]" placeholder="简介" class="form-control">{??$data['description']}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">
+                                <span class="text-danger">*</span>
+                                <span>排序</span>
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" value="{??$data['sort']}" name="info[sort]" placeholder="排序" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">
+                                <span class="text-danger">*</span>
+                                <span>跳转方式</span>
+                            </label>
+                            <div class="col-sm-8">
+                                <select dh-selected="{default:$data['jump_type']|1}" name="info[jump_type]" class="form-control w160">
+                                    {loop $other['jumpTypeCopy'] $key $value}
+                                    <option value="{$key}">{$value}</option>
+                                    {/loop}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">
+                                <span class="text-danger">*</span>
+                                <span>跳转链接</span>
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" value="{??$data['jump_url']}" name="info[jump_url]" placeholder="跳转链接" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">
+                                <span class="text-danger">*</span>
+                                <span>APP原生跳转类型</span>
+                            </label>
+                            <div class="col-sm-8">
+                                <select dh-selected="{??$data['app_type']}" name="info[app_type]" class="form-control w160">
+                                    {loop $other['appTypeCopy'] $key $value}
+                                    <option value="{$key}">{$value}</option>
+                                    {/loop}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">
+                                <span class="text-danger">*</span>
+                                <span>APP原生跳转值</span>
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" value="{??$data['app_value']}" name="info[app_value]" placeholder="APP原生跳转值" class="form-control">
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-comply" click="comply">确定</button>
+                    <button type="button" class="btn btn-default" id="btn-close">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {include /admin/public/global_js}
+    <script type="text/javascript">
+    </script>
+</body>
+
+</html>

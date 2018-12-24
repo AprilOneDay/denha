@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+	<meta name="keywords" content=""/>
+	<title>后台管理</title>
+	{include /admin/public/global_css}
+</head>
+  	<body>
+	<div id="console-setting-menus-index">
+		<div class="view-content-container" >
+			<div class="row">
+				<form class="form-horizontal" action="{:url('menus/update_sort')}">
+					<div class="col-sm-12">
+						<div class="console-title console-title-border clearfix">
+							<div class="pull-left">
+								<h5>菜单列表</h5>
+							</div>
+							<div class="pull-right">
+								<a class="btn btn-primary btn-open" dh-url="{:url('edit')}"  dh-height="70%">添加菜单</a>
+								<a class="btn btn-primary btn-comply">更新排序</a>
+							</div>
+						</div>
+						<div class="console-form">
+							<div class="mt8 table-responsive">
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												<th style="width:70px;">#</th>
+												<th style="width:75px;">ID</th>
+												<th>菜单名称</th>
+												<th style="width:280px;">请求地址</th>
+												<th style="width:80px; text-align:center;">排序</th>
+												<th style="width:80px; text-align:center;">状态</th>
+												<th style="width:80px; text-align:center;">显示</th>
+												<th style="width:160px; text-align:center;">编辑/操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											{loop $list $key $value}
+										 	<tr>
+										 		<td align="center"><input type="text" class="form-control" value="{$value['sort']}" name="id[{$value['id']}]"></td>
+												<td>{$value['id']}</td>
+												<td>
+													<span>{??$value['delimiter']}</span>{$value['name']}
+													{if !$value['is_show']}
+														<span style="color: red">[隐]</span>
+													{/if}
+												</td>
+												<td><a href="{$value['url']}">{$value['url']}</a></td>
+												<td align='center'>{$value['sort']}</td>
+												<td align='center'>{$value['status']}</td>
+												<td align='center'>{$value['is_show_copy']}</td>
+												<td align='center'>
+													<a class="btn-open" dh-url="{:url('edit',array('parentid'=>$value['id']))}" dh-title="编辑菜单" dh-height="70%" data-parentId="list.id">添加子菜单</a>
+													<span class="text-explode">|</span>
+													<a class="btn-open" dh-url="{:url('edit',array('id'=>$value['id']))}" dh-title="编辑菜单" data-id="list.id" config-tooltip="{$value['name']}"  dh-height="70%">编辑</a>
+													<span class="text-explode">|</span>
+													<a class="btn-ajax" dh-method="post" dh-confirm="确定删除菜单:【{$value['name']}】?" dh-url="{:url('delete')}" data-id="{$value['id']}">删除</a>
+												</td>
+											</tr>
+											{/loop}
+										</tbody>
+									</table>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	{include /admin/public/global_js}
+	<script type="text/javascript">
+	</script>
+</body>
+</html>

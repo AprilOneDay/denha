@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <meta name="keywords" content="" />
+    <title>后台管理</title>
+    {include /admin/public/global_css}
+</head>
+
+<body>
+    <!-- 2 选择标签-->
+    <div class="aui_state_focus aui_state_lock">
+        <div class="aui_outer">
+            <table class="aui_border" style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td class="aui_nw"></td>
+                        <td class="aui_n"></td>
+                        <td class="aui_ne"></td>
+                    </tr>
+                    <tr>
+                        <td class="aui_w"></td>
+                        <td class="aui_c">
+                            <div class="aui_inner">
+                                <table class="aui_dialog">
+                                    <tbody>
+                                        <tr>
+                                            <td class="aui_icon" style="display: none;">
+                                                <div class="aui_iconBg" style="background: none;"></div>
+                                            </td>
+                                            <td class="aui_main">
+                                                <div class="aui_content" style="padding: 5px 0px;">
+                                                    <div class="pad-10">
+                                                        <div class="common-form">
+                                                            <fieldset>
+                                                                <div class="submit-list">
+                                                                    <input type="text" class="tag_inp input-text" name="valArr" id="{$valueName}" readonly="readonly">
+                                                                    <input type="hidden" name="idArr" id="{$idName}" value="">
+                                                                </div>
+                                                                <table width="100%" class="table_form">
+                                                                    {loop $list $key $value}
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td colspan="2">
+                                                                                <a href="javascript:;" class="mall-tag-menu open" data="group_{$key}">-</a>{$value['name']}</td>
+                                                                        </tr>
+                                                                        <tr class="group_{$key}">
+                                                                            <td colspan="2" class="pl30">
+                                                                                {loop $value['child'] $k $v}
+                                                                                <label class="ib check">
+                                                                                    <input type="checkbox" class="dh-checkbox mall-tag-check" value="{$v['id']}" name="check[]" dh-checked="{??$checkValue}" dh-native="false" data-id="{$v['id']}" data-value="{$v['name']}">&nbsp;{$v['name']}
+                                                                                </label>
+                                                                                {/loop}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                    {/loop}
+                                                                </table>
+                                                            </fieldset>
+                                                        </div>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                </div>
+                        </td>
+                        <td class="aui_e"></td>
+                    </tr>
+                    <tr>
+                        <td class="aui_sw"></td>
+                        <td class="aui_s"></td>
+                        <td class="aui_se" style="cursor: se-resize;"></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+        <!-- /选择标签-->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary btn-save">提交保存</button>
+            <button type="button" class="btn btn-default" id="btn-close">取消</button>
+        </div>
+        </form>
+    </div>
+    {include /admin/public/global_js}
+    <script type="text/javascript">
+    var valArr = [],
+        idArr = [];
+
+    $('.mall-tag-check').click(function() {
+        if ($(this).prop('checked')) {
+            valArr.push($(this).attr('data-value'));
+            idArr.push($(this).attr('data-id'));
+        } else {
+            index = valArr.indexOf($(this).val());
+            valArr.splice(index, 1);
+            idArr.splice(index, 1);
+        }
+
+        $('input[name="valArr"]').val(valArr.join(','));
+        $('input[name="idArr"]').val(idArr.join(','));
+    })
+
+    $('.btn-save').click(function() {
+        $('.submit-list').find('input').each(function() {
+            var id = $(this).attr('id');
+            parent.$('body').find('input[name="' + id + '"]').val($(this).val());
+        });
+
+        parent.layer.close(parent.layer.getFrameIndex(window.name));
+    });
+
+    // 执行完毕后渲染
+    window.onload = function(){
+        $('.dh-checkbox').each(function() {
+            if($(this).prop('checked')){
+                valArr.push($(this).attr('data-value'));
+                idArr.push($(this).attr('data-id'));
+            }
+
+            $('input[name="valArr"]').val(valArr.join(','));
+            $('input[name="idArr"]').val(idArr.join(','));
+        });
+    }
+    </script>
+</body>
+
+</html>

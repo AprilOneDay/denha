@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <meta name="keywords" content="" />
+    <title>后台管理</title>
+    {include /admin/public/global_css}
+</head>
+
+<body>
+    <div class="account-pages"></div>
+    <div class="clearfix"></div>
+    <div class="container wrapper-page">
+        <div class="form-group">
+            <img class="img-responsive center-block" src="{:getVar('logo','admin.sys')}">
+            </div>
+            {if $this->qrlogin}
+            <ul class="nav nav-tabs" role="tablist" style="margin-top: 20px;margin-bottom: 15px;">
+                <li role="presentation" class="active">
+                    <a href="#home" aria-controls="home" onclick="weChatLogin(false)" role="tab" data-toggle="tab">账户登录</a>
+                </li>
+                <li role="presentation" class="tab tab1">
+                    <a href="#two" aria-controls="two"  onclick="weChatLogin(true)" role="tab" data-toggle="tab">扫码登陆</a>
+                </li>
+            </ul>
+            {/if}
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <div class="panel-body">
+                        <form class="form-horizontal" action="{:url('/admin/index/login/index')}">
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <input type="text" class="form-control" name="username" required placeholder="用户名">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <input type="password" class="form-control" name="password" required placeholder="密码">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-4">
+                                    <input type="text" class="form-control" v-model="verify" required placeholder="验证码">
+                                </div>
+                                <div class="col-xs-8">
+                                    <img class="captcha" src="{:url('/admin/common/CaptchaImg/img')}" style="cursor: pointer;"   />
+                                </div>
+                                </div>
+                                <div class="form-group text-center">
+                                    <div class="col-xs-12">
+                                        <button class="btn btn-primary btn-block btn-comply" dh-true-url="{:url('/admin/index/index/index')}" type="button">登录</button>
+                                    </div>
+                                </div>
+                                <p class="error-text"></p>
+                        </form>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="two">
+                    <div class="center-block" style="width: 250px; padding-top: 15px;">
+                        <img src="{:url('/admin/index/WechatLogin/qrUrl')}" style="width: 250px; height: 250px;">
+                        <p class="error-text">微信扫一扫登陆</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12 text-center">
+                    <p>Copyright © 2017 denha.cn All Rights Reserved</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {include /admin/public/global_js}
+    <script type="text/javascript">
+    var thirdFuns;
+    function weChatLogin(isLoop) {
+        if (isLoop == false) {
+            window.clearInterval(thirdFuns);
+        } else {
+            thirdFuns = setInterval(function() {
+                $.get("{:url('/admin/index/WechatLogin/checkUser')}", {}, function(res) {
+                    if (res.status) {
+                        window.location.href = res.url;
+                    }
+                }, "json");
+            }, 3000);
+        }
+    }
+    </script>
+</body>
+
+</html>
+
+
+

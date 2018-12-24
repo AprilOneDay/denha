@@ -1,0 +1,230 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+	<meta name="keywords" content=""/>
+	<title>后台管理</title>
+	{include /admin/public/global_css}
+</head>
+  	<body>
+	<div id="console-setting-menus-edit">
+		<div class="modal-content">
+			<form class="form-horizontal" role="form" action="">
+				<div class="panel-body">
+					<fieldset>
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger">*</span>
+								<span>标题</span>
+							</label>
+							<div class="col-sm-8">
+								<input type="text" value="{??$data['title']}" name="title" placeholder="标题内容" class="form-control">	
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger">*</span>
+								<span>内容摘要</span>
+							</label>
+							<div class="col-sm-8">
+								<textarea name="description" placeholder="输入摘要内容" class="form-control">{??$data['description']}</textarea>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger">*</span>
+								<span>图片集</span>
+							</label>
+							<div class="col-sm-8">
+								<a class="btn btn-primary btn-ablum" dh-name="ablum" dh-value='{??$data['ablum']}' dh-path="circle" data-max="5">添加图片</a>
+							</div>
+						</div>
+
+
+						<!--其他信息-->
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger">*</span>
+								<span>详细地址</span>
+							</label>
+							<div class="col-sm-8">
+								<input type="text" value="{??$data['address']}" name="address" placeholder="详细地址" class="form-control">	
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger">*</span>
+								<span>活动人数</span>
+							</label>
+							<div class="col-sm-8">
+								<input type="text" value="{??$data['people_num']}" name="people_num" placeholder="活动人数" class="form-control">	
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger">*</span>
+								<span>参与活动基数</span>
+							</label>
+							<div class="col-sm-8">
+								<input type="text" value="{??$data['join_base_num']}" name="join_base_num" placeholder="参与活动基数" class="form-control">	
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger">*</span>
+								<span>联系电话</span>
+							</label>
+							<div class="col-sm-8">
+								<input type="text" value="{??$data['mobile']}" name="mobile" placeholder="联系电话" class="form-control">	
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger">*</span>
+								<span>微信号</span>
+							</label>
+							<div class="col-sm-8">
+								<input type="text" value="{??$data['weixin']}" name="weixin" placeholder="微信号" class="form-control">	
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger">*</span>
+								<span>报名开始时间</span>
+							</label>
+							<div class="col-sm-8">
+								<input type="text" value="{??$data['join_start_time']}" name="join_start_time" class="form-control data-time">	
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger">*</span>
+								<span>报名结束时间</span>
+							</label>
+							<div class="col-sm-8">
+								<input type="text" value="{??$data['join_end_time']}" name="join_end_time" class="form-control data-time">		
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger">*</span>
+								<span>活动开始时间</span>
+							</label>
+							<div class="col-sm-8">
+								<input type="text" value="{??$data['start_time']}" name="start_time" class="form-control data-time">	
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger">*</span>
+								<span>活动结束时间</span>
+							</label>
+							<div class="col-sm-8">
+								<input type="text" value="{??$data['end_time']}" name="end_time" class="form-control data-time">		
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger"></span>
+								<span>自我介绍</span>
+							</label>
+							<div class="col-sm-8">
+								<textarea name="description" placeholder="输入自我介绍" class="form-control" style="min-height: 100px;">{??$data['content_zw']}</textarea>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger"></span>
+								<span>行动要求</span>
+							</label>
+							<div class="col-sm-8">
+								<textarea name="description" placeholder="输入行动要求" class="form-control" style="min-height: 100px;">{??$data['content_xd']}</textarea>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger"></span>
+								<span>参与者要求</span>
+							</label>
+							<div class="col-sm-8">
+								<textarea name="description" placeholder="输入参与者要求" class="form-control" style="min-height: 100px;">{??$data['content_cy']}</textarea>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger"></span>
+								<span>备注</span>
+							</label>
+							<div class="col-sm-8">
+								<textarea name="description" placeholder="输入备注" class="form-control" style="min-height: 100px;">{??$data['content_bz']}</textarea>
+							</div>
+						</div>
+
+						<!--end-->
+
+						<div class="form-group radio"  dh-radio="{INIT:$data['is_recommend']|0}">
+							<label class="control-label col-sm-3">推荐状态：</label>
+							{loop $other['isRecommendCopy'] $key $value}
+                           		<div class="radio-inline">
+									<label>
+										<input type="radio"  name="is_recommend" value="{$key}" > {$value}
+									</label>
+								</div>
+                        	{/loop}
+						</div>	
+
+						
+						<div class="form-group radio"  dh-radio="{INIT:$data['status']|0}">
+							<label class="control-label col-sm-3">状态：</label>
+							{loop $other['statusCopy'] $key $value}
+                           		<div class="radio-inline">
+									<label>
+										<input type="radio"  name="status" value="{$key}" > {$value}
+									</label>
+								</div>
+                        	{/loop}
+						</div>
+					</fieldset>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary btn-comply" click="comply">确定</button>
+					<button type="button" class="btn btn-default" id="btn-close">取消</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	{include /admin/public/global_js}
+	<script type="text/javascript">
+	$('input[name="add"]').click(function(){
+		var type = $(this).val();
+		if(type == 2){
+			$('.add2').show();
+			$('.add1').hide();
+		}else{
+			$('.add1').show();
+			$('.add2').hide();
+			$('input[name=content]').val('');
+		}
+	});
+	</script>
+</body>
+</html>

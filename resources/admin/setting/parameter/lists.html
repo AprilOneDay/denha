@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+	<meta name="keywords" content=""/>
+	<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+	<title>后台管理</title>
+	{include /admin/public/global_css}
+</head>
+  	<body>
+		<div id="console-setting-menus-index">
+		<div class="view-content-container" >
+			<div class="row">
+				<form class="form-horizontal" action="">
+					<div class="col-sm-12">
+						<div class="console-title console-title-border clearfix">
+							<div class="pull-left">
+								<h5>参数配置</h5>
+							</div>
+							<div class="pull-right">
+								<a class="btn btn-primary btn-open" dh-url="{:url('edit')}"  dh-height="750px">添加配置</a>
+							</div>
+						</div>
+						<div class="console-form">
+							<div class="mt8 table-responsive">
+								<div class="panel">
+						<div class="panel-body">
+							<fieldset>
+								{loop $list $key $value}
+								<div class="form-group">
+									<label class="control-label col-sm-1 hidden-xs">
+										<span class="text-danger"></span>
+										<span><input type="text" value="{$value['sort']}" name="sort[{$value['id']}]" class="form-control"></span>
+									</label>
+									<label class="control-label col-sm-1">
+										<span class="text-danger"></span>
+										<span>{$value['name']}</span>
+									</label>
+								 	<div class="col-sm-6">
+									 	{if $value['type'] == 1}
+										<input type="text" value="{$value['value']}" name="id[{$value['id']}]" class="form-control">	
+										{elseif $value['type'] == 2}
+										<textarea class="form-control" name="id[{$value['id']}]">{$value['value']}</textarea>
+										{elseif $value['type'] == 3}
+										<select name="value" class="form-control w160" dh-selected="{??$value['value']}">
+											<option value="0">作为一级菜单</option>
+											{loop $value['options'] $key $value}
+											<option value="{$value['id']}" >{$value['htmlname']}</option>
+											{/loop}
+										</select>
+										{elseif $value['type'] == 4}
+										{elseif $value['type'] == 5}
+										{elseif $value['type'] == 6}
+										<a class="btn btn-primary btn-ablum" dh-name="id[{$value['id']}]" dh-value="{??$value['value']}" dh-path="param" data-max="1">添加图片</a>
+										{/if}			
+									</div>
+									<label class="control-label col-sm-2 hidden-xs">
+										<span class="text-danger"></span>
+										<span>dao('Param')->getValue({$value['id']})</span>
+									</label>
+									<label class="control-label col-sm-2 pull-left">
+										<a href="javascript:;" class="btn-open" dh-url="{:url('edit',array('id'=>$value['id']))}"  dh-height="750px">编辑</a> |
+										<a href="javascript:;" class="btn-ajax" dh-method="post" dh-url="{:url('del')}" data-id="{$value['id']}" dh-confirm="确定删除【{$value['name']}】配置信息">删除</a>
+									</label>
+								</div>
+								{/loop}
+							</fieldset>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary btn-comply pull-left">保存</button>
+						<button type="button" class="btn btn-default pull-left" >取消</button>
+					</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	{include /admin/public/global_js}
+	<script type="text/javascript">
+	</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <meta name="keywords" content="" />
+    <title>后台微信号绑定</title>
+    {include /admin/public/global_css}
+</head>
+
+<body>
+    <div class="account-pages"></div>
+    <div class="clearfix"></div>
+    <div class="container wrapper-page">
+        <div class="form-group">
+            <img class="img-responsive center-block" src="{:getVar('logo','admin.sys')}">
+				</div>
+            <div class="panel-body">
+                <form class="form-horizontal" action="{:urlConsole('/admin/index/wechatLogin/bind',['ucode'=>$ucode])}">
+                    <p class="error-text">后台账号与该微信号进行绑定</p>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input type="text" class="form-control" name="account" required placeholder="输入账户">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input type="password" class="form-control" name="password" required placeholder="请输入密码">
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <div class="col-xs-12">
+                            <button class="btn btn-primary btn-block btn-comply" dh-true-url="/" type="button">确定绑定</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12 text-center">
+                <p>Copyright © 2017 denha.cn All Rights Reserved</p>
+            </div>
+        </div>
+    </div>
+    </div>
+    {include /admin/public/global_js}
+</body>
+
+</html>

@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+	<meta name="keywords" content=""/>
+	<title>后台管理</title>
+	{include /admin/public/global_css}
+</head>
+  	<body>
+	<div id="console-setting-menus-index">
+		<div class="view-content-container" >
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="console-form">
+						<div class="console-form">
+							<div class="mt8 table-responsive">
+								<ul>
+									<?php for($i=0;$i<$max;$i++){ ?>
+										{loop $list $key $value}
+										<li style="line-height: 25px;">
+											{if !empty($value['child'])}
+											<span class="glyphicon glyphicon-triangle-right" style="cursor: pointer;"></span>
+											{else}
+											<span></span>
+											{/if}
+											<span>{??$value['delimiter']}</span>
+											<input type="checkbox" style="margin-right:5px;vertical-align:text-bottom;" name="id" level="{$value['level']}" parentid="{$value['parentid']}" text="{$value['name']}"  value="{$value['id']}" dh-native="true" onclick='javascript:checknode(this);'>{$value['name']}
+										</li>
+										{/loop}
+									<?php } ?>
+								</ul>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary" id="closeIframe">确定</button>
+									<button type="button" class="btn btn-default" id="btn-close">取消</button>
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{include /admin/public/global_js}
+<script type="text/javascript">
+function checknode(obj){
+	var chk = $("input[type='checkbox']");
+	var count = chk.length;
+	var num = chk.index(obj);
+	var level_top = level_bottom =  chk.eq(num).attr('level');
+	for (var i=num; i>=0; i--){
+		var le = chk.eq(i).attr('level');
+		if(eval(le) < eval(level_top)) {
+	  		chk.eq(i).prop("checked",true);
+	  		var level_top = level_top-1;
+		}
+	}
+
+	for (var j=num+1; j<count; j++){
+      	var le = chk.eq(j).attr('level');
+      	if($(obj).prop('checked')) {
+          	if(eval(le) > eval(level_bottom)) chk.eq(j).prop("checked",true);
+          	else if(eval(le) == eval(level_bottom)) break;
+      	}
+      	else {
+  			if(eval(le) > eval(level_bottom)) chk.eq(j).prop("checked",false);
+      		else if(eval(le) == eval(level_bottom)) break;
+      	}
+	}
+}
+
+
+function descartes(list)  
+{  
+	//parent上一级索引;count指针计数  
+	var point = {};  
+	var result = [];  
+	var pIndex = null;  
+	var tempCount = 0;  
+	var temp  = [];  
+	//根据参数列生成指针对象  
+	for(var index in list)  {  
+		if(typeof list[index] == 'object')  {  
+			point[index] = {'parent':pIndex,'count':0}  
+			pIndex = index;  
+		}  
+	}  
+	
+	//单维度数据结构直接返回  
+	if(pIndex == null)  {  
+		return list;  
+	}  
+	//动态生成笛卡尔积  
+	while(true)  {  
+		for(var index in list)  {  
+			tempCount = point[index]['count'];  
+			temp.push(list[index][tempCount]);  
+		}  
+		//压入结果数组  
+		result.push(temp);  
+		temp = [];  
+		//检查指针最大值问题  
+		while(true)  {  
+			if(point[index]['count']+1 >= list[index].length)  {  
+				point[index]['count'] = 0;  
+				pIndex = point[index]['parent'];  
+				if(pIndex == null)  {  
+					return result;  
+				}  
+				//赋值parent进行再次检查  
+				index = pIndex;  
+			}else{  
+				point[index]['count']++;  
+				break;  
+			}  
+		}  
+	}  
+}  
+
+$('#closeIframe').click(function(){
+	var specData 	 = new Array();
+	var specDataList = new Array();
+	var specCopy 	 = new Array();
+	var tableHtml 	 = '',specParentid = '';
+
+    $('input[name="id"]:checkbox:checked').each(function() {
+        var parentid = $(this).attr('parentid');
+        var level 	 = $(this).attr('level');
+        var id 		 = $(this).val();
+        var name 	 = $(this).attr('text');
+       	
+       	if(level == 3){
+       		if(!specData[parentid]){
+       			specData[parentid] = new Array();
+       		}
+
+       		specCopy[id] = name;
+        	specData[parentid].push(id);
+        }
+    });
+    var specDataList  = descartes(specData);
+
+    var name  = function(data){
+		var rs = '';
+		for(var k in data){
+			rs += specCopy[data[k]] + ' ';
+		}
+		return rs;
+	}
+
+	var specParentid = function(data){
+		var rs = new Array();
+		for(var k in data){
+			rs.push(k);
+		}
+
+		return rs.join(',');
+	}
+
+	tableHtml += '<input type="hidden" value="'+specParentid(specData)+'" name="spec_parentid" >';
+    for(var key in specDataList){
+    	tableHtml += '<tr>';
+    	tableHtml += '<input type="hidden" value="'+specDataList[key].join(',')+'" name="spec[category][]" >';
+    	tableHtml += '<td style="text-align: center;">'+name(specDataList[key])+'</td>';
+    	tableHtml += '<td><input type="text" value="0" name="spec[stock][]"  class="form-control" placeholder="库存"></td>';
+    	tableHtml += '<td><input type="text" value="0.00" name="spec[price][]"  class="form-control" placeholder="价格"></td>';
+    	tableHtml += '<td><input type="text" value="0.00" name="spec[sell_price][]"  class="form-control" placeholder="促销价格"></td>';
+    	tableHtml += '<td style="text-align: center;"><a class="btn btn-primary del-syllabus">删除</a></td>';
+    	tableHtml += '</tr>';
+    }
+
+    if(tableHtml){
+    	parent.$('.spec-table').find('tbody').html(tableHtml);
+    }
+    
+    //parent.layer.msg('您将标记 [ ' +val + ' ] 成功传送给了父窗口');
+    parent.layer.close(parent.layer.getFrameIndex(window.name));
+});
+</script>
+</body>
+</html>

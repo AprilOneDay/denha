@@ -1,0 +1,259 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+	<meta name="keywords" content=""/>
+	<title>后台管理</title>
+	{include /admin/public/global_css}
+</head>
+  	<body>
+	<div id="console-setting-menus-edit">
+		<div class="modal-content">
+			<div class="modal-body clearfix">
+				<form class="form-horizontal" action="">
+					<input type="hidden" value="{??$data['id']}" name="id">	
+					<div class="panel">
+						<div class="panel-body">
+							<fieldset>
+								<div class="form-group">
+									<label class="control-label col-sm-3">
+										<span class="text-danger">*</span>
+										<span>上级菜单</span>
+									</label>
+								 	<div class="col-sm-8">
+										<select name="parentid" class="form-control w160" dh-selected="{??$data['parentid']}">
+											<option value="0">作为一级菜单</option>
+											{loop $treeList $key $value}
+											<option value="{$value['id']}" >{$value['htmlname']}</option>
+											{/loop}
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-sm-3">
+										<span class="text-danger">*</span>
+										<span>所属模型</span>
+									</label>
+								 	<div class="col-sm-8">
+										<select name="model_id" class="form-control w160" dh-selected="{??$data['model_id']}">
+											{loop $modelCopy $key $value}
+											<option value="{$key}" >{$value['name']}</option>
+											{/loop}
+										</select>
+									</div>
+								</div>
+								{if !isset($data['id'])}
+								<div class="form-group radio" dh-radio="1">
+									<label class="control-label col-sm-3">
+										<span class="text-danger"></span>
+										<span>添加方式</span>
+									</label>
+									<div class="col-sm-8">
+										<div class="radio-inline">
+											<label>
+												<input type="radio"  name="add" value="1"> 单条
+											</label>
+										</div>
+										<div class="radio-inline">
+											<label >
+												<input type="radio"  name="add" value="2"> 批量
+											</label>
+										</div>
+									</div>
+								</div>
+								{/if}
+								<div class="form-group add2" style="display: none;">
+									<label class="control-label col-sm-3">
+										<span class="text-danger">*</span>
+										<span>菜单名称</span>
+									</label>
+									<div class="col-sm-5">
+										<textarea class="form-control" rows="5" name="content">{??$data['name']}</textarea>
+									</div>
+									<label class="clo-sm-2">如：<br/>菜单名称|别名<br/>关于我们|about us<br/>竖线以及后面的名称可留空</label>
+								</div>
+
+								<div class="form-group add1">
+									<label class="control-label col-sm-3">
+										<span class="text-danger">*</span>
+										<span>菜单名称</span>
+									</label>
+									<div class="col-sm-8">
+										<input type="text" value="{??$data['name']}" name="info[name]" placeholder="菜单名称" class="form-control">	
+									</div>
+								</div>
+								
+								{if in_array('en',$this->lg)}
+								<div class="form-group add1">
+									<label class="control-label col-sm-3">
+										<span class="text-danger">*</span>
+										<span>英文菜单名称</span>
+									</label>
+									<div class="col-sm-8">
+										<input type="text" value="{??$data['name_en']}" name="info[name_en]" placeholder="英文菜单名称" class="form-control">	
+									</div>
+								</div>
+								{/if}
+								
+								{if in_array('jp',$this->lg)}
+								<div class="form-group add1">
+									<label class="control-label col-sm-3">
+										<span class="text-danger">*</span>
+										<span>日文菜单名称</span>
+									</label>
+									<div class="col-sm-8">
+										<input type="text" value="{??$data['name_jp']}" name="info[name_jp]" placeholder="日文菜单名称" class="form-control">	
+									</div>
+								</div>
+								{/if}
+
+								<div class="form-group add1">
+									<label class="control-label col-sm-3">
+										<span class="text-danger"></span>
+										<span>别名</span>
+									</label>
+									<div class="col-sm-8">
+										<input type="text" value="{??$data['bname']}" name="info[bname]" placeholder="别名" class="form-control">	
+									</div>
+								</div>
+	
+								{if in_array('en',$this->lg)}
+								<div class="form-group add1">
+									<label class="control-label col-sm-3">
+										<span class="text-danger">*</span>
+										<span>英文别名</span>
+									</label>
+									<div class="col-sm-8">
+										<input type="text" value="{??$data['bname_en']}" name="info[bname_en]" placeholder="别名" class="form-control">	
+									</div>
+								</div>
+								{/if}
+								
+								{if in_array('jp',$this->lg)}
+								<div class="form-group add1">
+									<label class="control-label col-sm-3">
+										<span class="text-danger">*</span>
+										<span>日文别名</span>
+									</label>
+									<div class="col-sm-8">
+										<input type="text" value="{??$data['bname_jp']}" name="info[bname_jp]" placeholder="别名" class="form-control">	
+									</div>
+								</div>
+								{/if}
+
+								<div class="form-group">
+									<label class="control-label col-sm-3">
+										<span class="text-danger"></span>
+										<span>栏目图片</span>
+									</label>
+									<div class="col-sm-8">
+										<a class="btn btn-primary btn-ablum" dh-name="info[thumb]" dh-value='{??$data['thumb']}' dh-path="column" dh-max="1">添加图片</a>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-sm-3">
+										<span class="text-danger"></span>
+										<span>栏目简介</span>
+									</label>
+									<div class="col-sm-8">
+										<textarea class="form-control" rows="3" name="info[description]">{??$data['description']}</textarea>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-sm-3">
+										<span class="text-danger">*</span>
+										<span>SEO标题</span>
+									</label>
+									<div class="col-sm-8">
+										<input type="text" value="{??$data['seo_title']}" name="info[seo_title]" placeholder="SEO标题" class="form-control">	
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-sm-3">
+										<span class="text-danger">*</span>
+										<span>SEO关键词</span>
+									</label>
+									<div class="col-sm-8">
+										<input type="text" value="{??$data['seo_keywords']}" name="info[seo_keywords]" placeholder="SEO关键词" class="form-control">	
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-sm-3">
+										<span class="text-danger"></span>
+										<span>SEO简介</span>
+									</label>
+									<div class="col-sm-8">
+										<textarea class="form-control" rows="3" name="info[seo_description]">{??$data['seo_description']}</textarea>
+									</div>
+								</div>
+								
+
+								{if $this->group == 1 }
+								<div class="form-group">
+									<label class="control-label col-sm-3">
+										<span class="text-danger"></span>
+										<span>后台请求地址</span>
+									</label>
+									<div class="col-sm-8">
+										<input type="text" value="{??$data['url']}" name="info[url]" placeholder="请求地址" class="form-control">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-sm-3">
+										<span class="text-danger">*</span>
+										<span>前台请求地址</span>
+									</label>
+									<div class="col-sm-8">
+										<input type="text" value="{??$data['jump_url']}" name="info[jump_url]" placeholder="请求地址" class="form-control">
+									</div>
+								</div>
+								{/if}
+								<div class="form-group radio" dh-radio="{??$data['is_show']}">
+									<label class="control-label col-sm-3">
+										<span class="text-danger"></span>
+										<span>是否显示</span>
+									</label>
+									<div class="col-sm-8">
+										<div class="radio-inline">
+											<label>
+												<input type="radio"  name="info[is_show]" value="1"> 是
+											</label>
+										</div>
+										<div class="radio-inline">
+											<label >
+												<input type="radio"  name="info[is_show]" value="0"> 否
+											</label>
+										</div>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary btn-comply">确定</button>
+						<button type="button" class="btn btn-default" id="btn-close">取消</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	{include /admin/public/global_js}
+	<script type="text/javascript">
+	$('input[name="add"]').click(function(){
+		var type = $(this).val();
+		if(type == 2){
+			$('.add2').show();
+			$('.add1').hide();
+		}else{
+			$('.add1').show();
+			$('.add2').hide();
+			$('input[name=content]').val('');
+		}
+	});
+	</script>
+</body>
+</html>

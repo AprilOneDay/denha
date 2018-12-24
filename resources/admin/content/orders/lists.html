@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+	<meta name="keywords" content=""/>
+	<title>后台管理</title>
+	{include /admin/public/global_css}
+</head>
+  	<body>
+	<div id="console-content-index-index">
+		<div class="view-content-container" >
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="console-title console-title-border clearfix">
+						<div class="pull-left">
+							<h5>订单列表</h5>
+						</div>
+					</div>
+					<form class="form-inline ng-pristine ng-valid" action=""  method="get">
+                        <div class="form-group">
+                        	<select class="form-control" dh-selected="{??$param['type']}" name="param[type]">
+                                <option value="">订单状态</option>
+                                {loop $other['typeLogCopy'] $key $value}
+                               		<option value="{$key}">{$value}</option>
+                            	{/loop}
+                            </select>
+                            <select class="form-control" dh-selected="{??$param['status']}" name="param[status]">
+                                <option value="">审核状态</option>
+                                {loop $other['statusCopy'] $key $value}
+                               		<option value="{$key}">{$value}</option>
+                            	{/loop}
+                            </select>
+                            <select class="form-control" dh-selected="{??$param['origin']}" name="param[origin]">
+                                <option value="">录入状态</option>
+                                {loop $other['isTempCopy'] $key $value}
+                               		<option value="{$key}">{$value}</option>
+                            	{/loop}
+                            </select>
+                         	<select class="form-control" dh-selected="{??$param['origin']}" name="param[origin]">
+                                <option value="">来源</option>
+                                {loop $other['originCopy'] $key $value}
+                               		<option value="{$key}">{$value}</option>
+                            	{/loop}
+                            </select>
+                            <select class="form-control" name="param[field]" dh-selected="{??$param['field']}">
+                            	<option value="">选择搜索条件</option>
+                                <option value="order_sn">订单编号</option>
+                            </select>
+                            <input type="text" class="form-control w120" placeholder="Search" name="param[keyword]" value="{??$param['keyword']}" >
+                            <button type="submit" class="btn btn-default" @click="search()">搜索</button>
+                        </div>
+                    </form>
+					<div class="console-form">
+						<div class="console-form">
+							<div class="mt8 table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th style="width:75px;">ID</th>
+											<th style="width:100px;">类型</th>
+											<th>订单编号</th>
+											<th style="width:200px;">订单总价</th>
+											<th style="width:200px;">买家</th>
+											<th style="width:200px;">卖家</th>
+											<th style="width:100px;">订单状态</th>
+											<th style="width:160px;">发布时间</th>
+											<th style="width:50px;">来源</th>
+											<th style="width:250px; text-align:center;">操作</th>
+										</tr>
+									</thead>
+									{loop $list $key $value}
+									<tbody class="order-list">
+									 	<tr>
+											<td>{$value['id']}</td>
+											<td>普通订单</td>
+											<td>{$value['order_sn']}</td>
+											<td>{$value['account']}</td>
+											<td>{$value['user']['nickname']}</td>
+											<td>{$value['seller']['nickname']}</td>
+											<td>{$other['typeLogCopy'][$value['type']]}</td>
+											<td>{:date('Y-m-d H:i',$value['created'])}</td>
+											<td>{$other['originCopy'][$value['origin']]}</td>
+											<td align='center'>
+												<a dh-href="{:url('detail',['order_sn'=>$value['order_sn']])}"  dh-height="70%" dh-width="70%"  dh-title="订单详情"   class="btn-open">详情</a>
+											{if $value['type'] == 1}
+												<span>|</span>	
+												<a dh-url="{:url('close')}" dh-method="post" dh-confirm="确定取消订单？" data-order_sn="{$value['order_sn']}" class="btn-ajax">取消订单</a>
+											{/if}
+
+											{if $value['type'] == 2}
+												<span>|</span>	
+												<a dh-url="{:url('dispatch')}" dh-method="post" data-order_sn="{$value['order_sn']}" class="btn-ajax">开始派单</a>
+											{/if}
+
+											{if $value['type'] == 5}
+												<span>|</span>	
+												<a dh-url="{:url('agreeRefund')}" dh-confirm="确定同意退款？" dh-method="post" data-order_sn="{$value['order_sn']}" class="btn-ajax">同意退款</a>
+												<span>|</span>	
+												<a dh-url="{:url('refuseRefund')}" dh-confirm="确定拒绝退款？" dh-method="post" data-order_sn="{$value['order_sn']}" class="btn-ajax">拒绝退款</a>
+											{/if}
+											</td>
+										</tr>
+										{if !empty($value['goodsList'])}
+										<td colspan="10" class="goods-list">
+											<table class="table">
+												<thead> 
+													<tr>
+														<th>ID</th>
+														<th>商品名称</th>
+														<th>价格</th>
+														<th>数量</th>
+														<th>实付款</th>
+													</tr>
+												</thead>
+												{loop $value['goodsList'] $k $v}
+												<tr>
+													<td>{$v['goods_id']}</td>
+													<td>{$v['title']}</td>
+													<td>{$v['price']}</td>
+													<td>{$v['num']}</td>
+													<td>{$v['account']}</td>
+												</tr>
+												{/loop}
+											</table>
+										</td>
+										{/if}
+									</tbody>
+									{/loop}
+								    <tfoot>
+							          	<tr>
+          									<td colspan="10">{$pages}</td>
+          								</tr>
+									</tfoot>
+								</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{include /admin/public/global_js}
+	<script type="text/javascript">
+	</script>
+</body>
+</html>

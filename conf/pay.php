@@ -12,5 +12,14 @@ return array(
         'credential_code' => 'rOKWOfR0ZDwaLJanJszfx2WyXXsaEqJT',
         'notify_url'      => 'http://fastgo.59156.cn/v1/pay/PayNotify/main/s/call_back/2',
     ),
+    /** 微信小程序支付 */
+    '3' => array(
+        'appid'      => 'wxe9c02b887e72c577', //小程序ID
+        'secret'     => '882cb769e441866f958cef14251aa212', //小程序秘钥
+        'mch_id'     => '1483115632', //商户ID
+        'mch_key'    => 'pexCOirLvAAiRnhgiswkwrjco1rbwiy9', //商户秘钥
+        'notify_url' => 'http://www.baidu.com', //异步回调地址
+        'ssl'        => array(), //证书地址
+    ),
 
 );
