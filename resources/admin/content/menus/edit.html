@@ -22,7 +22,7 @@
 										<span>上级菜单</span>
 									</label>
 								 	<div class="col-sm-8">
-										<select name="parentid" class="form-control w160" dh-selected="{??$data['parentid']}">
+										<select name="parentid" dh-selected="{??$data['parentid']}" class="form-control w160 selectpicker" data-live-search="true">
 											<option value="0">作为一级菜单</option>
 											{loop $treeList $key $value}
 											<option value="{$value['id']}" >{$value['htmlname']}</option>
@@ -190,7 +190,31 @@
 										<textarea class="form-control" rows="3" name="info[seo_description]">{??$data['seo_description']}</textarea>
 									</div>
 								</div>
+
+								<div class="form-group">
+									<label class="control-label col-sm-3">
+										<span class="text-danger">*</span>
+										<span>前台请求模型地址</span>
+									</label>
+								 	<div class="col-sm-8">
+										<select name="tpl" class="form-control w160" dh-selected="">
+											<option value="">自定义地址</option>
+											{loop $tplCopy $key $value}
+											<option value="{$value['url']}" >{$value['name']}</option>
+											{/loop}
+										</select>
+									</div>
+								</div>
 								
+								<div class="form-group">
+									<label class="control-label col-sm-3">
+										<span class="text-danger"></span>
+										<span>前台请求地址</span>
+									</label>
+									<div class="col-sm-8">
+										<input type="text" value="{??$data['jump_url']}" name="info[jump_url]" placeholder="请求地址" class="form-control">
+									</div>
+								</div>
 
 								{if $this->group == 1 }
 								<div class="form-group">
@@ -202,16 +226,8 @@
 										<input type="text" value="{??$data['url']}" name="info[url]" placeholder="请求地址" class="form-control">
 									</div>
 								</div>
-								<div class="form-group">
-									<label class="control-label col-sm-3">
-										<span class="text-danger">*</span>
-										<span>前台请求地址</span>
-									</label>
-									<div class="col-sm-8">
-										<input type="text" value="{??$data['jump_url']}" name="info[jump_url]" placeholder="请求地址" class="form-control">
-									</div>
-								</div>
 								{/if}
+								
 								<div class="form-group radio" dh-radio="{??$data['is_show']}">
 									<label class="control-label col-sm-3">
 										<span class="text-danger"></span>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+	<meta name="keywords" content=""/>
+	<title>后台管理</title>
+	{include /admin/public/global_css}
+</head>
+  	<body>
+	<div id="console-content-index-index">
+		<div class="view-content-container" >
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="console-title console-title-border clearfix">
+						<div class="pull-left">
+							<h5>表单列表</h5>
+						</div>
+						<div class="pull-right">
+							<a class="btn btn-primary btn-open" dh-url="{:url('edit')}" dh-height="500px" dh-width="356px">添加规则</a>
+						</div>
+					</div>
+					<form class="form-inline ng-pristine ng-valid" action=""  method="get">
+                        <div class="form-group">
+                            <select class="form-control" name="field" dh-selected="{??$param['field']}">
+                                <option value="id">UID</option>
+                                <option value="username">用户名</option>
+                            </select>
+                            <input type="text" class="form-control w120" placeholder="Search" name="keyword" value="{??$param['keyword']}" >
+                            <button type="submit" class="btn btn-default" @click="search()">搜索</button>
+                        </div>
+                    </form>
+					<div class="console-form">
+						<div class="console-form">
+							<div class="mt8 table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th style="width:75px;">ID</th>
+											<th>昵称 / UID</th>
+											<th style="width:140px; ">创建时间</th>
+											<th style="width:160px; text-align:center;">操作</th>
+										</tr>
+									</thead>
+									<tbody>
+										{loop $list $key $value}
+									 	<tr v-for="list in list">
+											<td>{$value['id']}</td>
+											<td>{$value['nickname']} / {$value['uid']}</td>
+											<td>{:date('Y-m-d H:i',$value['created'])}</td>
+											<td align='center'>
+												<a dh-url="{:url('detail',['id'=>$value['id']])}"  dh-height="80%" dh-width="80%"  dh-title="详情"  class="btn-open">详情</a>
+												{if $value['status'] == 0}
+												<a class="btn-ajax" dh-url="{:url('change')}" dh-method="post" data-status="1" data-id="{$value['id']}">确认发货</a>
+												{/if}
+											</td>
+										</tr>
+										{/loop}
+									</tbody>
+								    <tfoot>
+							          	<tr>
+          									<td colspan="4">{??$pages}</td>
+          								</tr>
+									</tfoot>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{include /admin/public/global_js}
+</body>
+</html>

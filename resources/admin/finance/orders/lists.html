@@ -14,11 +14,11 @@
 				<div class="col-sm-12">
 					<div class="console-title console-title-border clearfix">
 						<div class="pull-left">
-							<h5>店铺列表</h5>
+							<h5>财务列表</h5>
 						</div>
-						<!-- <div class="pull-right">
+						<div class="pull-right">
 							<a class="btn btn-primary btn-open" dh-url="{:url('edit')}" dh-width="40%" dh-height="70%">导出Excel</a>
-						</div> -->
+						</div>
 					</div>
 					<form class="form-horizontal form-inline ng-pristine ng-valid" action=""  method="get">
                         <div class="form-group">
@@ -43,13 +43,13 @@
 
                             <input type="text" class="form-control w120" placeholder="Search" name="param[keyword]" value="{??$param['keyword']}" >
 
-                            <input type="text" value="{??$param['start_time']}" name="param[start_time]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" data-type="datetime" placeholder="开始时间"  data-isnull='1'>
+                            <input type="text" value="{??$param['start_time']}" name="param[start_time]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" dh-type="datetime" dh-isnull="true" placeholder="开始时间">
 
-                            <input type="text" value="{??$param['end_time']}" name="param[end_time]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" data-type="datetime" placeholder="结束时间"  data-isnull='1'>
+                            <input type="text" value="{??$param['end_time']}" name="param[end_time]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" dh-type="datetime" dh-isnull="true" placeholder="结束时间">
 
                             <button type="submit" class="btn btn-default" @click="search()">搜索</button>
 
-                            <a class="btn btn-primary btn-ajax-get" dh-url="{:url('excel')}" config-from="true">导出Excel</a>
+                            <!-- <a class="btn btn-primary btn-ajax" dh-url="{:url('excel',$search)}" dh-method="GET" dh-async="true">导出Excel</a> -->
                         </div>
                     </form>
 					<div class="console-form">
@@ -88,7 +88,7 @@
 									</tbody>
 								    <tfoot>
 							          	<tr>
-          									<td colspan="10">{??$pages}</td>
+          									<td colspan="9">{??$pages}</td>
           								</tr>
 									</tfoot>
 								</table>

@@ -80,7 +80,7 @@ class Redis
     /** 保存值 */
     public function set($key, $val = '', $exp = 0)
     {
-        return self::$redis->set($key);
+        return self::$redis->set($key, $val);
     }
 
     public function get($key)

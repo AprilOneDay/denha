@@ -15,7 +15,7 @@ class PayDealRoyalpay
     public function __construct()
     {
         if (is_null(self::$config)) {
-            self::$config = getConfig('pay');
+            self::$config = getConfig('pay.php');
         }
     }
 

@@ -1,5 +1,5 @@
 {
-    "name": "denha/framework",
+    "name": "denha",
     "description": "The denha Framework.",
     "keywords": ["framework", "denha"],
     "license": "MIT",
@@ -15,8 +15,8 @@
         }
     ],
     "require": {
-    	 "php": ">=5.6.0",
-        "denha/framework": "^1.0"
+    	"php": ">=7.0.0",
+        "denha/framework": "^1.1"
     },
     "autoload": {
         "files": [],

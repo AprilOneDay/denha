@@ -19,16 +19,15 @@ class Pay
     {
 
         switch ($payMatch) {
-            case '1': //paysapi
+            case '1': // paysapi
                 $result = dao('PayDealSapi')->pay($param, $payMatch, $returnUrl, $options);
                 break;
-            case '2': //royalpay
+            case '2': // royalpay
                 $result = dao('PayDealRoyalpay')->pay($param, $payMatch, $returnUrl, $options);
                 break;
-            case '3': //微信小程序公众支付
+            case '3': // 微信小程序公众支付
                 $result = dao('PayDealWeixinsmall')->pay($param, $payMatch, $returnUrl, $options);
             default:
-                # code...
                 break;
         }
 

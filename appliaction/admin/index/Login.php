@@ -8,7 +8,6 @@ class Login extends Init
     //登录
     public function index()
     {
-
         $this->show();
     }
 
@@ -45,6 +44,7 @@ class Login extends Init
         $console['id']       = $admin['id'];
         $console['nickname'] = $admin['nickname'];
         $console['group']    = $admin['group'];
+        $console['login_ip'] = $data['login_ip'];
 
         session('console', $console);
 

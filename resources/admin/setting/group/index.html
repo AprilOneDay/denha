@@ -26,18 +26,18 @@
 								<table class="table table-hover">
 									<thead>
 										<tr>
-											<th >ID</th>
+											<th style="width: 60px;">ID</th>
 											<th>管理组</th>
 											<th style="width: 100px; text-align: center;">权限等级</th>
 											<th style="width: 80px; text-align: center;">状态</th>
-											<th style="text-align:center; width: 160px;">编辑/操作</th>
+											<th style="text-align:center; width: 180px;">编辑/操作</th>
 										</tr>
 									</thead>
 									<tbody>
 										{loop $list $key $value}
-									 	<tr v-for="list in data.list">
+									 	<tr>
 											<td>{$value['id']}</td>
-											<td>{$value['name']}</td>
+											<td><span>{??$value['delimiter']}</span>{$value['name']}</td>
 											<td align="center">{$value['level']} 级</td>
 											<td align="center">
 												{if $value['status']}
@@ -47,9 +47,11 @@
 												{/if}
 											</td>
 											<td align='center'>
-												<a dh-title="编辑管理员" class="btn-open"  dh-url="{:url('edit',array('id'=>$value['id']))}"  dh-height="300px" config-width="356px">编辑</a>
+												<a class="btn-open" dh-url="{:url('edit',array('parentid'=>$value['id']))}" dh-title="编辑菜单" dh-height="70%">添加子级分组</a>
 												<span class="text-explode">|</span>
-												<a dh-title="权限管理" class="btn-open"  dh-url="{:url('power/lists',array('id'=>$value['id']))}"  dh-height="80%" config-width="80%">权限</a>
+												<a dh-title="编辑管理员" class="btn-open"  dh-url="{:url('edit',array('id'=>$value['id']))}"  dh-height="70%">编辑</a>
+												<span class="text-explode">|</span>
+												<a dh-title="权限管理" class="btn-open"  dh-url="{:url('power/lists',array('id'=>$value['id']))}"  dh-height="80%" dh-width="80%">权限</a>
 											</td>
 										</tr>
 										{/loop}

@@ -23,7 +23,9 @@ class Search extends Init
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 25);
 
-        $offer = max(($param['pageNo'] - 1), 0) * $pageSize;
+        $offer = max(($pageNo - 1), 0) * $pageSize;
+
+        $map = [];
 
         if ($param['field'] && $param['keyword']) {
             if ($param['field'] == 'value') {
@@ -45,7 +47,7 @@ class Search extends Init
         }
 
         $other = array(
-            'typeCopy'        => getVar('type', 'search'),
+            'typeCopy'        => getVar('base.search.type'),
             'isDisableCopy'   => array(1 => '禁用', 1 => '未禁用'),
             'isRecommendCopy' => array(1 => '推荐', 0 => '未推荐'),
         );
@@ -70,9 +72,9 @@ class Search extends Init
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 25);
 
-        $offer = max(($param['pageNo'] - 1), 0) * $pageSize;
+        $offer = max(($pageNo - 1), 0) * $pageSize;
 
-        $map = array();
+        $map = [];
 
         if ($param['field'] && $param['keyword']) {
             if ($param['field'] == 'value') {
@@ -88,7 +90,7 @@ class Search extends Init
         }
 
         $other = array(
-            'typeCopy'        => getVar('type', 'search'),
+            'typeCopy'        => getVar('base.search.type'),
             'isDisableCopy'   => array(1 => '禁用', 1 => '未禁用'),
             'isRecommendCopy' => array(1 => '推荐', 0 => '未推荐'),
         );
@@ -114,7 +116,7 @@ class Search extends Init
             $this->ajaxReturn($reslut);
         } else {
             $other = array(
-                'typeCopy' => getVar('type', 'search'),
+                'typeCopy' => getVar('base.search.type'),
             );
 
             $this->assign('other', $other);
@@ -137,9 +139,9 @@ class Search extends Init
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 25);
 
-        $offer = max(($param['pageNo'] - 1), 0) * $pageSize;
+        $offer = max(($pageNo - 1), 0) * $pageSize;
 
-        $map = array();
+        $map = [];
 
         if ($param['field'] && $param['keyword']) {
             if ($param['field'] == 'value') {
@@ -155,7 +157,7 @@ class Search extends Init
         }
 
         $other = array(
-            'typeCopy'        => getVar('type', 'search'),
+            'typeCopy'        => getVar('base.search.type'),
             'isDisableCopy'   => array(1 => '禁用', 1 => '未禁用'),
             'isRecommendCopy' => array(1 => '推荐', 0 => '未推荐'),
         );
@@ -181,7 +183,7 @@ class Search extends Init
             $this->ajaxReturn($reslut);
         } else {
             $other = array(
-                'typeCopy' => getVar('type', 'search'),
+                'typeCopy' => getVar('base.search.type'),
             );
 
             $this->assign('other', $other);

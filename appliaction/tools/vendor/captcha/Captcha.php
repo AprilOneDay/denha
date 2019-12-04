@@ -73,7 +73,7 @@ class Captcha
     //对外生成
     public static function doimg()
     {
-        self::$font = dirname(__FILE__) . '/font/Elephant.ttf'; //注意字体路径要写绝对，否则显示不了图片
+        self::$font = dirname(__FILE__) . '/font/Elephant.ttf'; // 注意字体路径要写绝对，否则显示不了图片
 
         if (realpath(self::$font) !== false) {
             self::$font = realpath(self::$font);

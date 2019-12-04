@@ -17,13 +17,15 @@
 							<h5>菜单列表</h5>
 						</div>
 						<div class="pull-right">
-							<a class="btn btn-primary btn-open" dh-url="{:url('edit')}"  dh-height="500px" dh-width="60%">添加考卷</a>
+							<a class="btn btn-primary btn-open" dh-url="{F:url('edit')}"  dh-height="500px" dh-width="60%">添加考卷</a>
 						</div>
 					</div>
 					<form class="form-inline ng-pristine ng-valid" action=""  method="get">
                         <div class="form-group">
-                            <select class="form-control" name="field">
+                            <select class="form-control" name="field"  dh-selected="{??$param['field']}">
+                        	  <option value="">选择搜索</option>
                                 <option value="title">考卷</option>
+                                <option value="nickname">昵称</option>
                             </select>
                             <input type="text" class="form-control w120" placeholder="Search" name="keyword" value="{??$param['keyword']}" >
                             <button type="submit" class="btn btn-default" >搜索</button>
@@ -52,14 +54,14 @@
 									 	<tr v-for="list in list">
 											<td>{$value['id']}</td>
 											<td>{$value['exam_name']}</td>
-											<td>{$value['user']['nickname']}</td>
-											<td>{$value['user']['real_name']}</td>
-											<td>{$value['user']['mobile']}</td>
-											<td>{$value['user']['address']}</td>
+											<td>{default:$value['user']['nickname']|'未知'}</td>
+											<td>{default:$value['user']['real_name']|'未知'}</td>
+											<td>{default:$value['user']['mobile']|'未知'}</td>
+											<td>{default:$value['user']['address']|'未知'}</td>
 											<td>{$value['total_score']}</td>
 											<td>{$value['score']}</td>
-											<td>{:date('Y-m-d H:i:s',$value['start_time'])}</td>
-											<td>大约{:reset($value['use_time'])}{$other['timeCopy'][key($value['use_time'])]}</td>
+											<td>{F:date('Y-m-d H:i:s',$value['start_time'])}</td>
+											<td>大约{F:reset($value['use_time'])}{$other['timeCopy'][key($value['use_time'])]}</td>
 										</tr>
 										{/loop}
 									</tbody>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+	<meta name="keywords" content=""/>
+	<title>后台管理</title>
+	{include /admin/public/global_css}
+</head>
+  	<body>
+	<div id="console-content-index-index">
+		<div class="view-content-container" >
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="console-title console-title-border clearfix">
+						<div class="pull-left">
+							<h5>分销提成列表</h5>
+						</div>
+						<!-- <div class="pull-right">
+							<a class="btn btn-primary btn-open" dh-url="{:url('edit')}" dh-width="40%" dh-height="70%">导出Excel</a>
+						</div> -->
+					</div>
+					<form class="form-horizontal form-inline ng-pristine ng-valid" action=""  method="get">
+                        <div class="form-group">
+
+                            <input type="text" value="{??$param['start_time']}" name="param[start_time]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" dh-type="datetime" dh-isnull="true" placeholder="开始时间">
+
+                            <input type="text" value="{??$param['end_time']}" name="param[end_time]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" dh-type="datetime" dh-isnull="true" placeholder="结束时间">
+
+                            <button type="submit" class="btn btn-default" @click="search()">搜索</button>
+
+                            <a class="btn btn-primary btn-ajax" dh-url="{:url('excel',$search)}" dh-method="GET" dh-async="true">导出Excel</a>
+                        </div>
+                    </form>
+					<div class="console-form">
+						<div class="console-form">
+							<div class="mt8 table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th style="width:100px;">类型</th>
+											<th>订单编号</th>
+											<th>提成金额</th>
+											<th>分销等级</th>
+											<th>提成用户</th>
+											<th>被提成用户</th>
+											<th>提成时间</th>
+											<th>支付状态</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody>
+										{loop $lists $item}
+									 	<tr>
+											<td><a href="{:url('admin/content/orders/lists',['param[field]'=>'order_sn','param[keyword]'=>$item['params']['order_sn']])}">{??$item['params']['order_sn']}</a></td>
+											<td>{$item['money']}</td>
+											<td>{??$item['params']['level']}</td>
+											<td>{$item['money']}</td>
+											<td>{??$item['user']['nickname']} / {??$item['uid']}</td>
+											<td>{??$item['fr_user']['nickname']} / {??$item['fr_uid']}</td>
+											<td>{:date('Y-m-d H:i:s',$item['created'])}</td>
+											<td>{$others['status'][$item['status']]}</td>
+										</tr>
+										{/loop}
+									</tbody>
+								    <tfoot>
+							          	<tr>
+          									<td colspan="10">{??$pages}</td>
+          								</tr>
+									</tfoot>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{include /admin/public/global_js}
+	<script type="text/javascript">
+	</script>
+</body>
+</html>

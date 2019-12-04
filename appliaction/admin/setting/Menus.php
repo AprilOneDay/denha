@@ -19,6 +19,7 @@ class Menus extends Init
 
         $result = table('ConsoleMenus')->where($map)->order('sort asc,id asc')->select();
 
+        $list = [];
         if ($result) {
             $tree = new MenuTree();
             $tree->setConfig('id', 'parentid', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
@@ -33,8 +34,7 @@ class Menus extends Init
 
         }
 
-        $this->assign('list', $list);
-        $this->show();
+        $this->show('', ['list' => $list]);
 
     }
 

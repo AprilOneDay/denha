@@ -24,7 +24,7 @@ class Number
     }
 
     /**
-     * 转换价格
+     * 转换价格 始终保持两位小数
      * @date   2017-09-27T15:14:00+0800
      * @author ChenMingjiang
      * @param  integer                  $price [description]

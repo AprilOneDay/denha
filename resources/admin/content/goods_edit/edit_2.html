@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <!-- 团购商品 -->
     <div id="console-content-edit">
         <div class="modal-content">
             <form class="form-horizontal" role="form" action="">
@@ -18,7 +19,7 @@
                         <a href="#home" aria-controls="home" role="tab" data-toggle="tab">基础信息</a>
                     </li>
                     <li role="presentation">
-                        <a href="#spec" aria-controls="spec" role="tab" data-toggle="tab">课件管理</a>
+                        <a href="#spec" aria-controls="spec" role="tab" data-toggle="tab">商品规格</a>
                     </li>
                     <li role="presentation">
                         <a href="#album" aria-controls="album" role="tab" data-toggle="tab">图片集</a>
@@ -29,7 +30,7 @@
                     <div role="tabpanel" class="tab-pane active" id="home">
                         <div class="panel-body">
                             <fieldset>
-                                <input type="hidden" name="column_id" value="{??$columnId}">
+                                <input type="hidden" name="column_id" value="{??$column_id}">
                                 <div class="form-group">
                                     <label class="control-label col-sm-3">
                                         <span class="text-danger">*</span>
@@ -54,29 +55,20 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-3">
+                                        <span class="text-danger"></span>
+                                        <span>商品编号</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" value="{??$data['goods_sn']}" name="goods_sn" placeholder="标题" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">
                                         <span class="text-danger">*</span>
                                         <span>缩略图</span>
                                     </label>
                                     <div class="col-sm-8">
                                         <a class="btn btn-primary btn-ablum" dh-name="thumb" dh-value='{??$data['thumb']}' dh-path="goods" data-max="1">添加图片</a>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-3">
-                                        <span class="text-danger"></span>
-                                        <span>商品价格</span>
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" value="{??$data['price']}" name="price" placeholder="商品价格" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-3">
-                                        <span class="text-danger"></span>
-                                        <span>促销价格</span>
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" value="{??$data['sell_price']}" name="sell_price" placeholder="促销价格" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -88,15 +80,27 @@
                                         <input type="text" value="{??$data['sell_base']}" name="sell_base" placeholder="售卖基数" class="form-control">
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <label class="control-label col-sm-3">
                                         <span class="text-danger"></span>
-                                        <span>测试试卷ID</span>
+                                        <span>拼团成功人数</span>
                                     </label>
                                     <div class="col-sm-8">
-                                        <input type="text" value="{??$data['exam_id']}" name="info[exam_id]" placeholder="测试试卷ID" class="form-control">
+                                        <input type="text" value="{??$data['team_num']}" name="team_num" placeholder="拼团成功人数" class="form-control">
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">
+                                        <span class="text-danger"></span>
+                                        <span>团购限制时间(分钟)</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" value="{??$data['team_time']}" name="team_time" placeholder="团购限制时间(分钟)" class="form-control">
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <label class="control-label col-sm-3">
                                         <span class="text-danger"></span>
@@ -106,6 +110,7 @@
                                         <textarea name="description" placeholder="输入摘要内容" class="form-control">{??$data['description']}</textarea>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <label class="control-label col-sm-3">
                                         <span class="text-danger"></span>
@@ -117,6 +122,7 @@
                                         </script>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <label class="control-label col-sm-3">
                                         <span class="text-danger"></span>
@@ -130,6 +136,7 @@
                                         {/loop}
                                     </div>
                                 </div>
+
                                 <div class="form-group radio" dh-radio="{??$data['is_show']}">
                                     <label class="control-label col-sm-3">商品状态</label>
                                     <div class="radio-inline">
@@ -143,6 +150,7 @@
                                         </label>
                                     </div>
                                 </div>
+                                
                             </fieldset>
                         </div>
                     </div>
@@ -154,45 +162,47 @@
                                 <div class="console-sub-title clearfix">
                                     <div class="pull-left">
                                         <h5>
-                                            <span>课件信息</span>
+                                            <span>商品规格信息</span>
                                         </h5>
                                     </div>
                                     <div class="pull-right" style="margin-top:2px; margin-right: 15px;">
-                                        <a class="btn btn-primary add-syllabus">添加</a>
+                                        <a class="btn btn-primary btn-open" dh-url="{:url('goods_edit/spec',['model_id'=>1])}" dh-width="90%" dh-height="90%" dh-title="选择规格">添加</a>
                                     </div>
                                 </div>
-                                <div class="mt8" id="copy">
+                                <div class="mt8">
                                     <table class="table table-hover spec-table">
                                         <thead>
                                             <tr>
-                                                <th style="width: 180px;text-align: center;">课程名称</th>
-                                                <th style="text-align: center;">课程描述</th>
-                                                <th style="width: 150px; text-align: center;">资源类型</th>
-                                                <th style="width: 450px; text-align: center;">资源上传</th>
+                                                <th style="text-align: center;">规格名称</th>
+                                                <th style="width: 135px; text-align: center;">库存状态</th>
+                                                <th style="width: 80px; text-align: center;">库存</th>
+                                                <th style="width: 150px; text-align: center;">价格</th>
+                                                <th style="width: 150px; text-align: center;">促销价格</th>
                                                 <th style="width: 150px; text-align: center;">状态</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {loop $data['resource'] $value}
+                                            <input type="hidden" value="{default:$data['spec_parentid']|0}" name="spec_parentid">
+                                            {loop $data['specList'] $value}
                                             <tr>
                                                 <td style="text-align: center;">
-                                                    <input type="text" class="form-control" placeholder="请输入课程名称" value="{??$value['name']}" name="resource[name][]">
+                                                    <input type="hidden" value="{??$value['category']}" name="spec[category][]">
+                                                    {if empty($value['spec_name'])}默认规格{else}{$value['spec_name']}{/if}
                                                 </td>
                                                 <td>
-                                                    <input type="text" value="{$value['description']}" name="resource[description][]" class="form-control" placeholder="请输入课程描述">
-                                                </td>
-                                                <td>
-                                                    <select dh-selected="{default:$value['resource_type']|1}" name="resource[resource_type][]" class="form-control w160">
-                                                        <option value="1">视频</option>
-                                                        <option value="2">音频</option>
+                                                     <select dh-selected="{??$value['is_stock']}" name="spec[is_stock][]" class="form-control w160">
+                                                        <option value="1">开启库存限制</option>
+                                                        <option value="0">关闭库存限制</option>
                                                     </select>
                                                 </td>
-                                                <td class="row">
-                                                    <div class="col-sm-3">
-                                                        <a class="btn btn-primary pull-left btn-files" dh-name="resource[resource][]" dh-value="{default:$value['resource']|''}" dh-type="mp4,ogg,mp3,flv" dh-path="resource" dh-max="1">添加文件</a>
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                    </div>
+                                                <td>
+                                                    <input type="text" value="{$value['stock']}" name="spec[stock][]" class="form-control" placeholder="库存">
+                                                </td>
+                                                <td>
+                                                    <input type="text" value="{$value['price']}" name="spec[price][]" class="form-control" placeholder="价格">
+                                                </td>
+                                                <td>
+                                                    <input type="text" value="{$value['sell_price']}" name="spec[sell_price][]" class="form-control" placeholder="活动价格">
                                                 </td>
                                                 <td style="text-align: center;"><a class="btn btn-primary del-syllabus">删除</a></td>
                                             </tr>
@@ -229,37 +239,6 @@
     </div>
     {include /admin/public/global_js}
     <script type="text/javascript">
-    //增加
-    $('.add-syllabus').click(function() {
-
-        var dom = `<tr>
-                        <td style="text-align: center;">
-                            <input type="text" class="form-control" placeholder="请输入课程名称" value="" name="resource[name][]">
-                        </td>
-                        <td>
-                            <input type="text" value="" name="resource[description][]" class="form-control" placeholder="请输入课程描述">
-                        </td>
-                        <td>
-                            <select dh-selected="1" name="resource[resource_type][]" class="form-control w160">
-                                <option value="1">视频</option>
-                                <option value="2">音频</option>
-                            </select>
-                        </td>
-                        <td class="row">
-                            <div class="col-sm-3">
-                                <a class="btn btn-primary pull-left btn-files" dh-name="resource[resource][]" dh-value="{default:$value['resource']|''}" dh-type="mp4,ogg,mp3,flv" dh-path="resource" dh-max="1">添加文件</a>
-                          </div>
-                            <div class="col-sm-8">
-                            </div>
-                        </td>
-                        <td style="text-align: center;"><a class="btn btn-primary del-syllabus">删除</a></td>
-                    </tr>`;
-
-        let _this = $('#copy').find('table').find('tr').last();
-        $('#copy').find('table').append(dom);
-        uploadfiles($('.btn-files:last-child'));
-    })
-
     $('body').on('click', '.del-syllabus', function() {
         if ($('.del-syllabus').length > 1) {
             $(this).parents('tr').remove();

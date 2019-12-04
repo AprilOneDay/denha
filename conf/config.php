@@ -6,12 +6,13 @@ return [
     'debug'                        => true, // 是否开启调试
     'trace'                        => true, // 是否显示页面Trace信息
     'tag_trans'                    => false, //是否开启标签翻译功能
-    'app_debug'                    => false, //app接口调试模式
+    'app_debug'                    => true, // app接口调试模式
+    'error_log'                    => true, // 错误日志保存 true保存 false不保存
 
     'ststic'                       => URL . '/ststic',
     'vendor'                       => URL . '/vendor',
-    'uploadfile'                   => URL . '/uploadfile/',
-    'imgUrl'                       => URL,
+    'uploadfile'                   => URL . '/uploadfile/', // URL . '/uploadfile/',
+    'imgUrl'                       => URL, // URL,
     'auth_key'                     => 'QGa9h95r9Q5dYsnpsPb9', //助手函数auth密钥 用于可逆加密
 
     // +----------------------------------------------------------------------
@@ -66,6 +67,22 @@ return [
     ],
 
     // +----------------------------------------------------------------------
+    // | CORS配置
+    // +----------------------------------------------------------------------
+    'cores'                        => [
+        // 开启状态
+        'open'        => false,
+        // 允许请求来源 多个来源请用数组表示
+        'origin'      => '*',
+        // GET,POST,PUT,DELETE
+        'methods'     => ['GET', 'POST'],
+        // 秒
+        'maxAge'      => 1800,
+        // 携带证书式访问保存cookie [当值为ture时origin不能为*]
+        'credentials' => false,
+    ],
+
+    // +----------------------------------------------------------------------
     // | 磁盘容量检测
     // +----------------------------------------------------------------------
 
@@ -86,6 +103,13 @@ return [
     'yunwu_key'                    => '15923882847',
     'yunwu_secret'                 => md5('123456'),
     'yunwu_api_key'                => md5('220762'), //加密企业ID
+
+    // +----------------------------------------------------------------------
+    // | 快递鸟参数配置
+    // +----------------------------------------------------------------------
+
+    'kdniao_id'                    => '1443142',
+    'kdniao_key'                   => 'a167ad4c-9384-4df2-a20d-be421d4eb633',
 
     // +----------------------------------------------------------------------
     // | 百度翻译api
@@ -109,6 +133,17 @@ return [
     'ALIDAYU_SENDSMS_APPSECRETKEY' => 'WRcmUI5JjXggJELxeNG2r6C1u7gWhQ',
 
     // +----------------------------------------------------------------------
+    // | 阿里云OSS配置
+    // +----------------------------------------------------------------------
+
+    'OSS_ENDPOINT'                 => 'oss-cn-beijing.aliyuncs.com', // OSS数据中心访问域名
+    'OSS_ACCESS_KEY'               => 'LTAIEaOBq4Yt6GsS', // OSS获得的AccessKeyId
+    'OSS_ACCESS_SECRET'            => 'h3yIJYAIIJ4XKXK94qHOTC2F2DtYgn', // OSS获得的AccessKeySecret
+    'OSS_BUCKET'                   => 'jyjt', // OSS存储空间名称
+    'OSS_URL'                      => 'http://jyjt.oss-cn-beijing.aliyuncs.com', // 外部请求URL
+    'IMG_URL_TYPE'                 => 'OSS', // 调用图片模式
+
+    // +----------------------------------------------------------------------
     // | 微信api
     // +----------------------------------------------------------------------
 
@@ -119,7 +154,7 @@ return [
     // | 微信小程序
     // +----------------------------------------------------------------------
 
-    'wxs_appid'                    => 'wx0fcbd2457306b942', //wxe0d222cdc04d130a
-    'wxs_secret'                   => 'b3f2fe16a3f817c3cb4056569c3b7019', //598e8c2585564ce2d3979b45c1014dd5
+    'wxs_appid'                    => 'wx095d8aac10d20269', //wxe0d222cdc04d130a
+    'wxs_secret'                   => '13abf6c2eb59fd490e47ea1fd475e142', //598e8c2585564ce2d3979b45c1014dd5
 
 ];

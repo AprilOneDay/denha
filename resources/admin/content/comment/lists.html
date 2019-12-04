@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <meta name="keywords" content="" />
+    <title>后台管理</title>
+    {include /admin/public/global_css}
+</head>
+
+<body>
+    <div id="console-content-index-index">
+        <div class="view-content-container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="console-title console-title-border clearfix">
+                        <div class="pull-left">
+                            <h5>评论列表</h5>
+                        </div>
+                       
+                    </div>
+                    <form class="form-inline ng-pristine ng-valid" action="" method="get">
+                        <div class="form-group">
+                            <select class="form-control" dh-selected="{??$param['category_id']}" name="param[category_id]">
+                                <option value="0">选择类型</option>
+                                {loop $other['statusCopy'] $key $value}
+                                <option value="{$key}">{$value}</option>
+                                {/loop}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="param[field]" dh-selected="{??$param['field']}">
+                                <option value="">选择搜索条件</option>
+                                <option value="id">ID</option>
+                                <option value="title">标题</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control w120" placeholder="Search" name="param[keyword]" value="{??$param['keyword']}">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default" @click="search()">搜索</button>
+                        </div>
+                    </form>
+                  
+                    <div class="console-form">
+                        <div class="console-form">
+                            <form class="dh-form">
+                                <div class="mt8 table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                            	<th style="width: 50px;"><input type="checkbox" class="dh-checkbox-all" ></th>
+                                                <th style="width:75px;">ID</th>
+                                                <th style="width:180px;">发布者/UID</th>
+                                                <th>内容</th>
+                                                <th style="width:60px;">回复数</th>
+                                                <th style="width:120px;">发布时间</th>
+                                                <th style="width:50px;">状态</th>
+                                                <th style="width:180px; text-align:center;">操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {loop $lists $key $value}
+                                            <tr>
+                                            	<td>
+										 			<input type="checkbox" class="dh-checkbox-items" value="{$value['id']}" dh-native="false" name="id[]">
+										 		</td>
+                                                <td>{$value['id']}</td>
+                                                <td>{$value['nickname']} / {$value['uid']}</td>
+                                                <td>{if $value['is_top']}<font color="red">[置顶]</font>{/if}{$value['content']}</td>
+                                                <td>{$value['nums']}</td>
+                                                <td>{:date('Y-m-d H:i',$value['created'])}</td>
+                                                <td>
+                                                    {if $value['status'] == 1}
+                                                        <b style="color: green">开启</b>
+                                                    {else}
+                                                        <b style="color: red">关闭</b>
+                                                    {/if}
+                                                </td>
+                                                <td align='center'>
+                                                {if $value['is_top']}
+                                                    <a class="btn-ajax" dh-method="post" dh-url="{:url('top')}" data-ids="{$value['id']}" data-value="0">取消置顶</a>
+                                                {else}
+                                                    <a class="btn-ajax" dh-method="post" dh-url="{:url('top')}" data-ids="{$value['id']}" data-value="1">置顶</a>
+                                                {/if}
+                                                    <a dh-url="{:url('edit',['id'=>$value['id']])}"  dh-height="90%" dh-width="90%"  dh-title="评论详情"  class="btn-open">操作</a>
+                                                    <span class="text-explode">|</span>
+                                                    <a dh-url="{:url('del')}" class="btn-ajax" dh-confirm="确定删除?" dh-method="post" data-id="{$value['id']}">删除</a>
+                                                </td>
+                                            </tr>
+                                            {/loop}
+                                        </tbody>
+                                        <tfoot>
+								          	<tr>
+	          									<td colspan="8">
+	          										<div class="pull-left">
+	          											<input type="checkbox" class="dh-checkbox-all" >
+	          											<a class="btn btn-primary btn-comply" dh-url="{:url('goods_edit/del')}" dh-confrim="确定批量删除该批数据?">批量删除</a>
+                                                        <a class="btn btn-primary btn-comply" dh-url="{:url('goods_edit/del')}" dh-confrim="确定批量删除该批数据?">批量关闭</a>
+                                                        <a class="btn btn-primary btn-comply" dh-url="{:url('goods_edit/del')}" dh-confrim="确定批量删除该批数据?">批量开启</a>
+	          										</div>
+	          										{??$pages}
+	          									</td>
+	          								</tr>
+										</tfoot>
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {include /admin/public/global_js}
+    <script type="text/javascript">
+    </script>
+</body>
+
+</html>

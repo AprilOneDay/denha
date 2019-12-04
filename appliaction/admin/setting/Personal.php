@@ -15,7 +15,7 @@ class Personal extends Init
 
         $admin = table('ConsoleAdmin')->where('id', $this->consoleid)->field('salt,id,username')->find();
         if (!$admin) {
-            $this->ajaxReturn(array('status' => false, 'msg' => '账号不存在'));
+            $this->ajaxReturn(['status' => false, 'msg' => '账号不存在']);
         }
 
         if (!$data['password']) {
@@ -23,19 +23,19 @@ class Personal extends Init
         } else {
 
             if ($data['password'] != $password2) {
-                $this->ajaxReturn(array('status' => false, 'msg' => '两次密码不一致'));
+                $this->ajaxReturn(['status' => false, 'msg' => '两次密码不一致']);
             }
 
             $data['password'] = md5($admin['salt'] . $data['password']);
         }
 
-        $result = table('ConsoleAdmin')->where(array('id' => $admin['id']))->save($data);
+        $result = table('ConsoleAdmin')->where('id', $admin['id'])->save($data);
         if (!$result) {
-            $this->ajaxReturn(array('status' => false, 'msg' => '修改失败'));
+            $this->ajaxReturn(['status' => false, 'msg' => '修改失败']);
 
         }
 
-        $this->ajaxReturn(array('status' => true, 'msg' => '修改成功'));
+        $this->ajaxReturn(['status' => true, 'msg' => '修改成功']);
 
     }
 
@@ -47,12 +47,11 @@ class Personal extends Init
      */
     public function edit()
     {
-        $groupList = table('ConsoleGroup')->where(array('status' => 1))->field('name,id')->select();
 
-        $data = table('ConsoleAdmin')->field('id,username,`group`,status,nickname,mobile')->where('id', $this->consoleid)->find();
+        $data               = table('ConsoleAdmin')->field('id,username,group,status,nickname,mobile')->where('id', $this->consoleid)->find();
+        $data['group_copy'] = implode(' ', (array) table('ConsoleGroup')->where('id', 'in', $data['group'])->column('name'));
 
         $this->assign('data', $data);
-        $this->assign('groupList', $groupList);
 
         $this->show();
 

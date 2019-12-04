@@ -7,17 +7,18 @@ namespace dao\base;
 class PayNotify
 {
     private static $config;
+    private static $callBackType = 0; // 回调类型
 
     public function __construct()
     {
         if (is_null(self::$config)) {
-            self::$config = getConfig('pay');
+            self::$config = getConfig('pay.php');
         }
 
     }
 
     /**
-     * 执行函数
+     * 执行函数  回调信息->检测支付签名->最后执行结果
      * @date   2018-06-05T22:27:32+0800
      * @author ChenMingjiang
      * @param  [type]                   $callBackType [description]
@@ -26,48 +27,40 @@ class PayNotify
      */
     public function main($callBackType, $sign = '')
     {
-
-        switch ($callBackType) {
+        self::$callBackType = $callBackType;
+        switch (self::$callBackType) {
             case 1:
-                $result = $this->Paysapi($callBackType);
+                $result = $this->Paysapi();
                 break;
             case 2:
-                $result = $this->PayRoyalpay($callBackType);
+                $result = $this->PayRoyalpay();
                 break;
             case 3:
                 if (!$sign) {
-                    $result = $this->PayWeixinsmall($callBackType);
+                    $result = $this->PayWeixinsmall();
                 } elseif ($sign == 'refund') {
-                    $result = $this->refundWeixinsmall($callBackType);
+                    $result = $this->refundWeixinsmall();
                 }
                 break;
             default:
-                $result = array('msg' => 'callBackType参数错误');
+                $result = ['msg' => 'callBackType参数错误'];
                 break;
         }
 
-        $this->log($callBackType, $param, $result);
+        // 返回认证记录
+        $this->log(__METHOD__, [], $result, '检测支付签名');
         if (!$result['status']) {
             return false;
         }
 
-        $param = $result['data'];
-
-        //检测支付金额/币种是否一致
-        $result = dao('Finance')->checkPrice($param);
-        $this->log($callBackType, $param, $result);
-        if ($result['status']) {
-            return false;
-        }
-
-        //执行支付成功后的后续处理
-        $reslut = dao('PayCallBack')->main($param);
-        $this->log($callBackType, $param, $result);
+        //  根据返回结果 执行支付成功后的后续处理
+        $result = dao('PayCallBack')->main($result['data']);
+        $this->log(__METHOD__, [], $result, '最后执行结果');
 
     }
 
     /** Paysapi验证 */
-    public function Paysapi($callBackType)
+    public function Paysapi()
     {
         $paysapi_id = post('paysapi_id', 'intval', 0);
         $realprice  = post('realprice', 'float', 0);
@@ -79,23 +72,19 @@ class PayNotify
 
         //校验传入的参数是否格式正确，略
         $token = self::$config[$callBackType]['token'];
-
         $temps = md5($param['pay_sn'] . $param['uid'] . $paysapi_id . $param['price'] . $realprice . $token);
 
         if ($temps != $key) {
-            $this->log($callBackType, $param, $result);
-            $result = array('status' => false, 'msg' => '支付检验失败');
-        } else {
-            $result = array('status' => true, 'msg' => '认证通过', 'data' => $param);
+            die($this->log(__METHOD__, $param, $result, '支付检验失败'));
         }
 
-        $this->log($callBackType, $param, $result);
+        $this->log(__METHOD__, $param, $result, '回调信息');
 
-        return $result;
+        return ['status' => true, 'msg' => '认证通过', 'data' => $param];
     }
 
     /** PayRoyalpay验证 */
-    public function PayRoyalpay($callBackType)
+    public function PayRoyalpay()
     {
 
         $response = json_decode(file_get_contents('php://input'), true);
@@ -118,70 +107,62 @@ class PayNotify
         $order_amt = $response['total_fee'];
 
         if ($sign != $response['sign']) {
-            $this->log($callBackType, $param, $result);
-            $result = array('status' => false, 'msg' => '支付检验失败');
-        } else {
-            $result = array('status' => true, 'msg' => '认证通过', 'data' => $param);
+            die($this->log(__METHOD__, $param, $result, '支付检验失败'));
         }
 
-        $this->log($callBackType, $param, $result);
+        $this->log(__METHOD__, $param, $result, '回调信息');
 
-        return $result;
+        return ['status' => true, 'msg' => '认证通过', 'data' => $param];
     }
 
     // 微信小程序支付验证
-    public function PayWeixinsmall($callBackType)
+    public function PayWeixinsmall()
     {
 
         $xml      = file_get_contents('php://input');
         $response = dao('PayDealWeixinsmall')->xmlToArray($xml);
+
         if (!$response || $response['return_code'] == 'FAIL') {
-            $this->log($callBackType, array(), $response);
-            $result = array('status' => false, 'msg' => '支付检验失败');
+            die($this->log(__METHOD__, $xml, $response, '信息获取失败'));
         }
 
         $sign = $response['sign'];
         unset($response['sign']);
-        $checkSign = dao('PayDealWeixinsmall')->createSign($response, $callBackType);
+        $checkSign = dao('PayDealWeixinsmall')->createSign($response, self::$callBackType);
 
-        //商户订单号
+        if ($sign != $checkSign) {
+            die($this->log(__METHOD__, $response, [$sign, $checkSign], '支付检验失败'));
+        }
+
+        // 商户订单号
         $param['pay_sn'] = $response['out_trade_no'];
-        //支付金额，单位是最小货币单位
+        // 支付金额，单位是最小货币单位
         $param['pay_money'] = $response['cash_fee'] / 100;
+        // 优惠金额
+        $param['coupon_fee'] = !empty($response['coupon_fee']) ? $response['coupon_fee'] / 100 : 0;
         //币种
         $param['unit'] = $response['fee_type'];
 
-        if ($sign != $checkSign) {
-            $this->log($callBackType, $param, $response);
-            $result = array('status' => false, 'msg' => '支付检验失败');
-        } else {
-            $result = array('status' => true, 'msg' => '认证通过', 'data' => $param);
-        }
+        $this->log(__METHOD__, $param, $response, '回调信息');
 
-        $this->log($callBackType, $param, $response);
-
-        return $result;
+        return ['status' => true, 'msg' => '认证通过', 'data' => $param];
     }
 
     // 微信小程序退款验证
-    public function refundWeixinsmall($callBackType)
+    public function refundWeixinsmall()
     {
-        $config = self::$config[$callBackType];
+        $config = self::$config[self::$callBackType];
 
         $xml      = file_get_contents('php://input');
         $response = dao('PayDealWeixinsmall')->xmlToArray($xml);
         if (!$response || $response['return_code'] == 'FAIL') {
-            $this->log($callBackType, array(), $response);
-            $result = array('status' => false, 'msg' => '支付检验失败');
+            die($this->log(__METHOD__, $xml, $response, 'PayWeixinsmall:支付检验失败'));
         }
 
         $reqInfo = $response['req_info'];
         $reqInfo = dao('Encrypt')->setInit(array('key' => md5($config['secret'])))->base64Decrypt($reqInfo);
         if (!is_array($reqInfo)) {
-            $this->log($callBackType, $param, $response);
-            $result = array('status' => false, 'msg' => '解密失败');
-        } else {
-            $result = array('status' => true, 'msg' => '解密成功');
+            die($this->log(__METHOD__, $param, $response, '解密失败'));
         }
 
         //商户订单号
@@ -191,23 +172,24 @@ class PayNotify
         //币种
         $param['unit'] = 'CNY';
 
-        $this->log($callBackType, $param, $response);
+        $this->log(__METHOD__, $param, $response, '回调信息');
 
         $result['data'] = $param;
 
-        return $result;
+        return ['status' => true, 'msg' => '解密成功'];
     }
 
     /**
      * 日志记录
-     * @date   2018-01-17T14:42:06+0800
+     * @date   2019-02-28T15:34:41+0800
      * @author ChenMingjiang
-     * @param  [type]                   $callBackType [description]
-     * @param  [type]                   $data         [description]
-     * @param  [type]                   $result       [description]
-     * @return [type]                                 [description]
+     * @param  string                   $name     [description]
+     * @param  array                    $data     [description]
+     * @param  array                    $response [description]
+     * @param  string                   $tip      [description]
+     * @return [type]                   [description]
      */
-    private function log($callBackType, $data, $response)
+    public function log($name = '', $data = [], $response = [], $tip = '')
     {
 
         //如果没有写入权限尝试修改权限 如果修改后还是失败 则跳过
@@ -220,7 +202,7 @@ class PayNotify
 
         $path = DATA_PATH . 'pay_log' . DS . date('Y_m_d') . '.log';
 
-        $content = '--------CallBackType:' . $callBackType . '-------------' . PHP_EOL;
+        $content = '--------' . $name . ' CallBackType:' . self::$callBackType . ' [' . $tip . '] ' . '-------------' . PHP_EOL;
         $content .= json_encode($data, JSON_UNESCAPED_UNICODE) . PHP_EOL;
         $content .= '--------Result----------------------------------------' . PHP_EOL;
         $content .= json_encode($response, JSON_UNESCAPED_UNICODE) . PHP_EOL;

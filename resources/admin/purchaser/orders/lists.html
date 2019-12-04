@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <meta name="keywords" content="" />
+    <title>后台管理</title>
+    {include /admin/public/global_css}
+</head>
+
+<body>
+    <div id="console-content-index-index">
+        <div class="view-content-container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="console-title console-title-border clearfix">
+                        <div class="pull-left">
+                            <h5>采购列表</h5>
+                        </div>
+                        <div class="pull-right">
+                           
+                        </div>
+                    </div>
+                    <form class="form-inline ng-pristine ng-valid" action="" method="get">
+                        <div class="form-group">
+                            <select class="form-control" dh-selected="{??$param['category_id']}" name="param[category_id]">
+                                <option value="0">选择类型</option>
+                                {loop $other['categoryCopy'] $key $value}
+                                <option value="{$key}">{$value}</option>
+                                {/loop}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="param[field]" dh-selected="{??$param['field']}">
+                                <option value="">选择搜索条件</option>
+                                <option value="id">ID</option>
+                                <option value="title">标题</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control w120" placeholder="Search" name="param[keyword]" value="{??$param['keyword']}">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default" @click="search()">搜索</button>
+                        </div>
+                    </form>
+                   
+                    <div class="console-form">
+                        <div class="console-form">
+                            <form class="dh-form">
+                                <div class="mt8 table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                            	<th style="width: 50px;"><input type="checkbox" class="dh-checkbox-all" ></th>
+                                                <th style="width:75px;">ID</th>
+                                                <th style="width:100px;">订单编号</th>
+                                                <th>商品名称</th>
+                                                <th style="width:60px;">数量</th>
+                                                <th style="width:60px;">单价</th>
+                                                <th style="width:200px;">金额</th>
+                                                <th style="width:120px;">购买时间</th>
+                                                <th style="width:150px; text-align:center;">操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {loop $lists $item}
+                                            <tr>
+                                            	<td>
+										 			<input type="checkbox" class="dh-checkbox-items" value="{$item['id']}" dh-native="false" name="id[]">
+										 		</td>
+                                                <td>{$item['id']}</td>
+                                                <td>{$item['order_sn']}</td>
+                                                <td>{$item['title']}</td>
+                                                <td>{$item['num']}</td>
+                                                <td>{$item['price']}</td>
+                                                <td>{$item['account']}</td>
+                                                <td>{:date('Y-m-d H:i',$item['created'])}</td>
+                                                <td align='center'>
+                                                  
+                                                </td>
+                                            </tr>
+                                            {/loop}
+                                        </tbody>
+                                        <tfoot>
+								          	<tr>
+	          									<td colspan="9">
+	          										{??$pages}
+	          									</td>
+	          								</tr>
+										</tfoot>
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {include /admin/public/global_js}
+    <script type="text/javascript">
+    </script>
+</body>
+
+</html>

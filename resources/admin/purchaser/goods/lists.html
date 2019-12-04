@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <meta name="keywords" content="" />
+    <title>后台管理</title>
+    {include /admin/public/global_css}
+</head>
+
+<body>
+    <div id="console-content-index-index">
+        <div class="view-content-container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="console-title console-title-border clearfix">
+                        <div class="pull-left">
+                            <h5>商品列表</h5>
+                        </div>
+                        <div class="pull-right">
+                            <a class="btn btn-primary btn-open" dh-url="{:url('goods_edit/edit',$addUrlParams)}" dh-width="90%" dh-height="90%">添加</a>
+                        </div>
+                    </div>
+                    <form class="form-inline ng-pristine ng-valid" action="" method="get">
+                        <div class="form-group">
+                            <select class="form-control" dh-selected="{??$param['category_id']}" name="param[category_id]">
+                                <option value="0">选择类型</option>
+                                {loop $other['categoryCopy'] $key $value}
+                                <option value="{$key}">{$value}</option>
+                                {/loop}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="param[field]" dh-selected="{??$param['field']}">
+                                <option value="">选择搜索条件</option>
+                                <option value="id">ID</option>
+                                <option value="title">标题</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control w120" placeholder="Search" name="param[keyword]" value="{??$param['keyword']}">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default" @click="search()">搜索</button>
+                        </div>
+                    </form>
+                    {if $navs}
+                    <div style="padding-top: 10px;">
+                        <ul class="breadcrumb">
+                            <li>
+                                <a href="{:url('/admin/content/menus/index')}">全部</a> <span class="divider"></span>
+                            </li>
+                            {loop $navs $key $value}
+                            <li>
+                                <!--最后一个不带高亮-->
+                                {if $key == (count($navs) -1)}
+                                {$value['name']}
+                                {else}
+                                <a href="{:url('lists',$param)}">{$value['name']}</a> <span class="divider"></span>
+                                {/if}
+                            </li>
+                            {/loop}
+                        </ul>
+                    </div>
+                    {/if}
+                    <div class="console-form">
+                        <div class="console-form">
+                            <form class="dh-form">
+                                <div class="mt8 table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                            	<th style="width: 50px;"><input type="checkbox" class="dh-checkbox-all" ></th>
+                                                <th style="width:75px;">ID</th>
+                                                <th style="width:100px;">类型</th>
+                                                <th>标题</th>
+                                                <th style="width:60px;">售价</th>
+                                                <th style="width:60px;">促销价</th>
+                                                <th style="width:200px;">卖家</th>
+                                                <th style="width:120px;">发布时间</th>
+                                                <th style="width:150px; text-align:center;">操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {loop $list $key $value}
+                                            <tr v-for="list in list">
+                                            	<td>
+										 			<input type="checkbox" class="dh-checkbox-items" value="{$value['id']}" dh-native="false" name="id[]">
+										 		</td>
+                                                <td>{$value['id']}</td>
+                                                <td>{:implode('-',dao('Category')->getName($value['category_id']))}</td>
+                                                <td>{$value['title']}</td>
+                                                <td>{$value['price']}</td>
+                                                <td>{$value['sell_price']}</td>
+                                                <td>{$value['seller_nickname']}</td>
+                                                <td>{:date('Y-m-d H:i',$value['created'])}</td>
+                                                <td align='center'>
+                                                    <a dh-url="{:url('detail',['id'=>$value['id']])}"  dh-height="90%" dh-width="65%"  dh-title="采购详情" class="btn-open" dh-tooltip="{$value['title']}">购买</a>
+                                                    <!-- <span class="text-explode">|</span> -->
+                                                </td>
+                                            </tr>
+                                            {/loop}
+                                        </tbody>
+                                        <tfoot>
+								          	<tr>
+	          									<td colspan="9">
+	          										{??$pages}
+	          									</td>
+	          								</tr>
+										</tfoot>
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {include /admin/public/global_js}
+    <script type="text/javascript">
+    </script>
+</body>
+
+</html>

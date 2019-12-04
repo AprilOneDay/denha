@@ -12,13 +12,17 @@ class Category
 
     /**
      * 获取分类数组
-     * @date   2017-09-18T10:17:39+0800
+     * @date   2019-04-27T23:58:55+0800
      * @author ChenMingjiang
-     * @param  integer                  $id [description]
-     * @return [type]                       [description]
+     * @param  integer                  $id    [父级id]
+     * @param  array                    $merge [待合并数组信息]
+     * @param  string                   $lg    [语言类型]
+     * @return [type]                   [description]
      */
-    public function getList($id = 0, $lg = '')
+    public function getList($id = 0, $merge = [], $options = [])
     {
+
+        $lg = isset($options['lg']) ? $options['lg'] : '';
 
         if (!isset(self::$category[$id])) {
             $map['parentid'] = $id;
@@ -35,10 +39,37 @@ class Category
                     self::$category[$id][$value['id']] = $value['name'];
                 }
             }
+        }
 
+        if ($merge) {
+            return ksort(array_merge(self::$category[$id], $merge));
         }
 
         return self::$category[$id];
+    }
+
+    public function getBnameList($id, $merge = [])
+    {
+        $lists = &self::$category[$id . '_bname'];
+
+        if (!isset($lists)) {
+            $map['parentid'] = $id;
+            $map['is_show']  = 1;
+
+            $list = table('Category')->where($map)->order('sort asc')->select();
+
+            $lists = null;
+
+            foreach ($list as $key => $value) {
+                $lists[$value['id']] = $value['bname'];
+            }
+        }
+
+        if ($merge) {
+            return ksort(array_merge($lists, $merge));
+        }
+
+        return $lists;
     }
 
     /**

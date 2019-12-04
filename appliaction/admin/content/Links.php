@@ -11,7 +11,7 @@ class Links extends Init
 {
     public function lists()
     {
-        $param = get('param/a', 'text');
+        $param = get('param');
 
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 25);
@@ -29,14 +29,16 @@ class Links extends Init
                 $map['name'] = ['like', '%' . $param['keyword'] . '%'];
             }
         }
-        $list  = table('Links')->where($map)->limit($offer, $pageSize)->order('sort asc,id desc')->select();
+	
+        $list = table('Links')->where($map)->limit($offer, $pageSize)->order('sort asc,id desc')->select();
+
         $total = table('Links')->where($map)->count();
         $page  = new Pages($total, $pageNo, $pageSize, url('', $param));
 
-        $other = array(
+        $other = [
             'targetCopy'   => [1 => '当前窗口', 2 => '新窗口'],
-            'categoryCopy' => dao('Category')->getList(1109),
-        );
+            'categoryCopy' => dao('Category')->getList(1168),
+        ];
 
         $this->show('', [
             'list'  => $list,
@@ -58,7 +60,7 @@ class Links extends Init
 
         $other = array(
             'targetCopy'   => [1 => '当前窗口', 2 => '新窗口'],
-            'categoryCopy' => dao('Category')->getList(1109),
+            'categoryCopy' => dao('Category')->getList(1168),
         );
 
         $this->show('', [

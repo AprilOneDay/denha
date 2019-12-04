@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>导出Excel</title>
+</head> 
+<body>  
+<table width="100%" cellspacing="0" border="1">
+	<thead>
+		<tr>
+			<th align="left">类型</th>
+			<th align="left">订单编号</th>
+			<th align="left">商品信息</th>	
+			<th align="left">订单总价</th>
+			<th align="left">买家</th>
+			<th align="left">卖家</th>
+			<th align="left">订单状态</th>
+			<th align="left">创建时间</th>
+			<th align="left">来源</th>
+		</tr>
+	</thead>
+	<tbody>
+		{loop $lists $item}
+	 	<tr>
+			<td>普通订单<!--{$other['typeCopy'][$item['type']]}--></td>
+			<td style="vnd.ms-excel.numberformat:@">{$item['order_sn']}</td>
+			{loop $item['goodsList'] $v}
+			<td>{$v['title']} {$v['spec_name']} 价格：{$v['price']} 数量：{$v['num']}</td>
+			{/loop}
+			<td>{$item['account']}</td>
+			<td>{$item['user']['nickname']}</td>
+			<td>{$item['seller']['nickname']}</td>
+			<td>{default:$other['statusCopy'][$item['status']]|'未知'}</td>
+			<td>{:date('Y-m-d H:i',$item['created'])}</td>
+			<td>{$other['originCopy'][$item['origin']]}</td>
+		</tr>
+		{/loop}
+	</tbody>
+</table>
+</body>  
+</html>

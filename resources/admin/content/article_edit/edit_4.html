@@ -21,7 +21,7 @@
 								<span for="myDate">所属栏目</span>
 							</label>
 							<div class="col-sm-8">
-								<select dh-selected="{??$data['column_id']}" name="column_id" class="form-control w160">
+								<select dh-selected="{??$data['column_id']}" name="column_id" class="form-control w160 selectpicker" data-live-search="true">
 									{loop $other['columnListCopy'] $key $value}
 	                               		<option value="{$key}">{$value}</option>
 	                            	{/loop}

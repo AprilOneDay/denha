@@ -53,16 +53,16 @@ class Exam extends Init
             $data['created'] = TIME;
             $result          = table('ExamList')->add($data);
             if (!$result) {
-                $this->appReturn(array('status' => false, 'msg' => '添加失败'));
+                $this->ajaxReturn(array('status' => false, 'msg' => '添加失败'));
             }
         } else {
             $result = table('ExamList')->where('id', $id)->save($data);
             if (!$result) {
-                $this->appReturn(array('status' => false, 'msg' => '修改失败'));
+                $this->ajaxReturn(array('status' => false, 'msg' => '修改失败'));
             }
         }
 
-        $this->appReturn(array('status' => true, 'msg' => '操作成功'));
+        $this->ajaxReturn(array('status' => true, 'msg' => '操作成功'));
     }
 
     /** 编辑考卷 */
@@ -72,7 +72,7 @@ class Exam extends Init
         if ($id) {
             $data = table('ExamList')->where('id', $id)->find();
         } else {
-            $data = array('sort' => 0, 'status' => 1, 'exam_time' => 0);
+            $data = ['sort' => 0, 'status' => 1, 'exam_time' => 0];
         }
 
         $this->assign('data', $data);
@@ -101,8 +101,8 @@ class Exam extends Init
         }
 
         $other = array(
-            'typeCopy'   => getVar('question_type', 'admin.exam'),
-            'statusCopy' => array(0 => '关闭', 1 => '开启'),
+            'typeCopy'   => getVar('admin.exam.question_type'),
+            'statusCopy' => [0 => '关闭', 1 => '开启'],
         );
 
         $this->assign('list', $list);
@@ -125,7 +125,7 @@ class Exam extends Init
         }
 
         $other = array(
-            'typeCopy'   => getVar('question_type', 'admin.exam'),
+            'typeCopy'   => getVar('admin.exam.question_type'),
             'statusCopy' => array(0 => '关闭', 1 => '开启'),
         );
 
@@ -148,15 +148,15 @@ class Exam extends Init
         $other = post('other');
 
         if (!$data['exam_id']) {
-            $this->appReturn(array('status' => false, 'msg' => '试卷参数错误'));
+            $this->ajaxReturn(['status' => false, 'msg' => '试卷参数错误']);
         }
 
         if (!$data['title']) {
-            $this->appReturn(array('status' => false, 'msg' => '请输入考题'));
+            $this->ajaxReturn(['status' => false, 'msg' => '请输入考题']);
         }
 
         if (!$data['type']) {
-            $this->appReturn(array('status' => false, 'msg' => '请选择答案类型'));
+            $this->ajaxReturn(['status' => false, 'msg' => '请选择答案类型']);
         }
 
         $tmpContent  = null;
@@ -171,31 +171,31 @@ class Exam extends Init
 
         if (($data['type'] == 1 || $data['type'] == 2)) {
             if (!$tmpContent) {
-                $this->appReturn(array('status' => false, 'msg' => '请输入答案'));
+                $this->ajaxReturn(['status' => false, 'msg' => '请输入答案']);
             }
 
             if (!$isAnswerNum) {
-                $this->appReturn(array('status' => false, 'msg' => '请勾选题目的正确答案'));
+                $this->ajaxReturn(['status' => false, 'msg' => '请勾选题目的正确答案']);
             }
 
             if ($data['type'] == 1 && $isAnswerNum > 1) {
-                $this->appReturn(array('status' => false, 'msg' => '【单选模式】只能选择一个正确答案'));
+                $this->ajaxReturn(['status' => false, 'msg' => '【单选模式】只能选择一个正确答案']);
             }
         }
 
         if (!$id) {
             $result = table('ExamData')->add($data);
             if (!$result) {
-                $this->appReturn(array('status' => false, 'msg' => '添加失败'));
+                $this->ajaxReturn(['status' => false, 'msg' => '添加失败']);
             }
         } else {
             $result = table('ExamData')->where('id', $id)->save($data);
             if (!$result) {
-                $this->appReturn(array('status' => false, 'msg' => '修改失败'));
+                $this->ajaxReturn(['status' => false, 'msg' => '修改失败']);
             }
         }
 
-        $this->appReturn(array('status' => true, 'msg' => '操作成功'));
+        $this->ajaxReturn(['status' => true, 'msg' => '操作成功']);
 
     }
 }

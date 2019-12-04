@@ -160,10 +160,13 @@ $('#closeIframe').click(function(){
     for(var key in specDataList){
     	tableHtml += '<tr>';
     	tableHtml += '<input type="hidden" value="'+specDataList[key].join(',')+'" name="spec[category][]" >';
+    	tableHtml += '<input type="hidden" value="" name="spec[id][]" >';
     	tableHtml += '<td style="text-align: center;">'+name(specDataList[key])+'</td>';
+    	tableHtml += '<td><select dh-selected="1" name="spec[is_stock][]" class="form-control w160"><option value="1">开启库存限制</option><option value="0" checked>关闭库存限制</option></select></td>'
     	tableHtml += '<td><input type="text" value="0" name="spec[stock][]"  class="form-control" placeholder="库存"></td>';
     	tableHtml += '<td><input type="text" value="0.00" name="spec[price][]"  class="form-control" placeholder="价格"></td>';
     	tableHtml += '<td><input type="text" value="0.00" name="spec[sell_price][]"  class="form-control" placeholder="促销价格"></td>';
+    	tableHtml += '<td><input type="text" value="0.00" name="spec[exw_price][]"  class="form-control" placeholder="采购价"></td>';
     	tableHtml += '<td style="text-align: center;"><a class="btn btn-primary del-syllabus">删除</a></td>';
     	tableHtml += '</tr>';
     }

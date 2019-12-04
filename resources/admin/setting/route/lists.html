@@ -23,44 +23,42 @@
                         </div>
                     </div>
                     <div class="console-form">
-                        <div class="mt8">
-                            <form>
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>规则名称</th>
-                                            <th>原路由地址</th>
-                                            <th>新路由地址</th>
-                                            <th>后缀限制</th>
-                                            <th style="width:200px;text-align:center;">状态</th>
-                                            <th style="text-align:center;">编辑/操作</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {loop $list $key $value}
-                                        <tr>
-                                            <td>{$value['id']}</td>
-                                            <td>{$value['name']}</td>
-                                            <td>{$value['url']}/{$value['params']}</td>
-                                            <td>/{$value['change_url']}{if $value['suffix'] == '/'}/{elseif $value['suffix'] != ''}.{$value['suffix']}{/if}
-                                            </td>
-                                            <td>{if $value['limit_suffix']}{$value['limit_suffix']}{else}无限制{/if}</td>
-                                            <td align='center'>
-                                                <input type="checkbox" name="status" {if $value['status'] == 1}checked{/if}  data-size="small" data-on-text="开启" data-off-text="关闭" data-handle-width="150" data-id="{$value['id']}" class="btn-ajax btn-checkbox-switch" dh-method="post" dh-url="{:url('changeStatus')}" dh-true-reload="false" data-true-value="1" data-false-value="0" data-id="{$value['id']}"  />
-                                            </td>
-                                            
-                                            </td>
-                                            <td align='center'>
-                                                <a dh-title="编辑路由规则" class="btn-open" dh-url="{:url('edit',array('id'=>$value['id']))}" dh-height="60%" dh-width="80%">编辑</a>
-                                                <span class="text-explode">|</span>
-                                                <a dh-url="{:url('delete')}" class="btn-ajax" dh-method="post" dh-confirm="确定删除路由:【{$value['name']}】?" data-id="{$value['id']}">删除</a>
-                                            </td>
-                                        </tr>
-                                        {/loop}
-                                    </tbody>
-                                </table>
-                            </form>
+                        <div class="mt8 table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>规则名称</th>
+                                        <th>原路由地址</th>
+                                        <th>新路由地址</th>
+                                        <th>后缀限制</th>
+                                        <th style="width:200px;text-align:center;">状态</th>
+                                        <th style="text-align:center;">编辑/操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {loop $list $key $value}
+                                    <tr>
+                                        <td>{$value['id']}</td>
+                                        <td>{$value['name']}</td>
+                                        <td>{$value['url']}/{$value['params']}</td>
+                                        <td>/{$value['change_url']}{if $value['suffix'] == '/'}/{elseif $value['suffix'] != ''}.{$value['suffix']}{/if}
+                                        </td>
+                                        <td>{if $value['limit_suffix']}{$value['limit_suffix']}{else}无限制{/if}</td>
+                                        <td align='center'>
+                                            <input type="checkbox" name="status" {if $value['status'] == 1}checked{/if}  data-size="small" data-on-text="开启" data-off-text="关闭" data-handle-width="150" data-id="{$value['id']}" class="btn-ajax btn-checkbox-switch" dh-method="post" dh-url="{:url('changeStatus')}" dh-true-reload="false" data-true-value="1" data-false-value="0" data-id="{$value['id']}"  />
+                                        </td>
+                                        
+                                        </td>
+                                        <td align='center'>
+                                            <a dh-title="编辑路由规则" class="btn-open" dh-url="{:url('edit',array('id'=>$value['id']))}" dh-height="60%" dh-width="80%">编辑</a>
+                                            <span class="text-explode">|</span>
+                                            <a dh-url="{:url('delete')}" class="btn-ajax" dh-method="post" dh-confirm="确定删除路由:【{$value['name']}】?" data-id="{$value['id']}">删除</a>
+                                        </td>
+                                    </tr>
+                                    {/loop}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -68,16 +66,6 @@
         </div>
     </div>
     {include /admin/public/global_js}
-    <script type="text/javascript">
-    $('.btn-checkbox-switch').each(function() {
-        $(this).bootstrapSwitch({
-            // onSwitchChange: function(event, state) {
-            //     // console.log(state, event.isDefaultPrevented());
-            //     // return console.log(state, event.isDefaultPrevented())
-            // }
-        });
-    })
-    </script>
 </body>
 
 </html>

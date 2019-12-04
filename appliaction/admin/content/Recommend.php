@@ -157,10 +157,10 @@ class Recommend extends Init
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 25);
 
-        $data = dao('Shop', 'admin')->lists($param, $pageNo, $pageSize);
+        $data = dao('Admin.Shop')->lists($param, $pageNo, $pageSize);
 
         $other = array(
-            'categoryCopy' => getVar('tags', 'console.article'),
+            'categoryCopy' => getVar('console.article.tags'),
             'isIdeCopy'    => array(0 => '未认证', 1 => '已认证', 2 => '认证未通过'),
         );
 

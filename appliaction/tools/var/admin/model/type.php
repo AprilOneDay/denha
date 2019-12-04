@@ -13,7 +13,11 @@
  */
 return [
     '1' => ['tpl' => 1, 'name' => '文章模型', 'db' => 'Data', 'model' => 'article', 'url' => '/admin/content/article_list/lists'],
-    '2' => ['tpl' => 1, 'name' => '商品模型', 'db' => 'Data', 'model' => 'goods', 'url' => '/admin/content/goods_list/lists'],
-    '3' => ['tpl' => 2, 'name' => '老师模型', 'db' => 'Teachers', 'model' => 'article', 'url' => '/admin/content/article_list/lists'],
-    '4' => ['tpl' => 2, 'name' => '课件模型', 'db' => 'Courses', 'model' => 'goods', 'url' => '/admin/content/goods_list/lists'],
+    '2' => ['tpl' => 2, 'name' => '老师模型', 'db' => 'Teachers', 'model' => 'article', 'url' => '/admin/content/article_list/lists'],
+    '3' => ['tpl' => 5, 'name' => '店铺模型', 'db' => 'Shop', 'model' => 'article', 'url' => '/admin/content/article_list/lists'],
+    '4' => ['tpl' => 1, 'name' => '普通商品模型', 'db' => 'Data', 'model' => 'goods', 'url' => '/admin/content/goods_list/lists'],
+    '5' => ['tpl' => 2, 'name' => '团购商品模型', 'db' => 'DataTeams', 'model' => 'goods', 'url' => '/admin/content/goods_list/lists'],
+    '6' => ['tpl' => 3, 'name' => '积分商品模型', 'db' => 'Data', 'model' => 'goods', 'url' => '/admin/content/goods_list/lists'],
+    '7' => ['tpl' => 4, 'name' => '课件模型', 'db' => 'Courses', 'model' => 'goods', 'url' => '/admin/content/goods_list/lists'],
+    '8' => ['tpl' => 2, 'name' => '免费直播模型', 'db' => 'Data', 'model' => 'article', 'url' => '/admin/content/article_list/lists'],
 ];

@@ -20,7 +20,7 @@
 								<span>仓库国家</span>
 							</label>
 						 	<div class="col-sm-8">
-								<select name="country_id" class="form-control w160 btn-linkage" dh-selected="{??$data['country_id']}" config-el=".house-2" dh-url="{:url('get_category')}">
+								<select name="country_id" class="form-control w160 dh-linkage" dh-selected="{??$data['country_id']}" dh-el=".house-2" dh-url="{:url('get_category')}">
 									<option value="">选择所属国家</option>
 									{loop $other['countryCopy'] $key $value}
 										<option value="{$value['bname_2']}">{$value['name']}</option>

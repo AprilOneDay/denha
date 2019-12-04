@@ -33,7 +33,9 @@ class OrdersLog
         $result          = table('OrdersLog')->where($map)->save('is_new', 0);
 
         $result = table('OrdersLog')->addAll($data);
-        if (!$result) {
+        $result = table('Orders')->where(['order_sn' => ['in', $orderSn]])->save('status', $type);
+
+        if ($result === false) {
             return false;
         }
 

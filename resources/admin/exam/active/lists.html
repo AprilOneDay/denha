@@ -4,188 +4,76 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
 	<meta name="keywords" content=""/>
-	<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
 	<title>后台管理</title>
 	{include /admin/public/global_css}
 </head>
   	<body>
-		<div id="console-setting-menus-index">
+	<div id="console-content-index-index">
 		<div class="view-content-container" >
 			<div class="row">
-				<form class="form-horizontal" action="">
-					<div class="col-sm-12">
-						<div class="console-title console-title-border clearfix">
-							<div class="pull-left">
-								<h5>参数配置</h5>
-							</div>
+				<div class="col-sm-12">
+					<div class="console-title console-title-border clearfix">
+						<div class="pull-left">
+							<h5>菜单列表</h5>
 						</div>
-						<div class="console-form">
-							<div class="mt8">
-								<div class="panel">
-						<div class="panel-body">
-							<fieldset>
-								<div class="form-group">
-									<label class="control-label col-sm-3">
-										<span class="text-danger"></span>
-										<span>开始时间</span>
-									</label>
-								 	<div class="col-sm-7">
-										<input type="text" value="{:strtotime($data['start_time'])}" name="data[start_time]" class="form-control data-time" dh-type="datetime">				
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-sm-3">
-										<span class="text-danger"></span>
-										<span>结束时间</span>
-									</label>
-								 	<div class="col-sm-7">
-										<input type="text" value="{:strtotime($data['end_time'])}" name="data[end_time]" class="form-control data-time" dh-type="datetime">				
-									</div>
-								</div>
-
-
-								<div class="form-group">
-									<label class="control-label col-sm-3">
-										<span class="text-danger"></span>
-										<span>活动规则</span>
-									</label>
-								 	<div class="col-sm-7">
-										<textarea name="data[rule]" placeholder="输入摘要内容" class="form-control" style="min-height: 150px">{??$data['rule']}</textarea>		
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-sm-3">
-										<span class="text-danger"></span>
-										<span>活动奖品</span>
-									</label>
-								 	<div class="col-sm-7">
-										<textarea name="data[prize]" placeholder="输入摘要内容" class="form-control" style="min-height: 150px">{??$data['prize']}</textarea>			
-									</div>
-								</div>
-								
-
-								<div class="form-group">
-									<div class="col-sm-3"></div>
-									<div class="col-sm-7">
-										<table class="table table-hover table-bordered">
-											<thead>
-												<tr>
-													<th style="text-align:center;text-align: left;line-height: 35px" colspan="3">题目组合配置</th>
-													<th style="text-align:center;"><a class="btn btn-primary add-syllabus">添加</a></th>
-												</tr>
-												<tr>
-													<th style="text-align:center;">题库类型</th>
-													<th style="text-align:center;">题目正确率%(0-100)</th>
-													<th style="text-align:center;">题目数量</th>
-													<th style="text-align:center;">操作</th>
-												</tr>
-											</thead>
-											<tbody>
-												{loop $data['tm'] $value}
-												<tr>
-													<td style="text-align: center;">
-														<select name="data[tm][type][]" class="form-control w160" dh-selected="{??$value['type']}">
-															<option value="1">本系统题库</option>
-															<option value="2">外部系统题库</option>
-														</select>
-													</td>
-													<td style="text-align: center;">
-														<input type="text" value="{$value['accuracy_min']}" name="data[tm][accuracy_min][]" class="form-control" style="width: 40%; float: left;">
-														<label style="line-height: 29px">——</label>
-														<input type="text" value="{$value['accuracy_max']}" name="data[tm][accuracy_max][]" class="form-control" style="width: 40%;float: right;">
-													</td>
-													<td style="text-align: center;">
-														<input type="text" value="{$value['num']}" name="data[tm][num][]" class="form-control">
-													</td>
-													<td style="text-align: center;">
-														<a class="del-syllabus">删除</a>
-													</td>
-												</tr>
-												{/loop}
-											</tbody>
-										</table>
-									</div>
-									
-								</div>
-
-
-								<div class="form-group">
-									<div class="col-sm-3"></div>
-									<div class="col-sm-7">
-										<table class="table table-hover table-bordered">
-											<thead>
-												<tr>
-													<th style="text-align:center;text-align: left;line-height: 35px" colspan="3">固定题目设置</th>
-													<th style="text-align:center;"><a class="btn btn-primary add-syllabus">添加</a></th>
-												</tr>
-												<tr>
-													<th style="width:180px;text-align:center;">题库类型</th>
-													<th style="text-align:center;">题目ID
-														<span style="color: red;"> (题目ID“，”分割,批次“|”分割)</span>
-													</th>
-													<th style="width:180px;text-align:center;">题目数量</th>
-													<th style="width:80px;text-align:center;">操作</th>
-												</tr>
-											</thead>
-											<tbody>
-												{loop $data['fixedRules'] $value}
-												<tr>
-													<td style="text-align: center;">
-														<select name="data[fixedRules][type][]" class="form-control w160" dh-selected="{??$value['type']}">
-															<option value="1">固定出现</option>
-															<option value="2">随机出现</option>
-															<option value="3">分批出现</option>
-														</select>
-													</td>
-													<td style="text-align: center;">
-														<input type="text" value="{$value['value']}" name="data[fixedRules][value][]" class="form-control">
-													</td>
-													<td style="text-align: center;">
-														<input type="text" value="{$value['num']}" name="data[fixedRules][num][]" class="form-control w160">
-													</td>
-													<td style="text-align: center;">
-														<a class="del-syllabus">删除</a>
-													</td>
-												</tr>
-												{/loop}
-											</tbody>
-										</table>
-									</div>
-									
-								</div>
-								
-
-							</fieldset>
+						<div class="pull-right">
+							<a class="btn btn-primary btn-open" dh-url="{F:url('edit')}"  dh-height="70%" dh-width="70%">添加题目</a>
 						</div>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary btn-comply pull-left">保存</button>
-						<button type="button" class="btn btn-default pull-left" >取消</button>
-					</div>
-							</div>
+					<form class="form-inline ng-pristine ng-valid" action=""  method="get">
+                        <div class="form-group">
+                        	<select class="form-control" dh-selected="{??$param['type']}" name="param[type]">
+                        		<option value="">选择类型</option>
+                        	{loop $other['typeCopy'] $key $value}
+                           		<option value="{$key}">{$value}</option>
+                        	{/loop}
+                            </select>
+                            <select class="form-control" name="param[field]" dh-selected="{??$param['field']}">
+                                <option value="title">考题</option>
+                            </select>
+                            <input type="text" class="form-control w120" placeholder="Search" name="param[keyword]" value="{??$param['keyword']}" >
+                            <button type="submit" class="btn btn-default" >搜索</button>
+                        </div>
+                    </form>
+					<div class="console-form">
+						<div class="mt8">
+							<form>
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th style="width:75px;">ID</th>
+											<th>名称</th>
+											<th style="width:160px; text-align:center;">编辑/操作</th>
+										</tr>
+									</thead>
+									<tbody>
+										{loop $list $key $value}
+									 	<tr v-for="list in list">
+											<td>{$value['id']}</td>
+											<td>
+												{$value['name']} 
+											</td>
+											<td align='center'>
+												<a dh-url="{F:url('edit',['id'=>$value['id']])}"  dh-height="70%" dh-width="80%"  dh-title="编辑"  class="btn-open">编辑</a>
+											</td>
+										</tr>
+										{/loop}
+									</tbody>
+									<tfoot>
+							          	<tr>
+          									<td colspan="15">{??$pages}</td>
+          								</tr>
+									</tfoot>
+								</table>
+							</form>
 						</div>
 					</div>
-				</form>
+				</div>
 			</div>
 		</div>
 	</div>
 	{include /admin/public/global_js}
-<script type="text/javascript">
-$('body').on('click','.add-syllabus',function(){
-	var content = $(this).parents('table').find('tbody tr:last-child');
-	content.parent().append(content.clone(true));
-	console.log(content.html());
-});
-
-$('body').on('click','.del-syllabus',function(){
-
-	if($('.del-syllabus').length > 1){
-		$(this).parents('tr').remove();
-	}
-	
-});
-</script>
+	<script type="text/javascript">
+	</script>
 </body>
 </html>

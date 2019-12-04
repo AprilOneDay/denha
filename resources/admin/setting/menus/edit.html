@@ -22,7 +22,7 @@
 										<span>上级菜单</span>
 									</label>
 									 <div class="col-sm-8">
-										<select name="parentid" class="form-control w160" dh-selected="{??$data['parentid']}">
+										<select name="parentid" class="form-control w160 selectpicker" data-live-search="true" dh-selected="{??$data['parentid']}">
 											<option value="0">作为一级菜单</option>
 											{loop $treeList $key $value}
 											<option value="{$value['id']}" >{$value['htmlname']}</option>

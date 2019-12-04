@@ -28,8 +28,13 @@ class WeixinOauth
 
         $Oauth       = new Oauth();
         $accessToken = $Oauth->getAccessToken($code);
+        if (isset($accessToken['status']) && $accessToken['status'] == false) {
+            echo $accessToken['msg'];
+            exit;
+        }
 
         $userInfo = $Oauth->getUserInfo($accessToken['access_token'], $accessToken['openid']);
+
         return $userInfo;
     }
     /**
@@ -66,20 +71,20 @@ class WeixinOauth
      */
     public function redirectUrl($url, $scope = 'snsapi_userinfo', $state = 1)
     {
-        /*//目前只有市集授权，后期多个授权，跳转地址需要更改
-        $mobileShijiUrl = C('url', 'mobile.shiji');
-        //测试环境
-        $hostArr = array('http://m.shiji.chayu.loc', 'http://m.shiji.chayu.alp', 'http://m.shiji.chayu.bet', 'http://m1.shiji.chayu.com');
-        if (in_array($mobileShijiUrl, $hostArr)) {
-        $mobileShijiUrl = 'http://m.shiji.chayu.com';
-        }
-        if ($this->checkScience() != false) {
-        $mobileShijiUrl = $this->checkScience();
-        }*/
+        // //目前只有市集授权，后期多个授权，跳转地址需要更改
+        // $mobileShijiUrl = C('url', 'mobile.shiji');
+        // //测试环境
+        // $hostArr = array('http://m.shiji.chayu.loc', 'http://m.shiji.chayu.alp', 'http://m.shiji.chayu.bet', 'http://m1.shiji.chayu.com');
+        // if (in_array($mobileShijiUrl, $hostArr)) {
+        //     $mobileShijiUrl = 'http://m.shiji.chayu.com';
+        // }
+        // if ($this->checkScience() != false) {
+        //     $mobileShijiUrl = $this->checkScience();
+        // }
 
         $appId  = config('weixin_appid');
         $newUrl = URL . '/weixin_oauth?appId=' . $appId . '&scope=' . $scope . '&state=' . $state . '&return_url=' . urlencode($url);
-        // redirect($newUrl);
+
         exit('<script>window.location.href="' . $newUrl . '";</script>');
     }
     /**
@@ -91,7 +96,7 @@ class WeixinOauth
     public function checkScience()
     {
         $mobileShijiUrl = C('url', 'mobile.shiji');
-        $hostArr        = array('http://m.shiji.chayu.loc', 'http://m.shiji.chayu.alp', 'http://m.shiji.chayu.bet', 'http://m.shiji.chayu.dev', 'http://m1.shiji.chayu.com');
+        $hostArr        = ['http://m.shiji.chayu.loc', 'http://m.shiji.chayu.alp', 'http://m.shiji.chayu.bet', 'http://m.shiji.chayu.dev', 'http://m1.shiji.chayu.com'];
         $url            = 'http://m.shiji.chayu.com';
         if (in_array($mobileShijiUrl, $hostArr)) {
             return $url;

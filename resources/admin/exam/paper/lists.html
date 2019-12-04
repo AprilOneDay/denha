@@ -17,7 +17,7 @@
 							<h5>菜单列表</h5>
 						</div>
 						<div class="pull-right">
-							<a class="btn btn-primary btn-open" dh-url="{:url('edit')}"  dh-height="500px" dh-width="60%">添加考卷</a>
+							<a class="btn btn-primary btn-open" dh-url="{F:url('edit')}"  dh-height="500px" dh-width="60%">添加考卷</a>
 						</div>
 					</div>
 					<form class="form-inline ng-pristine ng-valid" action=""  method="get">
@@ -50,8 +50,8 @@
 											<td>{$value['score']}</td>
 											<td>{$other['statusCopy'][$value['status']]}</td>
 											<td align='center'>
-												<a href="{:url('question_list',array('id'=>$value['id']))}">查看题目</a>
-												<a dh-url="{:url('edit',array('id'=>$value['id']))}"  dh-height="500px" dh-width="60%"  config-title="编辑分类"  class="btn-open">编辑</a>
+												<a href="{F:url('question_list',array('id'=>$value['id']))}">查看题目</a>
+												<a dh-url="{F:url('edit',array('id'=>$value['id']))}"  dh-height="500px" dh-width="60%"  config-title="编辑分类"  class="btn-open">编辑</a>
 											</td>
 										</tr>
 										{/loop}

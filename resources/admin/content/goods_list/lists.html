@@ -73,14 +73,14 @@
                                             <tr>
                                             	<th style="width: 50px;"><input type="checkbox" class="dh-checkbox-all" ></th>
                                                 <th style="width:75px;">ID</th>
-                                                <th style="width:100px;">类型</th>
+                                                <th style="width:300px;">类型</th>
                                                 <th>标题</th>
                                                 <th style="width:60px;">售价</th>
                                                 <th style="width:60px;">促销价</th>
                                                 <th style="width:200px;">卖家</th>
                                                 <th style="width:120px;">发布时间</th>
                                                 <th style="width:50px;">状态</th>
-                                                <th style="width:80px; text-align:center;">操作</th>
+                                                <th style="width:150px; text-align:center;">操作</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -90,12 +90,12 @@
 										 			<input type="checkbox" class="dh-checkbox-items" value="{$value['id']}" dh-native="false" name="id[]">
 										 		</td>
                                                 <td>{$value['id']}</td>
-                                                <td>{default:$other['categoryCopy'][$value['category_id']]|''}</td>
+                                                <td>{:implode('-',dao('Category')->getName($value['category_id']))}</td>
                                                 <td>{$value['title']}</td>
                                                 <td>{$value['price']}</td>
                                                 <td>{$value['sell_price']}</td>
                                                 <td>{$value['seller_nickname']}</td>
-                                                <td>{:date('Y-m-d H:i',$value['created'])}</td>
+                                                <td>{:date('Y-m-d H:i',$value['publish_time'])}</td>
                                                 <td>
                                                     {if $value['is_show'] == 1}
                                                     <b style="color: green">上架</b>
@@ -106,8 +106,12 @@
                                                     {/if}
                                                 </td>
                                                 <td align='center'>
-                                                    <a dh-url="{:url('goods_edit/edit',['id'=>$value['id']])}"  dh-height="90%" dh-width="90%"  dh-title="商品详情"  class="btn-open" dh-tooltip="{$value['title']}">编辑</a>
+                                                    <a dh-url="{:url('goods_edit/edit',['id'=>$value['id'],'column_id'=>$value['column_id']])}"  dh-height="90%" dh-width="90%"  dh-title="商品详情"  class="btn-open" dh-tooltip="{$value['title']}">编辑</a>
                                                     <span class="text-explode">|</span>
+                                                    {if $other['isComment']}
+                                                    <a dh-url="{:url('comment/lists',['param[coding]'=>$value['id'],'param[type]'=>1])}" dh-height="90%" dh-width="90%"  dh-title="评论列表"  class="btn-open" >评论({$value['comment_nums']})</a>
+                                                    <span class="text-explode">|</span>
+                                                    {/if}
                                                     <a dh-url="{:url('goods_edit/del')}" class="btn-ajax" dh-confirm="确定删除【{$value['title']}】?" dh-method="post" data-id="{$value['id']}">删除</a>
                                                 </td>
                                             </tr>

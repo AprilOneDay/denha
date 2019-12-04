@@ -19,6 +19,7 @@ class Orders extends Init
         list($map, $search) = $this->getMap();
 
         $lists = table('FinanceLog')->where($map)->limit($offer, $pageSize)->order('id desc')->select();
+
         $total = table('FinanceLog')->where($map)->count();
         $page  = new Pages($total, $pageNo, $pageSize, url('', $search));
 
@@ -30,14 +31,15 @@ class Orders extends Init
         }
 
         $others = [
-            'typeCopy'        => getVar('type', 'admin.finance'),
-            'issueStatusCopy' => getVar('issue_status', 'admin.finance'),
+            'typeCopy'        => getVar('admin.finance.type'),
+            'issueStatusCopy' => getVar('admin.finance.issue_status'),
         ];
 
         $this->show('', [
             'lists'  => $lists,
             'others' => $others,
             'param'  => $param,
+            'search' => $search,
             'pages'  => $page->loadConsole(),
         ]);
     }
@@ -45,8 +47,6 @@ class Orders extends Init
     /** 导出 */
     public function excel()
     {
-
-        $param = get('param', 'text');
 
         // 获取查询参数
         $map   = $this->getMap()[0];
@@ -59,8 +59,8 @@ class Orders extends Init
         }
 
         $other = array(
-            'typeCopy'        => getVar('type', 'admin.finance'),
-            'issueStatusCopy' => getVar('issue_status', 'admin.finance'),
+            'typeCopy'        => getVar('admin.finance.type'),
+            'issueStatusCopy' => getVar('admin.finance.issue_status'),
         );
 
         $filename = 'finance_orders' . time();
@@ -102,15 +102,15 @@ class Orders extends Init
             $search['param[end_time]']   = $endTime   = get('param.end_time', 'time', '');
 
             if ($param['start_time'] && $param['end_time']) {
-                $map['created'] = array('between', $startTime, $endTime);
+                $map['created'] = ['between', [$startTime, $endTime]];
             } elseif ($param['start_time']) {
-                $map['created'] = array('>=', $startTime);
+                $map['created'] = ['>=', $startTime];
             } elseif ($param['end_time']) {
-                $map['created'] = array('<=', $endTime);
+                $map['created'] = ['<=', $endTime];
             }
         }
 
-        //$map['is_pay']  = 1;
+        $map['is_pay'] = 1;
         //$map['is_lock'] = 1;
 
         return [$map, $search];

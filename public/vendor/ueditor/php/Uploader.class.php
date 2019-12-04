@@ -27,21 +27,21 @@ class Uploader
         "文件未被完整上传",
         "没有文件被上传",
         "上传文件为空",
-        "ERROR_TMP_FILE" => "临时文件错误",
+        "ERROR_TMP_FILE"           => "临时文件错误",
         "ERROR_TMP_FILE_NOT_FOUND" => "找不到临时文件",
-        "ERROR_SIZE_EXCEED" => "文件大小超出网站限制",
-        "ERROR_TYPE_NOT_ALLOWED" => "文件类型不允许",
-        "ERROR_CREATE_DIR" => "目录创建失败",
-        "ERROR_DIR_NOT_WRITEABLE" => "目录没有写权限",
-        "ERROR_FILE_MOVE" => "文件保存时出错",
-        "ERROR_FILE_NOT_FOUND" => "找不到上传文件",
-        "ERROR_WRITE_CONTENT" => "写入文件内容错误",
-        "ERROR_UNKNOWN" => "未知错误",
-        "ERROR_DEAD_LINK" => "链接不可用",
-        "ERROR_HTTP_LINK" => "链接不是http链接",
-        "ERROR_HTTP_CONTENTTYPE" => "链接contentType不正确",
-        "INVALID_URL" => "非法 URL",
-        "INVALID_IP" => "非法 IP"
+        "ERROR_SIZE_EXCEED"        => "文件大小超出网站限制",
+        "ERROR_TYPE_NOT_ALLOWED"   => "文件类型不允许",
+        "ERROR_CREATE_DIR"         => "目录创建失败",
+        "ERROR_DIR_NOT_WRITEABLE"  => "目录没有写权限",
+        "ERROR_FILE_MOVE"          => "文件保存时出错",
+        "ERROR_FILE_NOT_FOUND"     => "找不到上传文件",
+        "ERROR_WRITE_CONTENT"      => "写入文件内容错误",
+        "ERROR_UNKNOWN"            => "未知错误",
+        "ERROR_DEAD_LINK"          => "链接不可用",
+        "ERROR_HTTP_LINK"          => "链接不是http链接",
+        "ERROR_HTTP_CONTENTTYPE"   => "链接contentType不正确",
+        "INVALID_URL"              => "非法 URL",
+        "INVALID_IP"               => "非法 IP",
     );
 
     /**
@@ -53,17 +53,17 @@ class Uploader
     public function __construct($fileField, $config, $type = "upload")
     {
         $this->fileField = $fileField;
-        $this->config = $config;
-        $this->type = $type;
+        $this->config    = $config;
+        $this->type      = $type;
         if ($type == "remote") {
             $this->saveRemote();
-        } else if($type == "base64") {
+        } else if ($type == "base64") {
             $this->upBase64();
         } else {
             $this->upFile();
         }
 
-        $this->stateMap['ERROR_TYPE_NOT_ALLOWED'] = iconv('unicode', 'utf-8', $this->stateMap['ERROR_TYPE_NOT_ALLOWED']);
+        // $this->stateMap['ERROR_TYPE_NOT_ALLOWED'] =  iconv('unicode', 'utf-8', $this->stateMap['ERROR_TYPE_NOT_ALLOWED']);
     }
 
     /**
@@ -88,13 +88,13 @@ class Uploader
             return;
         }
 
-        $this->oriName = $file['name'];
+        $this->oriName  = $file['name'];
         $this->fileSize = $file['size'];
         $this->fileType = $this->getFileExt();
         $this->fullName = $this->getFullName();
         $this->filePath = $this->getFilePath();
         $this->fileName = $this->getFileName();
-        $dirname = dirname($this->filePath);
+        $dirname        = dirname($this->filePath);
 
         //检查文件大小是否超出限制
         if (!$this->checkSize()) {
@@ -118,9 +118,11 @@ class Uploader
         }
 
         //移动文件
-        if (!(move_uploaded_file($file["tmp_name"], $this->filePath) && file_exists($this->filePath))) { //移动失败
+        if (!(move_uploaded_file($file["tmp_name"], $this->filePath) && file_exists($this->filePath))) {
+            //移动失败
             $this->stateInfo = $this->getStateInfo("ERROR_FILE_MOVE");
-        } else { //移动成功
+        } else {
+            //移动成功
             $this->stateInfo = $this->stateMap[0];
         }
     }
@@ -132,15 +134,15 @@ class Uploader
     private function upBase64()
     {
         $base64Data = $_POST[$this->fileField];
-        $img = base64_decode($base64Data);
+        $img        = base64_decode($base64Data);
 
-        $this->oriName = $this->config['oriName'];
+        $this->oriName  = $this->config['oriName'];
         $this->fileSize = strlen($img);
         $this->fileType = $this->getFileExt();
         $this->fullName = $this->getFullName();
         $this->filePath = $this->getFilePath();
         $this->fileName = $this->getFileName();
-        $dirname = dirname($this->filePath);
+        $dirname        = dirname($this->filePath);
 
         //检查文件大小是否超出限制
         if (!$this->checkSize()) {
@@ -158,9 +160,11 @@ class Uploader
         }
 
         //移动文件
-        if (!(file_put_contents($this->filePath, $img) && file_exists($this->filePath))) { //移动失败
+        if (!(file_put_contents($this->filePath, $img) && file_exists($this->filePath))) {
+            //移动失败
             $this->stateInfo = $this->getStateInfo("ERROR_WRITE_CONTENT");
-        } else { //移动成功
+        } else {
+            //移动成功
             $this->stateInfo = $this->stateMap[0];
         }
 
@@ -196,7 +200,7 @@ class Uploader
         // 此时提取出来的可能是 ip 也有可能是域名，先获取 ip
         $ip = gethostbyname($host_without_protocol);
         // 判断是否是私有 ip
-        if(!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE)) {
+        if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE)) {
             $this->stateInfo = $this->getStateInfo("INVALID_IP");
             return;
         }
@@ -218,7 +222,7 @@ class Uploader
         ob_start();
         $context = stream_context_create(
             array('http' => array(
-                'follow_location' => false // don't follow redirects
+                'follow_location' => false, // don't follow redirects
             ))
         );
         readfile($imgUrl, false, $context);
@@ -226,13 +230,13 @@ class Uploader
         ob_end_clean();
         preg_match("/[\/]([^\/]*)[\.]?[^\.\/]*$/", $imgUrl, $m);
 
-        $this->oriName = $m ? $m[1]:"";
+        $this->oriName  = $m ? $m[1] : "";
         $this->fileSize = strlen($img);
         $this->fileType = $this->getFileExt();
         $this->fullName = $this->getFullName();
         $this->filePath = $this->getFilePath();
         $this->fileName = $this->getFileName();
-        $dirname = dirname($this->filePath);
+        $dirname        = dirname($this->filePath);
 
         //检查文件大小是否超出限制
         if (!$this->checkSize()) {
@@ -250,9 +254,11 @@ class Uploader
         }
 
         //移动文件
-        if (!(file_put_contents($this->filePath, $img) && file_exists($this->filePath))) { //移动失败
+        if (!(file_put_contents($this->filePath, $img) && file_exists($this->filePath))) {
+            //移动失败
             $this->stateInfo = $this->getStateInfo("ERROR_WRITE_CONTENT");
-        } else { //移动成功
+        } else {
+            //移动成功
             $this->stateInfo = $this->stateMap[0];
         }
 
@@ -284,8 +290,8 @@ class Uploader
     private function getFullName()
     {
         //替换日期事件
-        $t = time();
-        $d = explode('-', date("Y-y-m-d-H-i-s"));
+        $t      = time();
+        $d      = explode('-', date("Y-y-m-d-H-i-s"));
         $format = $this->config["pathFormat"];
         $format = str_replace("{yyyy}", $d[0], $format);
         $format = str_replace("{yy}", $d[1], $format);
@@ -299,7 +305,7 @@ class Uploader
         //过滤文件名的非法自负,并替换文件名
         $oriName = substr($this->oriName, 0, strrpos($this->oriName, '.'));
         $oriName = preg_replace("/[\|\?\"\<\>\/\*\\\\]+/", '', $oriName);
-        $format = str_replace("{filename}", $oriName, $format);
+        $format  = str_replace("{filename}", $oriName, $format);
 
         //替换随机字符串
         $randNum = rand(1, 10000000000) . rand(1, 10000000000);
@@ -315,7 +321,8 @@ class Uploader
      * 获取文件名
      * @return string
      */
-    private function getFileName () {
+    private function getFileName()
+    {
         return substr($this->filePath, strrpos($this->filePath, '/') + 1);
     }
 
@@ -348,7 +355,7 @@ class Uploader
      * 文件大小检测
      * @return bool
      */
-    private function  checkSize()
+    private function checkSize()
     {
         return $this->fileSize <= ($this->config["maxSize"]);
     }
@@ -360,12 +367,12 @@ class Uploader
     public function getFileInfo()
     {
         return array(
-            "state" => $this->stateInfo,
-            "url" => $this->fullName,
-            "title" => $this->fileName,
+            "state"    => $this->stateInfo,
+            "url"      => $this->fullName,
+            "title"    => $this->fileName,
             "original" => $this->oriName,
-            "type" => $this->fileType,
-            "size" => $this->fileSize
+            "type"     => $this->fileType,
+            "size"     => $this->fileSize,
         );
     }
 

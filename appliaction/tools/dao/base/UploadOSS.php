@@ -2,14 +2,11 @@
 /**
  * 上传模块
  */
-namespace app\dao\base;
+namespace dao\base;
 
 use OSS\Core\OssException;
 use OSS\OssClient;
 
-/**
- * 通用的树型类，可以生成任何树型结构
- */
 class UploadOSS
 {
 
@@ -23,7 +20,7 @@ class UploadOSS
     public function __construct()
     {
 
-        require_once VENDOR_PATH . DS . 'aliyuncs' . DS . 'oss-sdk-php' . DS . 'autoload.php';
+        require_once APP_PATH . 'tools' . DS . 'vendor' . DS . 'aliyuncs' . DS . 'oss-sdk-php' . DS . 'autoload.php';
 
         self::$accessKeyId     = config('OSS_ACCESS_KEY');
         self::$accessKeySecret = config('OSS_ACCESS_SECRET');

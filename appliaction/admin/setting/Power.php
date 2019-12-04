@@ -53,7 +53,7 @@ class Power extends Init
         $this->ajaxReturn(['msg' => '保存成功']);
     }
 
-    //获取多维数组最大维度
+    // 获取多维数组最大维度
     private function getMaxDArray($arrayValue, $childValue = 'child')
     {
         if (is_array($arrayValue)) {

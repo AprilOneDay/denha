@@ -17,9 +17,19 @@
 							<h5>管理员列表</h5>
 						</div>
 						<div class="pull-right">
-							<a class="btn btn-primary btn-open"  dh-url="{:url('edit')}"  dh-height="600px" dh-width="356px">添加管理员</a>
+							<a class="btn btn-primary btn-open"  dh-url="{:url('edit')}"  dh-height="80%" dh-width="70%">添加管理员</a>
 						</div>
 					</div>
+					<form class="form-inline ng-pristine ng-valid" action=""  method="get">
+                        <div class="form-group">
+                            <select class="form-control" name="param[field]" dh-selected="{??$param['field']}">
+                                <option value="mobile">手机号</option>
+                                <option value="nickname">昵称</option>
+                            </select>
+                            <input type="text" class="form-control w120" placeholder="Search" name="param[keyword]" value="{??$param['keyword']}" >
+                            <button type="submit" class="btn btn-default">搜索</button>
+                        </div>
+                    </form>
 					<div class="console-form">
 						<div class="console-form">
 							<div class="mt8 table-responsive">
@@ -38,24 +48,24 @@
 										</tr>
 									</thead>
 									<tbody>
-										{loop $list $key $value}
+										{loop $list $item}
 									 	<tr v-for="list in data.list">
-											<td>{$value['id']}</td>
-											<td>{$value['username']}</td>
-											<td>{$value['nickname']}</td>
-											<td>{$groupList[$value['group']]}</td>
-											<td>{$value['mobile']}</td>
-											<td>{:date('Y-m-d H:i',$value['created'])}</td>
-											<td>{:date('Y-m-d H:i',$value['login_time'])}</td>
+											<td>{$item['id']}</td>
+											<td>{$item['username']}</td>
+											<td>{$item['nickname']}</td>
+											<td>{:implode(' ',(array)$item['group_copy'])}</td>
+											<td>{$item['mobile']}</td>
+											<td>{:date('Y-m-d H:i',$item['created'])}</td>
+											<td>{:date('Y-m-d H:i',$item['login_time'])}</td>
 											<td>
-												{if $value['status']}
-													<p style="color:green">{$statusCopy[$value['status']]}</p>
+												{if $item['status']}
+													<p style="color:green">{$statusCopy[$item['status']]}</p>
 												{else}
-													<p style="color:red">{$statusCopy[$value['status']]}</p>
+													<p style="color:red">{$statusCopy[$item['status']]}</p>
 												{/if}
 											</td>
 											<td align='center'>
-												<a dh-title="编辑管理员" class="btn-open"  dh-url="{:url('edit',array('id'=>$value['id']))}"  dh-height="600px" dh-width="356px">编辑</a>
+												<a dh-title="编辑管理员" class="btn-open"  dh-url="{:url('edit',array('id'=>$item['id']))}"   dh-height="80%" dh-width="70%">编辑</a>
 												<span class="text-explode">|</span>
 												<a @click="del(list.id)">删除</a>
 											</td>

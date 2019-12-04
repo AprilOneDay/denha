@@ -22,29 +22,29 @@ class Coupon extends Init
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 25);
 
-        $param['field'] ?: $param['field'] = 'title';
-
         $offer = max(($pageNo - 1), 0) * $pageSize;
+
+        !empty($param['field']) ?: $param['field'] = 'title';
 
         $map['del_status'] = 0;
 
-        if ($param['status']) {
+        if (!empty($param['status'])) {
             $map['status'] = $param['status'];
         }
 
-        if ($param['type'] != '') {
+        if (!empty($param['type'])) {
             $map['type'] = $param['type'];
         }
 
-        if ($param['status'] != '') {
+        if (!empty($param['status'])) {
             $map['status'] = $param['status'];
         }
 
-        if ($param['category']) {
+        if (!empty($param['category'])) {
             $map['category'] = $param['category'];
         }
 
-        if ($param['field'] && $param['keyword']) {
+        if (!empty($param['field']) && !empty($param['keyword'])) {
             if ($param['field'] == 'title') {
                 $map['title'] = array('instr', $param['keyword']);
             }

@@ -73,7 +73,7 @@ class Parameter extends Init
 
         $data  = table('ConsoleParameter')->where('id', $id)->find();
         $other = array(
-            'typeCopy' => getVar('type', 'admin.param'),
+            'typeCopy' => getVar('admin.param.type'),
         );
 
         $this->assign('other', $other);
@@ -87,9 +87,9 @@ class Parameter extends Init
         $id     = post('id', 'intval', 0);
         $result = table('ConsoleParameter')->where('id', $id)->save('del_status', 1);
         if (!$result) {
-            $this->appReturn(array('status' => false, 'msg' => '删除失败'));
+            $this->ajaxReturn(array('status' => false, 'msg' => '删除失败'));
         }
 
-        $this->appReturn(array('status' => true, 'msg' => '删除成功'));
+        $this->ajaxReturn(array('status' => true, 'msg' => '删除成功'));
     }
 }

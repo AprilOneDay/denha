@@ -31,7 +31,7 @@ class ExamLog extends Init
 
         $other = array(
             'statusCopy' => array(0 => '关闭', 1 => '开启'),
-            'timeCopy'   => getVar('time', 'admin.sys'),
+            'timeCopy'   => getVar('admin.sys.time'),
         );
 
         $this->assign('list', $list);

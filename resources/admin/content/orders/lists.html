@@ -6,6 +6,14 @@
 	<meta name="keywords" content=""/>
 	<title>后台管理</title>
 	{include /admin/public/global_css}
+
+	<style type="text/css">
+		.order-list:hover{ background: #e1e1e1; }
+		.order-list:hover .goods-list tbody{ background: #e1e1e1; }
+		.order-list:hover .goods-list th{ background: #e1e1e1; }
+		.order-list .goods-list{padding: 0}
+		.order-list .goods-list table{margin: 0;margin-bottom: 0px;border-top: none;border-left: none;border-right: none;}
+	</style>
 </head>
   	<body>
 	<div id="console-content-index-index">
@@ -21,19 +29,7 @@
                         <div class="form-group">
                         	<select class="form-control" dh-selected="{??$param['type']}" name="param[type]">
                                 <option value="">订单状态</option>
-                                {loop $other['typeLogCopy'] $key $value}
-                               		<option value="{$key}">{$value}</option>
-                            	{/loop}
-                            </select>
-                            <select class="form-control" dh-selected="{??$param['status']}" name="param[status]">
-                                <option value="">审核状态</option>
                                 {loop $other['statusCopy'] $key $value}
-                               		<option value="{$key}">{$value}</option>
-                            	{/loop}
-                            </select>
-                            <select class="form-control" dh-selected="{??$param['origin']}" name="param[origin]">
-                                <option value="">录入状态</option>
-                                {loop $other['isTempCopy'] $key $value}
                                		<option value="{$key}">{$value}</option>
                             	{/loop}
                             </select>
@@ -43,18 +39,28 @@
                                		<option value="{$key}">{$value}</option>
                             	{/loop}
                             </select>
+
                             <select class="form-control" name="param[field]" dh-selected="{??$param['field']}">
                             	<option value="">选择搜索条件</option>
                                 <option value="order_sn">订单编号</option>
+                                <option value="uid">买家UID</option>
                             </select>
+
                             <input type="text" class="form-control w120" placeholder="Search" name="param[keyword]" value="{??$param['keyword']}" >
-                            <button type="submit" class="btn btn-default" @click="search()">搜索</button>
+							
+							<input type="text" value="{??$param['start_time']}" name="param[start_time]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" dh-type="datetime" dh-isnull="true" placeholder="开始时间" autocomplete="off">
+
+                            <input type="text" value="{??$param['end_time']}" name="param[end_time]"  class="form-control data-time" data-format="yyyy-MM-dd HH:mm" dh-type="datetime" dh-isnull="true" placeholder="结束时间" autocomplete="off">
+
+                            <button type="submit" class="btn btn-default">搜索</button>
+
+                            <a class="btn btn-primary btn-ajax" dh-url="{:url('excel',$search)}" dh-method="GET" dh-async="true">导出Excel</a>
                         </div>
                     </form>
 					<div class="console-form">
 						<div class="console-form">
 							<div class="mt8 table-responsive">
-								<table class="table table-hover">
+								<table class="table">
 									<thead>
 										<tr>
 											<th style="width:75px;">ID</th>
@@ -64,7 +70,7 @@
 											<th style="width:200px;">买家</th>
 											<th style="width:200px;">卖家</th>
 											<th style="width:100px;">订单状态</th>
-											<th style="width:160px;">发布时间</th>
+											<th style="width:160px;">创建时间</th>
 											<th style="width:50px;">来源</th>
 											<th style="width:250px; text-align:center;">操作</th>
 										</tr>
@@ -78,26 +84,19 @@
 											<td>{$value['account']}</td>
 											<td>{$value['user']['nickname']}</td>
 											<td>{$value['seller']['nickname']}</td>
-											<td>{$other['typeLogCopy'][$value['type']]}</td>
+											<td>{default:$other['statusCopy'][$value['status']]|'未知'}</td>
 											<td>{:date('Y-m-d H:i',$value['created'])}</td>
 											<td>{$other['originCopy'][$value['origin']]}</td>
 											<td align='center'>
 												<a dh-href="{:url('detail',['order_sn'=>$value['order_sn']])}"  dh-height="70%" dh-width="70%"  dh-title="订单详情"   class="btn-open">详情</a>
-											{if $value['type'] == 1}
+											{if $value['status'] == 1185}
 												<span>|</span>	
 												<a dh-url="{:url('close')}" dh-method="post" dh-confirm="确定取消订单？" data-order_sn="{$value['order_sn']}" class="btn-ajax">取消订单</a>
 											{/if}
 
-											{if $value['type'] == 2}
+											{if $value['status'] == 1186}
 												<span>|</span>	
-												<a dh-url="{:url('dispatch')}" dh-method="post" data-order_sn="{$value['order_sn']}" class="btn-ajax">开始派单</a>
-											{/if}
-
-											{if $value['type'] == 5}
-												<span>|</span>	
-												<a dh-url="{:url('agreeRefund')}" dh-confirm="确定同意退款？" dh-method="post" data-order_sn="{$value['order_sn']}" class="btn-ajax">同意退款</a>
-												<span>|</span>	
-												<a dh-url="{:url('refuseRefund')}" dh-confirm="确定拒绝退款？" dh-method="post" data-order_sn="{$value['order_sn']}" class="btn-ajax">拒绝退款</a>
+												<a dh-url="{:url('dispatch',['order_sn'=>$value['order_sn']])}" dh-height="30%" dh-width="35%" class="btn-open">开始派单</a>
 											{/if}
 											</td>
 										</tr>
@@ -106,20 +105,42 @@
 											<table class="table">
 												<thead> 
 													<tr>
+														<th style="width:75px;"></th>
 														<th>ID</th>
-														<th>商品名称</th>
+														<th style="width: 40%">商品名称</th>
 														<th>价格</th>
 														<th>数量</th>
 														<th>实付款</th>
+														<th style="width: 20%">状态</th>
+														<th style="width: 10%">操作</th>
+														<th style="width:75px;"></th>
 													</tr>
 												</thead>
 												{loop $value['goodsList'] $k $v}
 												<tr>
+													<td>&nbsp;</td>
 													<td>{$v['goods_id']}</td>
 													<td>{$v['title']}</td>
 													<td>{$v['price']}</td>
 													<td>{$v['num']}</td>
 													<td>{$v['account']}</td>
+													<td>{$v['status_copy']}</td>
+													<td>
+													{if isset($v['refund']['status'])}
+														{if $v['refund']['status'] == 1232 && $v['refund']['type']  ==  1228}
+															<a dh-url="{:url('agreeRefund')}" dh-confirm="申请金额:{$v['refund']['price']}<br/>申请备注:{$v['refund']['remark']}<br/>确定同意退款？" dh-method="post" data-order_sn="{$value['order_sn']}" data-goods_id="{$v['goods_id']}" class="btn-ajax">同意退款</a>
+															<span>|</span>	
+															<a dh-url="{:url('refuseRefund')}" dh-confirm="申请金额:{$v['refund']['price']}<br/>申请备注:{$v['refund']['remark']}<br/>确定拒绝退款？" dh-method="post" data-order_sn="{$value['order_sn']}" data-goods_id="{$v['goods_id']}" class="btn-ajax">拒绝退款</a>
+														{elseif $v['refund']['status'] == 1232 && $v['refund']['type']  ==  1229}
+															<a dh-url="{:url('agreeRefund')}" dh-confirm="申请金额:{$v['refund']['price']}<br/>申请备注:{$v['refund']['remark']}<br/>确定同意退货？" dh-method="post" data-order_sn="{$value['order_sn']}" data-goods_id="{$v['goods_id']}" class="btn-ajax">同意退货</a>
+															<span>|</span>	
+															<a dh-url="{:url('refuseRefund')}" dh-confirm="申请金额:{$v['refund']['price']}<br/>申请备注:{$v['refund']['remark']}<br/>确定拒绝退货？" dh-method="post" data-order_sn="{$value['order_sn']}" data-goods_id="{$v['goods_id']}" class="btn-ajax">拒绝退货</a>
+														{elseif $v['refund']['status'] == 1232}
+															<a dh-url="{:url('agreeRefund')}" dh-confirm="申请金额:{$v['refund']['price']}<br/>申请备注:{$v['refund']['remark']}<br/>确认收货？" dh-method="post" data-order_sn="{$value['order_sn']}" data-goods_id="{$v['goods_id']}" class="btn-ajax">确认收货</a>
+														{/if}
+													{/if}
+													</td>
+													<td>&nbsp;</td>
 												</tr>
 												{/loop}
 											</table>

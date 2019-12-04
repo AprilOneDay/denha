@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+    <title>直播:{$article['title']}</title>
+    <link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.8.2/skins/default/aliplayer-min.css" />
+    <link rel="stylesheet" href="__PUBLIC__/vendor/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__/ststic/wap/css/live.css?version=1.0.0" />
+</head>
+
+<body>
+    {if strtotime($article['start_time']) >= TIME}
+    <div class="tips" style="width: 100%;height: 30vh;background: url({:imgUrl($article['thumb'],'article')}); color: #fff;">
+        <p style="line-height: 30vh;text-align: center;">直播开始时间:{:date('Y-m-d H:i',strtotime($article['start_time']))}</p>
+    </div>
+    {elseif strtotime($article['end_time']) <= TIME && !$article['video']}
+    <div class="tips" style="width: 100%;height: 30vh;background: url({:imgUrl($article['thumb'],'article')}); color: #fff;">
+        <p style="line-height: 30vh;text-align: center;">直播已结束</p>
+    </div>
+    {else}
+     <div class="prism-player" id="player-con"></div>
+    {/if}
+        
+   
+    {if $article['ablum']}
+    <!-- 广告位 -->
+    <div class="ad">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="5000"> 
+            <!-- Indicators --> 
+           <!--  <ul class="carousel-indicators"> 
+                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li> 
+                <li data-target="#carousel-example-generic" data-slide-to="1"></li> 
+                <li data-target="#carousel-example-generic" data-slide-to="2"></li> 
+            </ul> -->
+            <div class="carousel-inner" role="listbox"> 
+                {loop $article['ablum'] $key $item}
+                <div class="item {if $key == 0}active{/if}">
+                    <img class="img-responsive" src="{$item}" style="height: 120px; width: 100%;" />
+                </div> 
+                {/loop}
+            </div> 
+            <!-- Controls --> 
+            <!-- <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev"> 
+                <span class="glyphicon glyphicon-chevron-left"></span> 
+                <span class="sr-only">Previous</span> 
+            </a> 
+            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next"> 
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="sr-only">Next</span>
+            </a> -->
+        </div>
+    </div>
+    {/if}
+
+    <div class="goods-info">
+      <div class="title">
+        <label style="font-weight: bolder;line-height: 1.2rem;">{$article['title']}</label>
+        <label>{$article['btitle']}</label> 
+      </div>
+      <div class="peoples">
+        当前观看人数:{$article['hot']}
+      </div>
+    </div>
+    
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#comment" aria-controls="comment" role="tab" data-toggle="tab">讨论区</a>
+        </li>
+
+        {if $article['content']}
+        <li role="presentation">
+            <a href="#bbs1" aria-controls="bbs1" role="tab" data-toggle="tab">专家介绍</a>
+        </li>
+        {/if}
+        
+        {if $article['agenda']}
+        <li role="presentation">
+            <a href="#bbs2" aria-controls="bbs2" role="tab" data-toggle="tab">议程介绍</a>
+        </li>
+        {/if}
+        
+        {if $article['media']}
+        <li role="presentation">
+            <a href="#bbs3" aria-controls="bbs3" role="tab" data-toggle="tab">媒体介绍</a>
+        </li>
+        {/if}
+    </ul>
+    <div class="tab-content">
+        <!--评论列表-->
+        <div role="tabpanel" class="tab-pane active" id="comment">
+            <div class="comment"></div>
+        </div>
+        <!--专家介绍-->
+        <div role="tabpanel" class="tab-pane" id="bbs1">
+            <div class="content">{$article['content']}</div>
+        </div>
+        <!--议程介绍-->
+        <div role="tabpanel" class="tab-pane" id="bbs2">
+            <div class="content">{$article['agenda']}</div>
+        </div>
+        <!--媒体介绍-->
+        <div role="tabpanel" class="tab-pane" id="bbs3">
+            <div class="content">{$article['media']}</div>
+        </div>
+    </div>
+    <!--屏幕背景变暗的背景  -->
+    <div class="mask-box"></div>
+    <!-- 弹出框  -->
+    <div class="mask-from">
+        <input type="hidden" value="2" name="type">
+        <input type="hidden" value="{$article['id']}" name="coding">
+        <input type="hidden" value="{$this->token}" name="token">
+        <div class="mask-title">评论一下</div>
+        <div class="mask-group">
+            <div class="mask-item">
+                <textarea placeholder="请输入您的评论内容" class="textarea" name="content" /></textarea>
+            </div>
+        </div>
+        <button class="btn add" onclick="add()">确定</button>
+        <div class="btn close" onclick="hiden()">不用了,谢谢</div>
+        <!-- </form> -->
+    </div>
+    <div class="bottom">
+        <div class="add" onclick="show()">发表评论</div>
+    </div>
+    <script type="text/javascript" src="__PUBLIC__/ststic/admin/js/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/vendor/layer/layer.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ststic/admin/js/common.js"></script>
+    
+    {if strtotime($article['start_time']) <= TIME} 
+    <script type="text/javascript" charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.8.2/aliplayer-min.js"></script>
+    <script>
+    {if $article['video']}
+        var player = new Aliplayer({
+          "id": "player-con",
+          "source": "{$article['video']}",
+          "width": "100%",
+          "height": "50vh",
+          "autoplay": true,
+          "isLive": false,
+          "rePlay": false,
+          "playsinline": true,
+          "preload": true,
+          "controlBarVisibility": "hover",
+          "useH5Prism": true
+        }, function (player) {
+            console.log("The player is created");
+          }
+        );
+    {else}
+        var player = new Aliplayer({
+            "id": "player-con",
+            "source": "{$article['jump_url']}",
+            "width": "100%",
+            "height": "50vh",
+            "autoplay": true,
+            "isLive": true,
+            "rePlay": false,
+            "playsinline": true,
+            "preload": true,
+            "controlBarVisibility": "hover",
+            "useH5Prism": true,
+            "skinLayout": [{
+                    "name": "bigPlayButton",
+                    "align": "blabs",
+                    "x": 30,
+                    "y": 80
+                },
+                {
+                    "name": "H5Loading",
+                    "align": "cc"
+                },
+                {
+                    "name": "errorDisplay",
+                    "align": "tlabs",
+                    "x": 0,
+                    "y": 0
+                },
+                {
+                    "name": "infoDisplay"
+                },
+                {
+                    "name": "tooltip",
+                    "align": "blabs",
+                    "x": 0,
+                    "y": 56
+                },
+                {
+                    "name": "thumbnail"
+                },
+                {
+                    "name": "controlBar",
+                    "align": "blabs",
+                    "x": 0,
+                    "y": 0,
+                    "children": [{
+                            "name": "playButton",
+                            "align": "tl",
+                            "x": 15,
+                            "y": 12
+                        },
+                        {
+                            "name": "fullScreenButton",
+                            "align": "tr",
+                            "x": 10,
+                            "y": 12
+                        },
+                        {
+                            "name": "volume",
+                            "align": "tr",
+                            "x": 5,
+                            "y": 10
+                        }
+                    ]
+                }
+            ]
+        }, function(player) {
+            console.log("播放器创建了。");
+        });
+    {/if}
+    </script>
+    {/if}
+
+    <script type="text/javascript">
+    function show() {
+        document.getElementsByClassName('mask-box')[0].style.display = 'block';
+        document.getElementsByClassName('mask-from')[0].style.display = 'block';
+    }
+
+    function hiden() {
+        document.getElementsByClassName('mask-box')[0].style.display = 'none';
+        document.getElementsByClassName('mask-from')[0].style.display = 'none';
+    }
+
+    function add() {
+        var params = {};
+
+        params.content = $('textarea[name="content"]').val();
+        params.token = $('input[name="token"]').val();
+        params.type = $('input[name="type"]').val();
+        params.coding = $('input[name="coding"]').val();
+
+        $.post('/wap/user/Comment/add', params, function(res) {
+            console.log(res);
+            layer.msg(res.msg);
+            if (res.status) {
+                $('textarea[name="content"]').val('');
+                hiden();
+            }
+        }, "json");
+    }
+
+    function init() {
+        var id = $('input[name="coding"]').val();
+        var token = $('input[name="token"]').val();
+        $.post('comment', { id: id, token: token }, function(res) {
+            $('.comment').html(res);
+        }, "html");
+    }
+
+    init();
+
+    function timeWork() {
+        setInterval("init()", 15000);
+    }
+
+    timeWork();
+    </script>
+</body>

@@ -39,6 +39,7 @@ class Article
         $this->getMapField($nativeMap, $nativeField, '', $modelId);
 
         $rs = table('Article')->join($this->articleData)->where($this->map)->field($this->field)->find();
+
         return $rs;
     }
 
@@ -55,6 +56,10 @@ class Article
      */
     public function getList($nativeMap = [], $nativeField = '', $modelId = 0, $pageSize = 99, $pageNo = 1, $orderby = '')
     {
+
+        if (!$modelId) {
+            $modelId = table('Article')->where('id', $nativeMap['id'])->value('model_id');
+        }
 
         $offer = max(($pageNo - 1), 0) * $pageSize;
         $this->getMapField($nativeMap, $nativeField, $orderby, $modelId);
@@ -78,21 +83,22 @@ class Article
     private function getMapField($nativeMap, $nativeField, $orderBy, $modelId)
     {
 
-        $model           = getVar('type', 'admin.model');
+        $model           = getVar('admin.model.type');
         $this->dataTable = $model[$modelId]['db'];
 
         $this->article     = table('Article')->getTableName();
         $this->articleData = table('Article' . $this->dataTable)->getTableName();
 
         //主表字段
-        $fieldArray = table('Article')->getField();
+        $fieldArr  = table('Article')->getField();
+        $bFieldArr = table('Article' . $this->dataTable)->getField();
 
         $this->map = [];
         if ($nativeMap) {
             foreach ($nativeMap as $key => $value) {
-                if (in_array($key, $fieldArray)) {
+                if (in_array($key, $fieldArr)) {
                     $this->map[$this->article . '.' . $key] = $value;
-                } else {
+                } elseif (in_array($key, $bFieldArr)) {
                     $this->map[$this->articleData . '.' . $key] = $value;
                 }
             }
@@ -104,9 +110,9 @@ class Article
         $nativeField = array_filter($nativeField);
         if ($nativeField) {
             foreach ($nativeField as $value) {
-                if (in_array($value, $fieldArray)) {
+                if (in_array($value, $fieldArr)) {
                     $this->field .= $this->article . '.' . $value . ',';
-                } else {
+                } elseif (in_array($value, $bFieldArr)) {
                     $this->field .= $this->articleData . '.' . $value . ',';
                 }
             }
@@ -120,9 +126,9 @@ class Article
             foreach ($orderBy as $value) {
                 $key = explode(' ', trim($value));
 
-                if (in_array($key[0], $fieldArray)) {
+                if (in_array($key[0], $fieldArr)) {
                     $this->orderby .= $this->article . '.' . trim($value) . ',';
-                } else {
+                } elseif (in_array($key[0], $bFieldArr)) {
                     $this->orderby .= $this->articleData . '.' . $value . ',';
                 }
             }

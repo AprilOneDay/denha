@@ -91,7 +91,7 @@ class Banner extends Init
         }
 
         $other = array(
-            'appTypeCopy'  => getVar('app_type', 'admin.banner'),
+            'appTypeCopy'  => getVar('admin.banner.app_type'),
             'jumpTypeCopy' => ['1' => '当前窗口', '2' => '新窗口'],
         );
 

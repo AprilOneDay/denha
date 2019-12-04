@@ -15,16 +15,28 @@ class Menus extends Init
      */
     public function index()
     {
+        $map             = [];
         $map['web_type'] = $this->webType;
-        $result          = table('Column')->where($map)->order('sort asc,id asc')->select();
+
+        $result = table('Column')->where($map)->order('sort asc,id asc')->select();
 
         if ($result) {
+            $modelType = getVar('admin.model.type');
+
             $tree = new MenuTree();
             $tree->setConfig('id', 'parentid', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
             $list = $tree->getLevelTreeArray($result);
             foreach ($list as $key => $value) {
                 $list[$key]['is_show_copy'] = $value['is_show'] ? '√' : '×';
-                $list[$key]['article_num']  = table('Article')->where('column_id', $value['id'])->count();
+
+                $model = $modelType[$value['model_id']]['model'];
+
+                if ($model == 'goods') {
+                    $list[$key]['article_num'] = table('Goods')->where('column_id', $value['id'])->where('del_status', 0)->count();
+                } elseif ($model == 'article') {
+                    $list[$key]['article_num'] = table('Article')->where('column_id', $value['id'])->where('del_status', 0)->count();
+                }
+                
             }
 
             $this->assign('list', $list);
@@ -58,7 +70,8 @@ class Menus extends Init
             ];
         }
 
-        $this->assign('modelCopy', getVar('type', 'admin.model'));
+        $this->assign('tplCopy', getVar('admin.model.tpl'));
+        $this->assign('modelCopy', getVar('admin.model.type'));
         $this->assign('treeList', $this->treeList());
         $this->assign('data', $rs);
         $this->show();
@@ -73,9 +86,10 @@ class Menus extends Init
         $content  = post('content', 'text', '');
         $modelId  = post('model_id', 'intval', 1);
         $url      = post('info.url', 'text', '');
+        $tpl      = post('tpl', 'text', '');
 
         // 获取模型配置信息
-        $model = getVar('type', 'admin.model');
+        $model = getVar('admin.model.type');
 
         $data             = post('info');
         $data['web_type'] = $this->webType;
@@ -86,11 +100,15 @@ class Menus extends Init
             $this->ajaxReturn(['status' => false, 'msg' => '请填写菜单名称']);
         }
 
+        // 编辑
         if ($id) {
 
             if (!$url) {
-                $autoId      = table('Column')->getTableStatus('Auto_increment');
                 $data['url'] = url($model[$modelId]['url'], ['param[column_id]' => $id], ['host' => false]);
+            }
+
+            if ($tpl) {
+                $data['jump_url'] = url($tpl, ['cid' => $id], ['host' => false]);
             }
 
             $column = table('Column')->where('id', $id)->field('parentid,id')->find();
@@ -109,20 +127,23 @@ class Menus extends Init
 
             $this->ajaxReturn(['status' => true, 'msg' => '修改成功']);
 
-        } else {
+        }
+        // 添加
+        else {
             // 编辑 默认复制副标题
             $data['bname'] ?: $data['bname'] = $data['name'];
 
-            if (!$url) {
-                $autoId      = table('Column')->getTableStatus('Auto_increment');
-                $data['url'] = url($model[$modelId]['url'], ['param[column_id]' => $autoId], ['host' => false]);
-            }
+            $autoId = table('Column')->getTableStatus('Auto_increment');
 
             $data['created'] = TIME;
+
+            // 批量添加
             if ($add == 2 && $content) {
                 $content = explode(PHP_EOL, $content);
                 foreach ($content as $key => $value) {
+
                     if (stripos($value, '|') !== false) {
+                        // 拆分别名
                         $value         = explode('|', $value);
                         $data['name']  = $value[0];
                         $data['bname'] = $value[1];
@@ -130,23 +151,44 @@ class Menus extends Init
                         $data['name'] = $data['bname'] = $value;
                     }
 
-                    $result = table('Column')->add($data);
-                    // 初始化后台操作url
-                    if (stripos($data['url'], 'param[column_id]') !== false) {
-                        $data['url'] = preg_replace('/(.*?)param\[column_id\](\/|=)[0-9]?/is', '\1param[column_id]\2', $data['url']) . ($result + 1);
+                    if ($url) {
+                        $data['url'] = $url;
+                    } else {
+                        $data['url'] = url($model[$modelId]['url'], ['param[column_id]' => $autoId], ['host' => false]);
                     }
 
+                    // 如果选择了前台请求模型地址 并且 自定义请求地址未填写
+                    if ($tpl && !$data['jump_url']) {
+                        $data['jump_url'] = url($tpl, ['cid' => $autoId], ['host' => false]);
+                    }
+
+                    $dataAll[] = $data;
+                    $autoId++;
                 }
 
-            } else {
+                $result = table('Column')->addAll($dataAll);
+
+            }
+            // 单条添加
+            else {
+
+                if (!$url) {
+                    $data['url'] = url($model[$modelId]['url'], ['param[column_id]' => $autoId], ['host' => false]);
+                }
+
+                // 如果选择了前台请求模型地址 并且 自定义请求地址未填写
+                if ($tpl && !$data['jump_url']) {
+                    $data['jump_url'] = url($tpl, ['cid' => $autoId], ['host' => false]);
+                }
+
                 $result = table('Column')->add($data);
             }
 
-            if ($result) {
-                $this->ajaxReturn(['status' => true, 'msg' => '添加成功', 'id' => $result]);
-            } else {
+            if ($result === false) {
                 $this->ajaxReturn(['status' => false, 'msg' => '添加失败']);
             }
+
+            $this->ajaxReturn(['status' => true, 'msg' => '添加成功', 'id' => $result]);
         }
     }
 
@@ -213,10 +255,10 @@ class Menus extends Init
         $map['id'] = ['in', $idArray];
         $result    = table('Column')->where($map)->delete();
         if (!$result) {
-            $this->appReturn(['status' => false, 'msg' => '删除失败']);
+            $this->ajaxReturn(['status' => false, 'msg' => '删除失败']);
         }
 
-        $this->appReturn(['status' => true, 'msg' => '删除成功']);
+        $this->ajaxReturn(['status' => true, 'msg' => '删除成功']);
 
     }
 

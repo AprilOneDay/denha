@@ -25,10 +25,10 @@ class VisitorComment extends Init
         $page  = new Pages($total, $pageNo, $pageSize, url('', $param));
 
         $other = array(
-            'tag'             => getVar('tags', 'console.article'),
+            'tag'             => getVar('console.article.tags'),
             'isShowCopy'      => array(0 => '未审核', 1 => '已审核'),
             'isRecommendCopy' => array(0 => '未推荐', 1 => '已推荐'),
-            'columnListCopy'  => dao('Column', 'admin')->columnList($param['column_id'], $this->webType),
+            'columnListCopy'  => dao('Admin.Column')->columnList($param['column_id'], $this->webType),
         );
 
         $this->assign('list', $list);

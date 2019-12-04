@@ -8,303 +8,301 @@
 	{include /admin/public/global_css}
 </head>
   	<body>
+  	<!--免费直播模型-->
 	<div id="console-content-edit">
-		<div class="modal-content">
-			<form class="form-horizontal" role="form" action="">
-				<input type="hidden" value="{??$column_id}" name="column_id">
-				<input type="hidden" value="{??$data['model_id']}" name="model_id">	
+        <div class="modal-content">
+            <form class="form-horizontal" role="form" action="">
+                <input type="hidden" value="{??$column_id}" name="column_id">
+                <input type="hidden" value="{??$data['model_id']}" name="model_id"> 
 
-				{include /admin/public/tab_header}
-			
-				<div class="tab-content">
-					<!--基础信息-->
-				 	<div role="tabpanel" class="tab-pane active" id="home">
-						<div class="panel-body">
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span for="myDate">所属栏目</span>
-								</label>
-								<div class="col-sm-8">
-									<select dh-selected="{??$data['column_id']}" name="column_id" class="form-control w160">
-										{loop $other['columnListCopy'] $key $value}
-		                               		<option value="{$key}">{$value}</option>
-		                            	{/loop}
-									</select>
-								</div>
-							</div>
+                {include /admin/public/tab_header}
 
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span>标题</span>
-								</label>
-								<div class="col-sm-8">
-									<input type="text" value="{??$data['title']}" name="title" placeholder="标题"  required class="form-control">	
-								</div>
-							</div>
+                <div class="tab-content">
+                    <!--基础信息-->
+                    <div role="tabpanel" class="tab-pane active" id="home">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span for="myDate">所属栏目</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <select dh-selected="{??$data['column_id']}" name="column_id" class="form-control w160 selectpicker" data-live-search="true">
+                                        {loop $other['columnListCopy'] $key $value}
+                                        <option value="{$key}">{$value}</option>
+                                        {/loop}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span>标题</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" value="{??$data['title']}" name="title" placeholder="标题" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span>副标题</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" value="{??$data['btitle']}" name="btitle" placeholder="副标题" class="form-control">
+                                </div>
+                            </div>
+                        
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span>缩略图</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <a class="btn btn-primary btn-ablum" dh-name="thumb" dh-value="{??$data['thumb']}" dh-path="article" data-max="1">添加图片</a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span>广告位 320x120</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <a class="btn btn-primary btn-ablum" dh-name="info[ablum]" dh-value="{??$data['ablum']}" dh-path="article" dh-max="6">添加图片</a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span for="myDate">发布时间</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" value="{??$data['publish_time']}" name="publish_time" class="form-control data-time">
+                                </div>
+                            </div>
 
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span for="myDate">所属分类</span>
-								</label>
-								<div class="col-sm-8">
-									<select dh-selected="{??$data['type_parentid']}" dh-el=".linkage-two" dh-content='{:json_encode($other['typeCopy'])}' dh-init-name="请选择类型" name="type_parentid" class="form-control btn-linkage">
-										{loop $other['typeCopy'] $key $value}
-		                               		<option value="{$value['id']}">{$value['name']}</option>
-		                            	{/loop}
-									</select>
-								</div>
-							</div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span for="myDate">直播开始时间</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" value="{??$data['start_time']}" name="info[start_time]" class="form-control data-time" dh-type="datetime">
+                                </div>
+                            </div>
 
-							<div class="form-group linkage-two">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span for="myDate">所属类型</span>
-								</label>
-								<div class="col-sm-8">
-									<select dh-selected="{??$data['type']}" name="type" class="form-control w160">
-									</select>
-								</div>
-							</div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span for="myDate">直播结束时间</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" value="{??$data['end_time']}" name="info[end_time]" class="form-control data-time" dh-type="datetime">
+                                </div>
+                            </div>
 
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span for="myDate">活动方式</span>
-								</label>
-								<div class="col-sm-8">
-									<select dh-selected="{??$data['sign']}" name="sign" class="form-control w160">
-										{loop $other['signCopy'] $key $value}
-		                               		<option value="{$key}">{$value}</option>
-		                            	{/loop}
-									</select>
-								</div>
-							</div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger"></span>
+                                    <span for="myDate">直播地址</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" value="{??$data['jump_url']}" name="jump_url" placeholder="输入http://打头的 跳转地址" class="form-control">
+                                </div>
+                            </div>
+    
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger"></span>
+                                    <span>回放视频</span>
+                                </label>
+                                <div class="col-sm-1">
+                                    <a class="btn btn-primary pull-left btn-files" dh-name="info[video]" dh-value="{??$data['video']}" dh-path="video" dh-type="mp4,ogg,mp3,flv" dh-max="1">添加文件</a>
+                                </div>
+                                <div class="col-sm-8">
+                                </div>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span>中文摘要</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <textarea name="description" placeholder="输入摘要内容" class="form-control">{??$data['description']}</textarea>
+                                </div>
+                            </div>
 
-							
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span>缩略图</span>
-								</label>
-								<div class="col-sm-8">
-									<a class="btn btn-primary btn-ablum" dh-name="thumb" dh-value='{??$data['thumb']}' dh-path="article" dh-max="1">添加图片</a>
-								</div>
-							</div>
-							
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span>专家介绍</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <script id="content" name="info[content]" type="text/plain" class="ue-editor" style="height: 350px;">
+                                        {??$data['content']}
+                                    </script>
+                                </div>
+                            </div>
 
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span>图片集</span>
-								</label>
-								<div class="col-sm-8">
-									<a class="btn btn-primary btn-ablum" dh-name="ablum" dh-value='{??$data['ablum']}' dh-path="article" dh-max="5">添加图片</a>
-								</div>
-							</div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span>议程介绍</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <script id="agenda" name="info[agenda]" type="text/plain" class="ue-editor" style="height: 350px;">
+                                        {??$data['agenda']}
+                                    </script>
+                                </div>
+                            </div>
 
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span>媒体介绍</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <script id="media" name="info[media]" type="text/plain" class="ue-editor" style="height: 350px;">
+                                        {??$data['media']}
+                                    </script>
+                                </div>
+                            </div>
 
-							<!--其他信息-->
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger"></span>
+                                    <span for="myDate">观看人数</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" value="{??$data['hot']}" name="hot" placeholder="观看人数" class="form-control">
+                                </div>
+                            </div>
 
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger"></span>
+                                    <span>推荐</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    {loop $other['pushCopy'] $key $value}
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="checkbox" name="push_id[]" dh-checked="{??$data['push_id']}" dh-native="false" value="{$key}"> {$value}
+                                    </label>
+                                    {/loop}
+                                </div>
+                            </div>
 
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span>报名开始时间</span>
-								</label>
-								<div class="col-sm-8">
-									<input type="text" value="{??$data['join_start_time']}" name="join_start_time" class="form-control data-time">	
-								</div>
-							</div>
-							
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span>报名结束时间</span>
-								</label>
-								<div class="col-sm-8">
-									<input type="text" value="{??$data['join_end_time']}" name="join_end_time" class="form-control data-time">		
-								</div>
-							</div>
+                            <div class="form-group radio" dh-radio="{default:$data['is_review']|1}">
+                                <label class="control-label col-sm-3">审核状态：</label>
+                                <div class="radio-inline">
+                                    <label>
+                                        <input type="radio" name="is_review" value="1"> 已审核
+                                    </label>
+                                </div>
+                                <div class="radio-inline">
+                                    <label>
+                                        <input type="radio" name="is_review" value="0"> 未审核
+                                    </label>
+                                </div>
+                            </div>
 
+                            <div class="form-group radio" dh-radio="{default:$data['is_show']|1}">
+                                <label class="control-label col-sm-3">显示状态：</label>
+                                <div class="radio-inline">
+                                    <label>
+                                        <input type="radio" name="is_show" value="1"> 显示
+                                    </label>
+                                </div>
+                                <div class="radio-inline">
+                                    <label>
+                                        <input type="radio" name="is_show" value="0"> 隐藏
+                                    </label>
+                                </div>
+                            </div>
 
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span>活动开始时间</span>
-								</label>
-								<div class="col-sm-8">
-									<input type="text" value="{??$data['start_time']}" name="start_time" class="form-control data-time">	
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span>活动结束时间</span>
-								</label>
-								<div class="col-sm-8">
-									<input type="text" value="{??$data['end_time']}" name="end_time" class="form-control data-time">		
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger"></span>
-									<span>内容摘要</span>
-								</label>
-								<div class="col-sm-8">
-									<textarea name="description" placeholder="输入内容摘要" class="form-control" style="min-height: 100px;">{??$data['description']}</textarea>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger"></span>
-									<span>详细内容</span>
-								</label>
-								<div class="col-sm-8">
-									<textarea name="content" placeholder="输入详细内容" class="form-control" style="min-height: 100px;">{??$data['content']}</textarea>
-								</div>
-							</div>
-
-
-							<!--end-->
-
-
-							<div class="form-group radio" dh-radio="{??$data['is_recommend']}">
-								<label class="control-label col-sm-3">推荐排行榜：</label>
-								<div class="radio-inline">
-									<label>
-										<input type="radio"  name="is_recommend"  value="1"> 推荐
-									</label>
-								</div>
-								<div class="radio-inline">
-									<label >
-										<input type="radio" name="is_recommend"  value="0"> 不推荐
-									</label>
-								</div>
-							</div>
-
-							<div class="form-group radio" dh-radio="{??$data['is_review']}">
-								<label class="control-label col-sm-3">审核状态：</label>
-								<div class="radio-inline">
-									<label>
-										<input type="radio" name="is_review"  value="1"> 已审核
-									</label>
-								</div>
-								<div class="radio-inline">
-									<label >
-										<input type="radio" name="is_review"  value="0"> 未审核
-									</label>
-								</div>
-							</div>
-
-							<div class="form-group radio" dh-radio="{??$data['is_show']}">
-								<label class="control-label col-sm-3">显示状态：</label>
-								<div class="radio-inline">
-									<label>
-										<input type="radio" name="is_show"  value="1"> 显示
-									</label>
-								</div>
-								<div class="radio-inline">
-									<label >
-										<input type="radio" name="is_show"  value="0"> 隐藏
-									</label>
-								</div>
-							</div>
-
-						</div>
-					</div>
-
-					<!--英文版-->
-					{if in_array('en',$this->lg)}
-					<div role="tabpanel" class="tab-pane" id="en">
-						<div class="panel-body">
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span>英文标题</span>
-								</label>
-								<div class="col-sm-8">
-									<input type="text" value="{??$data['title_en']}" name="title_en" placeholder="英文标题"  required class="form-control">	
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span>英文摘要</span>
-								</label>
-								<div class="col-sm-8">
-									<textarea name="description_en" placeholder="输入摘要内容" class="form-control">{??$data['description_en']}</textarea>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span>英文内容</span>
-								</label>
-								<div class="col-sm-8">
-								 	<script id="content_en" name="content_en" type="text/plain" class="ue-editor">
-								 	{??$data['content_en']}
-								 	</script>
-								</div>
-							</div>
-						</div>
-					</div>
-					{/if}
-
-					<!--日文版-->
-					{if in_array('jp',$this->lg)}
-					<div role="tabpanel" class="tab-pane" id="jp">
-						<div class="panel-body">
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span>日文标题</span>
-								</label>
-								<div class="col-sm-8">
-									<input type="text" value="{??$data['title_jp']}" name="title_jp" placeholder="日文标题"  required class="form-control">	
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span>日文摘要</span>
-								</label>
-								<div class="col-sm-8">
-									<textarea name="description_jp" placeholder="输入摘要内容" class="form-control">{??$data['description_jp']}</textarea>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="control-label col-sm-3">
-									<span class="text-danger">*</span>
-									<span>日文内容</span>
-								</label>
-								<div class="col-sm-8">
-								 	<script id="content_jp" name="content_jp" type="text/plain" class="ue-editor">
-								 	{??$data['content_en']}
-								 	</script>
-								</div>
-							</div>
-						</div>
-					</div>
-					{/if}
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary btn-comply">确定</button>
-					<button type="button" class="btn btn-default" id="btn-close" >取消</button>
-				</div>
-			</form>
-		</div>
-	</div>
-	{include /admin/public/global_js}
+                        </div>
+                    </div>
+                    <!--英文版-->
+                    {if in_array('en',$this->lg)}
+                    <div role="tabpanel" class="tab-pane" id="en">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span>英文标题</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" value="{??$data['title_en']}" name="title_en" placeholder="英文标题" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span>英文摘要</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <textarea name="description_en" placeholder="输入摘要内容" class="form-control">{??$data['description_en']}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span>英文内容</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <script id="content_en" name="info[content_en]" type="text/plain" class="ue-editor">
+                                        {??$data['content_en']}
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/if}
+                    <!--日文版-->
+                    {if in_array('jp',$this->lg)}
+                    <div role="tabpanel" class="tab-pane" id="jp">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span>日文标题</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" value="{??$data['title_jp']}" name="title_jp" placeholder="日文标题" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span>日文摘要</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <textarea name="description_jp" placeholder="输入摘要内容" class="form-control">{??$data['description_jp']}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="text-danger">*</span>
+                                    <span>日文内容</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <script id="content_jp" name="info[content_jp]" type="text/plain" class="ue-editor">
+                                        {??$data['content_en']}
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/if}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-comply">确定</button>
+                    <button type="button" class="btn btn-default" id="btn-close">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {include /admin/public/global_js}
 </body>
 </html>

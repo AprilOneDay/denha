@@ -29,8 +29,8 @@
 			<td>{$value['user']['address']}</td>
 			<td>{$value['total_score']}</td>
 			<td>{$value['score']}</td>
-			<td>{:date('Y-m-d H:i:s',$value['start_time'])}</td>
-			<td>大约{:reset($value['use_time'])}{$other['timeCopy'][key($value['use_time'])]}</td>
+			<td>{F:date('Y-m-d H:i:s',$value['start_time'])}</td>
+			<td>大约{F:reset($value['use_time'])}{$other['timeCopy'][key($value['use_time'])]}</td>
 			<td>{$value['user']['username']}</td>
 		</tr>
 		{/loop}

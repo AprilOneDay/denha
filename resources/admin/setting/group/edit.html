@@ -17,6 +17,21 @@
 						<div class="form-group">
 							<label class="control-label col-sm-3">
 								<span class="text-danger">*</span>
+								<span>上级分组</span>
+							</label>
+							 <div class="col-sm-8">
+								<select name="parentid" class="form-control w160" dh-selected="{??$data['parentid']}">
+									<option value="0">作为一级分组</option>
+									{loop $treeList $key $value}
+									<option value="{$value['id']}" >{$value['htmlname']}</option>
+									{/loop}
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span class="text-danger">*</span>
 								<span>分组名称</span>
 							</label>
 							<div class="col-sm-8">

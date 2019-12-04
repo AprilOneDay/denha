@@ -31,7 +31,7 @@ class GoodsEdit extends Init
             $id = reset($id);
         }
 
-        $modelTable = getVar('type', 'admin.model');
+        $modelTable = getVar('admin.model.type');
 
         if ($columnId) {
             $modelId = table('Column')->where('id', $columnId)->value('model_id');
@@ -108,20 +108,26 @@ class GoodsEdit extends Init
     {
         $id = get('id', 'intval', 0);
 
-        $data['title']         = post('title', 'text', '');
-        $data['goods_sn']      = post('goods_sn', 'text', '');
+        $data['title']         = post('title', 'trim.text', '');
+        $data['goods_sn']      = post('goods_sn', 'trim.text', '');
         $data['description']   = post('description', 'text', '');
         $data['spec_parentid'] = post('spec_parentid', 'text', '');
-        $data['column_id']     = post('column_id', 'intval', 0);
+        $data['video']         = post('video', 'trim.text', '');
 
-        $data['push_id'] = implode(',', (array) post('push_id', 'text', ''));
+        $data['column_id'] = post('column_id', 'intval', 0);
 
-        $data['category_id'] = post('category_id', 'intval', 0);
-        $data['is_show']     = post('is_show', 'intval', 1);
-        $data['is_review']   = post('is_review', 'intval', 1);
-        $data['seller_uid']  = post('seller_uid', 'intval', '');
-        $data['created']     = post('created', 'time', '');
-        $data['sell_base']   = post('sell_base', 'intval', 0);
+        $data['push_id'] = post('push_id', 'intval.implode');
+
+        $data['category_id']  = post('category_id', 'intval.implode');
+        $data['is_show']      = post('is_show', 'intval', 1);
+        $data['is_review']    = post('is_review', 'intval', 1);
+        $data['is_virtual']   = post('is_virtual', 'intval', 0);
+        $data['seller_uid']   = post('seller_uid', 'intval', '');
+        $data['created']      = post('created', 'time', '');
+        $data['publish_time'] = post('publish_time', 'time', '');
+        $data['sell_base']    = post('sell_base', 'intval', 0);
+        $data['integral']     = post('integral', 'intval', 0);
+        $data['team_num']     = post('team_num', 'intval', 0);
 
         $data['thumb'] = post('thumb', 'img', '');
 
@@ -129,6 +135,11 @@ class GoodsEdit extends Init
         $sellPrice = post('sell_price', 'text', 0);
 
         $data['model_id'] = self::$modelId;
+
+        $modelId = table('Column')->where('id', $data['column_id'])->value('model_id');
+        if ($modelId != self::$modelId) {
+            $this->ajaxReturn(['status' => false, 'msg' => '栏目模型不一致,不可保存']);
+        }
 
         if (!$data['title']) {
             return ['status' => false, 'msg' => '请填写标题'];
@@ -139,9 +150,9 @@ class GoodsEdit extends Init
         $specHash = md5(json_encode($specData)); // 商品规格hash码
         // 获取规格最低价格 替换商品价格 如果不存在规格价格 则直接使用商品价格
         list($price, $sellPrice) = $this->getSpecPirce($specData, $price, $sellPrice);
-        if (!$price) {
-            $this->ajaxReturn(['status' => false, 'msg' => '请输入商品价格']);
-        }
+        // if (!$price) {
+        //     $this->ajaxReturn(['status' => false, 'msg' => '请输入商品价格']);
+        // }
         // 促销价必须必原价小 并且默认促销价 = 原价
         $sellPrice = ($sellPrice <= 0 || $sellPrice > $price) ? $price : $sellPrice;
 
@@ -154,11 +165,22 @@ class GoodsEdit extends Init
                 unset($data['created']);
             }
 
+            if (!$data['publish_time']) {
+                unset($data['publish_time']);
+            }
+
             $result = table('Goods')->where('id', $id)->save($data);
         }
         //添加
         else {
-            $data['created'] = TIME;
+
+            if (!$data['publish_time']) {
+                $data['publish_time'] = TIME;
+            }
+
+            if (!$data['created']) {
+                $data['created'] = TIME;
+            }
 
             $id = $result = table('Goods')->add($data);
 
@@ -215,14 +237,27 @@ class GoodsEdit extends Init
             return ['status' => false, 'msg' => '商品规格goods_id 必须存在'];
         }
 
-        foreach ($specItems as $key => $value) {
+        // 判断hash码是否相同
+        $isAsHash = $this->checkSpecHash($goodsId, $hash)['status'];
+        if ($isAsHash) {
+            return ['status' => true, 'msg' => '规格未发生变化'];
+        }
+
+        if (!$save) {
+            return ['status' => true, 'msg' => '商品规格无需保存'];
+        }
+
+        $specIds = []; // 存在操作的规格id
+        foreach ($specItems as $key => $item) {
 
             $specData = [
-                'category'   => isset($value['category']) ? $value['category'] : '',
-                'stock'      => $value['stock'],
-                'price'      => $value['price'],
-                'sell_price' => $value['sell_price'] > 0 ? $value['sell_price'] : $value['price'],
                 'goods_id'   => $goodsId,
+                'category'   => isset($item['category']) ? $item['category'] : '',
+                'price'      => $item['price'],
+                'sell_price' => $item['sell_price'] > 0 ? $item['sell_price'] : $item['price'],
+                'exw_price'  => $item['exw_price'],
+                'stock'      => $item['stock'],
+                'is_stock'   => !empty($item['is_stock']) ? $item['is_stock'] : 0,
             ];
 
             if ($specData['price'] < $specData['sell_price']) {
@@ -233,26 +268,31 @@ class GoodsEdit extends Init
                 return ['status' => false, 'msg' => '请为所有的商品，输入价格', 'data' => $specData['price'], 'key' => $key];
             }
 
-            $specDataArr[] = $specData;
-        }
-
-        // 判断hash码是否相同
-        $isAsHash = $this->checkSpecHash($goodsId, $hash)['status'];
-
-        //存入规格信息
-        if ($save && !$isAsHash) {
-            // 删除旧规格信息
-            table('GoodsSpec')->where('goods_id', $goodsId)->delete();
-
-            // 保存商品规格
-            $result = table('GoodsSpec')->addAll($specDataArr);
+            // 编辑
+            if ($item['id']) {
+                $specIds[] = $item['id'];
+                $result    = table('GoodsSpec')->where('id', $item['id'])->save($specData);
+            }
+            // 添加
+            else {
+                $specIds[] = $result = table('GoodsSpec')->add($specData);
+            }
 
             if ($result === false) {
                 return ['status' => false, 'msg' => '商品规格信息保存失败'];
             }
+        }
 
-            // 保存商品规格新的hash码
-            $result = table('Goods')->where('id', $goodsId)->save('spec_hash', $hash);
+        // 删除操作
+        if ($specIds) {
+            $map             = [];
+            $map['goods_id'] = $goodsId;
+            $map['id']       = ['not in', $specIds];
+            $result          = table('GoodsSpec')->where($map)->save('del_status', 1);
+        }
+
+        if ($result === false) {
+            return ['status' => false, 'msg' => '规格删除异常'];
         }
 
         return ['status' => true, 'msg' => '商品规格保存成功'];
@@ -312,12 +352,15 @@ class GoodsEdit extends Init
 
         $rs = table('Goods')->join($articleData)->where($map)->find();
 
+        $rs['category_id']     = explode(',', $rs['category_id']); // 分割分类
+        $rs['seller_uid_copy'] = dao('UserShop')->getName($rs['seller_uid']); // 获取店铺名称
+
         if (!$rs) {
             abort('附属表异常');
         }
 
         //获取规格
-        $rs['specList'] = table('GoodsSpec')->where('goods_id', $id)->select();
+        $rs['specList'] = table('GoodsSpec')->where('goods_id', $id)->where('del_status', 0)->select();
         $rs['specList'] = array_map(function ($value) {
             $value['spec_name'] = implode(' ', (array) dao('Category')->getName($value['category']));
             return $value;
@@ -326,7 +369,7 @@ class GoodsEdit extends Init
         return $rs;
     }
 
-    //图文模型
+    // 图文模型
     public function edit_1()
     {
         $id       = get('id', 'intval', 0);
@@ -344,8 +387,9 @@ class GoodsEdit extends Init
 
         $other = [
             'categoryCopy'   => dao('Category')->getList(1089),
-            'columnListCopy' => dao('Column', 'admin')->columnList(0, $this->webType),
+            'columnListCopy' => dao('Admin.Column')->columnList(0, $this->webType),
             'pushCopy'       => dao('Category')->getList(1135),
+            'shops'          => table('user_shop')->where(['status' => 1])->order('uid asc')->select(),
         ];
 
         $this->show(self::$tpl, ['data' => $rs, 'other' => $other, 'columnId' => $columnId]);
@@ -353,6 +397,130 @@ class GoodsEdit extends Init
     }
 
     public function editPost_1()
+    {
+        $id = get('id', 'intval', 0);
+
+        $data = post('info', 'trim');
+
+        //开启事务
+        table('Goods')->startTrans();
+        $result = $this->defaults(); //保存主表
+
+        if (!$result['status']) {
+            table('Goods')->rollback();
+            $this->ajaxReturn($result);
+        }
+
+        $dataId = $result['id'];
+
+        //编辑
+        if ($dataId && $id) {
+            $resultData = table('Goods' . self::$dataTable)->where('id', $id)->save($data);
+            $dataId     = $id;
+        } else {
+            $data['id'] = $dataId;
+            $resultData = table('Goods' . self::$dataTable)->add($data);
+        }
+
+        if ($resultData === false) {
+            table('Goods')->rollback();
+            $this->ajaxReturn(['status' => false, 'msg' => '操作附表失败,请重新尝试', 'sql' => table('Goods' . self::$dataTable)->getLastSql()]);
+        }
+
+        table('Goods')->commit();
+        $this->ajaxReturn(['status' => true, 'msg' => '操作成功']);
+
+    }
+
+    // 团购商品
+    public function edit_2()
+    {
+        $id       = get('id', 'intval', 0);
+        $columnId = get('column_id', 'intval', 0);
+
+        if ($id) {
+            $rs = $this->getEditConent($id);
+
+            $columnId = $rs['column_id'];
+        } else {
+            $rs = ['is_show' => 1, 'sell_base' => 0, 'created' => date('Y-m-d', TIME), 'model_id' => self::$modelId, 'sign' => 1];
+
+            $rs['specList'] = [['stock' => 0, 'price' => '0.00', 'sell_price' => '0.00']];
+        }
+
+        $other = [
+            'categoryCopy'   => dao('Category')->getList(1089),
+            'columnListCopy' => dao('Admin.Column')->columnList(0, $this->webType),
+            'pushCopy'       => dao('Category')->getList(1135),
+        ];
+
+        $this->show(self::$tpl, ['data' => $rs, 'other' => $other, 'columnId' => $columnId]);
+
+    }
+
+    public function editPost_2()
+    {
+        $id = get('id', 'intval', 0);
+
+        $data = post('info');
+
+        //开启事务
+        table('Goods')->startTrans();
+        $result = $this->defaults(); //保存主表
+
+        if (!$result['status']) {
+            table('Goods')->rollback();
+            $this->ajaxReturn($result);
+        }
+
+        $dataId = $result['id'];
+
+        //编辑
+        if ($dataId && $id) {
+            $resultData = table('Goods' . self::$dataTable)->where('id', $id)->save($data);
+            $dataId     = $id;
+        } else {
+            $data['id'] = $dataId;
+            $resultData = table('Goods' . self::$dataTable)->add($data);
+        }
+
+        if ($resultData === false) {
+            table('Goods')->rollback();
+            $this->ajaxReturn(['status' => false, 'msg' => '操作附表失败,请重新尝试', 'sql' => table('Goods' . self::$dataTable)->getLastSql()]);
+        }
+
+        table('Goods')->commit();
+        $this->ajaxReturn(['status' => true, 'msg' => '操作成功']);
+
+    }
+
+    // 积分商品
+    public function edit_3()
+    {
+        $id       = get('id', 'intval', 0);
+        $columnId = get('column_id', 'intval', 0);
+
+        if ($id) {
+            $rs = $this->getEditConent($id);
+
+            $columnId = $rs['column_id'];
+        } else {
+            $rs = ['is_show' => 1, 'sell_base' => 0, 'created' => date('Y-m-d', TIME), 'model_id' => self::$modelId, 'sign' => 1];
+
+            $rs['specList'] = [['stock' => 0, 'price' => '0.00', 'sell_price' => '0.00']];
+        }
+
+        $other = [
+            'categoryCopy'   => dao('Category')->getList(1089),
+            'columnListCopy' => dao('Admin.Column')->columnList(0, $this->webType),
+            'pushCopy'       => dao('Category')->getList(1135),
+        ];
+
+        $this->show(self::$tpl, ['data' => $rs, 'other' => $other, 'columnId' => $columnId]);
+
+    }
+
+    public function editPost_3()
     {
         $id = get('id', 'intval', 0);
 
@@ -389,7 +557,7 @@ class GoodsEdit extends Init
     }
 
     // 课件模型
-    public function edit_2()
+    public function edit_4()
     {
         $id       = get('id', 'intval', 0);
         $columnId = get('column_id', 'intval', 0);
@@ -408,7 +576,7 @@ class GoodsEdit extends Init
 
         $other = [
             'categoryCopy'   => dao('Category')->getList(1089),
-            'columnListCopy' => dao('Column', 'admin')->columnList(0, $this->webType),
+            'columnListCopy' => dao('Admin.Column')->columnList(0, $this->webType),
             'pushCopy'       => dao('Category')->getList(1135),
         ];
 
@@ -416,12 +584,13 @@ class GoodsEdit extends Init
 
     }
 
-    public function editPost_2()
+    public function editPost_4()
     {
         $id = get('id', 'intval', 0);
 
-        $data     = post('info');
-        $resource = post('resource');
+        $resource        = post('resource');
+        $data            = post('info');
+        $data['exam_id'] = post('info.exam_id', 'intval', 0);
 
         if (!$resource) {
             $this->ajaxReturn(['status' => false, 'msg' => '请上传课件']);

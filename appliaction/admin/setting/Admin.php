@@ -2,6 +2,7 @@
 namespace app\admin\setting;
 
 use app\admin\Init;
+use app\tools\util\base\MenuTree;
 
 class Admin extends Init
 {
@@ -13,17 +14,25 @@ class Admin extends Init
      */
     public function index()
     {
-        $list = table('ConsoleAdmin')->select();
 
-        $group = table('ConsoleGroup')->where('status', 1)->field('name,id')->select();
-        foreach ($group as $key => $value) {
-            $groupList[$value['id']] = $value['name'];
+        $param = get('param', 'text', '');
+
+        $map = [];
+        if (!empty($param['field']) && !empty($param['keyword'])) {
+            if ($param['field'] == 'nickname') {
+                $map['nickname'] = ['instr', trim($param['keyword'])];
+            } elseif ($param['field'] == 'mobile') {
+                $map['mobile'] = trim($param['keyword']);
+            }
         }
 
-        $this->assign('list', $list);
-        $this->assign('statusCopy', [0 => '关闭', 1 => '开启']);
-        $this->assign('groupList', $groupList);
-        $this->show();
+        $list = table('ConsoleAdmin')->where($map)->select();
+
+        foreach ($list as $key => $item) {
+            $list[$key]['group_copy'] = table('ConsoleGroup')->where('id', 'in', $item['group'])->column('name');
+        }
+
+        $this->show('', ['list' => $list, 'statusCopy' => array(0 => '关闭', 1 => '开启'), 'param' => $param]);
     }
 
     public function editPost()
@@ -32,17 +41,21 @@ class Admin extends Init
 
         $data['nickname'] = post('nickname', 'text', '');
         $data['password'] = trim(strtolower(post('password', 'text', '')));
-        $data['group']    = (int) max(post('group', 'intval', 1), 1);
+        $data['group']    = post('group', 'text', '');
         $data['mobile']   = post('mobile', 'text', '');
         $data['status']   = post('status', 'intval', 0);
 
+        if (!$data['group']) {
+            $this->ajaxReturn(['status' => false, 'msg' => '请选择所属分组']);
+        }
+
         //获取当前管理员权限等级
-        $consoleLevel = table('ConsoleGroup')->where('id', $this->group)->field('level')->value();
+        $consoleLevel = table('ConsoleGroup')->where('id', 'in', $this->group)->value('max(level) as level');
 
         //除超管以外 用户组更改只可高级想低级更改
-        if ($this->group != 1) {
+        if (!in_array(1, $this->group)) {
             //获取更改用户组的权限等级
-            $adminLevel = table('ConsoleGroup')->where('id', $data['group'])->field('name,level')->find();
+            $adminLevel = table('ConsoleGroup')->where('id', 'in', $data['group'])->field('name,max(level)')->find();
             if ($adminLevel['level'] < $consoleLevel) {
 
                 $this->ajaxReturn(['status' => false, 'msg' => '权限不足，不可设置用户组为【' . $adminLevel['name'] . '】']);
@@ -60,12 +73,12 @@ class Admin extends Init
                 $this->ajaxReturn(['status' => false, 'msg' => '账号不存在']);
             }
 
-            //除超级管理员外 当前用户组这可编辑对于用户组信息
-            if ($this->group != 1 && $this->group != $admin['group']) {
+            // 除超级管理员外 当前用户组只可编辑对于用户组信息
+            if (!in_array(1, $this->group) && $this->group != $admin['group']) {
                 $this->ajaxReturn(['status' => false, 'msg' => '只可修改当前用户组的数据']);
             }
 
-            //自己不能关闭自己
+            // 自己不能关闭自己
             if ($this->consoleid == $id && $data['status'] == 0) {
                 $this->ajaxReturn(['status' => false, 'msg' => '请不要关闭自己的账户']);
             }
@@ -86,27 +99,9 @@ class Admin extends Init
         }
         //添加
         else {
-            $data['username'] = post('username', 'text', '');
-            if (!$data['username'] || !$data['password']) {
-                $this->ajaxReturn(['status' => false, 'msg' => '请填写用户名/密码']);
-            }
+            $result = dao('Admin.User')->add(post('username', 'text', ''), $data['password']);
 
-            //判断用户名是否存在
-            $isAdmin = table('ConsoleAdmin')->where('username', $data['username'])->field('id')->find();
-            if ($isAdmin) {
-                $this->ajaxReturn(['status' => false, 'msg' => '用户名已存在']);
-            }
-
-            $data['salt']      = mt_rand(10000, 99999);
-            $data['created']   = TIME;
-            $data['create_ip'] = getIP();
-            $data['password']  = md5($data['salt'] . $data['password']);
-            $result            = table('ConsoleAdmin')->add($data);
-            if ($result === false) {
-                $this->ajaxReturn(['status' => false, 'msg' => '添加失败']);
-            }
-
-            $this->ajaxReturn(['status' => true, 'msg' => '添加成功']);
+            $this->ajaxReturn($result);
         }
 
     }
@@ -122,16 +117,25 @@ class Admin extends Init
 
         $id = get('id', 'intval', 0);
 
+        $lists = table('ConsoleGroup')->where('status', 1)->field('name,id,parentid')->select();
+        $tree  = new MenuTree();
+        $tree->setConfig('id', 'parentid', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+        $lists = $tree->getLevelTreeArray($lists);
+
         if ($id) {
-            $rs = table('ConsoleAdmin')->field('id,username,`group`,status,nickname,mobile')->where('id', $id)->find();
+            $rs = table('ConsoleAdmin')->field('id,username,group,status,nickname,mobile')->where('id', $id)->find();
+
+            $group            = table('ConsoleGroup')->where('id', 'in', $rs['group'])->column('name');
+            $rs['group_copy'] = implode(',', $group);
+
         } else {
-            $rs['status'] = 1;
+            $rs = ['status' => 1, 'group' => ''];
         }
 
-        $groupList = table('ConsoleGroup')->where('status', 1)->field('name,id')->select();
+        $rs['group_data']        = zipStr($lists);
+        $rs['group_check_value'] = explode(',', $rs['group']); // 选择的部门id
 
         $this->assign('data', $rs);
-        $this->assign('groupList', $groupList);
 
         $this->show();
 

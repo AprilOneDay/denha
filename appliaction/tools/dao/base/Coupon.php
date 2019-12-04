@@ -13,44 +13,43 @@ class Coupon
      * @param  integer                  $uid   [description]
      * @param  array                    $param [description]
      */
-    public function add($uid = 0, $param = array())
+    public function add($uid = 0, $param = [])
     {
         $id = (int) $param['id'];
 
         $data['uid']        = $uid;
-        $data['category']   = (int) $param['category'];
+        $data['category']   = !empty($param['category']) ? (int) $param['category'] : 0;
         $data['type']       = (int) $param['type'];
         $data['start_time'] = (int) $param['start_time'];
         $data['end_time']   = (int) $param['end_time'];
         $data['num']        = $data['remainder_num']        = (int) $param['num'];
 
         $data['title']    = (string) $param['title'];
-        $data['title_en'] = (string) $param['title_en'];
-        $data['title_jp'] = (string) $param['title_jp'];
+        $data['title_en'] = !empty($param['title_en']) ? (string) $param['title_en'] : '';
+        $data['title_jp'] = !empty($param['title_jp']) ? (string) $param['title_jp'] : '';
 
         $data['description']    = (string) $param['description'];
-        $data['description_en'] = (string) $param['description_en'];
-        $data['description_jp'] = (string) $param['description_jp'];
+        $data['description_en'] = !empty($param['description_en']) ? (string) $param['description_en'] : '';
+        $data['description_jp'] = !empty($param['description_jp']) ? (string) $param['description_jp'] : '';
 
-        $data['is_exchange'] = (int) $param['is_exchange'];
-        $data['unit']        = $param['unit'] == '' ? 'CNY' : (string) $param['unit'];
+        $data['unit'] = $param['unit'] == '' ? 'CNY' : (string) $param['unit'];
 
         $data['created'] = TIME;
 
         if (!$data['title']) {
-            return array('status' => false, 'msg' => '请输入抵扣卷名称');
+            return ['status' => false, 'msg' => '请输入抵扣卷名称'];
         }
 
         if (!$data['unit']) {
-            return array('status' => false, 'msg' => '请输入抵扣币种');
+            return ['status' => false, 'msg' => '请输入抵扣币种'];
         }
 
         if (!$data['start_time'] || !$data['end_time']) {
-            return array('status' => false, 'msg' => '请输入完整的抵扣卷生效时间');
+            return ['status' => false, 'msg' => '请输入完整的抵扣卷生效时间'];
         }
 
         if (!$data['type']) {
-            return array('status' => false, 'msg' => '请选择抵扣卷类型');
+            return ['status' => false, 'msg' => '请选择抵扣卷类型'];
         }
 
         if ($data['type'] == 1) {
@@ -59,28 +58,28 @@ class Coupon
             $data['less'] = (int) $param['less'];
 
             if (!$data['less']) {
-                return array('status' => false, 'msg' => '请输入抵扣金额');
+                return ['status' => false, 'msg' => '请输入抵扣金额'];
             }
 
         } else {
             $data['discount'] = (int) $param['discount'];
             if (!$data['discount']) {
-                return array('status' => false, 'msg' => '请输入折扣值[数字]');
+                return ['status' => false, 'msg' => '请输入折扣值[数字]'];
             }
 
             if ($data['discount'] >= 10) {
-                return array('status' => false, 'msg' => '最多9.9折');
+                return ['status' => false, 'msg' => '最多9.9折'];
             }
 
             if ($data['discount'] < 1) {
-                return array('status' => false, 'msg' => '最少9.9折');
+                return ['status' => false, 'msg' => '最少9.9折'];
             }
         }
 
         //编辑
         if (isset($id)) {
             if (!$this->checkCoupon($id)) {
-                return array('status' => false, 'msg' => '抵扣卷已在使用了');
+                return ['status' => false, 'msg' => '抵扣卷已在使用了'];
             }
 
             $result = table('Coupon')->where('id', $id)->save($data);
@@ -91,10 +90,10 @@ class Coupon
         }
 
         if (!$result) {
-            return array('status' => false, 'msg' => '创建失败');
+            return ['status' => false, 'msg' => '创建失败'];
         }
 
-        return array('status' => true, 'msg' => '操作成功');
+        return ['status' => true, 'msg' => '操作成功'];
     }
 
     /** 检测抵扣卷模板是否已在使用 true:未使用 false:已有人使用 */
@@ -143,7 +142,7 @@ class Coupon
             $list[$key]['description'] = $lg != 'zh' ? (string) $value['description_' . $lg] : (string) $value['description'];
         }
 
-        $list = $list ? $list : array();
+        $list = $list ? $list : [];
 
         return $list;
     }
@@ -198,7 +197,7 @@ class Coupon
 
         }
 
-        $listTmp = $listTmp ? $listTmp : array();
+        $listTmp = $listTmp ? $listTmp : [];
 
         return $listTmp;
     }
@@ -208,20 +207,20 @@ class Coupon
      * @date   2017-10-24T16:45:48+0800
      * @author ChenMingjiang
      * @param  [type]                   $uid      [获取抵扣卷id]
-     * @param  [type]                   $giftId   [礼包id]
      * @param  [type]                   $couponId [抵扣卷模板id]
      * @param  [type]                   $origin   [获得抵扣卷方式 1兑换 2赠送]
+     * @param  [type]                   $giftId   [礼包id]
      * @return [type]                             [description]
      */
     public function send($uid, $couponId, $origin = 2, $giftId = 0)
     {
         if (!$uid || !$couponId) {
-            return array('status' => false, 'msg' => '参数错误');
+            return ['status' => false, 'msg' => '参数错误'];
         }
 
-        $coupon = table('Coupon')->where('id', $couponId)->order('RAND()')->find();
+        $coupon = table('Coupon')->where('id', $couponId)->find();
         if (!$coupon) {
-            return array('status' => false, 'msg' => '暂无相关抵扣卷');
+            return ['status' => false, 'msg' => '暂无相关抵扣卷'];
         }
 
         //增加抵扣卷领取记录
@@ -230,22 +229,26 @@ class Coupon
         $data['created']   = TIME;
         $data['origin']    = $origin;
 
-        table('CouponLog')->startTrans();
         $result = table('CouponLog')->add($data);
         if (!$result) {
-            table('CouponLog')->rollback();
-            return array('status' => false, 'msg' => '领取失败', 'sql' => table('CouponLog')->getSql());
+            return ['status' => false, 'msg' => '领取失败', 'sql' => table('CouponLog')->getSql()];
+        }
+
+        // 减少剩余抵扣卷数量
+        $result = table('Coupon')->where('id', $couponId)->save('remainder_num', 'less', 1);
+        if ($result === false) {
+            return ['status' => false, 'msg' => '抵扣券库存异常'];
         }
 
         //存在礼包id 标记为已领取
         if ($giftId) {
             $result = table('Gift')->where('id', $giftId)->save('status', 1);
-            if (!$result) {
-                return array('status' => false, 'msg' => '状态修改失败');
+            if ($result === false) {
+                return ['status' => false, 'msg' => '状态修改失败'];
             }
         }
 
-        return array('status' => true, 'msg' => '领取成功');
+        return ['status' => true, 'msg' => '领取成功'];
     }
 
     /**
@@ -258,31 +261,31 @@ class Coupon
     {
 
         if (!$id || !$uid) {
-            return array('status' => false, 'msg' => '参数错误');
+            return ['status' => false, 'msg' => '参数错误'];
         }
 
         $data = $this->logDetail($id);
 
         if (!$data) {
-            return array('status' => false, 'msg' => '抵扣券信息不存在');
+            return ['status' => false, 'msg' => '抵扣券信息不存在'];
         }
 
         if ($data['uid'] != $uid) {
-            return array('status' => false, 'msg' => '非法操作');
+            return ['status' => false, 'msg' => '非法操作'];
         }
 
         if ($data['status'] != 1) {
-            return array('status' => false, 'msg' => '抵扣券不可用');
+            return ['status' => false, 'msg' => '抵扣券不可用'];
         }
 
-        $data             = array();
+        $data             = [];
         $data['use_time'] = TIME;
 
         $result = table('CouponLog')->where('id', $id)->save($data);
         if (!$result) {
-            return array('status' => false, 'msg' => '使用失败');
+            return ['status' => false, 'msg' => '使用失败'];
         }
 
-        return array('status' => true, 'msg' => '使用成功');
+        return ['status' => true, 'msg' => '使用成功'];
     }
 }

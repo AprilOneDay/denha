@@ -21,7 +21,7 @@ class File
      * @param  boolean                  $overwrite   [是否为覆盖与目标文件相同的文件]
      * @return [type]                                [description]
      */
-    public function zip($files = array(), $path = '', $zipName = '', $overwrite = false)
+    public function zip($files = [], $path = '', $zipName = '', $overwrite = false)
     {
 
         //创建文件夹
@@ -41,7 +41,7 @@ class File
             return array('status' => true, 'msg' => '文件已存在', 'data' => $data);
         }
         //vars
-        $validFiles = array();
+        $validFiles = [];
         //获取到真实有效的文件名
         $files = is_array($files) ? $files : (array) $files;
         foreach ($files as $file) {
@@ -194,7 +194,7 @@ class File
 
         //行数是以第1行开始
         for ($row = 1; $row <= 1000; $row++) {
-            $dataColumn = array();
+            $dataColumn = [];
             for ($column = 'A'; $column <= $highestColumm; $column++) {
                 $dataColumn[] = $sheet->getCell($column . $row)->getValue();
             }
@@ -206,39 +206,47 @@ class File
     }
 
     /**
-     * 图片压缩
-     * @date   2018-06-14T16:48:57+0800
+     * 压缩图片
+     * @date   2019-01-09T16:50:27+0800
      * @author ChenMingjiang
-     * @param  [type]                   $filePath  [description]
-     * @param  [type]                   $maxWidth  [description]
-     * @param  [type]                   $maxHeight [description]
-     * @param  [type]                   $type      [description]
-     * @param  string                   $savePath  [description]
-     * @return [type]                              [description]
+     * @param  [type]                   $imgName  [图片资源路径]
+     * @param  [type]                   $with     [压缩宽度]
+     * @param  [type]                   $height   [压缩高度]
+     * @param  [type]                   $savePath [保存图片地址]
+     * @return [type]                   [description]
      */
-    public function zipImg($filePath, $maxWidth, $maxHeight, $type, $savePath = 'abc.jpg')
+    public function zipImg($imgName, $with = 0, $height = 0, $savePath = '')
     {
 
-        $tmpSavePath = PUBLIC_PATH . 'uploadfile' . DS . 'tmp' . DS;
+        $img = getimagesize($imgName);
+
+        if (!$img) {
+            return ['status' => false, 'msg' => '图片格式异常，请选择其他图片上传'];
+        }
+
+        $tmpSavePath = PUBLIC_PATH . 'uploadfile' . DS . 'zipimg' . DS;
         is_dir($tmpSavePath) ? '' : mkdir($tmpSavePath, 0755, true);
-        $savePath = $tmpSavePath . $savePath;
+
+        $imgInfo = [
+            'width'  => $img[0],
+            'height' => $img[1],
+            'type'   => image_type_to_extension($img[2], false),
+            'mime'   => $img['mime'],
+        ];
+
+        // 处理保存文件路径
+        if ($savePath) {
+            $savePath = $tmpSavePath . $savePath;
+        } else {
+            $ext         = pathinfo($imgName, PATHINFO_EXTENSION);
+            $saveImgName = basename($imgName, '.' . $ext) . '_' . $with . (!empty($height) ? 'x' . $height : '') . '.' . $ext;
+            $savePath    = $tmpSavePath . $saveImgName;
+        }
 
         try {
-            switch ($type) {
-                case 'image/pjpeg':
-                case 'image/jpeg':
-                    $im = imagecreatefromjpeg($filePath); //PHP图片处理系统函数
-                    break;
-                case 'image/gif':
-                    $im = imagecreatefromgif($filePath);
-                    break;
-                case 'image/png':
-                    $im = imagecreatefrompng($filePath);
-                    break;
-                case 'image/wbmp':
-                    $im = imagecreatefromwbmp($filePath);
-                    break;
-            }
+            // 创建画布载入图像
+            $im = 'imagecreatefrom' . $imgInfo['type'];
+            $im = $im($imgName);
         } catch (\Exception $e) {
             return ['status' => false, 'msg' => '图片格式异常，请选择其他图片上传'];
         }
@@ -247,16 +255,17 @@ class File
         $picWidth       = imagesx($im);
         $picHeight      = imagesy($im);
 
-        if (($maxWidth && $picWidth > $maxWidth) || ($maxHeight && $picHeight > $maxHeight)) {
+        // 计算压缩比
+        if (($with && $picWidth > $with) || ($height && $picHeight > $height)) {
             $resizewidthTag = $resizeheightTag = false;
 
-            if ($maxWidth && $picWidth > $maxWidth) {
-                $widthratio     = $maxWidth / $picWidth;
+            if ($with && $picWidth > $with) {
+                $widthratio     = $with / $picWidth;
                 $resizewidthTag = true;
             }
 
-            if ($maxHeight && $picHeight > $maxHeight) {
-                $heightratio     = $maxHeight / $picHeight;
+            if ($height && $picHeight > $height) {
+                $heightratio     = $height / $picHeight;
                 $resizeheightTag = true;
             }
 
@@ -266,7 +275,6 @@ class File
                 } else {
                     $ratio = $heightratio;
                 }
-
             }
 
             if ($resizewidthTag && !$resizeheightTag) {
@@ -280,52 +288,29 @@ class File
             $newwidth  = $picWidth * $ratio;
             $newheight = $picHeight * $ratio;
 
-            if (function_exists("imagecopyresampled")) {
+            if (function_exists('imagecopyresampled')) {
                 $newim = imagecreatetruecolor($newwidth, $newheight); //PHP图片处理系统函数
                 imagecopyresampled($newim, $im, 0, 0, 0, 0, $newwidth, $newheight, $picWidth, $picHeight); //PHP图片处理系统函数
             } else {
                 $newim = imagecreate($newwidth, $newheight);
                 imagecopyresized($newim, $im, 0, 0, 0, 0, $newwidth, $newheight, $picWidth, $picHeight);
             }
+        }
 
-            switch ($type) {
-                case 'image/pjpeg':
-                case 'image/jpeg':
-                    $result = imagejpeg($newim, $savePath);
-                    break;
-                case 'image/gif':
-                    $result = imagegif($newim, $savePath);
-                    break;
-                case 'image/png':
-                    $result = imagepng($newim, $savePath);
-                    break;
-                case 'image/wbmp':
-                    $result = imagewbmp($newim, $savePath);
-                    break;
-            }
+        // 生成新图片
+        $image = 'image' . $imgInfo['type'];
+        if (isset($newim)) {
+            $result = $image($newim, $savePath);
             imagedestroy($newim);
         } else {
-            switch ($type) {
-                case 'image/pjpeg':
-                case 'image/jpeg':
-                    $result = imagejpeg($im, $savePath);
-                    break;
-                case 'image/gif':
-                    $result = imagegif($im, $savePath);
-                    break;
-                case 'image/png':
-                    $result = imagepng($im, $savePath);
-                    break;
-                case 'image/wbmp':
-                    $result = imagewbmp($im, $savePath);
-                    break;
-            }
+            $result = $image($im, $savePath);
         }
 
         if (!$result) {
-            return ['status' => true, 'msg' => '压缩成功', 'url' => $filePath];
+            return ['status' => true, 'msg' => '未压缩', 'url' => $imgName];
         }
 
-        return ['status' => true, 'msg' => '未压缩', 'url' => $filePath];
+        return ['status' => true, 'msg' => '压缩成功', 'url' => $savePath, 'name' => $saveImgName];
     }
+
 }

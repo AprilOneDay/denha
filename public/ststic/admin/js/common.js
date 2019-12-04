@@ -1,10 +1,57 @@
-var baseImgUrl = '/uploadfile'; //图片初始保存路径
+var baseImgUrl = '/uploadfile';   // '/uploadfile';图片初始保存路径
 var dhKey = 1;
 var btnBlock = true;
 var uploadUrl = '/admin/common/upload/up_file';
 var dhToken = ''; // csrf token验证码
 var dhData = {};
+// 判断当前浏览器类型
+var userAgent = function(){
+    var sUserAgent = navigator.userAgent.toLowerCase();
+    var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+    var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+    var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+    var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+    var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+    var bIsAndroid = sUserAgent.match(/android/i) == "android";
+    var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+    var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+    if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+        return 'wap';
+    } else {
+        return 'pc';
+    }
+}();
 
+if(userAgent == 'wap'){
+    var theadData = [],tbodyData = [];
+    $('table').find('thead th').each(function(){
+        theadData.push($(this).text());
+    });
+
+    $('table').find('tbody tr').each(function(){
+        tbodyData[tbodyData.length] = [];
+        var _this = this;
+        $(_this).find('td').each(function(){
+            tbodyData[tbodyData.length - 1].push($(this).html());
+        })
+    })
+
+    var content ='';
+    for(var key in tbodyData){
+        content += '<div class="list-item">';
+        for(var i in tbodyData[key]){
+            content += '<div class="item-content"><span class="title">'+theadData[i]+'</span><span>'+tbodyData[key][i]+'</span></div>';
+        }
+        content += '</div>';
+    }
+
+    if($('table').find('tfoot td').html()){
+        content += '<div class="tfoot-pages">'+ $('table').find('tfoot td').html() +'</div>';
+    }
+
+    $('table').after(content);
+    $('table').remove();
+}
 
 
 // 增加标识符
@@ -162,13 +209,13 @@ var addKey = function(event) {
             };
         }
 
-        //上传进度回调函数：  
+        //上传进度回调函数：
         function progressHandlingFunction(e) {
             if (e.lengthComputable) {
                 $('progress').attr({
                     value: e.loaded,
                     max: e.total
-                }); //更新数据到进度条  
+                }); //更新数据到进度条
                 var percent = parseInt(e.loaded / e.total * 100);
                 $('.progress-bar').css('width', percent + '%');
                 $('.progress-bar').text(percent + '%');
@@ -179,6 +226,14 @@ var addKey = function(event) {
         xhr.send(formData);
     }
 
+    // 转化bool类型
+    ,bool = function(value) {
+        if (!value || value == '' || value == 0 || value == '0' || value == 'false' || value == false) {
+            return false;
+        }
+
+        return true;
+    }
 
     //ajax封装Html
     ,
@@ -216,14 +271,6 @@ var addKey = function(event) {
 
         if (!config.url) {
             return layer.msg(ERROR_URL_IS_NULL);
-        }
-
-        function bool(value) {
-            if (!value || value == '' || value == 0 || value == '0' || value == 'false' || value == false) {
-                return false;
-            }
-
-            return true;
         }
 
         //获取参数
@@ -492,35 +539,213 @@ var addKey = function(event) {
         }
     }
 
-    // select联动获取信息
-    ,
-    dhLinkage = function(event, target) {
+    , dhLinkInlineDefault = function(event, defaultValue) {
 
         var _this = event;
 
-        var value = $(_this).val(); //选择的id
-        var valueAttr = $(_this).attr('dh-attr'); //绑定类型 默认绑定 dh-content 中的id值 如果修改
+        var value = $(_this).val(); // 选择的id
         var url = $(_this).attr('dh-url'); //POST请求地址
-        var parentEl = $(_this).attr('dh-parent-el'); //渲染父级别DOM 防止多个样式执行同时渲染
-        var el = $(_this).attr('dh-el'); //渲染DOM
-        var options = $(_this).attr('dh-content'); //渲染默认信息JSON格式
-        var initValue = $(_this).attr('dh-init-value'); //初始默认值
-        var initName = $(_this).attr('dh-init-name'); //初始默认文案
-        var defaultValue = $(_this).attr('dh-selected'); //初始默认选项
+        var valueAttr = $(_this).attr('dh-attr'); // 绑定类型 默认绑定dh-content中的id值
+        var initValue = $(_this).attr('dh-init-value') || ''; // 初始默认值
+        var initName = $(_this).attr('dh-init-name') || ''; // 初始默认文案
+        var level = $(_this).attr('dh-level') || null;
+        var optionsValue,selectHtml = []; // ajax保存的值
+
+        // 绑定类型 默认绑定 dh-content 中的id值 如果修改
+        valueAttr = valueAttr ? valueAttr : 'id';
+
+        if (level === null) {
+            level = $(_this).index();
+            $(_this).attr('dh-level', level);
+            $(_this).val(defaultValue[0]);
+        }
+
+        var init = function(i){
+                
+            initDefaultValue = defaultValue[i];
+
+            if(!optionsValue || optionsValue.length <= 0){
+                return false;
+            }
+
+            selectHtml[i] = '';
+            selectHtml[i] += '<select name="category_id[]" dh-url="'+ url +'" dh-level="'+ i +'" dh-init-name="'+ initName +'" dh-init-value="'+ initValue +'" class="form-control dh-link-inline">';
+
+            //绑定默认值
+            if (initName) {
+                selectHtml[i] += '<option value="' + initValue + '">' + initName + '</option>';
+            }
+
+            for (var key in optionsValue) {
+                if(optionsValue[key][valueAttr] == initDefaultValue){
+                    selectHtml[i] += '<option value="' + optionsValue[key][valueAttr] + '" selected="selected">' + optionsValue[key]['name'] + '</option>';
+                }else{
+                    selectHtml[i] += '<option value="' + optionsValue[key][valueAttr] + '">' + optionsValue[key]['name'] + '</option>';
+                }
+            }
+
+            selectHtml[i] += '</select>';
+
+            $(_this).parent().append(selectHtml[i]);
+        }
+
+        for(var key in defaultValue){
+            if(defaultValue[key] > 0 ){
+                $.ajax({type: 'POST',async:false,url: url,data: { value: defaultValue[key],key:Number(key) + 1},dataType: "json",success:function(res){
+                    optionsValue = res.data;
+                    init(res.key);
+                }});
+            }
+        }
+
+        // if(selectHtml){
+        //     for(var i in selectHtml){
+        //          $(_this).parent().append(selectHtml[i]);
+        //     }
+        // }
+
+        // console.log(selectHtml)
+
+
+    }
+    , dhLinkInline = function(event,defaultValue) {
+
+        var _this = event;
+
+        var value           = $(_this).val(); // 选择的id
+        var url             = $(_this).attr('dh-url'); //POST请求地址
+        var valueAttr       = $(_this).attr('dh-attr'); // 绑定类型 默认绑定dh-content中的id值
+        var initValue       = $(_this).attr('dh-init-value') || ''; // 初始默认值
+        var initName        = $(_this).attr('dh-init-name') || ''; // 初始默认文案
+        var level           = $(_this).attr('dh-level') || null;
+        var optionsValue; // ajax保存的值
+
+        // 绑定类型 默认绑定 dh-content 中的id值 如果修改
+        valueAttr = valueAttr ? valueAttr : 'id';
+
+        if (level === null) {
+            level = $(_this).index();
+            $(_this).attr('dh-level', level);
+        }
+
+        var thisLevel =  Number(level) + 1;
+            
+        // 删除之后的select
+        $(_this).parent().find('select').each(function(){
+            if($(this).attr('dh-level') >= thisLevel){
+                $(this).remove();
+            }
+        })
+
+        var init = function(){
+
+            if(!optionsValue || optionsValue.length <= 0){
+                return false;
+            }
+
+            var selectHtml = '';
+            selectHtml += '<select name="category_id[]" dh-url="'+ url +'" dh-level="'+ thisLevel +'" dh-init-name="'+ initName +'" dh-init-value="'+ initValue +'" class="form-control dh-link-inline">';
+
+            //绑定默认值
+            if (initName) {
+                selectHtml += '<option value="' + initValue + '">' + initName + '</option>';
+            }
+
+            for (var key in optionsValue) {
+                selectHtml += '<option value="' + optionsValue[key][valueAttr] + '">' + optionsValue[key]['name'] + '</option>';
+            }
+
+            selectHtml += '</select>';
+            
+            $(_this).parent().append(selectHtml);
+        }
+
+        if(value > 0 ){
+            $.post(url, { value: value}, function(res) {
+                if (!res.status) {
+                    return layer.msg(res.msg);
+                }
+
+                optionsValue = res.data;
+
+                init();
+
+            }, "json");
+        }
+    }
+
+
+    // select联动获取信息
+    ,dhLinkage = function(event, target) {
+
+        var _this = event;
+
+        var value           = $(_this).val(); // 选择的id
+        var valueAttr       = $(_this).attr('dh-attr'); // 绑定类型 默认绑定dh-content中的id值
+        var url             = $(_this).attr('dh-url'); //POST请求地址
+        var parentEl        = $(_this).attr('dh-parent-el'); //渲染父级别DOM 防止多个样式执行同时渲染
+        var el              = $(_this).attr('dh-el'); // 渲染DOM
+        var options         = $(_this).attr('dh-content'); // 渲染默认信息JSON格式
+        var initValue       = $(_this).attr('dh-init-value'); // 初始默认值
+        var initName        = $(_this).attr('dh-init-name'); // 初始默认文案
+        var defaultValue    = $(_this).attr('dh-selected'); // 初始默认选项
         var content, optionsValue, likeage;
 
         //绑定类型 默认绑定 dh-content 中的id值 如果修改
         valueAttr = valueAttr ? valueAttr : 'id';
 
+        var thisOptionNums = $(_this).find('option').length;
+        if(!thisOptionNums){
+            $(el).css('display', 'none');
+            return false;
+        }
+
+        var init = function(){
+            if ($(el).css('display') == 'none') {
+                $(el).css('display', 'block');
+            }
+
+            if (parentEl) {
+                likeage = $(_this).parents(parentEl).find(el).find('select');
+            } else {
+                likeage = $(el).find('select');
+            }
+
+            likeage.html('');
+
+            //绑定默认值
+            if (initName) {
+                likeage.append('<option value="' + initValue + '">' + initName + '</option>');
+            }
+
+            if(!optionsValue || optionsValue.length <= 0){
+                $(el).css('display', 'none');
+            }
+
+            for (var key in optionsValue) {
+                content = '<option value="' + optionsValue[key][valueAttr] + '">' + optionsValue[key]['name'] + '</option>';
+                likeage.append(content);
+            }
+
+            var data = $(likeage).attr('dh-selected');
+            if (data) {
+                $(likeage).val(data);
+            }
+        }
+
         //ajax请求
         if (url) {
             $.post(url, {
                 value: value
-            }, function(result) {
-                if (!result.status) {
-                    return layer.msg(result.msg);
+            }, function(res) {
+                if (!res.status) {
+                    return layer.msg(res.msg);
                 }
-                optionsValue = result.data;
+
+                optionsValue = res.data;
+
+                init();
+
             }, "json");
         }
         //直接渲染
@@ -546,31 +771,12 @@ var addKey = function(event) {
                 }
 
             }
+
+            init();
+
         }
 
-        if ($(el).css('display') == 'none') {
-            $(el).css('display', 'block');
-        }
-
-        if (parentEl) {
-            likeage = $(_this).parents(parentEl).find(el).find('select');
-
-        } else {
-            likeage = $(el).find('select');
-        }
-
-
-        likeage.html('');
-
-        //绑定默认值
-        if (initName) {
-            likeage.append('<option value="' + initValue + '">' + initName + '</option>');
-        }
-
-        for (var key in optionsValue) {
-            content = '<option value="' + optionsValue[key][valueAttr] + '">' + optionsValue[key]['name'] + '</option>';
-            likeage.append(content);
-        }
+        
     }
 
     //绑定checkBox
@@ -641,6 +847,7 @@ var addKey = function(event) {
     ,
     dhRadio = function(el) {
         var _this = el;
+        var data = '';
         //不进行渲染
         var native = $(_this).attr('dh-native');
         if (native) {
@@ -658,94 +865,17 @@ var addKey = function(event) {
         })
     }
 
+    // 创建新窗口
+    ,openWindow = function(el){
+        var _this = el;
 
-
-/** 待重构代码 */
-$(document).ready(function() {
-
-
-    //如果某个接口返回失败了 或存在BUG哦
-    var btnBlock = true; //ajax提交堵塞 ture可提交 false堵塞中不可提交
-
-
-    //绑定初试信息
-    $('select').each(function() {
-        var data = $(this).attr('dh-selected');
-        if (data) {
-            $(this).val(data);
-        }
-    });
-
-    //渲染默认值
-    $('.btn-linkage').each(function() {
-        dhLinkage(this);
-    });
-
-    //绑定初试信息
-    $('select').each(function() {
-        var data = $(this).attr('dh-selected');
-        if (data) {
-            $(this).val(data);
-        }
-    });
-
-    $(".dh-radio").each(function() {
-        dhRadio(this);
-    })
-
-    $(".radio").each(function() {
-        dhRadio(this);
-    })
-
-    //下拉联动
-    $('.btn-linkage').change(function() {
-        dhLinkage(this, 'change');
-    })
-
-
-    //绑定checkbox
-    $('.checkbox').each(function() {
-        bulidCheckbox(this);
-    })
-
-    $('.dh-checkbox').each(function() {
-        bulidCheckbox(this);
-    })
-
-    //checkBox单选
-    $('.dh-checkbox-radio').each(function() {
-        var _this = this;
-        var name = $(this).attr('name');
-        $(this).click(function() {
-            $('input[name="' + name + '"]').prop('checked', false);
-            $(this).prop('checked', true);
-        })
-    });
-
-
-    //tips提示
-    $('[dh-tooltip]').mouseover(function() {
-        var msg = $(this).attr('dh-tooltip');
-        layer.tips(msg, this, {
-            tips: [1, '#3595CC'],
-            time: 10000
-        });
-    })
-    $('[dh-tooltip]').mouseout(function() {
-        layer.closeAll('tips');
-    })
-
-
-
-    //打开弹出
-    $('.btn-open').click(function() {
-        var href = $(this).attr('dh-url');
-        var title = $(this).attr('dh-title');
-        var width = $(this).attr('dh-width');
-        var height = $(this).attr('dh-height');
+        var href = $(_this).attr('dh-url');
+        var title = $(_this).attr('dh-title');
+        var width = $(_this).attr('dh-width');
+        var height = $(_this).attr('dh-height');
 
         if (!title) {
-            title = $(this).text();
+            title = $(_this).text();
         }
         if (!width) {
             width = '80%';
@@ -769,7 +899,93 @@ $(document).ready(function() {
             area: [width, height],
             content: [href] //iframe的url
         });
+    }
+
+
+/** 待重构代码 */
+$(document).ready(function() {
+
+    //如果某个接口返回失败了 或存在BUG哦
+    var btnBlock = true; //ajax提交堵塞 ture可提交 false堵塞中不可提交
+
+    //tips提示
+    $('[dh-tooltip]').mouseover(function() {
+        var msg = $(this).attr('dh-tooltip');
+        layer.tips(msg, this, {
+            tips: [1, '#3595CC'],
+            time: 10000
+        });
     })
+    $('[dh-tooltip]').mouseout(function() {
+        layer.closeAll('tips');
+    })
+
+    // 下拉联动
+    $('body').on('change','.dh-link-inline',function(){
+        dhLinkInline(this);
+    })
+
+    //下拉联动
+    $('.dh-link').change(function() {
+        dhLinkage(this, 'change');
+    })
+
+    //打开弹出
+    $('.btn-open').click(function() {
+        openWindow(this);
+    })
+
+
+    //绑定初试信息
+    $('select').each(function() {
+        var data = $(this).attr('dh-selected');
+        if (data) {
+            $(this).val(data);
+        }
+    });
+
+    $('.dh-link-inline').each(function(){
+        var defaultValue = $(this).attr('dh-selected'); // 初始默认选项
+
+        defaultValue = defaultValue ? defaultValue.split(',') : [];
+
+        dhLinkInlineDefault(this,defaultValue);
+
+    })
+
+    //渲染默认值
+    $('.dh-link').each(function() {
+        dhLinkage(this);
+    });
+
+
+    $(".dh-radio").each(function() {
+        dhRadio(this);
+    })
+
+    $(".radio").each(function() {
+        dhRadio(this);
+    })
+
+
+    //绑定checkbox
+    $('.checkbox').each(function() {
+        bulidCheckbox(this);
+    })
+
+    $('.dh-checkbox').each(function() {
+        bulidCheckbox(this);
+    })
+
+    //checkBox单选
+    $('.dh-checkbox-radio').each(function() {
+        var _this = this;
+        var name = $(this).attr('name');
+        $(this).click(function() {
+            $('input[name="' + name + '"]').prop('checked', false);
+            $(this).prop('checked', true);
+        })
+    });
 
     //提交信息
     $('.btn-comply').click(function() {
@@ -932,7 +1148,6 @@ $(document).ready(function() {
         }
     })
 
-
     //渲染编辑器
     $('.ue-editor').each(function() {
         var id = $(this).attr('id');
@@ -1052,10 +1267,7 @@ $(document).ready(function() {
         dhUploadImg(this);
     })
 
-
-
     //上传文件
-
     $('.btn-files').each(function() {
         uploadfiles(this);
     })
@@ -1080,16 +1292,22 @@ var uploadfiles = function(el) {
 
     // DOM渲染文件路径
     var fileHtml = function(value) {
-        console.log($('.files_lists_' + id).length);
+        // console.log($('.files_lists_' + id).length);
         if ($('.files_lists_' + id).length >= 1) {
-            var html = '<div class="form-inline form-group"><input type="text" value="' + value + '"  class="form-control files_lists_' + id + '" style="margin-left: 10px;margin-right: 10px;"> <a href="javascript:;" class="form-control-static del-files">删除</a></div>';
+            var html = '<div class="form-inline form-group"><input type="text" value="' + value + '"  data-id="' + id + '" class="form-control files_lists_input files_lists_' + id + '" style="margin-left: 10px;margin-right: 10px;"> <a href="javascript:;" class="form-control-static del-files">删除</a></div>';
         } else {
-            var html = '<div class="form-inline"><input type="text" value="' + value + '"  class="form-control files_lists_' + id + '" style="margin-left: 10px;margin-right: 10px;"> <a href="javascript:;" class="form-control-static del-files">删除</a></div>';
+            var html = '<div class="form-inline"><input type="text" value="' + value + '"  data-id="' + id + '" class="form-control files_lists_input  files_lists_' + id + '" style="margin-left: 10px;margin-right: 10px;"> <a href="javascript:;" class="form-control-static del-files">删除</a></div>';
         }
 
         return html;
     }
 
+    // 更改input值 对应更改input ID值
+    $('body').off('click','.files_lists_input').on('change','.files_lists_input',function(){
+        // console.log($(this).attr('data-id'));
+        var id = $(this).attr('data-id');
+        $('#files_content_'+id).val($(this).val());
+    });
 
     // DOM渲染上传保存信息 和上传插件
     $(_this).parent().append(content);
@@ -1117,6 +1335,7 @@ var uploadfiles = function(el) {
         }
     } else {
         value = '';
+        $(_this).parent().parent().find('.col-sm-8').append(fileHtml(''));
     }
 
 
@@ -1141,14 +1360,14 @@ var uploadfiles = function(el) {
         formData.append('path', path);
         formData.append('type', type);
 
-        //ajax异步上传  
+        //ajax异步上传
         $.ajax({
             url: uploadUrl,
             type: 'POST',
             data: formData,
             dataType: 'json',
-            contentType: false, //必须false才会自动加上正确的Content-Type  
-            processData: false, //必须false才会避开jQuery对 formdata 的默认处理  
+            contentType: false, //必须false才会自动加上正确的Content-Type
+            processData: false, //必须false才会避开jQuery对 formdata 的默认处理
             xhr: function() { //获取ajaxSettings中的xhr对象，为它的upload属性绑定progress事件的处理函数
                 //移除之前的上传进度条
                 $(_this).parent().find('.progress').remove();
@@ -1156,11 +1375,11 @@ var uploadfiles = function(el) {
                 layer.alert(progress);
                 myXhr = $.ajaxSettings.xhr();
                 if (myXhr.upload) {
-                    //检查upload属性是否存在  
-                    //绑定progress事件的回调函数  
+                    //检查upload属性是否存在
+                    //绑定progress事件的回调函数
                     myXhr.upload.addEventListener('progress', progressHandlingFunction, false);
                 }
-                return myXhr; //xhr对象返回给jQuery使用  
+                return myXhr; //xhr对象返回给jQuery使用
             },
             success: function(result) {
                 if (result.status) {
@@ -1174,13 +1393,13 @@ var uploadfiles = function(el) {
             },
         });
 
-        //上传进度回调函数：  
+        //上传进度回调函数：
         function progressHandlingFunction(e) {
             if (e.lengthComputable) {
                 $('progress').attr({
                     value: e.loaded,
                     max: e.total
-                }); //更新数据到进度条  
+                }); //更新数据到进度条
                 var percent = parseInt(e.loaded / e.total * 100);
                 $('.progress-bar').css('width', percent + '%');
                 $('.progress-bar').text(percent + '%');

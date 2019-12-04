@@ -66,11 +66,7 @@
 										<span>所属分组</span>	
 									</label>
 									<div class="col-sm-8">
-										<select name="group" class="form-control w160" dh-selected="{??$data['group']}" disabled>
-											{loop $groupList $key $value}
-											<option value="{$value['id']}" >{$value['name']}</option>
-											{/loop}
-										</select>
+										<input type="text"  value="{??$data['group_copy']}" class="form-control" disabled="disabled">	
 									</div>
 								</div>
 

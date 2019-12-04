@@ -17,7 +17,8 @@ class ArticleEdit extends Init
     private static $dataTable;
     //模板视图地址
     private static $tpl;
-    //模型数据库类型
+    //栏目id
+    private static $columnId = 0;
 
     public function __construct()
     {
@@ -31,13 +32,13 @@ class ArticleEdit extends Init
             $id = reset($id);
         }
 
-        $modelTable = getVar('type', 'admin.model');
+        $modelTable = getVar('admin.model.type');
 
         if ($columnId) {
             $modelId = table('Column')->where('id', $columnId)->value('model_id');
             $isEdit  = table('Column')->where('parentid', $columnId)->value('id');
 
-            $modelTable = getVar('type', 'admin.model');
+            $modelTable = getVar('admin.model.type');
 
             if ($isEdit) {
                 abort('存在子级栏目,不可创建文章');
@@ -47,7 +48,7 @@ class ArticleEdit extends Init
         }
 
         if (empty($modelTable[$modelId]) || !$modelId) {
-            abort('模型配置信息不存在....');
+            abort('模型配置信息不存在....[' . $modelId . ']');
         }
 
         self::$modelId   = $modelId;
@@ -93,6 +94,7 @@ class ArticleEdit extends Init
         $data['jump_url']       = post('jump_url', 'text', '');
         $data['push_id']        = implode(',', (array) post('push_id', 'text', ''));
         $data['tags']           = post('tags', 'text', '');
+        $data['hot']            = post('hot', 'intval', 0);
 
         $data['is_show']   = post('is_show', 'intval', 1);
         $data['is_review'] = post('is_review', 'intval', 1);
@@ -156,40 +158,65 @@ class ArticleEdit extends Init
 
         $this->ajaxReturn(['status' => true, 'msg' => '删除成功']);
 
-        // $modelId = table('Article')->where('id', 'in', $id)->field('model_id')->value();
+    }
 
-        // if (!$modelId) {
-        //     $this->ajaxReturn(['status' => false, 'msg' => '信息不存在']);
-        // }
+    /** 文章复制 */
+    public function copy()
+    {
+        $ids      = get('ids', 'text', '');
+        $columnId = get('column_id', 'intval', 0);
 
-        // if (!$modelTable[$modelId]) {
-        //     $this->ajaxReturn(['status' => false, 'msg' => '附表异常']);
-        // }
+        $other = [
+            'columnListCopy' => dao('Admin.Column')->columnList(0, $this->webType),
+        ];
 
-        // $result = table('Article')->where('id', 'in', $id)->save('del_status', 1);
+        $this->show('', ['other' => $other, 'columnId' => $columnId]);
+    }
 
-        // $this->ajaxReturn(['status' => true, 'msg' => '删除成功']);
+    /** 文章复制提交 */
+    public function copyPost()
+    {
+        $id = get('id', 'intval', 0);
 
-        // //开启事务
-        // table('Article')->startTrans();
+        $columnId = post('column_id', 'intval', '');
 
-        // $result = table('Article')->where('id', 'in', $id)->delete();
+        if (!$id) {
+            $this->ajaxReturn(false, '参数错误');
+        }
 
-        // if ($result === false) {
-        //     table('Article')->rollback();
-        //     $this->ajaxReturn(['status' => false, 'msg' => '主表附表删除失败']);
-        // }
+        $dataBase = table('Article')->where('id', $id)->find();
+        $dataDep  = table('Article' . self::$dataTable)->where('id', $id)->find();
 
-        // $result = table('Article' . self::$dataTable)->where('id', 'in', $id)->delete();
+        // 判断模型是否一致
+        $modelId = table('Column')->where('id', $columnId)->value('model_id');
+        if ($dataBase['model_id'] != $modelId) {
+            $this->ajaxReturn(false, '模型不一致,不可以复制到该栏目');
+        }
 
-        // if ($result === false) {
-        //     table('Article')->rollback();
-        //     $this->ajaxReturn(['status' => false, 'msg' => '附表删除失败']);
-        // }
+        //开启事务
+        table('Article')->startTrans();
 
-        // table('Article')->commit();
+        unset($dataBase['id']);
 
-        // $this->ajaxReturn(['status' => true, 'msg' => '删除成功']);
+        $newId = table('Article')->add($dataBase);
+
+        if ($newId === false) {
+            table('Article')->rollback();
+            $this->ajaxReturn(false, '主表复制失败');
+        }
+
+        $dataDep['id'] = $newId;
+
+        $result = table('Article' . self::$dataTable)->add($dataDep);
+
+        if ($result === false) {
+            table('Article')->rollback();
+            $this->ajaxReturn(false, '附表复制失败');
+        }
+
+        table('Article')->commit();
+        $this->ajaxReturn(true, '复制成功');
+
     }
 
     /** 获取内容详情 */
@@ -237,11 +264,11 @@ class ArticleEdit extends Init
             ];
         }
 
-        $other = array(
-            'columnListCopy' => dao('Column', 'admin')->columnList(0, $this->webType),
+        $other = [
+            'columnListCopy' => dao('Admin.Column')->columnList(0, $this->webType),
             'pushCopy'       => dao('Category')->getList(1135),
             'tagsData'       => zipStr(dao('Category')->getListTree(1109)),
-        );
+        ];
 
         $this->assign('data', $rs);
         $this->assign('other', $other);
@@ -253,10 +280,7 @@ class ArticleEdit extends Init
     {
         $id = get('id', 'intval', 0);
 
-        $data['content']    = post('content', 'text', '');
-        $data['content_en'] = post('content_en', 'text', '');
-        $data['content_jp'] = post('content_jp', 'text', '');
-        $data['video']      = post('video', 'text', '');
+        $data = post('info');
 
         //开启事务
         table('Article')->startTrans();
@@ -269,7 +293,7 @@ class ArticleEdit extends Init
 
         //编辑
         if ($dataId && $id) {
-            $resultData = table('Article' . self::$dataTable)->where(array('id' => $id))->save($data);
+            $resultData = table('Article' . self::$dataTable)->where('id', $id)->save($data);
             $dataId     = $id;
         } else {
             $data['id'] = $dataId;
@@ -286,8 +310,73 @@ class ArticleEdit extends Init
 
     }
 
-    // 文章模型
+    // 直播模型
     public function edit_2()
+    {
+        $id       = get('id', 'intval', 0);
+        $columnId = get('column_id', 'intval', 0);
+
+        if ($id) {
+            $rs = $this->getEditConent($id);
+        } else {
+            $rs = [
+                'is_show'      => 1,
+                'is_recommend' => 0,
+                'created'      => date('Y-m-d', TIME),
+                'model_id'     => self::$modelId,
+                'column_id'    => $columnId,
+                'tags'         => '',
+            ];
+        }
+
+        $other = [
+            'columnListCopy' => dao('Admin.Column')->columnList(0, $this->webType),
+            'pushCopy'       => dao('Category')->getList(1135),
+            'tagsData'       => zipStr(dao('Category')->getListTree(1109)),
+        ];
+
+        $this->assign('data', $rs);
+        $this->assign('other', $other);
+        $this->show(self::$tpl);
+
+    }
+
+    public function editPost_2()
+    {
+        $id = get('id', 'intval', 0);
+
+        $data = post('info');
+
+        //开启事务
+        table('Article')->startTrans();
+        $dataId = $this->defaults(); //保存主表
+
+        if (!$dataId) {
+            table('Article')->rollback();
+            $this->ajaxReturn(array('status' => false, 'msg' => '保存主表失败'));
+        }
+
+        //编辑
+        if ($dataId && $id) {
+            $resultData = table('Article' . self::$dataTable)->where('id', $id)->save($data);
+            $dataId     = $id;
+        } else {
+            $data['id'] = $dataId;
+            $resultData = table('Article' . self::$dataTable)->add($data);
+        }
+
+        if ($resultData === false) {
+            table('Article')->rollback();
+            $this->ajaxReturn(array('status' => false, 'msg' => '操作失败,请重新尝试'));
+        }
+
+        table('Article')->commit();
+        $this->ajaxReturn(array('status' => true, 'msg' => '操作成功'));
+
+    }
+
+    // 店铺模型
+    public function edit_5()
     {
         $id       = get('id', 'intval', 0);
         $columnId = get('column_id', 'intval', 0);
@@ -308,7 +397,7 @@ class ArticleEdit extends Init
         // print_r(dao('Category')->getListTree(1109));
 
         $other = array(
-            'columnListCopy' => dao('Column', 'admin')->columnList(0, $this->webType),
+            'columnListCopy' => dao('Admin.Column')->columnList(0, $this->webType),
             'pushCopy'       => dao('Category')->getList(1135),
             'tagsData'       => zipStr(dao('Category')->getListTree(1109)),
         );
@@ -319,14 +408,11 @@ class ArticleEdit extends Init
 
     }
 
-    public function editPost_2()
+    public function editPost_5()
     {
         $id = get('id', 'intval', 0);
 
-        $data['content']    = post('content', 'text', '');
-        $data['content_en'] = post('content_en', 'text', '');
-        $data['content_jp'] = post('content_jp', 'text', '');
-        $data['video']      = post('video', 'text', '');
+        $data = post('info');
 
         //开启事务
         table('Article')->startTrans();

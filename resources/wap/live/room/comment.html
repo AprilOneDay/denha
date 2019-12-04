@@ -1,0 +1,32 @@
+{if $lists}
+  {loop $lists $item}
+  <div class="comment-item">
+      <div class="avatar">
+         <img src="{$item['user']['avatar']}">
+      </div>
+      <div class="comment-box">
+        <div class="box-top">
+          <div class="nickname">{$item['user']['nickname']}</div>
+          <div class="date">{$item['created_copy']}</div>
+        </div>
+        <div class="content-text">{$item['content']}</div>
+        {if $item['child']}
+        <div class="reply">
+          <div>
+            <labe>[课程团队回复]</labe> 
+            <labe>{$item['child'][0]['created_copy']}</labe>
+          </div> 
+          <div class="reply-text">
+            {$item['child'][0]['content']}
+          </div>
+        </div>
+        {/if}
+      </div>
+      <div style="clear: both;height: 0"></div>
+  </div>
+  {/loop}
+{else}
+<div class="comment-item">
+  <view class="not-title">暂无相关评论</view>
+</div>
+{/if}

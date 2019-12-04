@@ -13,27 +13,35 @@ class Category extends Init
     public function lists()
     {
         $parentid = get('id', 'intval', 0);
+        $keyword  = get('keyword', 'text', '');
+        $field    = get('field', 'text', '');
 
-        $keyword = get('keyword', 'text', '');
+        $param = [];
 
         $map['parentid'] = $parentid;
 
-        $param = array();
+        if ($keyword && $field) {
 
-        if ($keyword) {
             unset($map['parentid']);
 
-            $map['name']      = array('instr', $keyword);
+            if ($field == 'title') {
+                $map['name'] = ['instr', $keyword];
+            } elseif ($field == 'id') {
+                $map['id'] = $keyword;
+            }
+
+            $param['field']   = $field;
             $param['keyword'] = $keyword;
         }
 
-        $list = table('Category')->where($map)->order('sort asc')->select();
+        $list = table('Category')->where($map)->order('sort asc,id asc')->select();
         $list = array_map(function ($value) {
             $value['is_show_copy'] = $value['is_show'] ? '√' : '×';
             $value['child_count']  = table('Category')->where('parentid', $value['id'])->count();
             return $value;
         }, $list);
 
+        // 面包屑导航
         $navs = $this->topNavs($parentid);
 
         $this->show('', [
@@ -124,10 +132,10 @@ class Category extends Init
         $map['id'] = array('in', $idArray);
         $result    = table('Category')->where($map)->delete();
         if (!$result) {
-            $this->appReturn(array('status' => false, 'msg' => '删除失败'));
+            $this->ajaxReturn(array('status' => false, 'msg' => '删除失败'));
         }
 
-        $this->appReturn(array('status' => true, 'msg' => '删除成功'));
+        $this->ajaxReturn(array('status' => true, 'msg' => '删除成功'));
     }
 
     /** 快速修改参数 */
@@ -135,18 +143,18 @@ class Category extends Init
     {
         $id    = post('id', 'intval', 0);
         $field = post('field', 'text', '');
-        $value = post('name', 'text', '');
+        $value = post($field, 'text', '');
 
         if (!$id || !in_array($field, array('name', 'name_en', 'name_jp', 'bname'))) {
-            $this->appReturn(array('status' => false, 'msg' => '参数错误'));
+            $this->ajaxReturn(['status' => false, 'msg' => '参数错误']);
         }
 
         $result = table('Category')->where('id', $id)->save($field, $value);
-        if (!$result) {
-            $this->appReturn(array('status' => false, 'msg' => '修改失败'));
+        if ($result === false) {
+            $this->ajaxReturn(['status' => false, 'msg' => '修改失败', 'sql' => table('Category')->getLastSql()]);
         }
 
-        $this->appReturn(array('status' => true, 'msg' => '修改成功'));
+        $this->ajaxReturn(['status' => true, 'msg' => '修改成功']);
     }
 
     /** 修改分类显示状态 */
@@ -165,22 +173,29 @@ class Category extends Init
 
         $result = table('Category')->where($map)->save($data);
         if (!$result) {
-            $this->appReturn(array('status' => false, 'msg' => '修改失败'));
+            $this->ajaxReturn(array('status' => false, 'msg' => '修改失败'));
         }
 
-        $this->appReturn(array('status' => true, 'msg' => '修改成功'));
+        $this->ajaxReturn(array('status' => true, 'msg' => '修改成功'));
 
     }
 
     /** 分类标签选择 */
     public function choose()
     {
-        $valueName  = get('value_name', 'text', '');
-        $idName     = get('id_name', 'text', '');
-        $data       = get('data', 'text');
-        $checkValue = get('check_value', 'text', '');
+        $valueName  = get('value_name', 'text', ''); // 文案渲染值
+        $idName     = get('id_name', 'text', ''); // id渲染值
+        $data       = get('data', 'text'); // 渲染数据
+        $checkValue = get('check_value', 'text', ''); // 选中值
+        $tpl        = get('tpl', 'intval', 0);
 
-        $this->show('', [
+        if ($tpl == 1) {
+            $tpl = 'category/choose_tree';
+        } else {
+            $tpl = 'category/choose';
+        }
+
+        $this->show($tpl, [
             'list'       => json_decode(zipStr($data, 'DECODE'), true),
             'valueName'  => $valueName,
             'idName'     => $idName,

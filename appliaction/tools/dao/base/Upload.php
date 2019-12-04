@@ -91,32 +91,60 @@ class Upload
         return ['status' => true, 'msg' => '上传成功', 'data' => $data];
     }
 
-    /** 远程文件保存本地 */
-    public function copy($file, $path, $ext = 'jpg')
+    /**
+     * 远程文件保存
+     * @date   2019-06-26T14:49:27+0800
+     * @author ChenMingjiang
+     * @param  [type]                   $file    [远程地址]
+     * @param  [type]                   $path    [保存路径]
+     * @param  array                    $options [description]
+     *                                           ext:默认后缀名
+     *                                           type:保存类型
+     * @return [type]                   [description]
+     */
+    public function copy($file, $path, $options = [])
     {
+
+        $ext  = isset($options['ext']) ? $options['ext'] : 'jpg';
+        $type = isset($options['type']) ? $options['type'] : 'local'; // local:本地 oss:阿里云oss存储
 
         $filePath = PUBLIC_PATH . 'uploadfile' . DS . $path . DS;
 
         $fileData = file_get_contents($file);
         $ext      = strtolower(pathinfo($file, PATHINFO_EXTENSION)) ? strtolower(pathinfo($file, PATHINFO_EXTENSION)) : $ext;
 
+        $param['tmp_name'] = $file;
         $param['old_name'] = $file;
         $param['size']     = 0;
-        $param['ext']      = $ext;
+        $param['ext']      = $param['type']      = $ext;
         $param['name']     = TIME . rand(100, 999) . '.' . $param['ext'];
 
-        if (file_put_contents($filePath . $param['name'], $fileData)) {
+        // 保存本地
+        if ($type == 'local') {
+            $param['size'] = $result = file_put_contents($filePath . $param['name'], $fileData);
 
-            // 保存日志记录
-            $fileData = dao('UploadBase')->saveLog($param, $path);
+            if ($result) {
+                // 保存日志记录
+                $resData = dao('UploadBase')->saveLog($param, $path);
+                $name    = $resData['url'];
+            }
 
-            $data['name']     = $fileData['url'];
-            $data['fullName'] = imgUrl($fileData['url'], $path);
-
-            return ['status' => true, 'msg' => '上传成功', 'data' => $data];
+        } elseif ($type == 'oss') {
+            $result = dao('UploadOSS')->uploadfile($param, 'avatar');
+            if ($result['status']) {
+                $name = $result['data']['name'][0];
+            }
         }
 
-        return ['status' => false, 'msg' => '复制失败'];
+        if ($result === false || (isset($result['status']) && !$result['status'])) {
+            return ['status' => false, 'msg' => '复制失败'];
+        }
+
+        $data['name']     = $name;
+        $data['fullName'] = imgUrl($name, $path);
+
+        return ['status' => true, 'msg' => '上传成功', 'data' => $data];
+
     }
 
 }

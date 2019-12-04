@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fd84e0057c8a60d5e7ec3c1572d39375",
+    "content-hash": "812461989c46f8e3266464c7d3ab1533",
     "packages": [
         {
             "name": "denha/framework",
-            "version": "1.0.2",
+            "version": "v1.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/denhaphp/framework.git",
-                "reference": "e44b255efdb6a35acb0c49094a07eeee23855cd9"
+                "reference": "db5e23a2e11ac14708ba7f5aed7536f73a62836f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/denhaphp/framework/e44b255efdb6a35acb0c49094a07eeee23855cd9.zip",
-                "reference": "e44b255efdb6a35acb0c49094a07eeee23855cd9",
+                "url": "https://api.github.com/repos/denhaphp/framework/zipball/db5e23a2e11ac14708ba7f5aed7536f73a62836f",
+                "reference": "db5e23a2e11ac14708ba7f5aed7536f73a62836f",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,7 @@
             "type": "library",
             "autoload": {
                 "files": [
-                    "src/Function.php"
+                    "helper.php"
                 ],
                 "psr-4": {
                     "denha\\": "src"
@@ -48,7 +48,7 @@
                 "denha",
                 "framework"
             ],
-            "time": "2018-05-21T03:37:22+00:00"
+            "time": "2019-01-11T06:29:03+00:00"
         }
     ],
     "packages-dev": [],

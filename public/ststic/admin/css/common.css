@@ -11,6 +11,7 @@ body{font-family: "Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sa
 a{ cursor: pointer; }
 a:hover{ text-decoration: none; }
 a:link{ text-decoration: none; }
+p{display: inline;}
 
 .center95{width: 95%;margin: 0 auto;}
 
@@ -19,6 +20,8 @@ a:link{ text-decoration: none; }
 
 ul{ margin: 0px; padding: 0px; }
 li{ list-style: none; }
+
+.dh-link-inline{ width: 160px; display: inline-block; margin-right:5px;}
 
 .bg-info{ line-height: 3rem; padding-left: 2rem; color: #333; }
 .form-horizontal .checkbox, .form-horizontal .radio{ min-height: 20px; }
@@ -194,7 +197,7 @@ input[type="radio"], input[type="checkbox"] { margin-top: 2px;}
 .view-content-container .console-title-border{border-bottom: 1px solid #ddd;}
 .console-title h1, .console-title h2, .console-title h3, .console-title h4, .console-title h5, .console-title h6 {border-left: 2px solid #88b7e0; display: inline-block; margin:8px 8px 8px 0; text-indent: 8px; font-size: 14px; line-height: 1.1; font-weight: 500;}
 
-.view-content-container .mt8{margin-top: 8px;}
+.view-content-container .mt8{margin-top: 8px; border: none!important;}
 .view-content-container .ml5{margin-left: 5px;}
 .view-content-container .mt16{margin-top: 16px;}
 .view-content-container .date-step-span {display: inline-block; line-height: 32px; text-align: center; width: 32px;}
@@ -752,3 +755,8 @@ button.aui_state_highlight:active { border-color:#1c6a9e; filter: progid:DXImage
 .aliyun-video .progress{height: 12px;border-radius: 6px;margin-top: 10px;position: relative;}
 .aliyun-video .progress-bar{border-radius: 6px;color: #fff;line-height: 12px}
 .aliyun-video .files-name{margin-right: 20px}
+
+.list-item{ margin-top:1.3rem;border-left:2px solid #00998b; border-radius: 0.3rem; box-shadow: 4px 4px 10px #e7e7e7;padding:0.3rem 0 !important; background: #fff; font-size: 1.2rem; }
+.item-content{ padding-top: 0.3rem; padding-bottom: 0.3rem; }
+.list-item .title{ padding-left: 1rem; width: 30%; display: inline-block; }
+.tfoot-pages{ margin-top: 1.2rem; margin-bottom: 1rem; }

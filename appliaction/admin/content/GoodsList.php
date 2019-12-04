@@ -11,14 +11,16 @@ class GoodsList extends Init
 {
     public function lists()
     {
-        $param = get('param', 'text');
+
+        $isComment = true; // 显示评论按钮
+
+        $param = (array) get('param', 'text', '');
 
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 25);
 
-        !empty($param['field']) ?: $param['field'] = 'title';
-
-        !empty($param['column_id']) ?: $param['column_id'] = 0;
+        $param['field']     = $param['field'] ?? 'title';
+        $param['column_id'] = $param['column_id'] ?? 0;
 
         $offer = max(($pageNo - 1), 0) * $pageSize;
 
@@ -29,7 +31,7 @@ class GoodsList extends Init
         }
 
         if (!empty($param['category_id'])) {
-            $map['category_id'] = $param['category_id'];
+            $map['category_id'] = ['find_in_set', $param['category_id']];
         }
 
         if (!empty($param['is_recommend'])) {
@@ -51,13 +53,16 @@ class GoodsList extends Init
         $page  = new Pages($total, $pageNo, $pageSize, url('', $param));
 
         $list = array_map(function ($value) {
-            $value['seller_nickname'] = $value['seller_uid'] ? dao('User')->shopName($value['seller_uid']) : '自营商品';
+            $value['category_id']     = explode(',', $value['category_id']);
+            $value['seller_nickname'] = dao('UserShop')->getName($value['seller_uid']);
+            $value['comment_nums']    = (int) table('Comment')->where('type', 1)->where('coding', $value['id'])->where('parent_id', 0)->count();
             return $value;
         }, $list);
 
         $other = [
             'categoryCopy'   => dao('Category')->getList('1089'),
-            'columnListCopy' => dao('Column', 'admin')->columnList($param['column_id'], $this->webType),
+            'columnListCopy' => dao('Admin.Column')->columnList($param['column_id'], $this->webType),
+            'isComment'      => $isComment,
         ];
 
         $this->show('', [
@@ -66,7 +71,7 @@ class GoodsList extends Init
             'other'        => $other,
             'addUrlParams' => ['model_id' => 1, 'column_id' => $param['column_id']],
             'pages'        => $page->loadConsole(),
-            'navs'         => dao('Column', 'admin')->navs($param['column_id']),
+            'navs'         => dao('Admin.Column')->navs($param['column_id']),
         ]);
     }
 

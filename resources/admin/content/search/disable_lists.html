@@ -51,20 +51,20 @@
 											<td>{$value['value']}</td>
 											<td align='center'>
 												{if $value['status']}
-													<a dh-url="{:url('change_status')}" data-type="SearchRemmond" data-id="{$value['id']}" data-status="0" style="color: green" class="btn-ajax-post">启用</a>
+													<a dh-url="{:url('change_status')}" data-type="SearchRemmond" data-id="{$value['id']}" data-status="0" style="color: green" dh-method="post" class="btn-ajax">启用</a>
 												{else}
-													<a dh-url="{:url('change_status')}" data-type="SearchRemmond" data-id="{$value['id']}" data-status="1" style="color: red" class="btn-ajax-post">禁用</a>
+													<a dh-url="{:url('change_status')}" data-type="SearchRemmond" data-id="{$value['id']}" data-status="1" style="color: red" dh-method="post" class="btn-ajax">禁用</a>
 												{/if}
 											</td>
 											<td align='center'>
-												<a dh-url="{:url('del')}" data-table="SearchDisable" data-type="{$value['type']}" dh-value="{$value['value']}"  class="btn-ajax-post">删除</a>
+												<a dh-url="{:url('del')}" data-table="SearchDisable" data-type="{$value['type']}" data-value="{$value['value']}"  dh-method="post" class="btn-ajax">删除</a>
 											</td>
 										</tr>
 										{/loop}
 									</tbody>
 								    <tfoot>
 							          	<tr>
-          									<td colspan="15">{??$pages}</td>
+          									<td colspan="5">{??$pages}</td>
           								</tr>
 									</tfoot>
 								</table>

@@ -8,12 +8,12 @@ class PayDealWeixinsmall
 {
     private static $config;
     private $baseUrl = 'https://api.mch.weixin.qq.com/pay/';
-    private $headers = array();
+    private $headers = [];
 
     public function __construct()
     {
         if (is_null(self::$config)) {
-            self::$config = getConfig('pay');
+            self::$config = getConfig('pay.php');
         }
     }
 
@@ -43,11 +43,11 @@ class PayDealWeixinsmall
 
         $xml = $this->arrayToXml($data);
 
-        $result = response($this->baseUrl, 'POST', $xml, $this->headers, array('is_json' => false, 'debug' => $debug));
+        $result = response($this->baseUrl, 'POST', $xml, $this->headers, ['is_json' => false, 'debug' => $debug]);
         $result = $this->xmlToArray($result);
 
-        //debug
-        if ($debug == 1 || $result['return_code'] == 'FAIL') {
+        // debug
+        if ($debug == 1 || !isset($result['result_code']) || $result['result_code'] == 'FAIL') {
             print_r('-------ACTION-----' . PHP_EOL);
             print_r('PayDealWeixinsmall:Pay' . PHP_EOL);
             print_r('-------END-----' . PHP_EOL);
@@ -73,7 +73,7 @@ class PayDealWeixinsmall
             print_r($xml) . PHP_EOL;
             print_r('-------END-----' . PHP_EOL);
             print_r('-------请求Url-----' . PHP_EOL);
-            print_r($baseUrl . PHP_EOL);
+            print_r($this->baseUrl . PHP_EOL);
             print_r('-------END-----' . PHP_EOL);
             print_r('-------返回结果-----' . PHP_EOL);
             print_r($result);
@@ -81,24 +81,22 @@ class PayDealWeixinsmall
             print_r('-------签名验证网址-----' . PHP_EOL);
             print_r($result);
             print_r('-------END-----' . PHP_EOL);
-
             die;
         }
 
         if ($result['return_code'] != 'FAIL') {
-
-            //返回API所需参数
-            $resPaySign['appId']     = $result['appid']; //小程序ID
-            $resPaySign['timeStamp'] = (string) TIME; //小程序ID
-            $resPaySign['nonceStr']  = $result['nonce_str']; //小程序ID
-            $resPaySign['package']   = 'prepay_id=' . $result['prepay_id']; //小程序ID
+            // 返回API所需参数
+            $resPaySign['appId']     = $result['appid']; // 小程序ID
+            $resPaySign['timeStamp'] = (string) TIME; // 小程序ID
+            $resPaySign['nonceStr']  = $result['nonce_str']; // 小程序ID
+            $resPaySign['package']   = 'prepay_id=' . $result['prepay_id']; // 小程序ID
             $resPaySign['signType']  = 'MD5';
-            $resPaySign['paySign']   = $this->createSign($resPaySign, $type, $options); //签名
+            $resPaySign['paySign']   = $this->createSign($resPaySign, $type, $options); // 签名
 
-            return array('status' => true, 'data' => $resPaySign, 'payDebug' => $data);
+            return ['status' => true, 'data' => $resPaySign, 'payDebug' => $data];
         } else {
 
-            return array('status' => false, 'data' => $result);
+            return ['status' => false, 'data' => $result];
         }
     }
 
@@ -111,28 +109,28 @@ class PayDealWeixinsmall
 
         $nonceStr = rand(100000, 999999);
 
-        $data['appid']           = self::$config[$type]['appid']; //小程序ID
-        $data['refund_desc']     = $param['title']; //支付标题
-        $data['refund_fee_type'] = $param['unit']; //货币类型
-        $data['mch_id']          = self::$config[$type]['mch_id']; //商户ID
-        $data['nonce_str']       = $nonceStr; //随机码
-        $data['notify_url']      = self::$config[$type]['refund_notify_url']; //异步通知地址
+        $data['appid']           = self::$config[$type]['appid']; // 小程序ID
+        $data['refund_desc']     = $param['title']; // 支付标题
+        $data['refund_fee_type'] = $param['unit']; // 货币类型
+        $data['mch_id']          = self::$config[$type]['mch_id']; // 商户ID
+        $data['nonce_str']       = $nonceStr; // 随机码
+        $data['notify_url']      = self::$config[$type]['refund_notify_url']; // 异步通知地址
         $data['openid']          = $param['openid'];
-        $data['out_trade_no']    = $param['pay_sn']; //商户退款财务订单号
-        $data['out_refund_no']   = $param['order_sn']; //商户收款财务订单号
+        $data['out_trade_no']    = $param['pay_sn']; // 商户退款财务订单号
+        $data['out_refund_no']   = $param['refund_sn']; // 商户收款[原支付]财务订单号
         $data['sign_type']       = 'MD5'; //签名加密方式
-        $data['total_fee']       = $param['money'] * 100; //支付金额
-        $data['refund_fee']      = $param['pay_moeny'] * 100; //申请退款金额
+        $data['total_fee']       = $param['money'] * 100; // 支付金额
+        $data['refund_fee']      = $param['pay_moeny'] * 100; // 申请退款金额
         $data['trade_type']      = 'JSAPI'; //交易类型
         $data['sign']            = $this->createSign($data, $type, $options); //签名
 
         $xml = $this->arrayToXml($data);
 
-        $result = response($this->baseUrl, 'POST', $xml, $this->headers, array('is_json' => false, 'debug' => $debug));
+        $result = response($this->baseUrl, 'POST', $xml, $this->headers, ['is_json' => false, 'debug' => $debug]);
         $result = $this->xmlToArray($result);
 
         //debug
-        if ($debug == 1 || $result['return_code'] == 'FAIL') {
+        if ($debug == 1) {
             print_r('-------ACTION-----' . PHP_EOL);
             print_r('PayDealWeixinsmall:Pay' . PHP_EOL);
             print_r('-------END-----' . PHP_EOL);
@@ -171,14 +169,14 @@ class PayDealWeixinsmall
         }
 
         if ($result['return_code'] != 'FAIL') {
-            return array('status' => true, 'data' => $result);
+            return ['status' => true, 'data' => $result];
         } else {
-            return array('status' => false, 'data' => $result, 'payDebug' => $data);
+            return ['status' => false, 'data' => $result, 'payDebug' => $data];
         }
     }
 
     // 创建签名
-    public function createSign($param = array(), $type = 0, $options = array())
+    public function createSign($param = [], $type = 0, $options = [])
     {
         $debug = isset($options['debug']) ? $options['debug'] : false;
 

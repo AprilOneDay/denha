@@ -11,29 +11,29 @@ class Finance
     public function addPay($param = [], $isPay = 0)
     {
 
-        if (!$param['money'] || !$param['order_sn']) {
+        if (empty($param['money']) || empty($param['type']) || empty($param['order_sn'])) {
             return ['status' => false, 'msg' => '财务参数错误'];
         }
 
-        $data['title']     = isset($param['title']) ? $param['title'] : '订单编号:' . $param['order_sn'] . ' 在线支付';
-        $data['pay_type']  = isset($param['pay_type']) ? $param['pay_type'] : 0; // 付款方式
-        $data['unit']      = isset($param['unit']) ? $param['unit'] : 'CNY'; // 支付货币类型
-        $data['type']      = !empty($param['type']) ? $param['type'] : 1; // 交易类型
-        $data['pay_money'] = isset($param['pay_money']) ? $param['pay_money'] : 0; // 交易金额
-        $data['pay_sn']    = dao('Orders')->createOrderSn(); // 财务订单号
+        $data['type']      = $param['type'];
         $data['money']     = $param['money'];
         $data['order_sn']  = $param['order_sn'];
         $data['uid']       = $param['uid'];
         $data['is_pay']    = $isPay;
+        $data['refund_sn'] = isset($param['refund_sn']) ? $param['refund_sn'] : '';
+        $data['pay_money'] = isset($param['pay_money']) ? $param['pay_money'] : 0;
+        $data['unit']      = isset($param['unit']) ? $param['unit'] : 'CNY';
+        $data['title']     = isset($param['title']) ? $param['title'] : '订单编号:' . $param['order_sn'] . ' 在线支付';
+        $data['pay_type']  = isset($param['pay_type']) ? $param['pay_type'] : 0;
+        $data['pay_sn']    = dao('Orders')->createOrderSn();
         $data['created']   = TIME;
 
         $result = table('FinanceLog')->add($data);
         if ($result === false) {
-            dao('Log')->error(1, '财务记录插入异常,请立即查明原因');
             return ['status' => false, 'msg' => '财务记录,执行失败'];
         }
 
-        return ['status' => true, 'msg' => '操作成功'];
+        return ['status' => true, 'msg' => '财务记录添加成功'];
     }
 
     /**
@@ -96,7 +96,7 @@ class Finance
         }
 
         // 如果存在优惠金额
-        if ($params['coupon_fee'] > 0) {
+        if (!empty($param['coupon_fee']) && $params['coupon_fee'] > 0) {
             if ($finance['money'] - $params['pay_money'] - $params['coupon_fee'] > 0.1) {
                 return ['status' => false, 'msg' => '[支付金额+优惠金额]不一致'];
             }
@@ -116,7 +116,7 @@ class Finance
         $data['is_pay']     = 1;
 
         $result = table('FinanceLog')->where('id', $finance['id'])->save($data);
-        if (!$result) {
+        if ($result === false) {
             return ['status' => false, 'msg' => '支付状态异常,请通知管理员'];
         }
 

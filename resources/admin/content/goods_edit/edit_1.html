@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <!-- 普通商品 -->
     <div id="console-content-edit">
         <div class="modal-content">
             <form class="form-horizontal" role="form" action="">
@@ -36,9 +37,24 @@
                                         <span>分类</span>
                                     </label>
                                     <div class="col-sm-8">
-                                        <select dh-selected="{??$data['category_id']}" name="category_id" class="form-control w160">
+                                        <select dh-selected="{:isset($data['category_id']) ? implode(',',$data['category_id']) : ''}" name="category_id[]" dh-url="{:url('/admin/common/category/lists')}" dh-init-name="请选择" class="form-control dh-link-inline">
+                                            <option value="">请选择</option>
                                             {loop $other['categoryCopy'] $key $value}
                                             <option value="{$key}">{$value}</option>
+                                            {/loop}
+                                        </select>
+                                    </div>
+                                </div>
+    
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">
+                                        <span class="text-danger">*</span>
+                                        <span>所属店铺</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select dh-selected="{??$data['seller_uid']}" name="seller_uid" class="form-control w160 selectpicker" data-live-search="true">
+                                            {loop $other['shops'] $item}
+                                            <option value="{$item['uid']}">{$item['name']}</option>
                                             {/loop}
                                         </select>
                                     </div>
@@ -73,10 +89,57 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-3">
                                         <span class="text-danger"></span>
+                                        <span>视频上传</span>
+                                    </label>
+                                    <div class="col-sm-1">
+                                        <a class="btn btn-primary pull-left btn-files" dh-name="video" dh-value="{??$data['video']}" dh-path="goods" data-max="1" dh-type="mp4,flv">添加文件</a>
+                                    </div>
+                                    <div class="col-sm-8">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">
+                                        <span class="text-danger"></span>
                                         <span>售卖基数</span>
                                     </label>
                                     <div class="col-sm-8">
                                         <input type="text" value="{??$data['sell_base']}" name="sell_base" placeholder="售卖基数" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">
+                                        <span class="text-danger"></span>
+                                        <span>团建币</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" value="{default:$data['reward_amount']|0}" name="info[reward_amount]" placeholder="团建币" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">
+                                        <span class="text-danger"></span>
+                                        <span>团建币达成金额</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" value="{default:$data['target_amount']|0}" name="info[target_amount]" placeholder="团建币达成金额" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">
+                                        <span class="text-danger"></span>
+                                        <span>团长返利百分比</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" value="{default:$data['profit']|''}" name="info[profit]" placeholder="团长返利百分比1-100 请谨慎填写" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">
+                                        <span class="text-danger">*</span>
+                                        <span for="myDate">发布时间</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" value="{??$data['publish_time']}" name="publish_time" class="form-control data-time">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -112,6 +175,19 @@
                                         {/loop}
                                     </div>
                                 </div>
+                                <div class="form-group radio" dh-radio="{default:$data['is_virtual']|'0'}">
+                                    <label class="control-label col-sm-3">是否为虚拟商品</label>
+                                    <div class="radio-inline">
+                                        <label>
+                                            <input type="radio" name="is_virtual" value="1"> 是
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label>
+                                            <input type="radio" name="is_virtual" value="0"> 否
+                                        </label>
+                                    </div>
+                                </div>
                                 <div class="form-group radio" dh-radio="{??$data['is_show']}">
                                     <label class="control-label col-sm-3">商品状态</label>
                                     <div class="radio-inline">
@@ -133,6 +209,46 @@
                     <div role="tabpanel" class="tab-pane " id="spec">
                         <div class="panel-body">
                             <div class="console-form center95">
+
+                                <div class="panel-body">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <!-- <label class="control-label col-sm-3">
+                                                <span class="text-danger">*</span>
+                                                <span>规格组</span>
+                                            </label> -->
+                                            <div class="col-sm-8">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">规格组</div>
+                                                    <input type="text" value="" placeholder="如 颜色/重量/型号等" class="form-control">
+                                                    <div class="input-group-addon">添加</div>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="col-sm-1">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">删除</div>
+                                                    <input type="text" value="" value="重量" class="form-control">
+                                                </div>
+                                            </label>
+                                            <div class="col-sm-2">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">规格值</div>
+                                                    <input type="text" value="" placeholder="填写规格值" class="form-control">
+                                                    <div class="input-group-addon">添加</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">删除</div>
+                                                    <input type="text" value="100G" class="form-control">
+                                                </div>
+                                            </div>  
+                                        </div> 
+                                    </fieldset>
+                                </div>
+
                                 <div class="console-sub-title clearfix">
                                     <div class="pull-left">
                                         <h5>
@@ -148,28 +264,40 @@
                                         <thead>
                                             <tr>
                                                 <th style="text-align: center;">规格名称</th>
+                                                <th style="width: 135px; text-align: center;">库存状态</th>
                                                 <th style="width: 80px; text-align: center;">库存</th>
                                                 <th style="width: 150px; text-align: center;">价格</th>
                                                 <th style="width: 150px; text-align: center;">促销价格</th>
+                                                <th style="width: 150px; text-align: center;">采购价格</th>
                                                 <th style="width: 150px; text-align: center;">状态</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <input type="hidden" value="{default:$data['spec_parentid']|0}" name="spec_parentid">
-                                            {loop $data['specList'] $value}
+                                            {loop $data['specList'] $item}
                                             <tr>
+                                                <input type="hidden" value="{??$item['category']}" name="spec[category][]">
+                                                <input type="hidden" value="{??$item['id']}" name="spec[id][]">
                                                 <td style="text-align: center;">
-                                                    <input type="hidden" value="{??$value['category']}" name="spec[category][]">
-                                                    {if empty($value['spec_name'])}默认规格{else}{$value['spec_name']}{/if}
+                                                    {if empty($item['spec_name'])}默认规格{else}{$item['spec_name']}{/if}
                                                 </td>
                                                 <td>
-                                                    <input type="text" value="{$value['stock']}" name="spec[stock][]" class="form-control" placeholder="库存">
+                                                     <select dh-selected="{??$item['is_stock']}" name="spec[is_stock][]" class="form-control w160">
+                                                        <option value="1">开启库存限制</option>
+                                                        <option value="0">关闭库存限制</option>
+                                                    </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" value="{$value['price']}" name="spec[price][]" class="form-control" placeholder="价格">
+                                                    <input type="text" value="{$item['stock']}" name="spec[stock][]" class="form-control" placeholder="库存">
                                                 </td>
                                                 <td>
-                                                    <input type="text" value="{$value['sell_price']}" name="spec[sell_price][]" class="form-control" placeholder="活动价格">
+                                                    <input type="text" value="{$item['price']}" name="spec[price][]" class="form-control" placeholder="价格">
+                                                </td>
+                                                <td>
+                                                    <input type="text" value="{$item['sell_price']}" name="spec[sell_price][]" class="form-control" placeholder="活动价格">
+                                                </td>
+                                                <td>
+                                                    <input type="text" value="{??$item['exw_price']}" name="spec[exw_price][]" class="form-control" placeholder="采购价">
                                                 </td>
                                                 <td style="text-align: center;"><a class="btn btn-primary del-syllabus">删除</a></td>
                                             </tr>

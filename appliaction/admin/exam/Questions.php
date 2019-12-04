@@ -19,29 +19,35 @@ class Questions extends Init
 
         $offer = max(($pageNo - 1), 0) * $pageSize;
 
-        $map = array();
+        $search            = [];
+        $map               = [];
+        $map['del_status'] = 0;
 
         if (!empty($param['type'])) {
-            $map['type'] = $param['type'];
+            $map['type']           = $param['type'];
+            $search['param[type]'] = $param['type'];
         }
 
         if (!empty($param['category'])) {
-            $map['category'] = $param['category'];
+            $map['category']           = $param['category'];
+            $search['param[category]'] = $param['category'];
         }
 
         if (!empty($param['field']) && !empty($param['keyword'])) {
             if ($param['field'] == 'title') {
-                $map['title'] = ['instr', $param['keyword']];
+                $map['title']           = ['instr', $param['keyword']];
+                $search['param[field]'] = $param['field'];
+                $search['param[title]'] = $param['title'];
             }
 
         }
 
         $list  = table('ExamData')->where($map)->limit($offer, $pageSize)->order('id desc')->select();
         $total = table('ExamData')->where($map)->count();
-        $page  = new Pages($total, $pageNo, $pageSize, url('', $param));
+        $page  = new Pages($total, $pageNo, $pageSize, url('', $search));
 
         $other = [
-            'typeCopy'     => getVar('question_type', 'admin.exam'),
+            'typeCopy'     => getVar('admin.exam.question_type'),
             'statusCopy'   => [0 => '关闭', 1 => '开启'],
             'categoryCopy' => dao('Category')->getList(1089),
         ];
@@ -65,11 +71,11 @@ class Questions extends Init
             $data = ['sort' => 0, 'status' => 1, 'score' => 0];
         }
 
-        $other = array(
-            'typeCopy'     => getVar('question_type', 'admin.exam'),
+        $other = [
+            'typeCopy'     => getVar('admin.exam.question_type'),
             'statusCopy'   => [0 => '关闭', 1 => '开启'],
             'categoryCopy' => dao('Category')->getList(1089),
-        );
+        ];
 
         $this->assign('other', $other);
         $this->assign('data', $data);
@@ -92,11 +98,11 @@ class Questions extends Init
         $other = post('other');
 
         if (!$data['title']) {
-            $this->appReturn(['status' => false, 'msg' => '请输入考题']);
+            $this->ajaxReturn(['status' => false, 'msg' => '请输入考题']);
         }
 
         if (!$data['type']) {
-            $this->appReturn(['status' => false, 'msg' => '请选择答案类型']);
+            $this->ajaxReturn(['status' => false, 'msg' => '请选择答案类型']);
         }
 
         $tmpContent  = null;
@@ -123,36 +129,49 @@ class Questions extends Init
         }
 
         if (!$data['content']) {
-            $this->appReturn(['status' => false, 'msg' => '请填写答案']);
+            $this->ajaxReturn(['status' => false, 'msg' => '请填写答案']);
         }
 
         if (($data['type'] == 1 || $data['type'] == 2)) {
             if (!$tmpContent) {
-                $this->appReturn(['status' => false, 'msg' => '请输入答案']);
+                $this->ajaxReturn(['status' => false, 'msg' => '请输入答案']);
             }
 
             if (!$isAnswerNum) {
-                $this->appReturn(['status' => false, 'msg' => '请勾选题目的正确答案']);
+                $this->ajaxReturn(['status' => false, 'msg' => '请勾选题目的正确答案']);
             }
 
             if ($data['type'] == 1 && $isAnswerNum > 1) {
-                $this->appReturn(['status' => false, 'msg' => '【单选模式】只能选择一个正确答案']);
+                $this->ajaxReturn(['status' => false, 'msg' => '【单选模式】只能选择一个正确答案']);
             }
         }
 
         if (!$id) {
-            $result = table('ExamData')->add($data);
+            $data['created'] = TIME;
+            $result          = table('ExamData')->add($data);
             if (!$result) {
-                $this->appReturn(['status' => false, 'msg' => '添加失败']);
+                $this->ajaxReturn(['status' => false, 'msg' => '添加失败']);
             }
         } else {
             $result = table('ExamData')->where('id', $id)->save($data);
-            if (!$result) {
-                $this->appReturn(['status' => false, 'msg' => '修改失败']);
+            if ($result === false) {
+                $this->ajaxReturn(['status' => false, 'msg' => '修改失败']);
             }
         }
 
-        $this->appReturn(['status' => true, 'msg' => '操作成功']);
+        $this->ajaxReturn(['status' => true, 'msg' => '操作成功']);
 
+    }
+
+    public function del()
+    {
+        $id = post('id', 'text', 0);
+
+        $result = table('ExamData')->where('id', 'in', $id)->save('del_status', 1);
+        if ($result === false) {
+            $this->ajaxReturn(['status' => false, 'msg' => '删除失败']);
+        }
+
+        $this->ajaxReturn(['status' => true, 'msg' => '删除成功']);
     }
 }

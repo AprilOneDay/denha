@@ -30,7 +30,7 @@ class AppVersion extends Init
         }
 
         $other = array(
-            'tag'             => getVar('tags', 'admin.article'),
+            'tag'             => getVar('admin.article.tags'),
             'isShowCopy'      => array(0 => '隐藏', 1 => '显示'),
             'isRecommendCopy' => array(1 => '推荐', 0 => '不推荐'),
         );

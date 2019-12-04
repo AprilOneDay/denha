@@ -1,0 +1,16 @@
+CREATE TABLE `dh_orders_purchaser` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `order_sn` varchar(20) DEFAULT '' COMMENT '订单编号',
+  `goods_id` int(10) unsigned DEFAULT '0' COMMENT '商品id',
+  `shop_id` int(11) DEFAULT '0' COMMENT '店铺id',
+  `uid` int(10) unsigned DEFAULT '0' COMMENT '采购者uid',
+  `spec_id` int(11) DEFAULT '0' COMMENT '规格id',
+  `num` int(10) unsigned DEFAULT '0' COMMENT '采购数量',
+  `price` decimal(10,2) DEFAULT NULL COMMENT '采购单价',
+  `account` decimal(10,2) unsigned DEFAULT NULL COMMENT '总价',
+  `apply_status` tinyint(4) unsigned DEFAULT '0' COMMENT '支付方式 0待支付 1已支付',
+  `created` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='采购商品信息'
+
+ALTER TABLE `dh_goods` ADD COLUMN `publish_time` INT DEFAULT 0  NULL   COMMENT '发布时间' AFTER `spec_hash`;

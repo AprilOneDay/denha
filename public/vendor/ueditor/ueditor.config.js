@@ -294,7 +294,7 @@
         //,toolbarTopOffset:400
 
         //设置远程图片是否抓取到本地保存
-        //,catchRemoteImageEnable: true //设置是否抓取远程图片
+        ,catchRemoteImageEnable: true //设置是否抓取远程图片
 
         //pageBreakTag
         //分页标识符,默认是_ueditor_page_break_tag_
@@ -364,7 +364,7 @@
 		// xss过滤白名单 名单来源: https://raw.githubusercontent.com/leizongmin/js-xss/master/lib/default.js
 		,whitList: {
             iframe: ['frameborder','border','marginwidth','marginheight','width','height','src','id'], 
-			a:      ['target', 'href', 'title', 'class', 'style'],
+			a:      ['target', 'href', 'title', 'class', 'style','name'],
 			abbr:   ['title', 'class', 'style'],
 			address: ['class', 'style'],
 			area:   ['shape', 'coords', 'href', 'alt'],
@@ -401,7 +401,7 @@
 			header: [],
 			hr:     [],
 			i:      ['class', 'style'],
-			img:    ['src', 'alt', 'title', 'width', 'height', 'id', '_src', 'loadingclass', 'class', 'data-latex'],
+			img:    ['src', 'alt', 'title', 'width', 'height', 'id', '_src', 'loadingclass', 'class', 'data-latex','word_img','style','anchorname'],
 			ins:    ['datetime'],
 			li:     ['class', 'style'],
 			mark:   [],

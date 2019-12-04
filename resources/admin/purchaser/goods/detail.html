@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <meta name="keywords" content="" />
+    <title>后台管理</title>
+    {include /admin/public/global_css}
+
+    <link rel="stylesheet" href="__PUBLIC__/ststic/admin/css/mall.css?version={$version}" />
+</head>
+
+<body>
+    <!-- 普通商品 -->
+    <div id="console-content-edit">
+        <div class="modal-content">
+            <form class="form-horizontal" role="form" action="{:url('/admin/purchaser/orders/add')}">
+                <div class="product_main clearfix">
+                    <div class="slidershow">
+                        <div id="main_thumb" class="product_img">
+                           <!--  <a href="{$data['thumb']}" class="jqzoom" rel="gal1" style="outline-style: none; text-decoration: none;"> -->
+                                <div class="zoomPad">
+                                    <img src="{$data['thumb']}" width="446" height="446" style="opacity: 1;">
+                                    <!-- <div class="zoomPup" style="top: -1px; left: 145px; width: 302px; height: 302px; position: absolute; border-width: 1px; display: none;"></div>
+                                    <div class="zoomWindow" style="position: absolute; z-index: 5001; left: 458px; top: 0px; display: none;">
+                                        <div class="zoomWrapper" style="width: 540px;">
+                                            <div class="zoomWrapperTitle"></div>
+                                            <div class="zoomWrapperImage" style="width: 100%; height: 540px;">
+                                                <img src="{$data['thumb']}" style="position: absolute; border: 0px; display: block; left: -260.714px; top: 0px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="zoomPreload" style="visibility: hidden; top: 224px; left: 224px; position: absolute;"></div> -->
+                                </div>
+                            <!-- </a> -->
+                        </div>
+                        <ul id="thumblist" class="clearfix">
+                            {loop $data['ablum'] $key $item}
+                            <li {if $key == 0}class="active"{/if}>
+                                <a class="zoomThumbActive" href="javascript:void(0);"><img src="{$item}"></a>
+                            </li>
+                            {/loop}
+                        </ul>
+
+                    </div>
+      
+                    <div class="product_intro">
+                        <h2><!-- <strong>大师·监制 | </strong> --> {$data['title']}</h2>
+                        <span>{$data['description']}</span>
+                        <div id="price_wrap" class="price_wrap">
+                            <div class="price_inner">
+                            <!-- 价格不显示区间效果 -->
+                                <span>价格：￥<em id="price" class="color_brown">{$data['sell_price']}</em></span>
+                            <!-- /价格不显示区间效果 -->
+                            </div>
+                        </div>
+
+                        <div class="product_arguments clearfix">
+                            <span>销量：<em class="color_brown">0</em></span>
+                            <span>库存：<em class="color_brown stock">0</em></span>
+                        </div>
+
+                        <div class="product_spec_wrap">
+                            <div id="spec_list" class="product_spec clearfix">
+                                {loop $data['spec'] $key $item}
+                                <dl class="spec-item clearfix">
+                                    <dt>{$item['name']}：</dt>
+                                    <dd>
+                                        <ul class="spec-values spec-item-{$key}">
+                                            {loop $item['child'] $v}
+                                            <li data-id="{$v['id']}" data-key="{$key}" class="spec-id-{$v['id']}{if in_array($v['id'],$data['dsiableSpecCategory'])} dsiable{/if}">
+                                                <span>{$v['name']}</span><i></i>
+                                            </li>
+                                            {/loop}
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                {/loop}
+                            </div>
+                            <div class="product_count clearfix">
+                                <span class="count">数量：</span>
+                                <div class="wrap_input">
+                                    <input type="text" value="1" name="buyNum" class="counter_value">
+                                    <div class="counter_wrap">
+                                        <a class="add"></a>
+                                        <a class="reduce"></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product_count clearfix">
+                                <span class="count">支付方式：</span>
+                                <div class="wrap_input">
+                                    <div class="radio-inline">
+                                        <label>
+                                            <input type="radio" name="payType" value="1" checked> 余额支付
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label>
+                                            <input type="radio" name="payType" value="2"> 线下支付
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product_count clearfix">
+                                <span class="count">支付金额：</span>
+                                <div class="wrap_input">
+                                   ￥ <p id="account">{$data['sell_price']}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="goodsId" value="{$data['id']}">       
+                        <input type="hidden" name="specId" value="{$data['spec'][0]['id']}">          
+                        <div class="account_0_btn add-no-buy" style="display:none;"> 已售罄 </div>
+                        <div  class="account_0_btn add-buy btn-comply" style="display:block;cursor: pointer;"> 立即购买 </div>               
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </form>
+        </div>
+    </div>
+    {include /admin/public/global_js}
+    <script type="text/javascript">
+    var specList = JSON.parse('{:json_encode($data['specList'])}');
+
+    console.log(specList);
+
+    /** 计算价格 */
+    var account = function(){
+        var price = Number($('#price').text());
+        var num   = $('input[name="buyNum"]').val();
+
+        return (price*num).toFixed(2);
+    }
+
+    /** 减少数量 */
+    $('.reduce').click(function(){
+        var stock = Number($('.stock').text());
+        var buyNum = Number($('input[name="buyNum"]').val());
+
+        if(buyNum > 1){
+            $('input[name="buyNum"]').val(buyNum - 1);
+            $('#account').text(account());
+        }
+    })
+
+    /** 增加数量 */
+    $('.add').click(function(){
+        var stock = Number($('.stock').text());
+        var buyNum = Number($('input[name="buyNum"]').val());
+
+        if(buyNum < stock){
+            $('input[name="buyNum"]').val(buyNum + 1);
+            $('#account').text(account());
+        }
+    })
+
+    /** 图片切换 */
+    $('#thumblist li').click(function(){
+        var url = $(this).find('img').attr('src');
+        $('#thumblist li').removeAttr('class');
+        $(this).addClass('active');
+        $('.zoomPad').find('img').attr('src',url);
+    })
+    /** 规格选择 */
+    $('.spec-values li').click(function(){
+        var _this = this;
+
+        var isDsiable  = $(this).hasClass('dsiable');
+
+        if(isDsiable){
+            return false;
+        }
+
+        var goodsId = $('input[name="goodsId"]').val();
+        var specIds = [];
+        $(this).toggleClass('selected').siblings().removeClass('selected');
+        $('.spec-values .selected').each(function(){
+            specIds.push($(this).attr('data-id'));
+        })
+
+        /** 提前显示不可选分类 */
+        // $.post('{:url("/admin/purchaser/Goods/getDsiableOptionalSpecCategory")}',{goodsId:goodsId,specIds:specIds.join()},function(res){
+        //     $(_this).find('dsiable').siblings().removeClass('dsiable');
+        //     for(var i in res.data){
+        //         $('.spec-id-'+res.data[i]).addClass('dsiable');
+        //     }
+        // },"json");
+
+        for(var i in specList){
+            if(specList[i].category == specIds.join()){
+                $('#price').text(specList[i].sell_price);
+                $('.stock').text(specList[i].stock);
+                $('input[name="specId"]').val(specList[i].id);
+                $('#account').text(account());
+                if(specList[i].stock <= 0){
+                    $('.add-no-buy').css('display','block');
+                    $('.add-buy').css('display','none');
+                }else{
+                    $('.add-no-buy').css('display','none');
+                    $('.add-buy').css('display','block');
+                }
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>

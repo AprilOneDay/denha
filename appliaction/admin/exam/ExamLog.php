@@ -13,11 +13,26 @@ class ExamLog extends Init
     {
         $pageNo   = get('pageNo', 'intval', 1);
         $pageSize = get('pageSize', 'intval', 25);
+        $field    = get('field', 'text', '');
+        $keyword  = get('keyword', 'text', '');
 
         $offer = max(($pageNo - 1), 0) * $pageSize;
 
         $map   = [];
         $param = [];
+
+        if ($field && $keyword) {
+
+            if ($field == 'title') {
+                $map['exam_name'] = ['instr', $keyword];
+            } elseif ($field == 'nickname') {
+                $uid        = table('User')->where('nickname', $nickname)->value('uid');
+                $map['uid'] = $uid;
+            }
+
+            $param['field']   = $field;
+            $param['keyword'] = $keyword;
+        }
 
         $list  = table('ExamLog')->where($map)->limit($offer, $pageSize)->order('score desc')->select();
         $total = table('ExamLog')->where($map)->count();
@@ -33,7 +48,7 @@ class ExamLog extends Init
 
         $other = array(
             'statusCopy' => [0 => '关闭', 1 => '开启'],
-            'timeCopy'   => getVar('time', 'admin.sys'),
+            'timeCopy'   => getVar('admin.sys.time'),
         );
 
         $this->assign('list', $list);

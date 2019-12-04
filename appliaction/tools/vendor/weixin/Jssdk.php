@@ -7,7 +7,6 @@
 namespace app\tools\vendor\weixin;
 
 use app\tools\vendor\weixin;
-use denha\Start;
 
 class Jssdk
 {
@@ -21,8 +20,8 @@ class Jssdk
         $this->accessTokenPath = APP_PATH . DS . 'tools' . DS . 'vendor' . DS . 'weixin' . DS . 'access_token' . EXT;
         $this->jsapiTicketPath = APP_PATH . DS . 'tools' . DS . 'vendor' . DS . 'weixin' . DS . 'jsapi_ticket' . EXT;
 
-        $this->appId     = Start::$config['weixin_appid'];
-        $this->appSecret = Start::$config['weixin_secret'];
+        $this->appId     = config('weixin_appid');
+        $this->appSecret = config('weixin_secret');
     }
     /**
      * [获取签名包]
@@ -41,14 +40,14 @@ class Jssdk
         // 这里参数的顺序要按照 key 值 ASCII 码升序排序
         $string      = "jsapi_ticket=$jsapiTicket&noncestr=$nonceStr&timestamp=$timestamp&url=$url";
         $signature   = sha1($string);
-        $signPackage = array(
+        $signPackage = [
             "appId"     => $this->appId,
             "nonceStr"  => $nonceStr,
             "timestamp" => $timestamp,
             "url"       => $url,
             "signature" => $signature,
             "rawString" => $string,
-        );
+        ];
         return $signPackage;
     }
     /**
@@ -68,14 +67,14 @@ class Jssdk
         // 这里参数的顺序要按照 key 值 ASCII 码升序排序
         $string      = "jsapi_ticket=$jsapiTicket&noncestr=$nonceStr&timestamp=$timestamp&url=$url";
         $signature   = sha1($string);
-        $signPackage = array(
+        $signPackage = [
             "appId"     => $this->appId,
             "nonceStr"  => $nonceStr,
             "timestamp" => $timestamp,
             "url"       => $url,
             "signature" => $signature,
             "rawString" => $string,
-        );
+        ];
         return $signPackage;
     }
     /**
@@ -110,8 +109,8 @@ class Jssdk
             // 如果是企业号用以下 URL 获取 ticket
             // $url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=$accessToken";
             $url    = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=$accessToken";
-            $res    = json_decode($this->httpGet($url));
-            $ticket = $res->ticket;
+            $res    = response($url);
+            $ticket = $res['ticket'];
             if ($ticket) {
                 $data->expire_time  = time() + 7000;
                 $data->jsapi_ticket = $ticket;
@@ -133,14 +132,19 @@ class Jssdk
     {
         // access_token 应该全局存储与更新，以下代码以写入到文件中做示例
         $data = json_decode($this->getPhpFile($this->accessTokenPath));
-        if ($data->expire_time < time()) {
+        if ($data->expire_time < TIME) {
             // 如果是企业号用以下URL获取access_token
             // $url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=$this->appId&corpsecret=$this->appSecret";
-            $url          = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$this->appId&secret=$this->appSecret";
-            $res          = json_decode($this->httpGet($url));
-            $access_token = $res->access_token;
+            $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$this->appId&secret=$this->appSecret";
+            $res = response($url);
+
+            if (!empty($res['errcode'])) {
+                exit('Jssdk获取AccessToken 失败' . $res['errmsg']);
+            }
+
+            $access_token = $res['access_token'];
             if ($access_token) {
-                $data->expire_time  = time() + 7000;
+                $data->expire_time  = TIME + 7000;
                 $data->access_token = $access_token;
                 $this->setPhpFile($this->accessTokenPath, json_encode($data));
             }
@@ -176,27 +180,4 @@ class Jssdk
         fclose($fp);
     }
 
-    /**
-     * [获取URL]
-     * @author Chenmingjiang
-     * @datetime 2015-09-29T14:49:27+0800
-     * @param    [type]                   $url [请求URL]
-     * @return   [type]                   [请求返回数据]
-     */
-    private function httpGet($url)
-    {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        $res = curl_exec($curl);
-        // 检查是否有错误发生
-        if (curl_errno($curl)) {
-            echo 'Curl error: ' . curl_error($curl);
-        }
-        curl_close($curl);
-        return $res;
-    }
 }

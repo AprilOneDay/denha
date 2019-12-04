@@ -64,8 +64,8 @@
 											</td>
 											<td align='center'>
 												{if !$value['is_disable'] && !$value['is_recommend']}
-												<a dh-url="{:url('add_recommend')}"  data-type="{$value['type']}" dh-value="{$value['value']}"  class="btn-ajax-post">设为推荐</a>
-												<a dh-url="{:url('add_disable')}"  data-type="{$value['type']}" dh-value="{$value['value']}"  class="btn-ajax-post">设为禁用</a>
+												<a dh-url="{:url('add_recommend')}" dh-method="POST"  data-type="{$value['type']}" data-value="{$value['value']}"  class="btn-ajax">设为推荐</a>
+												<a dh-url="{:url('add_disable')}" dh-method="POST"  data-type="{$value['type']}" data-value="{$value['value']}"  class="btn-ajax">设为禁用</a>
 												{/if}
 											</td>
 										</tr>
@@ -73,7 +73,7 @@
 									</tbody>
 								    <tfoot>
 							          	<tr>
-          									<td colspan="15">{??$pages}</td>
+          									<td colspan="7">{??$pages}</td>
           								</tr>
 									</tfoot>
 								</table>

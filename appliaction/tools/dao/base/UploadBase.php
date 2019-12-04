@@ -28,7 +28,7 @@ class UploadBase
         $data['name']    = $param['old_name'];
         $data['size']    = $param['size'];
         $data['path']    = $path;
-        $data['ext']     = !empty($param['ext']) ? $param['ext'] : pathinfo($param['old_name'], PATHINFO_EXTENSION);
+        $data['ext']     = !empty($param['ext']) ? $param['ext'] : strtolower(pathinfo($param['old_name'], PATHINFO_EXTENSION));
         $data['url']     = $param['name'];
         $data['hash']    = $hash;
         $data['ip']      = getIp();
@@ -62,12 +62,14 @@ class UploadBase
 
     /**
      * 检测files
-     * @date   2018-03-22T11:48:10+0800
+     * @date   2019-06-26T14:54:03+0800
      * @author ChenMingjiang
-     * @param  [type]                   $files   [file数组]
-     * @param  integer                  $maxSize [最大上传]
-     * @param  string                   $type    [上传类型]
-     * @return [type]                            [array 处理fiels数组]
+     * @param  [type]                   $files   [资源]
+     * @param  array                    $options [description]
+     *                                           max_size：最大上次M
+     *                                           type：限制上传类型
+     *                                           zipImg：压缩图片数组 height->高度 width->宽度
+     * @return [type]                   [description]
      */
     public function checkFiles($files, $options = [])
     {
@@ -93,7 +95,7 @@ class UploadBase
                 return ['status' => false, 'msg' => '请上传小于' . $maxSize . 'M的文件'];
             }
 
-            if ($value['error']) {
+            if (!empty($value['error'])) {
                 return ['status' => false, 'msg' => $this->error($value['error']), 'error' => $value['error']];
             }
 
@@ -110,7 +112,7 @@ class UploadBase
             if (!empty($zipImg['height']) || !empty($zipImg['width'])) {
                 $name = time() . rand(100, 999) . '_' . $id++ . '.' . $ext;
 
-                $result = dao('File')->zipImg($value['tmp_name'], $zipImg['height'], $zipImg['width'], $value['type'], $name);
+                $result = dao('File')->zipImg($value['tmp_name'], $zipImg['height'], $zipImg['width'], $name);
                 if (!$result['status']) {
                     return $result;
                 }

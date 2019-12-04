@@ -22,8 +22,6 @@ class Index extends Init
 
     public function index()
     {
-        //获取白名单 不需要登录验证的
-        $list = getVar('list', 'admin.white');
         //获取栏目信息
         $list['list'] = $this->menus();
         if ($this->thisConsoleMenusId) {
@@ -31,7 +29,7 @@ class Index extends Init
         }
 
         $this->assign('list', $list);
-        $this->show('', false, false);
+        $this->show('', false, ['trace' => false]);
     }
 
     //二级导航显示
@@ -68,7 +66,7 @@ class Index extends Init
 
         session('this_console_menus_id', $id);
         $this->assign('list', $list);
-        $this->show('', false, false);
+        $this->show('', [], ['trace' => false]);
 
     }
 

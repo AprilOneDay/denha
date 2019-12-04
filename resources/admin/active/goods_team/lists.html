@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+	<meta name="keywords" content=""/>
+	<title>后台管理</title>
+	{include /admin/public/global_css}
+</head>
+  	<body>
+	<div id="console-content-index-index">
+		<div class="view-content-container" >
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="console-title console-title-border clearfix">
+						<div class="pull-left">
+							<h5>店铺列表</h5>
+						</div>
+						<div class="pull-right">
+							<a class="btn btn-primary btn-open" dh-url="{:url('edit')}" dh-width="40%" dh-height="70%">添加团长</a>
+						</div>
+					</div>
+					<form class="form-inline ng-pristine ng-valid" action=""  method="get">
+                        <div class="form-group">
+                            <select class="form-control" name="param[field]" dh-selected="{??$param['field']}">
+                                <option value="name">团队名称</option>
+                                <option value="uid">团长UID</option>
+                            </select>
+                            <input type="text" class="form-control w120" placeholder="Search" name="param[keyword]" value="{??$param['keyword']}" >
+                            <button type="submit" class="btn btn-default" @click="search()">搜索</button>
+                        </div>
+                    </form>
+					<div class="console-form">
+						<div class="console-form">
+							<div class="mt8 table-responsive"	>
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th style="width:75px;">ID</th>
+											<th>商品名称</th>
+											<th>团长昵称/UID</th>
+											<th>团员数量</th>
+											<th style="width:160px; text-align:center;">操作</th>
+										</tr>
+									</thead>
+									<tbody>
+										{loop $lists $item}
+									 	<tr v-for="list in list">
+											<td>{$item['id']}</td>
+											<td>{$item['name']}</td>
+											<td>{??$item['nickname']} / {$item['uid']}</td>
+											<td>{??$item['nums']}</td>
+											<td align='center'>
+												<a dh-url="{:url('edit',array('id'=>$item['id']))}"  dh-width="90%"  dh-title="团队编辑"  class="btn-open">编辑</a>
+											</td>
+										</tr>
+										{/loop}
+									</tbody>
+								    <tfoot>
+							          	<tr>
+          									<td colspan="5">{??$pages}</td>
+          								</tr>
+									</tfoot>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{include /admin/public/global_js}
+	<script type="text/javascript">
+	</script>
+</body>
+</html>
