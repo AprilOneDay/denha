@@ -1,0 +1,48 @@
+[
+    {
+        "name": "denha/framework",
+        "version": "v1.1.11",
+        "version_normalized": "1.1.11.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/denhaphp/framework.git",
+            "reference": "db5e23a2e11ac14708ba7f5aed7536f73a62836f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/denhaphp/framework/zipball/db5e23a2e11ac14708ba7f5aed7536f73a62836f",
+            "reference": "db5e23a2e11ac14708ba7f5aed7536f73a62836f",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.6.0"
+        },
+        "time": "2019-01-11T06:29:03+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "helper.php"
+            ],
+            "psr-4": {
+                "denha\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "siyue",
+                "email": "350375092@qq.com"
+            }
+        ],
+        "description": "The denha Framework.",
+        "homepage": "https://denha.cn",
+        "keywords": [
+            "denha",
+            "framework"
+        ]
+    }
+]
